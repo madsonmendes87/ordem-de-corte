@@ -20,6 +20,13 @@ object FormPrincipal: TFormPrincipal
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object Label1: TLabel
+    Left = 48
+    Top = 480
+    Width = 31
+    Height = 13
+    Caption = 'Label1'
+  end
   object panelFormPrincipal: TPanel
     Left = 0
     Top = 0
@@ -113,8 +120,6 @@ object FormPrincipal: TFormPrincipal
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = -6
-    ExplicitTop = 8
     object btnOrdemCorte: TSpeedButton
       Left = -2
       Top = -2
@@ -1674,8 +1679,8 @@ object FormPrincipal: TFormPrincipal
         ParentFont = False
       end
       object labTipo: TLabel
-        Left = 6
-        Top = -3
+        Left = 0
+        Top = 13
         Width = 20
         Height = 13
         Caption = 'Tipo'
@@ -1780,32 +1785,15 @@ object FormPrincipal: TFormPrincipal
           F3EDECECF2F1F1F0EFEFF0F0F0EEEEEEF0EFEFF1F1F1EEEEEEF2F2F20000}
         OnClick = butOrdemPesquisarClick
       end
-      object lbEstilista: TLabel
-        Left = 232
-        Top = 0
-        Width = 36
-        Height = 13
-        Caption = 'Estilista'
-      end
       object comboTipo: TComboBox
-        Left = 6
-        Top = 16
+        Left = 0
+        Top = 32
         Width = 201
         Height = 21
         TabOrder = 0
         Items.Strings = (
           'Prototipo'
           'Grande Escala')
-      end
-      object DBLookupComboBox1: TDBLookupComboBox
-        Left = 232
-        Top = 19
-        Width = 193
-        Height = 21
-        KeyField = 'es_nome'
-        ListField = 'es_nome'
-        ListSource = dmOrdemCorte.dsEstilista
-        TabOrder = 1
       end
     end
   end

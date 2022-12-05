@@ -53,8 +53,6 @@ type
     tbOrdemCorteTrocaItem: TFDTable;
     dsOrdemCorteTrocaItem: TDataSource;
     qyOrdemCorte: TFDQuery;
-    tbEstilista: TFDTable;
-    dsEstilista: TDataSource;
   private
     { Private declarations }
   public

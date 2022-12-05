@@ -54,8 +54,8 @@ type
     labTipo: TLabel;
     comboTipo: TComboBox;
     butOrdemPesquisar: TSpeedButton;
+    comboEstilista: TDBComboBox;
     lbEstilista: TLabel;
-    DBLookupComboBox1: TDBLookupComboBox;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -152,8 +152,6 @@ begin
                   qyOrdemCorte.SQL.Add('and oc.oc_prototipo = true');
                 if comboTipo.Text = 'Grande Escala' then
                   qyOrdemCorte.SQL.Add('and oc.oc_prototipo = false');
-                if DBLookUpCombobox1.Text = 'DIANA' then
-                  qyOrdemCorte.SQL.Add('and estilista = ''DIANA''');
                 qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
                 qyOrdemCorte.Open;
               end;

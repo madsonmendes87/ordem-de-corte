@@ -265,17 +265,4 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 448
     Top = 16
   end
-  object tbEstilista: TFDTable
-    Active = True
-    IndexFieldNames = 'es_id'
-    Connection = Conexao
-    TableName = 'cadastro_estilista'
-    Left = 600
-    Top = 440
-  end
-  object dsEstilista: TDataSource
-    DataSet = tbEstilista
-    Left = 656
-    Top = 440
-  end
 end
