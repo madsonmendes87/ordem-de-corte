@@ -18,7 +18,6 @@ type
     panelMenuEsquerdo: TPanel;
     btnOrdemCorte: TSpeedButton;
     footerPrincipal: TStatusBar;
-    Label1: TLabel;
     btnEmpAlmoxarifado: TSpeedButton;
     popupMenuOrdem: TPopupMenu;
     IniciarCorte1: TMenuItem;
@@ -55,6 +54,8 @@ type
     labTipo: TLabel;
     comboTipo: TComboBox;
     butOrdemPesquisar: TSpeedButton;
+    labEstilista: TLabel;
+    comboEstilista: TComboBox;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -92,7 +93,7 @@ begin
     begin
       With dmOrdemCorte do
       begin
-            if comboTipo.Text <> '' then
+            if comboTipo.ItemIndex <> -1 then
               begin
                 qyOrdemCorte.Close;
                 qyOrdemCorte.SQL.Clear;
@@ -151,6 +152,9 @@ begin
                   qyOrdemCorte.SQL.Add('and oc.oc_prototipo = true');
                 if comboTipo.Text = 'Grande Escala' then
                   qyOrdemCorte.SQL.Add('and oc.oc_prototipo = false');
+                if comboEstilista.Text <> '' then
+                  qyOrdemCorte.SQL.Add('and ce.es_nome = :estilista');
+                  qyOrdemCorte.Params[0].AsString:=trim(comboEstilista.Text);
                 qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
                 qyOrdemCorte.Open;
               end;
@@ -202,8 +206,6 @@ begin
       gridOrdem.Columns[14].Title.Alignment:=taCenter;
       gridOrdem.Columns[14].Title.Caption:='Observação'
     end;
-   //     else
-     //     ShowMessage('Tipo pode ser vazio');
 end;
 
 procedure TFormPrincipal.butVerCorteClick(Sender: TObject);
@@ -338,5 +340,6 @@ begin
     butHistoricOrdem.Font.Style:=[fsBold];
     comboTipo.Text:='';
 end;
+
 
 end.

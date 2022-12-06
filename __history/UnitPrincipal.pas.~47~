@@ -93,7 +93,7 @@ begin
     begin
       With dmOrdemCorte do
       begin
-            if comboTipo.ItemIndex <> -1 then
+            if comboTipo.ItemIndex <> 0 then
               begin
                 qyOrdemCorte.Close;
                 qyOrdemCorte.SQL.Clear;

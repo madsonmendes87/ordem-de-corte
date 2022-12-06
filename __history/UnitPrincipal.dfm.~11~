@@ -1676,15 +1676,9 @@ object FormPrincipal: TFormPrincipal
       object labTipo: TLabel
         Left = 6
         Top = -3
-        Width = 24
+        Width = 20
         Height = 13
         Caption = 'Tipo'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
       end
       object butOrdemPesquisar: TSpeedButton
         Left = 1128
@@ -1786,18 +1780,12 @@ object FormPrincipal: TFormPrincipal
           F3EDECECF2F1F1F0EFEFF0F0F0EEEEEEF0EFEFF1F1F1EEEEEEF2F2F20000}
         OnClick = butOrdemPesquisarClick
       end
-      object labEstilista: TLabel
+      object lbEstilista: TLabel
         Left = 232
         Top = 0
-        Width = 44
+        Width = 36
         Height = 13
         Caption = 'Estilista'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
       end
       object comboTipo: TComboBox
         Left = 6
