@@ -56,6 +56,8 @@ type
     butOrdemPesquisar: TSpeedButton;
     labEstilista: TLabel;
     comboEstilista: TComboBox;
+    labSetor: TLabel;
+    comboSetor: TComboBox;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -164,6 +166,9 @@ begin
                   if comboTipo.Text = 'Grande Escala' then
                     qyOrdemCorte.SQL.Add('and oc.oc_prototipo = false');
                 end;
+                if comboSetor.Text = 'ALMOXARIFADO' then
+                  qyOrdemCorte.SQL.Add('and emp_tipo and (emp_situacao IN (''N'', ''P'') and emp_mod = 0) = ''S''');
+                   //qyOrdemCorte.SQL.Add('and processoempenho = ''S''');
                 qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
                 qyOrdemCorte.Open;
               end;

@@ -1675,7 +1675,7 @@ object FormPrincipal: TFormPrincipal
       end
       object labTipo: TLabel
         Left = 6
-        Top = -3
+        Top = 13
         Width = 24
         Height = 13
         Caption = 'Tipo'
@@ -1788,7 +1788,7 @@ object FormPrincipal: TFormPrincipal
       end
       object labEstilista: TLabel
         Left = 232
-        Top = 0
+        Top = 16
         Width = 44
         Height = 13
         Caption = 'Estilista'
@@ -1799,9 +1799,22 @@ object FormPrincipal: TFormPrincipal
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object labSetor: TLabel
+        Left = 464
+        Top = 13
+        Width = 31
+        Height = 13
+        Caption = 'Setor'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object comboTipo: TComboBox
         Left = 6
-        Top = 16
+        Top = 32
         Width = 201
         Height = 21
         TabOrder = 0
@@ -1811,7 +1824,7 @@ object FormPrincipal: TFormPrincipal
       end
       object comboEstilista: TComboBox
         Left = 232
-        Top = 16
+        Top = 32
         Width = 201
         Height = 21
         TabOrder = 1
@@ -1828,6 +1841,17 @@ object FormPrincipal: TFormPrincipal
           'NAO CATALOGADO'
           'SIMONE'
           'TAINARA')
+      end
+      object comboSetor: TComboBox
+        Left = 464
+        Top = 32
+        Width = 249
+        Height = 21
+        TabOrder = 2
+        Items.Strings = (
+          'PLANEJAMENTO'
+          'ALMOXARIFADO'
+          'CORTE')
       end
     end
   end

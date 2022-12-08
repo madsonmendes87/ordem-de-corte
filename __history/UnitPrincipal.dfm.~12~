@@ -20,13 +20,6 @@ object FormPrincipal: TFormPrincipal
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
-    Left = 48
-    Top = 480
-    Width = 31
-    Height = 13
-    Caption = 'Label1'
-  end
   object panelFormPrincipal: TPanel
     Left = 0
     Top = 0
@@ -120,6 +113,8 @@ object FormPrincipal: TFormPrincipal
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 1
+    ExplicitLeft = -6
+    ExplicitTop = 8
     object btnOrdemCorte: TSpeedButton
       Left = -2
       Top = -2
@@ -1601,13 +1596,6 @@ object FormPrincipal: TFormPrincipal
     Color = clWhite
     ParentBackground = False
     TabOrder = 3
-    object Label2: TLabel
-      Left = 648
-      Top = 336
-      Width = 31
-      Height = 13
-      Caption = 'Label2'
-    end
     object gridOrdem: TDBGrid
       Left = 0
       Top = 0
@@ -1686,11 +1674,17 @@ object FormPrincipal: TFormPrincipal
         ParentFont = False
       end
       object labTipo: TLabel
-        Left = 0
-        Top = 13
-        Width = 20
+        Left = 6
+        Top = -3
+        Width = 24
         Height = 13
         Caption = 'Tipo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
       end
       object butOrdemPesquisar: TSpeedButton
         Left = 1128
@@ -1792,16 +1786,22 @@ object FormPrincipal: TFormPrincipal
           F3EDECECF2F1F1F0EFEFF0F0F0EEEEEEF0EFEFF1F1F1EEEEEEF2F2F20000}
         OnClick = butOrdemPesquisarClick
       end
-      object Label3: TLabel
+      object labEstilista: TLabel
         Left = 232
-        Top = 16
-        Width = 31
-        Height = 21
-        Caption = 'Label3'
+        Top = 0
+        Width = 44
+        Height = 13
+        Caption = 'Estilista'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
       end
       object comboTipo: TComboBox
-        Left = 0
-        Top = 32
+        Left = 6
+        Top = 16
         Width = 201
         Height = 21
         TabOrder = 0
@@ -1809,15 +1809,26 @@ object FormPrincipal: TFormPrincipal
           'Prototipo'
           'Grande Escala')
       end
-    end
-    object comboEstilista: TDBComboBox
-      Left = 232
-      Top = 575
-      Width = 209
-      Height = 21
-      DataField = 'es_nome'
-      DataSource = dmOrdemCorte.dsEstilista
-      TabOrder = 5
+      object comboEstilista: TComboBox
+        Left = 232
+        Top = 16
+        Width = 201
+        Height = 21
+        TabOrder = 1
+        Items.Strings = (
+          'ALESSANDRA'
+          'DIANA'
+          'FLAVIO'
+          'GRACIELE'
+          'HELIOFABIA'
+          'JOSELAIDE'
+          'JULLYANE'
+          'LOTARIO'
+          'MAURO'
+          'NAO CATALOGADO'
+          'SIMONE'
+          'TAINARA')
+      end
     end
   end
   object popupMenuOrdem: TPopupMenu
