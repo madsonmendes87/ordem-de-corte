@@ -1674,11 +1674,17 @@ object FormPrincipal: TFormPrincipal
         ParentFont = False
       end
       object labTipo: TLabel
-        Left = 0
+        Left = 6
         Top = 13
-        Width = 20
+        Width = 24
         Height = 13
         Caption = 'Tipo'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
       end
       object butOrdemPesquisar: TSpeedButton
         Left = 1128
@@ -1780,15 +1786,34 @@ object FormPrincipal: TFormPrincipal
           F3EDECECF2F1F1F0EFEFF0F0F0EEEEEEF0EFEFF1F1F1EEEEEEF2F2F20000}
         OnClick = butOrdemPesquisarClick
       end
-      object lbEstilista: TLabel
+      object labEstilista: TLabel
         Left = 232
         Top = 16
-        Width = 36
+        Width = 44
         Height = 13
         Caption = 'Estilista'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object labSetor: TLabel
+        Left = 464
+        Top = 13
+        Width = 31
+        Height = 13
+        Caption = 'Setor'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
       end
       object comboTipo: TComboBox
-        Left = 0
+        Left = 6
         Top = 32
         Width = 201
         Height = 21
@@ -1797,16 +1822,37 @@ object FormPrincipal: TFormPrincipal
           'Prototipo'
           'Grande Escala')
       end
-    end
-    object comboEstilista: TDBComboBox
-      Left = 232
-      Top = 575
-      Width = 209
-      Height = 21
-      AutoComplete = False
-      DataField = 'es_nome'
-      DataSource = dmOrdemCorte.dsEstilista
-      TabOrder = 5
+      object comboEstilista: TComboBox
+        Left = 232
+        Top = 32
+        Width = 201
+        Height = 21
+        TabOrder = 1
+        Items.Strings = (
+          'ALESSANDRA'
+          'DIANA'
+          'FLAVIO'
+          'GRACIELE'
+          'HELIOFABIA'
+          'JOSELAIDE'
+          'JULLYANE'
+          'LOTARIO'
+          'MAURO'
+          'NAO CATALOGADO'
+          'SIMONE'
+          'TAINARA')
+      end
+      object comboSetor: TComboBox
+        Left = 464
+        Top = 32
+        Width = 249
+        Height = 21
+        TabOrder = 2
+        Items.Strings = (
+          'PLANEJAMENTO'
+          'ALMOXARIFADO'
+          'CORTE')
+      end
     end
   end
   object popupMenuOrdem: TPopupMenu

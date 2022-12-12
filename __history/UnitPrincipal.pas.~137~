@@ -166,9 +166,11 @@ begin
                   if comboTipo.Text = 'Grande Escala' then
                     qyOrdemCorte.SQL.Add('and oc.oc_prototipo = false');
                 end;
-                if comboSetor.Text = 'ALMOXARIFADO' then
-                  //qyOrdemCorte.SQL.Add('and select emp_tipo FROM controle_empenho WHERE emp_idordemcorte=oc.oc_id AND emp_situacao IN (''N'', ''P'') AND emp_mod = 0 ORDER BY emp_id DESC LIMIT 1 = ''S''');
-                   qyOrdemCorte.SQL.Add('and processoempenho = ''S''');
+                //if comboSetor.Text = 'ALMOXARIFADO' then
+                  //qyOrdemCorte.SQL.Add('and (select emp_tipo from controle_empenho where emp_idordemcorte=oc.oc_id and emp_situacao in (''N'', ''P'') and emp_mod = 0 ORDER BY emp_id DESC LIMIT 1) = ''S''');
+               // else
+                if comboSetor.Text = 'PLANEJAMENTO' then
+                  qyOrdemCorte.SQL.Add('and (select emp_tipo from controle_empenho where emp_idordemcorte=oc.oc_id and emp_situacao = ''P'' and emp_mod = 0 ORDER BY emp_id DESC LIMIT 1) = ''E''');
                 qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
                 qyOrdemCorte.Open;
               end;
