@@ -195,8 +195,16 @@ begin
                 qyOrdemCorte.SQL.Add('and oc.oc_situacao = 1');
             if comboSituacao.Text = 'FINALIZADA' then
                 qyOrdemCorte.SQL.Add('and oc.oc_situacao = 3');
-            if comboIniOrd.ItemIndex = 0 then
-                qyOrdemCorte.SQL.Add('and exist(select op.op_id FROM ordem_producao AS op WHERE op.op_idordemcorte = oc.oc_id)');
+            if comboIniOrd.ItemIndex <> -1 then
+            begin
+                //if comboIniOrd.Text = 'SIM' then
+                    //qyOrdemCorte.SQL.Add('and exists(');
+                if comboIniOrd.ItemIndex = 1 then
+                    qyOrdemCorte.SQL.Add('and not exists(')
+                else
+                    //qyOrdemCorte.SQL.Add('and exists(');
+                    qyOrdemCorte.SQL.Add('select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
+            end;
             qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
             qyOrdemCorte.Open;
       end;
