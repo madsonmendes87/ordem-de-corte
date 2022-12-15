@@ -66,6 +66,8 @@ type
     comboSituacao: TComboBox;
     labIniOrdem: TLabel;
     comboIniOrd: TComboBox;
+    labColecao: TLabel;
+    comboColecao: TComboBox;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -201,6 +203,11 @@ begin
                 if comboIniOrd.ItemIndex = 1 then
                     qyOrdemCorte.SQL.Add('and not exists(');
                     qyOrdemCorte.SQL.Add('select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
+            end;
+            if comboColecao.ItemIndex <> -1 then
+            begin
+                qyOrdemCorte.SQL.Add('and cc.co_descricao = :colecao');
+                qyOrdemCorte.ParamByName('colecao').AsString := comboColecao.Text;
             end;
             qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
             qyOrdemCorte.Open;

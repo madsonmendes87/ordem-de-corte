@@ -1870,6 +1870,19 @@ object FormPrincipal: TFormPrincipal
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object labColecao: TLabel
+        Left = 423
+        Top = 62
+        Width = 103
+        Height = 13
+        Caption = 'Cole'#231#227'o deste ano'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object comboTipo: TComboBox
         Left = 422
         Top = 32
@@ -1951,6 +1964,26 @@ object FormPrincipal: TFormPrincipal
         Items.Strings = (
           'SIM'
           'NAO')
+      end
+      object comboColecao: TComboBox
+        Left = 423
+        Top = 81
+        Width = 200
+        Height = 21
+        TabOrder = 7
+        Items.Strings = (
+          'JANEIRO'
+          'FEVEREIRO'
+          'MARCO'
+          'ABRIL'
+          'MAIO'
+          'JUNHO'
+          'JULHO'
+          'AGOSTO'
+          'SETEMBRO'
+          'OUTUBRO'
+          'NOVEMBRO'
+          'DEZEMBRO')
       end
     end
   end

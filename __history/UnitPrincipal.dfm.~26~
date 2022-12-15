@@ -3,7 +3,7 @@ object FormPrincipal: TFormPrincipal
   Top = 0
   Caption = 'Corte'
   ClientHeight = 705
-  ClientWidth = 1370
+  ClientWidth = 1369
   Color = clCream
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -23,7 +23,7 @@ object FormPrincipal: TFormPrincipal
   object panelFormPrincipal: TPanel
     Left = 0
     Top = 0
-    Width = 1370
+    Width = 1369
     Height = 25
     Align = alTop
     BiDiMode = bdRightToLeftNoAlign
@@ -1571,7 +1571,7 @@ object FormPrincipal: TFormPrincipal
   object footerPrincipal: TStatusBar
     Left = 0
     Top = 686
-    Width = 1370
+    Width = 1369
     Height = 19
     Color = clCream
     Panels = <
@@ -1587,7 +1587,7 @@ object FormPrincipal: TFormPrincipal
   object Panel1: TPanel
     Left = 185
     Top = 25
-    Width = 1185
+    Width = 1184
     Height = 661
     Align = alClient
     BevelOuter = bvNone
@@ -1597,7 +1597,7 @@ object FormPrincipal: TFormPrincipal
     object gridOrdem: TDBGrid
       Left = 0
       Top = 0
-      Width = 1185
+      Width = 1184
       Height = 500
       Align = alTop
       Anchors = [akLeft, akTop, akRight, akBottom]
@@ -1618,9 +1618,9 @@ object FormPrincipal: TFormPrincipal
       TitleFont.Style = []
     end
     object butVerCorte: TBitBtn
-      Left = 0
+      Left = 24
       Top = 504
-      Width = 137
+      Width = 145
       Height = 33
       Caption = 'F4 - Ver Corte Real'
       Font.Charset = DEFAULT_CHARSET
@@ -1633,7 +1633,7 @@ object FormPrincipal: TFormPrincipal
       OnClick = butVerCorteClick
     end
     object butCortePrevisto: TBitBtn
-      Left = 143
+      Left = 192
       Top = 504
       Width = 137
       Height = 33
@@ -1642,8 +1642,8 @@ object FormPrincipal: TFormPrincipal
       OnClick = butCortePrevistoClick
     end
     object butHistoricOrdem: TBitBtn
-      Left = 992
-      Top = 504
+      Left = 976
+      Top = 506
       Width = 177
       Height = 33
       Caption = 'F7 - Historico Ordem de Corte'
@@ -1685,7 +1685,7 @@ object FormPrincipal: TFormPrincipal
         ParentFont = False
       end
       object butOrdemPesquisar: TSpeedButton
-        Left = 1080
+        Left = 1056
         Top = 72
         Width = 97
         Height = 33
@@ -1693,7 +1693,7 @@ object FormPrincipal: TFormPrincipal
         Flat = True
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -13
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         Glyph.Data = {
@@ -1806,7 +1806,7 @@ object FormPrincipal: TFormPrincipal
         ParentFont = False
       end
       object labSetor: TLabel
-        Left = 880
+        Left = 896
         Top = 13
         Width = 31
         Height = 13
@@ -1831,12 +1831,51 @@ object FormPrincipal: TFormPrincipal
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object labDadosConsulta: TLabel
+        Left = 192
+        Top = 16
+        Width = 115
+        Height = 13
+        Caption = 'Dados para consulta'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object labSituacao: TLabel
+        Left = 24
+        Top = 62
+        Width = 49
+        Height = 13
+        Caption = 'Situacao'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object labIniOrdem: TLabel
+        Left = 192
+        Top = 62
+        Width = 124
+        Height = 13
+        Caption = 'Iniciada Ord Produ'#231#227'o'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object comboTipo: TComboBox
         Left = 422
         Top = 32
         Width = 201
         Height = 21
-        TabOrder = 0
+        TabOrder = 2
         Items.Strings = (
           'Prototipo'
           'Grande Escala')
@@ -1844,9 +1883,9 @@ object FormPrincipal: TFormPrincipal
       object comboEstilista: TComboBox
         Left = 648
         Top = 32
-        Width = 201
+        Width = 225
         Height = 21
-        TabOrder = 1
+        TabOrder = 3
         Items.Strings = (
           'ALESSANDRA'
           'DIANA'
@@ -1862,11 +1901,11 @@ object FormPrincipal: TFormPrincipal
           'TAINARA')
       end
       object comboSetor: TComboBox
-        Left = 880
+        Left = 896
         Top = 32
-        Width = 249
+        Width = 257
         Height = 21
-        TabOrder = 2
+        TabOrder = 4
         Items.Strings = (
           'PLANEJAMENTO'
           'ALMOXARIFADO'
@@ -1877,13 +1916,41 @@ object FormPrincipal: TFormPrincipal
         Top = 35
         Width = 145
         Height = 21
-        TabOrder = 3
+        TabOrder = 0
         Items.Strings = (
           '<<  N'#227'o Informar >>'
           'REFERENCIA'
           'NUMERO DA FICHA'
           'ORDEM DE CORTE'
           'DESCRICAO REFERENCIA')
+      end
+      object editSearch: TEdit
+        Left = 192
+        Top = 35
+        Width = 201
+        Height = 21
+        CharCase = ecUpperCase
+        TabOrder = 1
+      end
+      object comboSituacao: TComboBox
+        Left = 24
+        Top = 80
+        Width = 145
+        Height = 21
+        TabOrder = 5
+        Items.Strings = (
+          'NORMAL'
+          'FINALIZADA')
+      end
+      object comboIniOrd: TComboBox
+        Left = 192
+        Top = 81
+        Width = 201
+        Height = 21
+        TabOrder = 6
+        Items.Strings = (
+          'SIM'
+          'NAO')
       end
     end
   end
