@@ -66,6 +66,13 @@ type
     comboSituacao: TComboBox;
     labIniOrdem: TLabel;
     comboIniOrd: TComboBox;
+    labColecao: TLabel;
+    comboColecao: TComboBox;
+    labData: TLabel;
+    comboFiltroData: TComboBox;
+    dateTimePicker1: TDateTimePicker;
+    labA: TLabel;
+    dateTimePicker2: TDateTimePicker;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -197,12 +204,25 @@ begin
             if comboIniOrd.ItemIndex <> -1 then
             begin
                 if comboIniOrd.ItemIndex = 0 then
-                    qyOrdemCorte.SQL.Add('and exists');
+                    qyOrdemCorte.SQL.Add('and exists(');
                 if comboIniOrd.ItemIndex = 1 then
-                    qyOrdemCorte.SQL.Add('and not exists');
-                    qyOrdemCorte.SQL.Add('(select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
+                    qyOrdemCorte.SQL.Add('and not exists(');
+                    qyOrdemCorte.SQL.Add('select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
             end;
-            //qyOrdemCorte.SQL.Add('select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
+            if comboColecao.ItemIndex <> -1 then
+            begin
+                qyOrdemCorte.SQL.Add('and cc.co_descricao = :colecao');
+                qyOrdemCorte.ParamByName('colecao').AsString := comboColecao.Text;
+            end;
+           // parei aqui
+           if comboFiltroData.ItemIndex <> 0 then
+            begin
+                if comboFiltroData.ItemIndex = 1 then
+                    qyOrdemCorte.SQL.Add('and oc.oc_dtgerada >= ''+#39+ DateToStr(dateTimePicker1.Date) +#39+'' and oc.oc_dtgerada <= ''DateToStr(dateTimePicker2.Date) +#39+''');
+               // if comboIniOrd.ItemIndex = 2 then
+                 //   qyOrdemCorte.SQL.Add('and not exists(');
+                    //qyOrdemCorte.SQL.Add('select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
+            end;
             qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
             qyOrdemCorte.Open;
       end;

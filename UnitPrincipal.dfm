@@ -1883,6 +1883,32 @@ object FormPrincipal: TFormPrincipal
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object labData: TLabel
+        Left = 650
+        Top = 62
+        Width = 85
+        Height = 13
+        Caption = 'Filtrar por data'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object labA: TLabel
+        Left = 927
+        Top = 82
+        Width = 13
+        Height = 16
+        Caption = 'a'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object comboTipo: TComboBox
         Left = 422
         Top = 32
@@ -1984,6 +2010,36 @@ object FormPrincipal: TFormPrincipal
           'OUTUBRO'
           'NOVEMBRO'
           'DEZEMBRO')
+      end
+      object comboFiltroData: TComboBox
+        Left = 650
+        Top = 81
+        Width = 145
+        Height = 21
+        TabOrder = 8
+        Items.Strings = (
+          '<<  Nao Informar >>'
+          'GERADA'
+          'SOLICITADA'
+          'PRAZO DO CORTE')
+      end
+      object dateTimePicker1: TDateTimePicker
+        Left = 811
+        Top = 80
+        Width = 110
+        Height = 21
+        Date = 44910.000000000000000000
+        Time = 0.437829849535774000
+        TabOrder = 9
+      end
+      object dateTimePicker2: TDateTimePicker
+        Left = 940
+        Top = 80
+        Width = 110
+        Height = 21
+        Date = 44910.000000000000000000
+        Time = 0.437829849535774000
+        TabOrder = 10
       end
     end
   end

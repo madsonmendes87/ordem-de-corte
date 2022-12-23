@@ -68,6 +68,11 @@ type
     comboIniOrd: TComboBox;
     labColecao: TLabel;
     comboColecao: TComboBox;
+    labData: TLabel;
+    comboFiltroData: TComboBox;
+    dateTimePicker1: TDateTimePicker;
+    labA: TLabel;
+    dateTimePicker2: TDateTimePicker;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -209,6 +214,20 @@ begin
                 qyOrdemCorte.SQL.Add('and cc.co_descricao = :colecao');
                 qyOrdemCorte.ParamByName('colecao').AsString := comboColecao.Text;
             end;
+           if comboFiltroData.ItemIndex <> -1 then
+           begin
+              if comboFiltroData.ItemIndex <> 0 then
+              begin
+                if comboFiltroData.ItemIndex = 1 then
+                    qyOrdemCorte.SQL.Add('and oc_dtgerada between :data1 and :data2');
+                if comboFiltroData.ItemIndex = 2 then
+                    qyOrdemCorte.SQL.Add('and oc_dtsolicitacao between :data1 and :data2');
+                if comboFiltroData.ItemIndex = 3 then
+                    qyOrdemCorte.SQL.Add('and oc_dtprevisaofinalizacao between :data1 and :data2');
+                    qyOrdemCorte.ParamByName('data1').AsDate := dateTimePicker1.Date;
+                    qyOrdemCorte.ParamByName('data2').AsDate := dateTimePicker2.Date;
+              end;
+           end;
             qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
             qyOrdemCorte.Open;
       end;
@@ -268,7 +287,8 @@ end;
 
 procedure TFormPrincipal.FormCreate(Sender: TObject);
 begin
-    //labelNomeUsuario.Caption:=Query;
+    dateTimePicker1.Date := now;
+    dateTimePicker2.Date := now;
 end;
 
 procedure TFormPrincipal.FormResize(Sender: TObject);
