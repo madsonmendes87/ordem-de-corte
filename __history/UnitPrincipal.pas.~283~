@@ -3,10 +3,28 @@ unit UnitPrincipal;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.ToolWin, Vcl.ActnMan,
-  Vcl.ActnCtrls, Vcl.ActnMenus, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Buttons, Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls;
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.Menus,
+  Vcl.ToolWin,
+  Vcl.ActnMan,
+  Vcl.ActnCtrls,
+  Vcl.ActnMenus,
+  Vcl.ComCtrls,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Buttons,
+  Data.DB,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.DBCtrls, System.Actions, Vcl.ActnList;
 
 type
   TFormPrincipal = class(TForm)
@@ -46,7 +64,6 @@ type
     Panel1: TPanel;
     LbCodigoSetor: TLabel;
     gridOrdem: TDBGrid;
-    butVerCorte: TBitBtn;
     butCortePrevisto: TBitBtn;
     butHistoricOrdem: TBitBtn;
     Panel2: TPanel;
@@ -73,6 +90,9 @@ type
     dateTimePicker1: TDateTimePicker;
     labA: TLabel;
     dateTimePicker2: TDateTimePicker;
+    ActionList1: TActionList;
+    acaoBotaoCorteReal: TAction;
+    butVerCorte: TBitBtn;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -80,6 +100,11 @@ type
     procedure butCortePrevistoClick(Sender: TObject);
     procedure butHistoricOrdemClick(Sender: TObject);
     procedure butOrdemPesquisarClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure acaoBotaoCorteRealExecute(Sender: TObject);
+    //procedure panelCorteRealClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -95,9 +120,15 @@ implementation
 
 uses UnitDatamodule;
 
+procedure TFormPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
+begin
+      ShowMessage('teste');
+end;
+
 procedure TFormPrincipal.butCortePrevistoClick(Sender: TObject);
 begin
-    ShowMessage('Mensagem de teste: Corte Previsto');
+    //ShowMessage('Mensagem de teste: Corte Previsto');
+    acaoBotaoCorteRealExecute(Sender);
 end;
 
 procedure TFormPrincipal.butHistoricOrdemClick(Sender: TObject);
@@ -214,17 +245,20 @@ begin
                 qyOrdemCorte.SQL.Add('and cc.co_descricao = :colecao');
                 qyOrdemCorte.ParamByName('colecao').AsString := comboColecao.Text;
             end;
-           // parei aqui
            if comboFiltroData.ItemIndex <> -1 then
-            begin
+           begin
+              if comboFiltroData.ItemIndex <> 0 then
+              begin
                 if comboFiltroData.ItemIndex = 1 then
                     qyOrdemCorte.SQL.Add('and oc_dtgerada between :data1 and :data2');
+                if comboFiltroData.ItemIndex = 2 then
+                    qyOrdemCorte.SQL.Add('and oc_dtsolicitacao between :data1 and :data2');
+                if comboFiltroData.ItemIndex = 3 then
+                    qyOrdemCorte.SQL.Add('and oc_dtprevisaofinalizacao between :data1 and :data2');
                     qyOrdemCorte.ParamByName('data1').AsDate := dateTimePicker1.Date;
                     qyOrdemCorte.ParamByName('data2').AsDate := dateTimePicker2.Date;
-               // if comboIniOrd.ItemIndex = 2 then
-                 //   qyOrdemCorte.SQL.Add('and not exists(');
-                    //qyOrdemCorte.SQL.Add('select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
-            end;
+              end;
+           end;
             qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
             qyOrdemCorte.Open;
       end;
@@ -279,12 +313,22 @@ end;
 
 procedure TFormPrincipal.butVerCorteClick(Sender: TObject);
 begin
-    ShowMessage('Mensagem de teste: Ver o Corte');
+    acaoBotaoCorteRealExecute(Sender);
 end;
 
 procedure TFormPrincipal.FormCreate(Sender: TObject);
 begin
-    //labelNomeUsuario.Caption:=Query;
+    dateTimePicker1.Date := now;
+    dateTimePicker2.Date := now;
+end;
+
+procedure TFormPrincipal.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    if KEY = VK_F4 then
+      //butVerCorteClick( Self );
+      SpeedButton1Click( Self );
+
 end;
 
 procedure TFormPrincipal.FormResize(Sender: TObject);
@@ -410,5 +454,9 @@ begin
     comboTipo.Text:='';
 end;
 
+procedure TFormPrincipal.SpeedButton1Click(Sender: TObject);
+begin
+      ShowMessage('One day in your life');
+end;
 
 end.

@@ -5,10 +5,26 @@ interface
 uses
   Winapi.Windows,
   Winapi.Messages,
-  System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.ToolWin, Vcl.ActnMan,
-  Vcl.ActnCtrls, Vcl.ActnMenus, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Buttons, Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls;
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.Menus,
+  Vcl.ToolWin,
+  Vcl.ActnMan,
+  Vcl.ActnCtrls,
+  Vcl.ActnMenus,
+  Vcl.ComCtrls,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Buttons,
+  Data.DB,
+  Vcl.Grids,
+  Vcl.DBGrids,
+  Vcl.DBCtrls, System.Actions, Vcl.ActnList;
 
 type
   TFormPrincipal = class(TForm)
@@ -48,9 +64,6 @@ type
     Panel1: TPanel;
     LbCodigoSetor: TLabel;
     gridOrdem: TDBGrid;
-    butVerCorte: TBitBtn;
-    butCortePrevisto: TBitBtn;
-    butHistoricOrdem: TBitBtn;
     Panel2: TPanel;
     labFiltro: TLabel;
     labTipo: TLabel;
@@ -75,6 +88,13 @@ type
     dateTimePicker1: TDateTimePicker;
     labA: TLabel;
     dateTimePicker2: TDateTimePicker;
+    ActionList1: TActionList;
+    acaoBotaoCorteReal: TAction;
+    butVerCorte: TBitBtn;
+    acaoBotaoCortePrevisto: TAction;
+    butCortePrevisto: TBitBtn;
+    acaoBotaoHistorico: TAction;
+    butHistoricOrdem: TBitBtn;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -82,6 +102,13 @@ type
     procedure butCortePrevistoClick(Sender: TObject);
     procedure butHistoricOrdemClick(Sender: TObject);
     procedure butOrdemPesquisarClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure acaoBotaoCorteRealExecute(Sender: TObject);
+    procedure acaoBotaoCortePrevistoExecute(Sender: TObject);
+    procedure acaoBotaoHistoricoExecute(Sender: TObject);
+    //procedure panelCorteRealClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -97,14 +124,29 @@ implementation
 
 uses UnitDatamodule;
 
-procedure TFormPrincipal.butCortePrevistoClick(Sender: TObject);
+procedure TFormPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
     ShowMessage('Mensagem de teste: Corte Previsto');
 end;
 
-procedure TFormPrincipal.butHistoricOrdemClick(Sender: TObject);
+procedure TFormPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
+begin
+      ShowMessage('Mensagem de teste: Corte Real');
+end;
+
+procedure TFormPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
     ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
+end;
+
+procedure TFormPrincipal.butCortePrevistoClick(Sender: TObject);
+begin
+    acaoBotaoCortePrevistoExecute(Sender);
+end;
+
+procedure TFormPrincipal.butHistoricOrdemClick(Sender: TObject);
+begin
+    acaoBotaoHistoricoExecute(Sender);
 end;
 
 procedure TFormPrincipal.butOrdemPesquisarClick(Sender: TObject);
@@ -284,13 +326,22 @@ end;
 
 procedure TFormPrincipal.butVerCorteClick(Sender: TObject);
 begin
-    ShowMessage('Mensagem de teste: Ver o Corte');
+    acaoBotaoCorteRealExecute(Sender);
 end;
 
 procedure TFormPrincipal.FormCreate(Sender: TObject);
 begin
     dateTimePicker1.Date := now;
     dateTimePicker2.Date := now;
+end;
+
+procedure TFormPrincipal.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    if KEY = VK_F4 then
+      //butVerCorteClick( Self );
+      SpeedButton1Click( Self );
+
 end;
 
 procedure TFormPrincipal.FormResize(Sender: TObject);
@@ -416,5 +467,9 @@ begin
     comboTipo.Text:='';
 end;
 
+procedure TFormPrincipal.SpeedButton1Click(Sender: TObject);
+begin
+      ShowMessage('One day in your life');
+end;
 
 end.

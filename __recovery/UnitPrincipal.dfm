@@ -11,11 +11,13 @@ object FormPrincipal: TFormPrincipal
   Font.Name = 'Tahoma'
   Font.Style = []
   FormStyle = fsMDIForm
+  KeyPreview = True
   OldCreateOrder = False
   Position = poDesigned
   ShowHint = True
   WindowState = wsMaximized
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
@@ -1617,39 +1619,6 @@ object FormPrincipal: TFormPrincipal
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
     end
-    object butVerCorte: TBitBtn
-      Left = 24
-      Top = 504
-      Width = 145
-      Height = 33
-      Caption = 'F4 - Ver Corte Real'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 1
-      OnClick = butVerCorteClick
-    end
-    object butCortePrevisto: TBitBtn
-      Left = 192
-      Top = 504
-      Width = 137
-      Height = 33
-      Caption = 'F5 - Ver Corte Previsto'
-      TabOrder = 2
-      OnClick = butCortePrevistoClick
-    end
-    object butHistoricOrdem: TBitBtn
-      Left = 976
-      Top = 506
-      Width = 177
-      Height = 33
-      Caption = 'F7 - Historico Ordem de Corte'
-      TabOrder = 3
-      OnClick = butHistoricOrdemClick
-    end
     object Panel2: TPanel
       Left = 0
       Top = 543
@@ -1657,7 +1626,7 @@ object FormPrincipal: TFormPrincipal
       Height = 112
       Color = clInactiveBorder
       ParentBackground = False
-      TabOrder = 4
+      TabOrder = 1
       object labFiltro: TLabel
         Left = 576
         Top = 0
@@ -2042,6 +2011,34 @@ object FormPrincipal: TFormPrincipal
         TabOrder = 10
       end
     end
+    object butVerCorte: TBitBtn
+      Left = 24
+      Top = 506
+      Width = 145
+      Height = 33
+      Caption = 'Ver Corte Real (F4)'
+      TabOrder = 2
+      OnClick = butVerCorteClick
+    end
+    object butCortePrevisto: TBitBtn
+      Left = 192
+      Top = 506
+      Width = 145
+      Height = 33
+      Action = acaoBotaoCortePrevisto
+      Caption = 'Ver Corte Previsto (F5)'
+      TabOrder = 3
+      OnClick = butCortePrevistoClick
+    end
+    object butHistoricOrdem: TBitBtn
+      Left = 977
+      Top = 506
+      Width = 177
+      Height = 33
+      Action = acaoBotaoHistorico
+      Caption = 'Historico Ordem de Corte (F7)'
+      TabOrder = 4
+    end
   end
   object popupMenuOrdem: TPopupMenu
     Left = 952
@@ -2093,6 +2090,28 @@ object FormPrincipal: TFormPrincipal
     end
     object VoltarFichaTcnicaparaFinalizada1: TMenuItem
       Caption = 'Voltar Ficha T'#233'cnica para Finalizada'
+    end
+  end
+  object ActionList1: TActionList
+    Left = 673
+    Top = 121
+    object acaoBotaoCorteReal: TAction
+      Category = 'verCorte'
+      Caption = 'Ver Corte Real (F4)'
+      ShortCut = 115
+      OnExecute = acaoBotaoCorteRealExecute
+    end
+    object acaoBotaoCortePrevisto: TAction
+      Category = 'verCorte'
+      Caption = 'acaoBotaoCortePrevisto'
+      ShortCut = 116
+      OnExecute = acaoBotaoCortePrevistoExecute
+    end
+    object acaoBotaoHistorico: TAction
+      Category = 'verCorte'
+      Caption = 'Historico Ordem de Corte (F7)'
+      ShortCut = 118
+      OnExecute = acaoBotaoHistoricoExecute
     end
   end
 end
