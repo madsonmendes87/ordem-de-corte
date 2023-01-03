@@ -17,7 +17,6 @@ object FormPrincipal: TFormPrincipal
   ShowHint = True
   WindowState = wsMaximized
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
   OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
@@ -2031,7 +2030,7 @@ object FormPrincipal: TFormPrincipal
       OnClick = butCortePrevistoClick
     end
     object butHistoricOrdem: TBitBtn
-      Left = 961
+      Left = 977
       Top = 506
       Width = 177
       Height = 33
@@ -2046,6 +2045,7 @@ object FormPrincipal: TFormPrincipal
     object IniciarCorte1: TMenuItem
       Caption = 'Iniciar Corte'
       Hint = 'Clique com botao direito para op'#231#245'es'
+      OnClick = IniciarCorte1Click
     end
     object IniciarCorte2: TMenuItem
       Caption = '-'

@@ -64,8 +64,6 @@ type
     Panel1: TPanel;
     LbCodigoSetor: TLabel;
     gridOrdem: TDBGrid;
-    butCortePrevisto: TBitBtn;
-    butHistoricOrdem: TBitBtn;
     Panel2: TPanel;
     labFiltro: TLabel;
     labTipo: TLabel;
@@ -92,8 +90,11 @@ type
     dateTimePicker2: TDateTimePicker;
     ActionList1: TActionList;
     acaoBotaoCorteReal: TAction;
-    panelCorteReal: TPanel;
-    butVerCorte: TSpeedButton;
+    butVerCorte: TBitBtn;
+    acaoBotaoCortePrevisto: TAction;
+    butCortePrevisto: TBitBtn;
+    acaoBotaoHistorico: TAction;
+    butHistoricOrdem: TBitBtn;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -105,6 +106,9 @@ type
       Shift: TShiftState);
     procedure SpeedButton1Click(Sender: TObject);
     procedure acaoBotaoCorteRealExecute(Sender: TObject);
+    procedure acaoBotaoCortePrevistoExecute(Sender: TObject);
+    procedure acaoBotaoHistoricoExecute(Sender: TObject);
+    procedure IniciarCorte1Click(Sender: TObject);
     //procedure panelCorteRealClick(Sender: TObject);
   private
     { Private declarations }
@@ -119,21 +123,31 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDatamodule;
+uses UnitDatamodule, UnitIniciarCorte;
 
-procedure TFormPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
-begin
-      ShowMessage('teste');
-end;
-
-procedure TFormPrincipal.butCortePrevistoClick(Sender: TObject);
+procedure TFormPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
     ShowMessage('Mensagem de teste: Corte Previsto');
 end;
 
-procedure TFormPrincipal.butHistoricOrdemClick(Sender: TObject);
+procedure TFormPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
+begin
+      ShowMessage('Mensagem de teste: Corte Real');
+end;
+
+procedure TFormPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
     ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
+end;
+
+procedure TFormPrincipal.butCortePrevistoClick(Sender: TObject);
+begin
+    acaoBotaoCortePrevistoExecute(Sender);
+end;
+
+procedure TFormPrincipal.butHistoricOrdemClick(Sender: TObject);
+begin
+    acaoBotaoHistoricoExecute(Sender);
 end;
 
 procedure TFormPrincipal.butOrdemPesquisarClick(Sender: TObject);
@@ -452,6 +466,15 @@ begin
     butHistoricOrdem.Font.Color:=clMenuHighlight;
     butHistoricOrdem.Font.Style:=[fsBold];
     comboTipo.Text:='';
+end;
+
+procedure TFormPrincipal.IniciarCorte1Click(Sender: TObject);
+begin
+    formIniciarCorte:=TformIniciarCorte.Create(Self);
+    formIniciarCorte.Parent:=gridOrdem;
+    formIniciarCorte.Align:=alClient;
+    formIniciarCorte.BorderStyle:=bsNone;
+    formIniciarCorte.Show;
 end;
 
 procedure TFormPrincipal.SpeedButton1Click(Sender: TObject);

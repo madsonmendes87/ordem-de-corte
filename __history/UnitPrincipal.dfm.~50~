@@ -1619,24 +1619,6 @@ object FormPrincipal: TFormPrincipal
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
     end
-    object butCortePrevisto: TBitBtn
-      Left = 192
-      Top = 504
-      Width = 137
-      Height = 33
-      Caption = 'Ver Corte Previsto (F5)'
-      TabOrder = 1
-      OnClick = butCortePrevistoClick
-    end
-    object butHistoricOrdem: TBitBtn
-      Left = 976
-      Top = 506
-      Width = 177
-      Height = 33
-      Caption = 'Historico Ordem de Corte (F7)'
-      TabOrder = 2
-      OnClick = butHistoricOrdemClick
-    end
     object Panel2: TPanel
       Left = 0
       Top = 543
@@ -1644,7 +1626,7 @@ object FormPrincipal: TFormPrincipal
       Height = 112
       Color = clInactiveBorder
       ParentBackground = False
-      TabOrder = 3
+      TabOrder = 1
       object labFiltro: TLabel
         Left = 576
         Top = 0
@@ -2029,31 +2011,33 @@ object FormPrincipal: TFormPrincipal
         TabOrder = 10
       end
     end
-    object panelCorteReal: TPanel
+    object butVerCorte: TBitBtn
       Left = 24
       Top = 506
-      Width = 162
-      Height = 31
-      Color = clMenuHighlight
-      ParentBackground = False
+      Width = 145
+      Height = 33
+      Caption = 'Ver Corte Real (F4)'
+      TabOrder = 2
+      OnClick = butVerCorteClick
+    end
+    object butCortePrevisto: TBitBtn
+      Left = 192
+      Top = 506
+      Width = 145
+      Height = 33
+      Action = acaoBotaoCortePrevisto
+      Caption = 'Ver Corte Previsto (F5)'
+      TabOrder = 3
+      OnClick = butCortePrevistoClick
+    end
+    object butHistoricOrdem: TBitBtn
+      Left = 961
+      Top = 506
+      Width = 177
+      Height = 33
+      Action = acaoBotaoHistorico
+      Caption = 'Historico Ordem de Corte (F7)'
       TabOrder = 4
-      object butVerCorte: TSpeedButton
-        Left = 1
-        Top = 1
-        Width = 160
-        Height = 29
-        Action = acaoBotaoCorteReal
-        Align = alClient
-        Flat = True
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        OnClick = butVerCorteClick
-        ExplicitWidth = 152
-      end
     end
   end
   object popupMenuOrdem: TPopupMenu
@@ -2115,6 +2099,19 @@ object FormPrincipal: TFormPrincipal
       Category = 'verCorte'
       Caption = 'Ver Corte Real (F4)'
       ShortCut = 115
+      OnExecute = acaoBotaoCorteRealExecute
+    end
+    object acaoBotaoCortePrevisto: TAction
+      Category = 'verCorte'
+      Caption = 'acaoBotaoCortePrevisto'
+      ShortCut = 116
+      OnExecute = acaoBotaoCortePrevistoExecute
+    end
+    object acaoBotaoHistorico: TAction
+      Category = 'verCorte'
+      Caption = 'Historico Ordem de Corte (F7)'
+      ShortCut = 118
+      OnExecute = acaoBotaoHistoricoExecute
     end
   end
 end
