@@ -159,84 +159,6 @@ object formIniciarCorte: TformIniciarCorte
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object labSituacao: TLabel
-    Left = 32
-    Top = 109
-    Width = 58
-    Height = 13
-    Caption = 'SITUA'#199#195'O'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labNormal: TLabel
-    Left = 32
-    Top = 128
-    Width = 47
-    Height = 13
-    Caption = 'NORMAL'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clMaroon
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labComplementar: TLabel
-    Left = 119
-    Top = 109
-    Width = 90
-    Height = 13
-    Caption = 'COMPLEMENTAR'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labNaoComp: TLabel
-    Left = 119
-    Top = 128
-    Width = 23
-    Height = 13
-    Caption = 'NAO'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clMaroon
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labAproveitamento: TLabel
-    Left = 239
-    Top = 109
-    Width = 102
-    Height = 13
-    Caption = 'APROVEITAMENTO'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labNaoAprov: TLabel
-    Left = 239
-    Top = 128
-    Width = 23
-    Height = 13
-    Caption = 'NAO'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clMaroon
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
   object panelIniciarCorte: TPanel
     Left = 0
     Top = 0
@@ -290,12 +212,12 @@ object formIniciarCorte: TformIniciarCorte
     Height = 21
     TabOrder = 5
   end
-  object butEscolherCores: TButton
-    Left = 976
+  object butEscolherCor: TButton
+    Left = 984
     Top = 72
-    Width = 137
+    Width = 129
     Height = 25
-    Action = acaoCores
+    Caption = 'Escolher Cores (F6)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -303,15 +225,5 @@ object formIniciarCorte: TformIniciarCorte
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 6
-  end
-  object ActionList1: TActionList
-    Left = 872
-    Top = 32
-    object acaoCores: TAction
-      Category = 'cores'
-      Caption = 'Escolher Cores (F6)'
-      ShortCut = 117
-      OnExecute = acaoCoresExecute
-    end
   end
 end

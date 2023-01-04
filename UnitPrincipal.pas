@@ -106,7 +106,6 @@ type
     procedure acaoBotaoCortePrevistoExecute(Sender: TObject);
     procedure acaoBotaoHistoricoExecute(Sender: TObject);
     procedure IniciarCorte1Click(Sender: TObject);
-    //procedure panelCorteRealClick(Sender: TObject);
   private
     { Private declarations }
   public

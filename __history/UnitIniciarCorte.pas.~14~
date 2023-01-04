@@ -29,15 +29,6 @@ type
     ActionList1: TActionList;
     acaoCores: TAction;
     butEscolherCores: TButton;
-    labSituacao: TLabel;
-    labNormal: TLabel;
-    labComplementar: TLabel;
-    labNaoComp: TLabel;
-    labAproveitamento: TLabel;
-    labNaoAprov: TLabel;
-    labOrdCorte: TLabel;
-    labCortePrevisto: TLabel;
-    labRealCortado: TLabel;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
   private
