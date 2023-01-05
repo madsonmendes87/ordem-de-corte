@@ -12,12 +12,10 @@ object formIniciarCorte: TformIniciarCorte
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Visible = True
-  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object butSairInicioCorte: TSpeedButton
-    Left = 1128
+    Left = 1136
     Top = 24
     Width = 23
     Height = 22
@@ -57,9 +55,48 @@ object formIniciarCorte: TformIniciarCorte
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object labCodigo: TLabel
-    Left = 35
+  object labTipoCorte: TLabel
+    Left = 32
     Top = 55
+    Width = 83
+    Height = 13
+    Caption = 'TIPO DE CORTE'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labPrototipo: TLabel
+    Left = 192
+    Top = 55
+    Width = 61
+    Height = 16
+    Caption = 'Prot'#243'tipo'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labNumProt: TLabel
+    Left = 218
+    Top = 77
+    Width = 5
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labCodigo: TLabel
+    Left = 296
+    Top = 57
     Width = 44
     Height = 13
     Caption = 'C'#211'DIGO'
@@ -71,8 +108,8 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labF2: TLabel
-    Left = 146
-    Top = 77
+    Left = 407
+    Top = 79
     Width = 14
     Height = 16
     Caption = 'F2'
@@ -84,8 +121,8 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labReferencia: TLabel
-    Left = 166
-    Top = 53
+    Left = 427
+    Top = 55
     Width = 67
     Height = 13
     Caption = 'REFER'#202'NCIA'
@@ -97,8 +134,8 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labFicha: TLabel
-    Left = 286
-    Top = 53
+    Left = 547
+    Top = 55
     Width = 34
     Height = 13
     Caption = 'FICHA'
@@ -110,8 +147,8 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labDescricao: TLabel
-    Left = 406
-    Top = 53
+    Left = 667
+    Top = 55
     Width = 64
     Height = 13
     Caption = 'DESCRI'#199#195'O'
@@ -254,46 +291,56 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
     TabOrder = 0
   end
-  object editCodigo: TEdit
-    Left = 35
-    Top = 72
-    Width = 105
+  object comboTipoCorte: TComboBox
+    Left = 32
+    Top = 74
+    Width = 145
     Height = 21
-    Color = clBtnFace
-    ReadOnly = True
     TabOrder = 1
-    OnKeyPress = editCodigoKeyPress
+    Items.Strings = (
+      'PRODUCAO'
+      'PROTOTIPO')
   end
-  object Edit1: TEdit
-    Left = 166
-    Top = 72
+  object editCodigo: TEdit
+    Left = 296
+    Top = 74
     Width = 105
     Height = 21
     Color = clBtnFace
     ReadOnly = True
     TabOrder = 2
+    OnKeyPress = editCodigoKeyPress
   end
-  object editFicha: TEdit
-    Left = 286
-    Top = 72
+  object Edit1: TEdit
+    Left = 427
+    Top = 74
     Width = 105
     Height = 21
     Color = clBtnFace
     ReadOnly = True
     TabOrder = 3
   end
-  object editReferencia: TEdit
-    Left = 406
-    Top = 72
-    Width = 294
+  object editFicha: TEdit
+    Left = 547
+    Top = 74
+    Width = 105
     Height = 21
     Color = clBtnFace
     ReadOnly = True
     TabOrder = 4
   end
-  object butEscolherCores: TButton
-    Left = 1003
+  object editReferencia: TEdit
+    Left = 667
     Top = 74
+    Width = 294
+    Height = 21
+    Color = clBtnFace
+    ReadOnly = True
+    TabOrder = 5
+  end
+  object butEscolherCores: TButton
+    Left = 976
+    Top = 72
     Width = 137
     Height = 25
     Action = acaoCores
@@ -303,7 +350,7 @@ object formIniciarCorte: TformIniciarCorte
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 5
+    TabOrder = 6
   end
   object ActionList1: TActionList
     Left = 872
@@ -313,12 +360,6 @@ object formIniciarCorte: TformIniciarCorte
       Caption = 'Escolher Cores (F6)'
       ShortCut = 117
       OnExecute = acaoCoresExecute
-    end
-    object acaoAbrirProdAcab: TAction
-      Category = 'produtoacabado'
-      Caption = 'acaoAbrirProdAcab'
-      ShortCut = 113
-      OnExecute = acaoAbrirProdAcabExecute
     end
   end
 end

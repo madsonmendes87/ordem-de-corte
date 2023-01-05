@@ -27,7 +27,7 @@ uses
   Vcl.DBCtrls, System.Actions, Vcl.ActnList;
 
 type
-  TformPrincipal = class(TForm)
+  TFormPrincipal = class(TForm)
     panelFormPrincipal: TPanel;
     LbUsuario: TLabel;
     LbCodigoUsuario: TLabel;
@@ -113,7 +113,7 @@ type
   end;
 
 var
-  formPrincipal: TformPrincipal;
+  FormPrincipal: TFormPrincipal;
 
 implementation
 
@@ -121,35 +121,33 @@ implementation
 
 uses UnitDatamodule, UnitIniciarCorte;
 
-procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
+procedure TFormPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
-      if butCortePrevisto.Enabled = true then
-            ShowMessage('Mensagem de teste: Corte Previsto');
+    ShowMessage('Mensagem de teste: Corte Previsto');
 end;
 
-procedure TformPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
+procedure TFormPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
 begin
       if butVerCorte.Enabled = true then
             ShowMessage('Mensagem de teste: Corte Real');
 end;
 
-procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
+procedure TFormPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
-      if butHistoricOrdem.Enabled = true then
-            ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
+    ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
 end;
 
-procedure TformPrincipal.butCortePrevistoClick(Sender: TObject);
+procedure TFormPrincipal.butCortePrevistoClick(Sender: TObject);
 begin
     acaoBotaoCortePrevistoExecute(Sender);
 end;
 
-procedure TformPrincipal.butHistoricOrdemClick(Sender: TObject);
+procedure TFormPrincipal.butHistoricOrdemClick(Sender: TObject);
 begin
     acaoBotaoHistoricoExecute(Sender);
 end;
 
-procedure TformPrincipal.butOrdemPesquisarClick(Sender: TObject);
+procedure TFormPrincipal.butOrdemPesquisarClick(Sender: TObject);
 begin
     begin
       With dmOrdemCorte do
@@ -309,24 +307,24 @@ begin
     end;
 end;
 
-procedure TformPrincipal.butVerCorteClick(Sender: TObject);
+procedure TFormPrincipal.butVerCorteClick(Sender: TObject);
 begin
     acaoBotaoCorteRealExecute(Sender);
 end;
 
-procedure TformPrincipal.FormCreate(Sender: TObject);
+procedure TFormPrincipal.FormCreate(Sender: TObject);
 begin
     dateTimePicker1.Date := now;
     dateTimePicker2.Date := now;
 end;
 
-procedure TformPrincipal.FormResize(Sender: TObject);
+procedure TFormPrincipal.FormResize(Sender: TObject);
 begin
     panelFormPrincipal.Width:=Self.Width;
     panelMenuEsquerdo.Height:=Self.Height;
 end;
 
-procedure TformPrincipal.FormShow(Sender: TObject);
+procedure TFormPrincipal.FormShow(Sender: TObject);
 begin
     begin
       With dmOrdemCorte do
@@ -428,7 +426,7 @@ begin
     comboTipo.Text:='';
 end;
 
-procedure TformPrincipal.IniciarCorte1Click(Sender: TObject);
+procedure TFormPrincipal.IniciarCorte1Click(Sender: TObject);
 begin
     formIniciarCorte:=TformIniciarCorte.Create(Self);
     formIniciarCorte.Parent:=gridOrdem;
@@ -436,8 +434,6 @@ begin
     formIniciarCorte.BorderStyle:=bsNone;
     formIniciarCorte.Show;
     butVerCorte.Enabled := false;
-    butCortePrevisto.Enabled := false;
-    butHistoricOrdem.Enabled := false;
 end;
 
 end.

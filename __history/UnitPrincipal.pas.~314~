@@ -123,8 +123,7 @@ uses UnitDatamodule, UnitIniciarCorte;
 
 procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
-      if butCortePrevisto.Enabled = true then
-            ShowMessage('Mensagem de teste: Corte Previsto');
+    ShowMessage('Mensagem de teste: Corte Previsto');
 end;
 
 procedure TformPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
@@ -135,8 +134,7 @@ end;
 
 procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
-      if butHistoricOrdem.Enabled = true then
-            ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
+    ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
 end;
 
 procedure TformPrincipal.butCortePrevistoClick(Sender: TObject);

@@ -103,7 +103,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="UnitPrincipal.pas">
-            <Form>Form1</Form>
+            <Form>formPrincipal</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitDatamodule.pas">
@@ -113,6 +113,10 @@
         </DCCReference>
         <DCCReference Include="UnitIniciarCorte.pas">
             <Form>formIniciarCorte</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UnitProdutoAcabado.pas">
+            <Form>formProdutoAcabado</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

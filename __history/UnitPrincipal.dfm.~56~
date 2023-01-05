@@ -1,6 +1,7 @@
 object formPrincipal: TformPrincipal
   Left = 293
   Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Corte'
   ClientHeight = 705
   ClientWidth = 1369
@@ -114,6 +115,7 @@ object formPrincipal: TformPrincipal
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 1
+    ExplicitHeight = 8
     object btnOrdemCorte: TSpeedButton
       Left = 1
       Top = -2
@@ -1593,19 +1595,16 @@ object formPrincipal: TformPrincipal
     Align = alClient
     BevelOuter = bvNone
     Color = clWhite
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -4
-    Font.Name = 'Tahoma'
-    Font.Style = []
     ParentBackground = False
-    ParentFont = False
     TabOrder = 3
+    ExplicitLeft = 185
+    ExplicitWidth = 1184
+    ExplicitHeight = 661
     object gridOrdem: TDBGrid
       Left = 0
       Top = 0
       Width = 1176
-      Height = 489
+      Height = 443
       Align = alTop
       Anchors = [akLeft, akTop, akRight, akBottom]
       Color = clWhite
@@ -1887,13 +1886,7 @@ object formPrincipal: TformPrincipal
         Left = 422
         Top = 32
         Width = 201
-        Height = 24
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 2
         Items.Strings = (
           'Prototipo'
@@ -1903,13 +1896,7 @@ object formPrincipal: TformPrincipal
         Left = 648
         Top = 32
         Width = 225
-        Height = 24
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 3
         Items.Strings = (
           'ALESSANDRA'
@@ -1929,13 +1916,7 @@ object formPrincipal: TformPrincipal
         Left = 896
         Top = 32
         Width = 257
-        Height = 24
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 4
         Items.Strings = (
           'PLANEJAMENTO'
@@ -1946,13 +1927,7 @@ object formPrincipal: TformPrincipal
         Left = 24
         Top = 35
         Width = 145
-        Height = 24
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 0
         Items.Strings = (
           '<<  N'#227'o Informar >>'
@@ -1965,27 +1940,15 @@ object formPrincipal: TformPrincipal
         Left = 192
         Top = 35
         Width = 201
-        Height = 24
+        Height = 21
         CharCase = ecUpperCase
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
         TabOrder = 1
       end
       object comboSituacao: TComboBox
         Left = 24
         Top = 80
         Width = 145
-        Height = 24
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 5
         Items.Strings = (
           'NORMAL'
@@ -1995,13 +1958,7 @@ object formPrincipal: TformPrincipal
         Left = 192
         Top = 81
         Width = 201
-        Height = 24
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 6
         Items.Strings = (
           'SIM'
@@ -2011,16 +1968,9 @@ object formPrincipal: TformPrincipal
         Left = 423
         Top = 81
         Width = 200
-        Height = 24
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 7
         Items.Strings = (
-          ''
           'JANEIRO'
           'FEVEREIRO'
           'MARCO'
@@ -2038,13 +1988,7 @@ object formPrincipal: TformPrincipal
         Left = 650
         Top = 81
         Width = 145
-        Height = 24
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
+        Height = 21
         TabOrder = 8
         Items.Strings = (
           '<<  Nao Informar >>'
@@ -2056,30 +2000,18 @@ object formPrincipal: TformPrincipal
         Left = 811
         Top = 80
         Width = 110
-        Height = 24
+        Height = 21
         Date = 44910.000000000000000000
         Time = 0.437829849535774000
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
         TabOrder = 9
       end
       object dateTimePicker2: TDateTimePicker
         Left = 940
         Top = 80
         Width = 110
-        Height = 24
+        Height = 21
         Date = 44910.000000000000000000
         Time = 0.437829849535774000
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
         TabOrder = 10
       end
     end
@@ -2089,44 +2021,26 @@ object formPrincipal: TformPrincipal
       Width = 145
       Height = 33
       Caption = 'Ver Corte Real (F4)'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
       TabOrder = 2
       OnClick = butVerCorteClick
     end
     object butCortePrevisto: TBitBtn
       Left = 192
       Top = 506
-      Width = 153
+      Width = 145
       Height = 33
       Action = acaoBotaoCortePrevisto
       Caption = 'Ver Corte Previsto (F5)'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
       TabOrder = 3
       OnClick = butCortePrevistoClick
     end
     object butHistoricOrdem: TBitBtn
-      Left = 960
+      Left = 977
       Top = 506
-      Width = 194
+      Width = 177
       Height = 33
       Action = acaoBotaoHistorico
       Caption = 'Historico Ordem de Corte (F7)'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
       TabOrder = 4
     end
   end

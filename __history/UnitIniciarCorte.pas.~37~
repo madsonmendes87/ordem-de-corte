@@ -13,6 +13,10 @@ type
     butSairInicioCorte: TSpeedButton;
     labNumOrd: TLabel;
     labNumeroOrd: TLabel;
+    labTipoCorte: TLabel;
+    comboTipoCorte: TComboBox;
+    labPrototipo: TLabel;
+    labNumProt: TLabel;
     labCodigo: TLabel;
     editCodigo: TEdit;
     labF2: TLabel;

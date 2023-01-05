@@ -13,6 +13,10 @@ type
     butSairInicioCorte: TSpeedButton;
     labNumOrd: TLabel;
     labNumeroOrd: TLabel;
+    labTipoCorte: TLabel;
+    comboTipoCorte: TComboBox;
+    labPrototipo: TLabel;
+    labNumProt: TLabel;
     labCodigo: TLabel;
     editCodigo: TEdit;
     labF2: TLabel;
@@ -69,9 +73,6 @@ end;
 procedure TformIniciarCorte.butSairInicioCorteClick(Sender: TObject);
 begin
     formIniciarCorte.Close;
-    formPrincipal.butVerCorte.Enabled := true;
-    formPrincipal.butCortePrevisto.Enabled := true;
-    formPrincipal.butHistoricOrdem.Enabled := true;
 end;
 
 procedure TformIniciarCorte.editCodigoKeyPress(Sender: TObject;
