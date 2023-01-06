@@ -17,10 +17,9 @@ type
     comboTipo: TComboBox;
     labColecao: TLabel;
     comboColecao: TComboBox;
-    butProdutoPesquisar: TSpeedButton;
+    butOrdemPesquisar: TSpeedButton;
     gridProdutoAcabado: TDBGrid;
-    procedure butProdutoPesquisarClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
+    procedure butOrdemPesquisarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,7 +35,7 @@ implementation
 
 uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
 
-procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
+procedure TformProdutoAcabado.butOrdemPesquisarClick(Sender: TObject);
 begin
     begin
         With dmOrdemCorte do
@@ -46,19 +45,12 @@ begin
             qyProdutoAcabado.SQL.Add('SELECT');
             qyProdutoAcabado.SQL.Add('  pa.cad_id, ft.fi_complementar as isComplementar, ft.fi_aproveitamento as isAproveitamento,');
             qyProdutoAcabado.SQL.Add('  pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
-            qyProdutoAcabado.SQL.Add('    (Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''NÃO'' END)) strComplementar,');
-            qyProdutoAcabado.SQL.Add('    (Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''NÃO'' END)) strAproveitamento');
+            qyProdutoAcabado.SQL.Add('    (CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''NÃO'' END) strComplementar,');
+            qyProdutoAcabado.SQL.Add('    (CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''NÃO'' END) strAproveitamento');
             qyProdutoAcabado.SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
             qyProdutoAcabado.SQL.Add('  where pa.cad_situacao=''A''');
-            qyProdutoAcabado.SQL.Add('  order By ft.fi_id desc');
-            qyProdutoAcabado.Open;
 
         end;
     end;
 end;
-procedure TformProdutoAcabado.FormShow(Sender: TObject);
-begin
-    dmOrdemCorte.qyProdutoAcabado.Active := true;
-end;
-
 end.

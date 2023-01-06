@@ -46,8 +46,8 @@ begin
             qyProdutoAcabado.SQL.Add('SELECT');
             qyProdutoAcabado.SQL.Add('  pa.cad_id, ft.fi_complementar as isComplementar, ft.fi_aproveitamento as isAproveitamento,');
             qyProdutoAcabado.SQL.Add('  pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
-            qyProdutoAcabado.SQL.Add('    (Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''NÃO'' END)) strComplementar,');
-            qyProdutoAcabado.SQL.Add('    (Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''NÃO'' END)) strAproveitamento');
+            qyProdutoAcabado.SQL.Add('    (CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''NÃO'' END) strComplementar,');
+            qyProdutoAcabado.SQL.Add('    (CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''NÃO'' END) strAproveitamento');
             qyProdutoAcabado.SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
             qyProdutoAcabado.SQL.Add('  where pa.cad_situacao=''A''');
             qyProdutoAcabado.SQL.Add('  order By ft.fi_id desc');
@@ -58,7 +58,7 @@ begin
 end;
 procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
-    dmOrdemCorte.qyProdutoAcabado.Active := true;
+    dmOrdemCorte.
 end;
 
 end.

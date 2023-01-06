@@ -259,7 +259,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object qyOrdemCorte: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       'select * from ordem_corte;')
@@ -278,38 +277,5 @@ object dmOrdemCorte: TdmOrdemCorte
     DataSet = tbEstilista
     Left = 656
     Top = 440
-  end
-  object qyProdutoAcabado: TFDQuery
-    Active = True
-    Connection = Conexao
-    SQL.Strings = (
-      'select pa.cad_id, ft.fi_complementar as isComplementar,'
-      'ft.fi_aproveitamento as isAproveitamento,'
-      ' pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,'
-      
-        '(CASE WHEN ft.fi_complementar=TRUE THEN '#39'SIM'#39' ELSE '#39'N'#195'O'#39' END) st' +
-        'rComplementar,'
-      
-        '(CASE WHEN ft.fi_aproveitamento=TRUE THEN '#39'SIM'#39' ELSE '#39'N'#195'O'#39' END) ' +
-        'strAproveitamento'
-      
-        'from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idp' +
-        'rodutoacabado = pa.cad_id'
-      'where pa.cad_situacao='#39'A'#39' order By ft.fi_id desc;')
-    Left = 528
-    Top = 16
-  end
-  object dsProdutoAcabado: TDataSource
-    DataSet = qyProdutoAcabado
-    Left = 616
-    Top = 16
-  end
-  object tbProdutoAcabado: TFDTable
-    Active = True
-    IndexFieldNames = 'cad_id'
-    Connection = Conexao
-    TableName = 'produto_acabado'
-    Left = 704
-    Top = 16
   end
 end

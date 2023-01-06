@@ -74,8 +74,6 @@ type
     tbEstilista: TFDTable;
     dsEstilista: TDataSource;
     qyProdutoAcabado: TFDQuery;
-    dsProdutoAcabado: TDataSource;
-    tbProdutoAcabado: TFDTable;
   private
     { Private declarations }
   public

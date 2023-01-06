@@ -384,7 +384,7 @@ begin
             qyOrdemCorte.SQL.Add('cc.co_id = pa.cad_idcolecao LEFT JOIN cadastro_estilista as ce on pa.cad_idestilista = ce.es_id LEFT JOIN ordem_corte_situacao as ocs on');
             qyOrdemCorte.SQL.Add('ocs.os_id = oc.oc_situacao WHERE oc.oc_situacao <> ''2'' AND not EXISTS (SELECT * FROM ordem_producao AS op');
             qyOrdemCorte.SQL.Add('                           WHERE op.op_idordemcorte=oc.oc_id and op.op_idstatus <> 4)');
-            qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 50');
+            qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
             qyOrdemCorte.Open;
             comboTipo.Items.Add('');
       end;
