@@ -259,7 +259,6 @@ object formProdutoAcabado: TformProdutoAcabado
     Width = 591
     Height = 249
     DataSource = dmOrdemCorte.dsProdutoAcabado
-    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 4
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText

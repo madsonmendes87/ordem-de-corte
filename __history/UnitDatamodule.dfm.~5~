@@ -280,21 +280,22 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object qyProdutoAcabado: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
+      'select pa.cad_id, ft.fi_complementar as isComplementar,'
+      'ft.fi_aproveitamento as isAproveitamento,'
+      ' pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,'
       
-        'select pa.cad_id,  pa.cad_idreferencia, pa.cad_descricao, ft.fi_' +
-        'id as ficha_id,'
-      'Cast(CASE WHEN ft.fi_complementar=TRUE THEN '#39'SIM'#39' ELSE '#39'N'#195'O'#39' END'
-      ' as character varying(5)) strComplementar,'
+        '(CASE WHEN ft.fi_complementar=TRUE THEN '#39'SIM'#39' ELSE '#39'N'#195'O'#39' END) st' +
+        'rComplementar,'
       
-        'Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN '#39'SIM'#39' ELSE '#39'N'#195'O'#39' E' +
-        'ND'
-      'as character varying(5)) strAproveitamento'
+        '(CASE WHEN ft.fi_aproveitamento=TRUE THEN '#39'SIM'#39' ELSE '#39'N'#195'O'#39' END) ' +
+        'strAproveitamento'
       
         'from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idp' +
         'rodutoacabado = pa.cad_id'
-      'where pa.cad_situacao='#39'A'#39' order By ft.fi_id desc limit 15;')
+      'where pa.cad_situacao='#39'A'#39' order By ft.fi_id desc;')
     Left = 528
     Top = 16
   end

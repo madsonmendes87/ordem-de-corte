@@ -53,7 +53,24 @@ begin
             qyProdutoAcabado.SQL.Add('  order By ft.fi_id desc limit 15');
             qyProdutoAcabado.Open;
         end;
-        gridViewProdutoAcabado;
+        gridProdutoAcabado.Columns[0].Title.Alignment:=taCenter;
+        gridProdutoAcabado.Columns[0].Title.Caption:='CÓDIGO';
+        gridProdutoAcabado.Columns[0].Title.Font.Style:=[fsBold];
+        gridProdutoAcabado.Columns[1].Title.Alignment:=taCenter;
+        gridProdutoAcabado.Columns[1].Title.Caption:='REFERÊNCIA';
+        gridProdutoAcabado.Columns[1].Title.Font.Style:=[fsBold];
+        gridProdutoAcabado.Columns[2].Title.Alignment:=taCenter;
+        gridProdutoAcabado.Columns[2].Title.Caption:='DESCRIÇÃO';
+        gridProdutoAcabado.Columns[2].Title.Font.Style:=[fsBold];
+        gridProdutoAcabado.Columns[3].Title.Alignment:=taCenter;
+        gridProdutoAcabado.Columns[3].Title.Caption:='FICHA TÉCNICA';
+        gridProdutoAcabado.Columns[3].Title.Font.Style:=[fsBold];
+        gridProdutoAcabado.Columns[4].Title.Alignment:=taCenter;
+        gridProdutoAcabado.Columns[4].Title.Caption:='COMPLEMENTAR';
+        gridProdutoAcabado.Columns[4].Title.Font.Style:=[fsBold];
+        gridProdutoAcabado.Columns[5].Title.Alignment:=taCenter;
+        gridProdutoAcabado.Columns[5].Title.Caption:='APROVEITAMENTO';
+        gridProdutoAcabado.Columns[5].Title.Font.Style:=[fsBold];
     end;
 end;
 
