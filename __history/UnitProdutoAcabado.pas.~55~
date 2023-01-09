@@ -19,8 +19,6 @@ type
     gridProdutoAcabado: TDBGrid;
     dateTimePicker1: TDateTimePicker;
     checkData: TCheckBox;
-    labData: TLabel;
-    comboFiltroData: TComboBox;
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -48,12 +46,12 @@ begin
             qyProdutoAcabado.Close;
             qyProdutoAcabado.SQL.Clear;
             qyProdutoAcabado.SQL.Add('SELECT');
-            qyProdutoAcabado.SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
+            qyProdutoAcabado.SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id, pa.cad_dtcadastro,');
             qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''NÃO'' END as character varying(5)) strComplementar,');
             qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''NÃO'' END as character varying(5)) strAproveitamento');
             qyProdutoAcabado.SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
             qyProdutoAcabado.SQL.Add('  where pa.cad_situacao=''A''');
-            //qyProdutoAcabado.SQL.Add('  and ft.fi_situacao=''F'' or ft.fi_situacao=''Z''');
+            qyProdutoAcabado.SQL.Add('  and ft.fi_situacao=''F'' or ft.fi_situacao=''Z''');
             if comboFiltro.Text = 'REFERENCIA' then
             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_idreferencia = :referencia');
@@ -81,7 +79,7 @@ begin
             end;
             if checkData.Checked = true then
             begin
-                qyProdutoAcabado.SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
+                qyProdutoAcabado.SQL.Add('and pa.cad_dtcadastro between :dtcadastro and :dtcadastro');
                 qyProdutoAcabado.ParamByName('dtcadastro').AsDate := dateTimePicker1.Date;
             end;
 

@@ -14,6 +14,7 @@ object formProdutoAcabado: TformProdutoAcabado
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object labFiltrarPor: TLabel
@@ -68,7 +69,7 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object butOrdemPesquisar: TSpeedButton
+  object butProdutoPesquisar: TSpeedButton
     Left = 281
     Top = 80
     Width = 97
@@ -174,7 +175,7 @@ object formProdutoAcabado: TformProdutoAcabado
       F3EDECECF2F1F1F0EFEFF0F0F0EEEEEEF0EFEFF1F1F1EEEEEEF2F2F20000}
     Layout = blGlyphRight
     ParentFont = False
-    OnClick = butOrdemPesquisarClick
+    OnClick = butProdutoPesquisarClick
   end
   object comboFiltro: TComboBox
     Left = 56
@@ -257,6 +258,8 @@ object formProdutoAcabado: TformProdutoAcabado
     Top = 136
     Width = 591
     Height = 249
+    DataSource = dmOrdemCorte.dsProdutoAcabado
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 4
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
