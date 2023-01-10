@@ -388,7 +388,9 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idp' +
         'rodutoacabado = pa.cad_id'
-      'where pa.cad_situacao='#39'A'#39' order By ft.fi_id desc limit 15;')
+      
+        'where pa.cad_situacao='#39'A'#39' and ft.fi_situacao in ('#39'F'#39', '#39'Z'#39') order' +
+        ' By ft.fi_id desc limit 15;')
     Left = 528
     Top = 16
   end

@@ -215,12 +215,12 @@ begin
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
                 qyOrdemCorte.SQL.Add('and oc.oc_idfichatecnica = :fichatecnica');
-                qyOrdemCorte.ParamByName('fichatecnica').AsInteger := strtoint(editSearch.Text);
+                qyOrdemCorte.ParamByName('fichatecnica').AsInteger := strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'ORDEM DE CORTE' then
             begin
                 qyOrdemCorte.SQL.Add('and oc.oc_id = :ordemdecorte');
-                qyOrdemCorte.ParamByName('ordemdecorte').AsInteger := strtoint(editSearch.Text);
+                qyOrdemCorte.ParamByName('ordemdecorte').AsInteger := strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin

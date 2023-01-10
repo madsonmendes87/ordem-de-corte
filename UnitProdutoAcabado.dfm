@@ -58,7 +58,7 @@ object formProdutoAcabado: TformProdutoAcabado
     ParentFont = False
   end
   object butProdutoPesquisar: TSpeedButton
-    Left = 400
+    Left = 224
     Top = 80
     Width = 97
     Height = 33
@@ -165,19 +165,6 @@ object formProdutoAcabado: TformProdutoAcabado
     ParentFont = False
     OnClick = butProdutoPesquisarClick
   end
-  object labData: TLabel
-    Left = 56
-    Top = 65
-    Width = 85
-    Height = 13
-    Caption = 'Filtrar por data'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
   object comboFiltro: TComboBox
     Left = 56
     Top = 35
@@ -194,10 +181,9 @@ object formProdutoAcabado: TformProdutoAcabado
       '<<  N'#227'o Informar >>'
       'REFERENCIA'
       'NUMERO DA FICHA'
-      'ORDEM DE CORTE'
       'DESCRICAO REFERENCIA')
   end
-  object editSearch: TEdit
+  object editSearchPA: TEdit
     Left = 224
     Top = 35
     Width = 201
@@ -253,7 +239,7 @@ object formProdutoAcabado: TformProdutoAcabado
     TitleFont.Style = []
   end
   object dateTimePicker1: TDateTimePicker
-    Left = 256
+    Left = 80
     Top = 84
     Width = 121
     Height = 24
@@ -262,28 +248,14 @@ object formProdutoAcabado: TformProdutoAcabado
     TabOrder = 4
   end
   object checkData: TCheckBox
-    Left = 232
-    Top = 89
+    Left = 56
+    Top = 84
     Width = 18
     Height = 24
     TabOrder = 5
   end
-  object comboFiltroData: TComboBox
-    Left = 56
-    Top = 84
-    Width = 145
-    Height = 24
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 6
-    Items.Strings = (
-      '<<  Nao Informar >>'
-      'GERADA'
-      'SOLICITADA'
-      'PRAZO DO CORTE')
+  object ApplicationEvents1: TApplicationEvents
+    Left = 488
+    Top = 72
   end
 end

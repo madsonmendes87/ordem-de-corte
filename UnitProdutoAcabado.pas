@@ -5,22 +5,21 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Data.DB,
-  Vcl.Grids, Vcl.DBGrids, Vcl.ComCtrls;
+  Vcl.Grids, Vcl.DBGrids, Vcl.ComCtrls, Vcl.DBCtrls, Vcl.AppEvnts;
 
 type
   TformProdutoAcabado = class(TForm)
     comboFiltro: TComboBox;
     labFiltrarPor: TLabel;
     labDadosConsulta: TLabel;
-    editSearch: TEdit;
+    editSearchPA: TEdit;
     labColecao: TLabel;
     comboColecao: TComboBox;
     butProdutoPesquisar: TSpeedButton;
     gridProdutoAcabado: TDBGrid;
     dateTimePicker1: TDateTimePicker;
     checkData: TCheckBox;
-    labData: TLabel;
-    comboFiltroData: TComboBox;
+    ApplicationEvents1: TApplicationEvents;
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -41,6 +40,7 @@ implementation
 uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
 
 procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
+var key: Char;
 begin
     begin
         With dmOrdemCorte do
@@ -53,26 +53,21 @@ begin
             qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''NÃO'' END as character varying(5)) strAproveitamento');
             qyProdutoAcabado.SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
             qyProdutoAcabado.SQL.Add('  where pa.cad_situacao=''A''');
-            //qyProdutoAcabado.SQL.Add('  and ft.fi_situacao=''F'' or ft.fi_situacao=''Z''');
+            qyProdutoAcabado.SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
             if comboFiltro.Text = 'REFERENCIA' then
             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_idreferencia = :referencia');
-                qyProdutoAcabado.ParamByName('referencia').AsString := editSearch.Text;
+                qyProdutoAcabado.ParamByName('referencia').AsString := editSearchPA.Text;
             end;
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
-                qyProdutoAcabado.SQL.Add('and oc.oc_idfichatecnica = :fichatecnica');
-                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtoint(editSearch.Text);
-            end;
-            if comboFiltro.Text = 'ORDEM DE CORTE' then
-            begin
-                qyProdutoAcabado.SQL.Add('and oc.oc_id = :ordemdecorte');
-                qyProdutoAcabado.ParamByName('ordemdecorte').AsInteger := strtoint(editSearch.Text);
+                qyProdutoAcabado.SQL.Add('and ft.fi_id = :fichatecnica');
+                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtointdef(editSearchPA.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_descricao = :descricao');
-                qyProdutoAcabado.ParamByName('descricao').AsString := editSearch.Text;
+                qyProdutoAcabado.ParamByName('descricao').AsString := editSearchPA.Text;
             end;
             if comboColecao.ItemIndex <> -1 then
             begin
@@ -84,7 +79,6 @@ begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
                 qyProdutoAcabado.ParamByName('dtcadastro').AsDate := dateTimePicker1.Date;
             end;
-
             qyProdutoAcabado.SQL.Add('order by ft.fi_id desc limit 15');
             qyProdutoAcabado.Open;
         end;
@@ -124,5 +118,6 @@ begin
     gridProdutoAcabado.Columns[5].Title.Caption:='APROVEITAMENTO';
     gridProdutoAcabado.Columns[5].Title.Font.Style:=[fsBold];
 end;
+
 
 end.

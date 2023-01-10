@@ -259,104 +259,10 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object qyOrdemCorte: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
-      'SELECT'
-      '    Cast(concat(lpad(cast(oc.oc_id As varchar), 7, '#39'0'#39'),'
-      
-        '    '#39'-'#39', lpad(cast(oc.oc_ordem As varchar), 3, '#39'0'#39') )as characte' +
-        'r varying(15))'
-      '    as NumerodoCorte,'
-      
-        '    cc.co_descricao, (ocs.os_nome)as situacao, (ce.es_nome)as es' +
-        'tilista,'
-      
-        '    oc.oc_idfichatecnica, (SELECT op.op_id FROM ordem_producao A' +
-        'S op'
-      
-        '    WHERE op.op_idordemcorte = oc.oc_id AND op.op_idstatus <> '#39'4' +
-        #39')'
-      '    as noordproducao, (SELECT (CASE WHEN ((oc.oc_situacao = 1)'
-      
-        '    AND (coalesce(ocpi.oci_id, 0) = 0) AND (coalesce(ocri.oci_id' +
-        ',0) = 0)) THEN'
-      '    CURRENT_DATE - oc.oc_dtgerada::DATE'
-      
-        '    WHEN ((oc.oc_situacao = 1) AND  (coalesce(ocpi.oci_id, 0) > ' +
-        '0)'
-      
-        '    AND (coalesce(ocri.oci_id,0) = 0)) THEN CURRENT_DATE - ocpi.' +
-        'oci_dtlanc::DATE'
-      
-        '    WHEN ((oc.oc_situacao = 1) AND (coalesce(ocpi.oci_id, 0) > 0' +
-        ')'
-      
-        '    AND (coalesce(ocri.oci_id,0) > 0)) THEN CURRENT_DATE - ocri.' +
-        'oci_dtlanc::DATE'
-      '  ELSE 0 END)'
-      
-        'FROM ordem_corte as oci LEFT JOIN ordem_corte_itens_previsto as ' +
-        'ocpi on'
-      
-        '((ocpi.oci_idocorte = oci.oc_id) and (ocpi.oci_situacao_id NOT I' +
-        'N (2, 4)))'
-      'LEFT JOIN ordem_corte_itens_real as ocri on'
-      
-        '((ocri.oci_idocorte = oci.oc_id) and (ocpi.oci_situacao_id NOT I' +
-        'N (2, 4)))'
-      'WHERE oci.oc_id=oc.oc_id LIMIT 1 ) AS diasemprocesso,'
-      'Cast(Case When oc.oc_prototipo = True Then '#39'Prot'#243'tipo'#39
-      'ELSE '#39'Grande Escala'#39' END as character varying(15)) AS tipo,'
-      
-        '(pa.cad_idreferencia)as referencia,(pa.cad_descricao)as produtoa' +
-        'cabado,'
-      '(oc.oc_dtgerada)as datagerada,'
-      '(SELECT oci_dtlanc FROM ordem_corte_itens_previsto'
-      
-        'WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as' +
-        ' datagradeprevisto,'
-      '(SELECT oci_dtlanc FROM ordem_corte_itens_real'
-      
-        'WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as' +
-        ' datagradereal,'
-      '   Cast(CASE WHEN (SELECT emp_tipo FROM controle_empenho'
-      
-        '   WHERE emp_idordemcorte= oc.oc_id And emp_situacao <>'#39'C'#39' LIMIT' +
-        ' 1) IS NULL THEN '#39'N'#195'O EMPENHADO'#39
-      
-        '   ELSE(CASE WHEN (SELECT emp_tipo FROM controle_empenho WHERE e' +
-        'mp_idordemcorte=oc.oc_id'
-      '      AND emp_situacao IN ('#39'N'#39', '#39'P'#39') AND emp_mod = '#39'0'#39
-      
-        '      ORDER BY emp_id DESC LIMIT 1)= '#39'S'#39' THEN '#39'PLANEJAMENTO => A' +
-        'LMOXARIFADO'#39
-      
-        '    WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idorde' +
-        'mcorte=oc.oc_id'
-      
-        '      AND emp_situacao='#39'N'#39' AND emp_mod = '#39'1'#39' ORDER BY emp_id DES' +
-        'C LIMIT 1)= '#39'E'#39' THEN '#39'ALMOXARIFADO => CORTE'#39
-      
-        '    WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idorde' +
-        'mcorte=oc.oc_id'
-      
-        '      AND emp_situacao= '#39'P'#39' AND emp_mod = '#39'1'#39' ORDER BY emp_id DE' +
-        'SC LIMIT 1) = '#39'E'#39' THEN '#39'RECEBIDO NO CORTE'#39
-      '    END)'
-      '  END as character varying(30)) AS processoempenho,'
-      
-        'oc.oc_observacao FROM ordem_corte as oc JOIN produto_acabado as ' +
-        'pa on pa.cad_id = oc.oc_idcodprodutoacabado LEFT JOIN colecao as' +
-        ' cc on'
-      'cc.co_id = pa.cad_idcolecao LEFT JOIN cadastro_estilista as ce'
-      
-        'on pa.cad_idestilista = ce.es_id LEFT JOIN ordem_corte_situacao ' +
-        'as ocs on'
-      'ocs.os_id = oc.oc_situacao WHERE oc.oc_situacao <> '#39'2'#39
-      'AND not EXISTS (SELECT * FROM ordem_producao AS op'
-      '  WHERE op.op_idordemcorte=oc.oc_id and op.op_idstatus <> 4)'
-      'ORDER BY oc.oc_id desc limit 30'
-      '')
+      'select * from ordem_corte;')
     Left = 448
     Top = 16
   end
@@ -388,9 +294,7 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idp' +
         'rodutoacabado = pa.cad_id'
-      
-        'where pa.cad_situacao='#39'A'#39' and ft.fi_situacao in ('#39'F'#39', '#39'Z'#39') order' +
-        ' By ft.fi_id desc limit 15;')
+      'where pa.cad_situacao='#39'A'#39' order By ft.fi_id desc limit 15;')
     Left = 528
     Top = 16
   end

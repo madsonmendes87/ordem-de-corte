@@ -181,7 +181,6 @@ object formProdutoAcabado: TformProdutoAcabado
       '<<  N'#227'o Informar >>'
       'REFERENCIA'
       'NUMERO DA FICHA'
-      'ORDEM DE CORTE'
       'DESCRICAO REFERENCIA')
   end
   object editSearch: TEdit
@@ -254,5 +253,9 @@ object formProdutoAcabado: TformProdutoAcabado
     Width = 18
     Height = 24
     TabOrder = 5
+  end
+  object ApplicationEvents1: TApplicationEvents
+    Left = 488
+    Top = 72
   end
 end

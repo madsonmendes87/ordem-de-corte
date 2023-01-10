@@ -14,6 +14,8 @@ object formProdutoAcabado: TformProdutoAcabado
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object labFiltrarPor: TLabel
@@ -42,22 +44,9 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object labTipo: TLabel
-    Left = 446
-    Top = 16
-    Width = 24
-    Height = 13
-    Caption = 'Tipo'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
   object labColecao: TLabel
-    Left = 56
-    Top = 70
+    Left = 447
+    Top = 16
     Width = 103
     Height = 13
     Caption = 'Cole'#231#227'o deste ano'
@@ -68,8 +57,8 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object butOrdemPesquisar: TSpeedButton
-    Left = 281
+  object butProdutoPesquisar: TSpeedButton
+    Left = 224
     Top = 80
     Width = 97
     Height = 33
@@ -174,7 +163,7 @@ object formProdutoAcabado: TformProdutoAcabado
       F3EDECECF2F1F1F0EFEFF0F0F0EEEEEEF0EFEFF1F1F1EEEEEEF2F2F20000}
     Layout = blGlyphRight
     ParentFont = False
-    OnClick = butOrdemPesquisarClick
+    OnClick = butProdutoPesquisarClick
   end
   object comboFiltro: TComboBox
     Left = 56
@@ -192,10 +181,9 @@ object formProdutoAcabado: TformProdutoAcabado
       '<<  N'#227'o Informar >>'
       'REFERENCIA'
       'NUMERO DA FICHA'
-      'ORDEM DE CORTE'
       'DESCRICAO REFERENCIA')
   end
-  object editSearch: TEdit
+  object editSearchPA: TEdit
     Left = 224
     Top = 35
     Width = 201
@@ -209,25 +197,9 @@ object formProdutoAcabado: TformProdutoAcabado
     ParentFont = False
     TabOrder = 1
   end
-  object comboTipo: TComboBox
-    Left = 446
-    Top = 35
-    Width = 201
-    Height = 24
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 2
-    Items.Strings = (
-      'Prototipo'
-      'Grande Escala')
-  end
   object comboColecao: TComboBox
-    Left = 56
-    Top = 89
+    Left = 447
+    Top = 35
     Width = 200
     Height = 24
     Font.Charset = DEFAULT_CHARSET
@@ -236,7 +208,7 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 2
     Items.Strings = (
       ''
       'JANEIRO'
@@ -257,11 +229,33 @@ object formProdutoAcabado: TformProdutoAcabado
     Top = 136
     Width = 591
     Height = 249
-    TabOrder = 4
+    DataSource = dmOrdemCorte.dsProdutoAcabado
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    TabOrder = 3
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+  end
+  object dateTimePicker1: TDateTimePicker
+    Left = 80
+    Top = 84
+    Width = 121
+    Height = 24
+    Date = 44935.000000000000000000
+    Time = 0.493591724538418900
+    TabOrder = 4
+  end
+  object checkData: TCheckBox
+    Left = 56
+    Top = 84
+    Width = 18
+    Height = 24
+    TabOrder = 5
+  end
+  object ApplicationEvents1: TApplicationEvents
+    Left = 488
+    Top = 72
   end
 end
