@@ -237,6 +237,7 @@ object formProdutoAcabado: TformProdutoAcabado
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnDblClick = gridProdutoAcabadoDblClick
   end
   object dateTimePicker1: TDateTimePicker
     Left = 80

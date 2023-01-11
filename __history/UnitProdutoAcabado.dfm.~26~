@@ -181,10 +181,9 @@ object formProdutoAcabado: TformProdutoAcabado
       '<<  N'#227'o Informar >>'
       'REFERENCIA'
       'NUMERO DA FICHA'
-      'ORDEM DE CORTE'
       'DESCRICAO REFERENCIA')
   end
-  object editSearch: TEdit
+  object editSearchPA: TEdit
     Left = 224
     Top = 35
     Width = 201
@@ -238,14 +237,28 @@ object formProdutoAcabado: TformProdutoAcabado
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnColEnter = gridProdutoAcabadoColEnter
+    OnDblClick = gridProdutoAcabadoDblClick
+    OnEnter = gridProdutoAcabadoEnter
   end
   object dateTimePicker1: TDateTimePicker
-    Left = 56
-    Top = 89
-    Width = 145
+    Left = 80
+    Top = 84
+    Width = 121
     Height = 24
     Date = 44935.000000000000000000
     Time = 0.493591724538418900
     TabOrder = 4
+  end
+  object checkData: TCheckBox
+    Left = 56
+    Top = 84
+    Width = 18
+    Height = 24
+    TabOrder = 5
+  end
+  object ApplicationEvents1: TApplicationEvents
+    Left = 488
+    Top = 72
   end
 end

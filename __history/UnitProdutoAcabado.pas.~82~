@@ -23,11 +23,12 @@ type
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure tratarEdit;
+    procedure gridProdutoAcabadoEnter(Sender: TObject);
+    procedure gridProdutoAcabadoColEnter(Sender: TObject);
+    procedure gridProdutoAcabadoDblClick(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewProdutoAcabado;
-    //procedure tratarEdit;
   public
     { Public declarations }
   end;
@@ -42,6 +43,7 @@ implementation
 uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
 
 procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
+var key: Char;
 begin
     begin
         With dmOrdemCorte do
@@ -62,10 +64,8 @@ begin
             end;
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
-                //tratarEdit;
                 qyProdutoAcabado.SQL.Add('and ft.fi_id = :fichatecnica');
-                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtoint(editSearchPA.Text);
-                //tratarEdit;
+                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtointdef(editSearchPA.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
@@ -100,6 +100,25 @@ begin
     gridViewProdutoAcabado;
 end;
 
+procedure TformProdutoAcabado.gridProdutoAcabadoColEnter(Sender: TObject);
+begin
+       //formProdutoAcabado.CloseModal;
+       //formIniciarCorte.editCodigo.Text := gridProdutoAcabado.Fields[0].Value;
+end;
+
+procedure TformProdutoAcabado.gridProdutoAcabadoDblClick(Sender: TObject);
+begin
+        //formProdutoAcabado.CloseModal;
+        formIniciarCorte.editCodigo.Text := gridProdutoAcabado.Fields[0].Value;
+        formProdutoAcabado.Close;
+end;
+
+procedure TformProdutoAcabado.gridProdutoAcabadoEnter(Sender: TObject);
+begin
+    //formProdutoAcabado.CloseModal;
+    //formIniciarCorte.editCodigo.Text := gridProdutoAcabado.Fields[0].Value;
+end;
+
 procedure TformProdutoAcabado.gridViewProdutoAcabado;
 begin
     gridProdutoAcabado.Columns[0].Title.Alignment:=taCenter;
@@ -122,15 +141,5 @@ begin
     gridProdutoAcabado.Columns[5].Title.Font.Style:=[fsBold];
 end;
 
-procedure TformProdutoAcabado.tratarEdit;
-
-var key : Char;
-begin
-     if ((Ord(key) < ord('0')) or (Ord(key) > ord('9'))) then
-      begin
-        key := chr(0);
-        ShowMessage('teste');
-      end;
-end;
 
 end.

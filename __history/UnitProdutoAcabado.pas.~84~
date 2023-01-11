@@ -23,6 +23,7 @@ type
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure gridProdutoAcabadoDblClick(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewProdutoAcabado;
@@ -62,9 +63,7 @@ begin
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
                 qyProdutoAcabado.SQL.Add('and ft.fi_id = :fichatecnica');
-                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtoint(editSearchPA.Text);
-                editSearchPA.NumbersOnly := true;
-                ShowMessage('Digite apenas numero');
+                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtointdef(editSearchPA.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
@@ -97,6 +96,12 @@ procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyProdutoAcabado.Active := true;
     gridViewProdutoAcabado;
+end;
+
+procedure TformProdutoAcabado.gridProdutoAcabadoDblClick(Sender: TObject);
+begin
+    //formIniciarCorte.editCodigo.Text := gridProdutoAcabado.Fields[0].Value;
+    //formProdutoAcabado.Close;
 end;
 
 procedure TformProdutoAcabado.gridViewProdutoAcabado;

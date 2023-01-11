@@ -259,6 +259,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object qyOrdemCorte: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
       'SELECT'
@@ -374,6 +375,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object qyProdutoAcabado: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
       
@@ -391,12 +393,12 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'where pa.cad_situacao='#39'A'#39' and ft.fi_situacao in ('#39'F'#39', '#39'Z'#39') order' +
         ' By ft.fi_id desc limit 15;')
-    Left = 528
+    Left = 544
     Top = 16
   end
   object dsProdutoAcabado: TDataSource
     DataSet = qyProdutoAcabado
-    Left = 616
+    Left = 640
     Top = 16
   end
   object tbProdutoAcabado: TFDTable
@@ -404,7 +406,7 @@ object dmOrdemCorte: TdmOrdemCorte
     IndexFieldNames = 'cad_id'
     Connection = Conexao
     TableName = 'produto_acabado'
-    Left = 704
+    Left = 784
     Top = 16
   end
 end

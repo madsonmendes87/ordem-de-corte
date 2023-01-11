@@ -35,6 +35,7 @@ type
     labCortePrevisto: TLabel;
     labRealCortado: TLabel;
     acaoAbrirProdAcab: TAction;
+    labEPrototipo: TLabel;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
     procedure acaoAbrirProdAcabExecute(Sender: TObject);

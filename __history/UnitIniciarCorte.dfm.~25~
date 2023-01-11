@@ -262,8 +262,9 @@ object formIniciarCorte: TformIniciarCorte
     Color = clBtnFace
     ReadOnly = True
     TabOrder = 1
+    OnKeyPress = editCodigoKeyPress
   end
-  object editReferencia: TEdit
+  object Edit1: TEdit
     Left = 166
     Top = 72
     Width = 105
@@ -281,7 +282,7 @@ object formIniciarCorte: TformIniciarCorte
     ReadOnly = True
     TabOrder = 3
   end
-  object editDescReferencia: TEdit
+  object editReferencia: TEdit
     Left = 406
     Top = 72
     Width = 294

@@ -23,6 +23,7 @@ type
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure gridProdutoAcabadoDblClick(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewProdutoAcabado;
@@ -95,6 +96,15 @@ procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyProdutoAcabado.Active := true;
     gridViewProdutoAcabado;
+end;
+
+procedure TformProdutoAcabado.gridProdutoAcabadoDblClick(Sender: TObject);
+begin
+    formIniciarCorte.editCodigo.Text := gridProdutoAcabado.Fields[0].Value;
+    formIniciarCorte.editReferencia.Text := gridProdutoAcabado.Fields[1].Value;
+    formIniciarCorte.editFicha.Text := gridProdutoAcabado.Fields[3].Value;
+    formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
+    formProdutoAcabado.Close;
 end;
 
 procedure TformProdutoAcabado.gridViewProdutoAcabado;

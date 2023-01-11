@@ -26,7 +26,6 @@ type
   private
     { Private declarations }
     procedure gridViewProdutoAcabado;
-    procedure tratarEdit;
   public
     { Public declarations }
   end;
@@ -41,6 +40,7 @@ implementation
 uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
 
 procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
+var key: Char;
 begin
     begin
         With dmOrdemCorte do
@@ -61,10 +61,8 @@ begin
             end;
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
-                tratarEdit;
                 qyProdutoAcabado.SQL.Add('and ft.fi_id = :fichatecnica');
-                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtoint(editSearchPA.Text);
-                //tratarEdit;
+                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtointdef(editSearchPA.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
@@ -121,12 +119,5 @@ begin
     gridProdutoAcabado.Columns[5].Title.Font.Style:=[fsBold];
 end;
 
-procedure TformProdutoAcabado.tratarEdit;
-
-var key : Char;
-begin
-     if not (key in ['0'..'9', #8, #27, #32]) then
-        key := #0;
-end;
 
 end.
