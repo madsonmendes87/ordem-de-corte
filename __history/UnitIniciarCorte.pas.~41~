@@ -62,42 +62,42 @@ type
     Label13: TLabel;
     DBEdit13: TDBEdit;
     Label1: TLabel;
+    DBEdit14: TDBEdit;
     DataSource1: TDataSource;
     Label14: TLabel;
+    DBEdit15: TDBEdit;
     Label15: TLabel;
-    editObservacao: TDBEdit;
+    DBEdit16: TDBEdit;
     Label16: TLabel;
+    DBEdit17: TDBEdit;
     Label17: TLabel;
+    DBEdit18: TDBEdit;
+    Label18: TLabel;
+    DBEdit19: TDBEdit;
+    Label19: TLabel;
+    DBEdit20: TDBEdit;
+    Label20: TLabel;
+    DBEdit21: TDBEdit;
+    Label21: TLabel;
+    DBEdit22: TDBEdit;
+    Label22: TLabel;
+    DBEdit23: TDBEdit;
+    Label23: TLabel;
+    DBEdit24: TDBEdit;
+    Label24: TLabel;
+    DBEdit25: TDBEdit;
+    Label25: TLabel;
+    DBEdit26: TDBEdit;
     labTipoCorte: TLabel;
     butNovo: TBitBtn;
-    butSalvar: TBitBtn;
-    butRemover: TBitBtn;
-    butEditar: TBitBtn;
-    butDesistir: TBitBtn;
-    Label18: TLabel;
-    Label20: TLabel;
-    editDtSolicitacao: TDBEdit;
-    editHrSolicitacao: TDBEdit;
-    editDtFinSolicitacao: TDBEdit;
-    editHrFinSolicitacao: TDBEdit;
-    editDtIniPrevisto: TDBEdit;
-    editHrIniPrevisto: TDBEdit;
-    editDtFimPrevisto: TDBEdit;
-    editHrFimPrevisto: TDBEdit;
-    editDtIniRealCortado: TDBEdit;
-    editHrIniRealCortado: TDBEdit;
-    editDtFimRealCortado: TDBEdit;
-    editHrFimRealCortado: TDBEdit;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
     procedure acaoAbrirProdAcabExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure editDtSolicitacaoExit(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
-    function isDataValida(Value: String): Boolean;
   end;
 
 var
@@ -130,31 +130,11 @@ end;
 
 
 
-procedure TformIniciarCorte.editDtSolicitacaoExit(Sender: TObject);
-begin
-
-end;
-
 procedure TformIniciarCorte.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
     Release;
     formIniciarCorte := nil;
-end;
-
-function TformIniciarCorte.isDataValida(Value: String): Boolean;
-begin
-//  const
-//    Format = '^([0-9]\\/[0-9]\\/[0-9])$'; // expressão regular
-//    begin
-//        if (match:=TRegEx.IsMatch(Value, Format)) then // valida o formato
-//          if (StrToDate(Value) < NOW()) then // Converte e verifica se é menor que data atudal
-//              isDataValida := TRUE // retorna true
-//          else
-//             raise EDataNascimento.Create('Data de Nascimento maior que data atual') // senao cria uma exception
-//          else
-//              raise EDataNascimento.Create('Data de Nascimento invalida');// senao cria uma exception
-//    end;
 end;
 
 end.

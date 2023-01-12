@@ -76,6 +76,19 @@ type
     qyProdutoAcabado: TFDQuery;
     dsProdutoAcabado: TDataSource;
     tbProdutoAcabado: TFDTable;
+    tbOrdemCorteoc_dtsolicitacao: TDateField;
+    tbOrdemCorteoc_dtprevisaofinalizacao: TDateField;
+    tbOrdemCorteoc_observacao: TWideStringField;
+    tbOrdemCorteoc_datapreviniciocorteprevisto: TDateField;
+    tbOrdemCorteoc_dataprevfimcorteprevisto: TDateField;
+    tbOrdemCorteoc_datapreviniciorealcortado: TDateField;
+    tbOrdemCorteoc_dataprevfimrealcortado: TDateField;
+    tbOrdemCorteoc_hrprevisaofinalizacao: TTimeField;
+    tbOrdemCorteoc_horapreviniciocorteprevisto: TTimeField;
+    tbOrdemCorteoc_horaprevfimcorteprevisto: TTimeField;
+    tbOrdemCorteoc_horapreviniciorealcortado: TTimeField;
+    tbOrdemCorteoc_horaprevfimrealcortado: TTimeField;
+    tbOrdemCorteoc_horasolicitacao: TTimeField;
   private
     { Private declarations }
   public
