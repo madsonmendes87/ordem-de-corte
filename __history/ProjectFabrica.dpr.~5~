@@ -14,5 +14,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormPrincipal, FormPrincipal);
   Application.CreateForm(TdmOrdemCorte, dmOrdemCorte);
+  Application.CreateForm(TformProdutoAcabado, formProdutoAcabado);
   Application.Run;
 end.

@@ -157,32 +157,32 @@ end;
 
 function TformIniciarCorte.isDataValida(Value: String): Boolean;
 
-var
-    ano, mes, dia, dateAsmmddyyy : String;
-    stringListDate : TStringList;
-    match : Boolean;
+//var
+//    ano, mes, dia, dateAsmmddyyy : String;
+//    stringListDate : TStringList;
+//    match : Boolean;
 begin
-//      if (StrToDate(Value) < NOW()) then
-//      application.MessageBox('Digite uma data valida','Atenção',MB_OK+MB_ICONEXCLAMATION);
-    match := TRegEx.IsMatch( Value, '[0-9] {1,2} - [0-9] {1,2} - [0-9] {4}');
-    if not match then
-    begin
-      Result := False;
-      exit;
-    end;
-    stringListDate := TStringList.Create;
-    stringListDate.Delimiter := '-';
-    stringListDate.DelimitedText := Value;
-    dia := stringListDate[ 0 ];
-    mes := stringListDate[ 1 ];
-    ano := stringListDate[ 2 ];
-    dateAsmmddyyy := dia + '/' + mes + '/' + ano;
-    Result := true;
-    try
-      StrToDate(dateAsmmddyyy);
-    except
-      Result := false;
-    end;
+      if (StrToDate(Value) < NOW()) then
+      application.MessageBox('Digite uma data valida','Atenção',MB_OK+MB_ICONEXCLAMATION);
+//    match := TRegEx.IsMatch( Value, '[0-9] {1,2} - [0-9] {1,2} - [0-9] {4}');
+//    if not match then
+//    begin
+//      Result := False;
+//      exit;
+//    end;
+//    stringListDate := TStringList.Create;
+//    stringListDate.Delimiter := '-';
+//    stringListDate.DelimitedText := Value;
+//    dia := stringListDate[ 0 ];
+//    mes := stringListDate[ 1 ];
+//    ano := stringListDate[ 2 ];
+//    dateAsmmddyyy := dia + '/' + mes + '/' + ano;
+//    Result := true;
+//    try
+//      StrToDate(dateAsmmddyyy);
+//    except
+//      Result := false;
+//    end;
 
 
 

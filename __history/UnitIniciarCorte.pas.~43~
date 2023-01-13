@@ -3,7 +3,7 @@ unit UnitIniciarCorte;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  System.RegularExpressions, Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls,
   Vcl.StdCtrls, System.Actions, Vcl.ActnList, Data.DB, Vcl.Mask,
   Vcl.DBCtrls;
@@ -92,7 +92,6 @@ type
     procedure acaoCoresExecute(Sender: TObject);
     procedure acaoAbrirProdAcabExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure editDtSolicitacaoExit(Sender: TObject);
   private
     { Private declarations }
   public
@@ -130,11 +129,6 @@ end;
 
 
 
-procedure TformIniciarCorte.editDtSolicitacaoExit(Sender: TObject);
-begin
-
-end;
-
 procedure TformIniciarCorte.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
@@ -143,12 +137,39 @@ begin
 end;
 
 function TformIniciarCorte.isDataValida(Value: String): Boolean;
+
+var
+    ano, mes, dia, dateAsmmddyyy : String;
+    stringListDate : TStringList;
+    match : Boolean;
 begin
+    match := TRegEx.IsMatch( Value, '[0-9] {1,2} - [0-9] {1,2} - [0-9] {4}');
+    if not match then
+    begin
+      Result := False;
+      exit;
+    end;
+    stringListDate := TStringList.Create;
+    stringListDate.Delimiter := '-';
+    stringListDate.DelimitedText := Value;
+    dia := stringListDate[ 0 ];
+    mes := stringListDate[ 1 ];
+    ano := stringListDate[ 2 ];
+    dateAsmmddyyy := dia + '/' + mes + '/' + ano;
+    Result := true;
+    try
+      StrToDate(dateAsmmddyyy);
+    except
+      Result := false;
+    end;
+
+
+
 //  const
-//    Format = '^([0-9]\\/[0-9]\\/[0-9])$'; // express√£o regular
+//    Format = '^([0-9]\\/[0-9]\\/[0-9])$'; // express„o regular
 //    begin
 //        if (match:=TRegEx.IsMatch(Value, Format)) then // valida o formato
-//          if (StrToDate(Value) < NOW()) then // Converte e verifica se √© menor que data atudal
+//          if (StrToDate(Value) < NOW()) then // Converte e verifica se È menor que data atudal
 //              isDataValida := TRUE // retorna true
 //          else
 //             raise EDataNascimento.Create('Data de Nascimento maior que data atual') // senao cria uma exception

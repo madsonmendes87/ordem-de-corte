@@ -94,7 +94,6 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure editObservacaoKeyPress(Sender: TObject; var Key: Char);
     procedure editObservacaoExit(Sender: TObject);
-    procedure editDtSolicitacaoExit(Sender: TObject);
   private
     { Private declarations }
   public
@@ -132,20 +131,15 @@ end;
 
 
 
-procedure TformIniciarCorte.editDtSolicitacaoExit(Sender: TObject);
-begin
-    isDataValida(editDtSolicitacao.Text);
-end;
-
 procedure TformIniciarCorte.editObservacaoExit(Sender: TObject);
 begin
-   // isDataValida(editDtSolicitacao.Text);
+    isDataValida(editDtSolicitacao.Text);
 end;
 
 procedure TformIniciarCorte.editObservacaoKeyPress(Sender: TObject;
   var Key: Char);
 begin
-      isDataValida(editDtSolicitacao.Text);
+      //isDataValida(editDtSolicitacao.Text);
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;
@@ -162,8 +156,6 @@ var
     stringListDate : TStringList;
     match : Boolean;
 begin
-//      if (StrToDate(Value) < NOW()) then
-//      application.MessageBox('Digite uma data valida','Atenção',MB_OK+MB_ICONEXCLAMATION);
     match := TRegEx.IsMatch( Value, '[0-9] {1,2} - [0-9] {1,2} - [0-9] {4}');
     if not match then
     begin

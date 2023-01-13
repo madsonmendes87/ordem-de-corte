@@ -271,7 +271,7 @@ object formIniciarCorte: TformIniciarCorte
     Width = 67
     Height = 13
     Caption = 'Observa'#231#227'o'
-    FocusControl = editObservacao
+    FocusControl = DBEdit16
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -609,7 +609,7 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
     TabOrder = 5
   end
-  object editObservacao: TDBEdit
+  object DBEdit16: TDBEdit
     Left = 29
     Top = 304
     Width = 1066
@@ -617,8 +617,6 @@ object formIniciarCorte: TformIniciarCorte
     DataField = 'oc_observacao'
     DataSource = DataSource1
     TabOrder = 6
-    OnExit = editObservacaoExit
-    OnKeyPress = editObservacaoKeyPress
   end
   object butNovo: TBitBtn
     Left = 27
@@ -964,7 +962,7 @@ object formIniciarCorte: TformIniciarCorte
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     TabOrder = 11
   end
-  object editDtSolicitacao: TDBEdit
+  object DBEdit27: TDBEdit
     Left = 35
     Top = 212
     Width = 128
@@ -973,9 +971,8 @@ object formIniciarCorte: TformIniciarCorte
     DataSource = DataSource1
     MaxLength = 10
     TabOrder = 12
-    OnExit = editDtSolicitacaoExit
   end
-  object editHrSolicitacao: TDBEdit
+  object DBEdit14: TDBEdit
     Left = 169
     Top = 215
     Width = 105
@@ -985,7 +982,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 8
     TabOrder = 13
   end
-  object editDtFinSolicitacao: TDBEdit
+  object DBEdit26: TDBEdit
     Left = 31
     Top = 258
     Width = 132
@@ -995,7 +992,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 10
     TabOrder = 14
   end
-  object editHrFinSolicitacao: TDBEdit
+  object DBEdit15: TDBEdit
     Left = 169
     Top = 258
     Width = 105
@@ -1005,7 +1002,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 8
     TabOrder = 15
   end
-  object editDtIniPrevisto: TDBEdit
+  object DBEdit21: TDBEdit
     Left = 406
     Top = 210
     Width = 132
@@ -1015,7 +1012,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 10
     TabOrder = 16
   end
-  object editHrIniPrevisto: TDBEdit
+  object DBEdit17: TDBEdit
     Left = 544
     Top = 210
     Width = 111
@@ -1025,7 +1022,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 8
     TabOrder = 17
   end
-  object editDtFimPrevisto: TDBEdit
+  object DBEdit22: TDBEdit
     Left = 405
     Top = 258
     Width = 132
@@ -1035,7 +1032,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 10
     TabOrder = 18
   end
-  object editHrFimPrevisto: TDBEdit
+  object DBEdit18: TDBEdit
     Left = 543
     Top = 258
     Width = 112
@@ -1045,7 +1042,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 8
     TabOrder = 19
   end
-  object editDtIniRealCortado: TDBEdit
+  object DBEdit23: TDBEdit
     Left = 823
     Top = 212
     Width = 132
@@ -1055,7 +1052,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 10
     TabOrder = 20
   end
-  object editHrIniRealCortado: TDBEdit
+  object DBEdit19: TDBEdit
     Left = 961
     Top = 212
     Width = 96
@@ -1065,7 +1062,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 8
     TabOrder = 21
   end
-  object editDtFimRealCortado: TDBEdit
+  object DBEdit24: TDBEdit
     Left = 823
     Top = 258
     Width = 132
@@ -1075,7 +1072,7 @@ object formIniciarCorte: TformIniciarCorte
     MaxLength = 10
     TabOrder = 22
   end
-  object editHrFimRealCortado: TDBEdit
+  object DBEdit20: TDBEdit
     Left = 961
     Top = 258
     Width = 96

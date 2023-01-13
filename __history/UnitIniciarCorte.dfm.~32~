@@ -617,6 +617,8 @@ object formIniciarCorte: TformIniciarCorte
     DataField = 'oc_observacao'
     DataSource = DataSource1
     TabOrder = 6
+    OnExit = editObservacaoExit
+    OnKeyPress = editObservacaoKeyPress
   end
   object butNovo: TBitBtn
     Left = 27
@@ -971,7 +973,6 @@ object formIniciarCorte: TformIniciarCorte
     DataSource = DataSource1
     MaxLength = 10
     TabOrder = 12
-    OnExit = editDtSolicitacaoExit
   end
   object editHrSolicitacao: TDBEdit
     Left = 169

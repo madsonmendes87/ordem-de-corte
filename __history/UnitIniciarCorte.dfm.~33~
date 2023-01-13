@@ -973,7 +973,6 @@ object formIniciarCorte: TformIniciarCorte
     DataSource = DataSource1
     MaxLength = 10
     TabOrder = 12
-    OnExit = editDtSolicitacaoExit
   end
   object editHrSolicitacao: TDBEdit
     Left = 169

@@ -9,7 +9,7 @@ object dmOrdemCorte: TdmOrdemCorte
       'Database=dberp'
       'Password=#maga2020'
       'DriverID=PG')
-    LoginPrompt = False
+    Connected = True
     Left = 48
     Top = 16
   end
@@ -29,6 +29,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object tbOrdemCorte: TFDTable
+    Active = True
     IndexFieldNames = 'oc_id'
     Connection = Conexao
     TableName = 'ordem_corte'
@@ -106,6 +107,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object tbOrdemCorteCores: TFDTable
+    Active = True
     IndexFieldNames = 'occ_id'
     Connection = Conexao
     TableName = 'ordem_corte_cores'
@@ -118,6 +120,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object tbOrdemCorteEmpenho: TFDTable
+    Active = True
     IndexFieldNames = 'oce_id'
     Connection = Conexao
     TableName = 'ordem_corte_empenho'
@@ -130,6 +133,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object tbOrdemCorteEmpenhoAdicional: TFDTable
+    Active = True
     IndexFieldNames = 'ocea_id'
     Connection = Conexao
     TableName = 'ordem_corte_empenho_adicional'
@@ -142,6 +146,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object tbOrdemCorteEmpenhoReal: TFDTable
+    Active = True
     IndexFieldNames = 'id'
     Connection = Conexao
     TableName = 'ordem_corte_empenho_real'
@@ -154,6 +159,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 136
   end
   object tbOrdemCorteEstoqueSobras: TFDTable
+    Active = True
     IndexFieldNames = 'oce_id'
     Connection = Conexao
     TableName = 'ordem_corte_estoque_sobras'
@@ -165,6 +171,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 136
   end
   object tbOrdemCorteItensPrevisto: TFDTable
+    Active = True
     IndexFieldNames = 'oci_id'
     Connection = Conexao
     TableName = 'ordem_corte_itens_previsto'
@@ -177,6 +184,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 136
   end
   object tbOrdemCorteItensReal: TFDTable
+    Active = True
     IndexFieldNames = 'oci_id'
     Connection = Conexao
     TableName = 'ordem_corte_itens_real'
@@ -199,6 +207,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 208
   end
   object tbOrdemCorteItensRealSobra: TFDTable
+    Active = True
     IndexFieldNames = 'ocirs_id'
     Connection = Conexao
     TableName = 'ordem_corte_itens_real_sobra'
@@ -211,6 +220,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 208
   end
   object tbOrdemCorteItensSituacao: TFDTable
+    Active = True
     IndexFieldNames = 'id'
     Connection = Conexao
     TableName = 'ordem_corte_itens_situacao'
@@ -223,6 +233,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 280
   end
   object tbOrdemCortePrototipoFase: TFDTable
+    Active = True
     IndexFieldNames = 'ocpf_id'
     Connection = Conexao
     TableName = 'ordem_corte_prototipo_fase'
@@ -235,6 +246,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 280
   end
   object tbOrdemCorteRealHistoricoGrade: TFDTable
+    Active = True
     IndexFieldNames = 'ocrhg_id'
     Connection = Conexao
     TableName = 'ordem_corte_real_historico_grade'
@@ -247,6 +259,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 280
   end
   object tbOrdemCorteRetalhosPrevisto: TFDTable
+    Active = True
     IndexFieldNames = 'ocrp_id'
     Connection = Conexao
     TableName = 'ordem_corte_retalhos_previsto'
@@ -259,6 +272,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 360
   end
   object tbOrdemCorteRetalhosReserva: TFDTable
+    Active = True
     IndexFieldNames = 'ocrr_id'
     Connection = Conexao
     TableName = 'ordem_corte_retalhos_reserva'
@@ -271,6 +285,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 360
   end
   object tbOrdemCorteSituacao: TFDTable
+    Active = True
     IndexFieldNames = 'os_id'
     Connection = Conexao
     TableName = 'ordem_corte_situacao'
@@ -283,6 +298,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 360
   end
   object tbOrdemCorteSobraSituacao: TFDTable
+    Active = True
     IndexFieldNames = 'id'
     Connection = Conexao
     TableName = 'ordem_corte_sobra_situacao'
@@ -295,6 +311,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object tbOrdemCorteTrocaItem: TFDTable
+    Active = True
     IndexFieldNames = 'octi_id'
     Connection = Conexao
     TableName = 'ordem_corte_troca_item'
@@ -409,6 +426,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object tbEstilista: TFDTable
+    Active = True
     IndexFieldNames = 'es_id'
     Connection = Conexao
     TableName = 'cadastro_estilista'
@@ -447,6 +465,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object tbProdutoAcabado: TFDTable
+    Active = True
     IndexFieldNames = 'cad_id'
     Connection = Conexao
     TableName = 'produto_acabado'
