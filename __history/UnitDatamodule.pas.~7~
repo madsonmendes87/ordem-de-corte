@@ -89,8 +89,6 @@ type
     tbOrdemCorteoc_horapreviniciorealcortado: TTimeField;
     tbOrdemCorteoc_horaprevfimrealcortado: TTimeField;
     tbOrdemCorteoc_horasolicitacao: TTimeField;
-    FDQ_BoxColecao: TFDQuery;
-    DS_BoxColecao: TDataSource;
   private
     { Private declarations }
   public

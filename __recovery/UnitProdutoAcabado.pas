@@ -16,7 +16,7 @@ type
     labColecao: TLabel;
     butProdutoPesquisar: TSpeedButton;
     gridProdutoAcabado: TDBGrid;
-    DTCadastro: TDateTimePicker;
+    dtCadastro: TDateTimePicker;
     ApplicationEvents1: TApplicationEvents;
     Label1: TLabel;
     DBLCBoxColecao: TDBLookupComboBox;
@@ -58,8 +58,8 @@ begin
             qyProdutoAcabado.SQL.Clear;
             qyProdutoAcabado.SQL.Add('SELECT');
             qyProdutoAcabado.SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
-            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strComplementar,');
-            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strAproveitamento');
+            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strComplementar,');
+            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strAproveitamento');
             qyProdutoAcabado.SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
             qyProdutoAcabado.SQL.Add('  where pa.cad_situacao=''A''');
             qyProdutoAcabado.SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');

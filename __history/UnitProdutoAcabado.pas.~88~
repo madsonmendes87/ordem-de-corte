@@ -20,16 +20,13 @@ type
     ApplicationEvents1: TApplicationEvents;
     Label1: TLabel;
     DBLCBoxColecao: TDBLookupComboBox;
-    BtnLimpColecao: TButton;
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridProdutoAcabadoDblClick(Sender: TObject);
-    procedure BtnLimpColecaoClick(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
-
+    procedure gridViewProdutoAcabado;
   public
     { Public declarations }
   end;
@@ -42,11 +39,6 @@ implementation
 {$R *.dfm}
 
 uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
-
-procedure TformProdutoAcabado.BtnLimpColecaoClick(Sender: TObject);
-begin
-     DBLCBoxColecao.KeyValue := Null;
-end;
 
 procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
 var key: Char;
@@ -95,26 +87,15 @@ begin
     end;
 end;
 
-procedure TformProdutoAcabado.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
-begin
-
-     dmOrdemCorte.fdq_BoxColecao.active   := false;
-     dmOrdemCorte.tbProdutoAcabado.Active := false;
-
-end;
-
 procedure TformProdutoAcabado.FormCreate(Sender: TObject);
 begin
-     DTCadastro.Date := now;
+   dateTimePicker1.Date := now;
 end;
 
 procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
-    dmOrdemCorte.qyProdutoAcabado.Active := false;
-
-    formPrincipal.BoxColecao;
-
+    dmOrdemCorte.qyProdutoAcabado.Active := true;
+    gridViewProdutoAcabado;
 end;
 
 procedure TformProdutoAcabado.gridProdutoAcabadoDblClick(Sender: TObject);
@@ -124,6 +105,28 @@ begin
     formIniciarCorte.editFicha.Text := gridProdutoAcabado.Fields[3].Value;
     formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
     formProdutoAcabado.Close;
+end;
+
+procedure TformProdutoAcabado.gridViewProdutoAcabado;
+begin
+    gridProdutoAcabado.Columns[0].Title.Alignment:=taCenter;
+    gridProdutoAcabado.Columns[0].Title.Caption:='CÓDIGO';
+    gridProdutoAcabado.Columns[0].Title.Font.Style:=[fsBold];
+    gridProdutoAcabado.Columns[1].Title.Alignment:=taCenter;
+    gridProdutoAcabado.Columns[1].Title.Caption:='REFERÊNCIA';
+    gridProdutoAcabado.Columns[1].Title.Font.Style:=[fsBold];
+    gridProdutoAcabado.Columns[2].Title.Alignment:=taCenter;
+    gridProdutoAcabado.Columns[2].Title.Caption:='DESCRIÇÃO';
+    gridProdutoAcabado.Columns[2].Title.Font.Style:=[fsBold];
+    gridProdutoAcabado.Columns[3].Title.Alignment:=taCenter;
+    gridProdutoAcabado.Columns[3].Title.Caption:='FICHA TÉCNICA';
+    gridProdutoAcabado.Columns[3].Title.Font.Style:=[fsBold];
+    gridProdutoAcabado.Columns[4].Title.Alignment:=taCenter;
+    gridProdutoAcabado.Columns[4].Title.Caption:='COMPLEMENTAR';
+    gridProdutoAcabado.Columns[4].Title.Font.Style:=[fsBold];
+    gridProdutoAcabado.Columns[5].Title.Alignment:=taCenter;
+    gridProdutoAcabado.Columns[5].Title.Caption:='APROVEITAMENTO';
+    gridProdutoAcabado.Columns[5].Title.Font.Style:=[fsBold];
 end;
 
 

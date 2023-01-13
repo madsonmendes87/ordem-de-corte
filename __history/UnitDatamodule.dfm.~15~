@@ -9,6 +9,7 @@ object dmOrdemCorte: TdmOrdemCorte
       'Database=dberp'
       'Password=#maga2020'
       'DriverID=PG')
+    Connected = True
     LoginPrompt = False
     Left = 32
     Top = 16

@@ -253,7 +253,7 @@ object formProdutoAcabado: TformProdutoAcabado
         Expanded = False
         FieldName = 'ficha_id'
         Title.Alignment = taCenter
-        Title.Caption = 'Ficha T'#233'cnica'
+        Title.Caption = 'N'#176' da F. Tec.'
         Width = 79
         Visible = True
       end

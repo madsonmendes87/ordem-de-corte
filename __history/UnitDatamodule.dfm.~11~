@@ -10,7 +10,7 @@ object dmOrdemCorte: TdmOrdemCorte
       'Password=#maga2020'
       'DriverID=PG')
     LoginPrompt = False
-    Left = 32
+    Left = 48
     Top = 16
   end
   object FDTransaction1: TFDTransaction
@@ -438,36 +438,19 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'where pa.cad_situacao='#39'A'#39' and ft.fi_situacao in ('#39'F'#39', '#39'Z'#39') order' +
         ' By ft.fi_id desc limit 15;')
-    Left = 576
+    Left = 528
     Top = 16
   end
   object dsProdutoAcabado: TDataSource
     DataSet = qyProdutoAcabado
-    Left = 672
+    Left = 616
     Top = 16
   end
   object tbProdutoAcabado: TFDTable
     IndexFieldNames = 'cad_id'
     Connection = Conexao
     TableName = 'produto_acabado'
-    Left = 792
+    Left = 704
     Top = 16
-  end
-  object FDQ_BoxColecao: TFDQuery
-    Connection = Conexao
-    SQL.Strings = (
-      'Select co_id, '
-      
-        'Cast(concat(co_descricao,'#39' '#39', to_char(co_anocolecao, '#39'YYYY'#39'))as ' +
-        'character varying(15))as nome'
-      'from colecao'
-      'order by co_descricao')
-    Left = 752
-    Top = 440
-  end
-  object DS_BoxColecao: TDataSource
-    DataSet = FDQ_BoxColecao
-    Left = 848
-    Top = 440
   end
 end

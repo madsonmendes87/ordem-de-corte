@@ -35,6 +35,7 @@ type
     labOrdCorte: TLabel;
     labCortePrevisto: TLabel;
     labRealCortado: TLabel;
+    acaoAbrirProdAcab: TAction;
     DBEdit1: TDBEdit;
     Label2: TLabel;
     DBEdit2: TDBEdit;
@@ -61,6 +62,7 @@ type
     Label13: TLabel;
     DBEdit13: TDBEdit;
     Label1: TLabel;
+    DataSource1: TDataSource;
     Label14: TLabel;
     Label15: TLabel;
     editObservacao: TDBEdit;
@@ -88,6 +90,7 @@ type
     editHrFimRealCortado: TDBEdit;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
+    procedure acaoAbrirProdAcabExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure editObservacaoKeyPress(Sender: TObject; var Key: Char);
     procedure editObservacaoExit(Sender: TObject);
@@ -111,6 +114,10 @@ implementation
 uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule;
 
 
+procedure TformIniciarCorte.acaoAbrirProdAcabExecute(Sender: TObject);
+begin
+    formProdutoAcabado.ShowModal;
+end;
 
 procedure TformIniciarCorte.acaoCoresExecute(Sender: TObject);
 begin
@@ -146,24 +153,27 @@ end;
 procedure TformIniciarCorte.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-    //Release;
-    //formIniciarCorte := nil;
-    FreeAndNil(formIniciarCorte);
+    Release;
+    formIniciarCorte := nil;
 end;
 
 procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if key = 113 then
+
+     if key = 113 then
      begin
 
           try
              application.CreateForm(TformProdutoAcabado, formProdutoAcabado);
              formProdutoAcabado.ShowModal;
-          finally
-             FreeAndNil(formProdutoAcabado);
-          end;
+             finally
+                    FreeAndNil(formProdutoAcabado);
+                    end;
+
      end;
+
+
 end;
 
 function TformIniciarCorte.isDataValida(Value: String): Boolean;

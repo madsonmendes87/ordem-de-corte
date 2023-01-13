@@ -154,16 +154,20 @@ end;
 procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if key = 113 then
+
+     if key = 113 then
      begin
 
           try
              application.CreateForm(TformProdutoAcabado, formProdutoAcabado);
              formProdutoAcabado.ShowModal;
-          finally
+             finally
              FreeAndNil(formProdutoAcabado);
           end;
+
      end;
+
+
 end;
 
 function TformIniciarCorte.isDataValida(Value: String): Boolean;

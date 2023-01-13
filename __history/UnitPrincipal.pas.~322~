@@ -145,16 +145,7 @@ procedure TformPrincipal.BoxColecao;
 begin
 
 
-     With dmOrdemCorte.fdq_BoxColecao do
-     begin
-     Close;
-     SQl.Clear;
-     SQl.add('Select co_id,');
-     SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(15))as nome');
-     SQl.add('from colecao');
-     SQl.add('order by co_descricao');
-     Open;
-     end;
+     With dmOrdemCorte.fdq_
 
 end;
 

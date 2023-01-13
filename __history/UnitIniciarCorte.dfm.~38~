@@ -1083,5 +1083,11 @@ object formIniciarCorte: TformIniciarCorte
       ShortCut = 117
       OnExecute = acaoCoresExecute
     end
+    object acaoAbrirProdAcab: TAction
+      Category = 'produtoacabado'
+      Caption = 'acaoAbrirProdAcab'
+      ShortCut = 112
+      OnExecute = acaoAbrirProdAcabExecute
+    end
   end
 end

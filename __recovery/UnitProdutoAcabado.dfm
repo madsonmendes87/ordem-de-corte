@@ -274,7 +274,7 @@ object formProdutoAcabado: TformProdutoAcabado
         Visible = True
       end>
   end
-  object DTCadastro: TDateTimePicker
+  object dtCadastro: TDateTimePicker
     Left = 56
     Top = 84
     Width = 121
@@ -283,6 +283,8 @@ object formProdutoAcabado: TformProdutoAcabado
     Time = 0.493591724538418900
     ShowCheckbox = True
     Checked = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 2
   end
   object DBLCBoxColecao: TDBLookupComboBox
