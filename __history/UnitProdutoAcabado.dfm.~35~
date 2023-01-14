@@ -14,6 +14,7 @@ object formProdutoAcabado: TformProdutoAcabado
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -58,7 +59,7 @@ object formProdutoAcabado: TformProdutoAcabado
     ParentFont = False
   end
   object butProdutoPesquisar: TSpeedButton
-    Left = 224
+    Left = 200
     Top = 80
     Width = 97
     Height = 33
@@ -165,18 +166,28 @@ object formProdutoAcabado: TformProdutoAcabado
     ParentFont = False
     OnClick = butProdutoPesquisarClick
   end
+  object Label1: TLabel
+    Left = 56
+    Top = 65
+    Width = 83
+    Height = 13
+    Caption = 'Data de cadastro'
+  end
   object comboFiltro: TComboBox
     Left = 56
     Top = 35
-    Width = 145
-    Height = 24
+    Width = 162
+    Height = 22
+    Style = csOwnerDrawFixed
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Tahoma'
     Font.Style = []
+    ItemIndex = 1
     ParentFont = False
     TabOrder = 0
+    Text = 'REFERENCIA'
     Items.Strings = (
       '<<  N'#227'o Informar >>'
       'REFERENCIA'
@@ -197,38 +208,13 @@ object formProdutoAcabado: TformProdutoAcabado
     ParentFont = False
     TabOrder = 1
   end
-  object comboColecao: TComboBox
-    Left = 447
-    Top = 35
-    Width = 200
-    Height = 24
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 2
-    Items.Strings = (
-      ''
-      'JANEIRO'
-      'FEVEREIRO'
-      'MARCO'
-      'ABRIL'
-      'MAIO'
-      'JUNHO'
-      'JULHO'
-      'AGOSTO'
-      'SETEMBRO'
-      'OUTUBRO'
-      'NOVEMBRO'
-      'DEZEMBRO')
-  end
   object gridProdutoAcabado: TDBGrid
-    Left = 56
+    AlignWithMargins = True
+    Left = 3
     Top = 136
-    Width = 591
-    Height = 249
+    Width = 700
+    Height = 278
+    Align = alBottom
     DataSource = dmOrdemCorte.dsProdutoAcabado
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 3
@@ -238,22 +224,91 @@ object formProdutoAcabado: TformProdutoAcabado
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
     OnDblClick = gridProdutoAcabadoDblClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'cad_id'
+        Title.Alignment = taCenter
+        Title.Caption = 'C'#243'digo'
+        Width = 55
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'cad_idreferencia'
+        Title.Alignment = taCenter
+        Title.Caption = 'Refer'#234'ncia'
+        Visible = True
+      end
+      item
+        Color = 11664126
+        Expanded = False
+        FieldName = 'cad_descricao'
+        Title.Alignment = taCenter
+        Title.Caption = 'Descri'#231#227'o'
+        Width = 230
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ficha_id'
+        Title.Alignment = taCenter
+        Title.Caption = 'Ficha T'#233'cnica'
+        Width = 79
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'strcomplementar'
+        Title.Alignment = taCenter
+        Title.Caption = #201' Complementar'
+        Width = 99
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'straproveitamento'
+        Title.Alignment = taCenter
+        Title.Caption = 'De Aproveitamento'
+        Width = 101
+        Visible = True
+      end>
   end
-  object dateTimePicker1: TDateTimePicker
-    Left = 80
+  object DTCadastro: TDateTimePicker
+    Left = 56
     Top = 84
     Width = 121
     Height = 24
     Date = 44935.000000000000000000
     Time = 0.493591724538418900
+    ShowCheckbox = True
+    Checked = False
+    TabOrder = 2
+  end
+  object DBLCBoxColecao: TDBLookupComboBox
+    Left = 431
+    Top = 35
+    Width = 200
+    Height = 21
+    KeyField = 'co_id'
+    ListField = 'nome'
+    ListSource = dmOrdemCorte.DS_BoxColecao
     TabOrder = 4
   end
-  object checkData: TCheckBox
-    Left = 56
-    Top = 84
-    Width = 18
-    Height = 24
+  object BtnLimpColecao: TButton
+    Left = 632
+    Top = 34
+    Width = 16
+    Height = 25
+    Caption = 'I'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
     TabOrder = 5
+    OnClick = BtnLimpColecaoClick
   end
   object ApplicationEvents1: TApplicationEvents
     Left = 488

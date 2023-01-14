@@ -17,15 +17,14 @@ type
     butProdutoPesquisar: TSpeedButton;
     gridProdutoAcabado: TDBGrid;
     dtCadastro: TDateTimePicker;
-    ApplicationEvents1: TApplicationEvents;
     Label1: TLabel;
-    DBLCBoxColecao: TDBLookupComboBox;
-    BtnLimpColecao: TButton;
+    dbLCBoxColecao: TDBLookupComboBox;
+    butLimpaColecao: TButton;
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridProdutoAcabadoDblClick(Sender: TObject);
-    procedure BtnLimpColecaoClick(Sender: TObject);
+    procedure butLimpaColecaoClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
@@ -43,9 +42,10 @@ implementation
 
 uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
 
-procedure TformProdutoAcabado.BtnLimpColecaoClick(Sender: TObject);
+
+procedure TformProdutoAcabado.butLimpaColecaoClick(Sender: TObject);
 begin
-     DBLCBoxColecao.KeyValue := Null;
+     dbLCBoxColecao.KeyValue := Null;
 end;
 
 procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
@@ -91,7 +91,6 @@ begin
             qyProdutoAcabado.SQL.Add('order by ft.fi_id desc limit 15');
             qyProdutoAcabado.Open;
         end;
-       // gridViewProdutoAcabado;
     end;
 end;
 
@@ -99,14 +98,15 @@ procedure TformProdutoAcabado.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
 
-     dmOrdemCorte.fdq_BoxColecao.active   := false;
+     dmOrdemCorte.qyBoxColecao.active   := false;
      dmOrdemCorte.tbProdutoAcabado.Active := false;
 
 end;
 
 procedure TformProdutoAcabado.FormCreate(Sender: TObject);
 begin
-     DTCadastro.Date := now;
+     dtCadastro.Date := now;
+     dtCadastro.Checked := false;
 end;
 
 procedure TformProdutoAcabado.FormShow(Sender: TObject);

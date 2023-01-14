@@ -274,7 +274,7 @@ object formProdutoAcabado: TformProdutoAcabado
         Visible = True
       end>
   end
-  object DTCadastro: TDateTimePicker
+  object dtCadastro: TDateTimePicker
     Left = 56
     Top = 84
     Width = 121
@@ -283,19 +283,21 @@ object formProdutoAcabado: TformProdutoAcabado
     Time = 0.493591724538418900
     ShowCheckbox = True
     Checked = False
+    ParentShowHint = False
+    ShowHint = False
     TabOrder = 2
   end
-  object DBLCBoxColecao: TDBLookupComboBox
+  object dbLCBoxColecao: TDBLookupComboBox
     Left = 431
     Top = 35
     Width = 200
     Height = 21
     KeyField = 'co_id'
     ListField = 'nome'
-    ListSource = dmOrdemCorte.DS_BoxColecao
+    ListSource = dmOrdemCorte.dsBoxColecao
     TabOrder = 4
   end
-  object BtnLimpColecao: TButton
+  object butLimpaColecao: TButton
     Left = 632
     Top = 34
     Width = 16
@@ -308,7 +310,7 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
-    OnClick = BtnLimpColecaoClick
+    OnClick = butLimpaColecaoClick
   end
   object ApplicationEvents1: TApplicationEvents
     Left = 488

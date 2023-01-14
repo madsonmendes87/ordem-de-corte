@@ -169,9 +169,15 @@ object formProdutoAcabado: TformProdutoAcabado
   object Label1: TLabel
     Left = 56
     Top = 65
-    Width = 83
+    Width = 97
     Height = 13
     Caption = 'Data de cadastro'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object comboFiltro: TComboBox
     Left = 56
@@ -284,20 +290,20 @@ object formProdutoAcabado: TformProdutoAcabado
     ShowCheckbox = True
     Checked = False
     ParentShowHint = False
-    ShowHint = True
+    ShowHint = False
     TabOrder = 2
   end
-  object DBLCBoxColecao: TDBLookupComboBox
+  object dbLCBoxColecao: TDBLookupComboBox
     Left = 431
     Top = 35
     Width = 200
     Height = 21
     KeyField = 'co_id'
     ListField = 'nome'
-    ListSource = dmOrdemCorte.DS_BoxColecao
+    ListSource = dmOrdemCorte.dsBoxColecao
     TabOrder = 4
   end
-  object BtnLimpColecao: TButton
+  object butLimpaColecao: TButton
     Left = 632
     Top = 34
     Width = 16
@@ -310,10 +316,6 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
-    OnClick = BtnLimpColecaoClick
-  end
-  object ApplicationEvents1: TApplicationEvents
-    Left = 488
-    Top = 72
+    OnClick = butLimpaColecaoClick
   end
 end

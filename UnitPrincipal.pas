@@ -111,7 +111,7 @@ type
     procedure gridViewOrdemCorte;
   public
     { Public declarations }
-        procedure BoxColecao;
+    procedure boxColecao;
   end;
 
 var
@@ -141,16 +141,16 @@ begin
             ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
 end;
 
-procedure TformPrincipal.BoxColecao;
+procedure TformPrincipal.boxColecao;
 begin
 
 
-     With dmOrdemCorte.fdq_BoxColecao do
+     With dmOrdemCorte.qyBoxColecao do
      begin
      Close;
      SQl.Clear;
      SQl.add('Select co_id,');
-     SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(15))as nome');
+     SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
      SQl.add('from colecao');
      SQl.add('order by co_descricao');
      Open;

@@ -453,7 +453,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 792
     Top = 16
   end
-  object FDQ_BoxColecao: TFDQuery
+  object qyBoxColecao: TFDQuery
     Connection = Conexao
     SQL.Strings = (
       'Select co_id, '
@@ -465,8 +465,8 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 752
     Top = 440
   end
-  object DS_BoxColecao: TDataSource
-    DataSet = FDQ_BoxColecao
+  object dsBoxColecao: TDataSource
+    DataSet = qyBoxColecao
     Left = 848
     Top = 440
   end

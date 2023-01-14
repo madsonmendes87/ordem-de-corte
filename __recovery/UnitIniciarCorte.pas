@@ -35,7 +35,6 @@ type
     labOrdCorte: TLabel;
     labCortePrevisto: TLabel;
     labRealCortado: TLabel;
-    acaoAbrirProdAcab: TAction;
     DBEdit1: TDBEdit;
     Label2: TLabel;
     DBEdit2: TDBEdit;
@@ -62,7 +61,6 @@ type
     Label13: TLabel;
     DBEdit13: TDBEdit;
     Label1: TLabel;
-    DataSource1: TDataSource;
     Label14: TLabel;
     Label15: TLabel;
     editObservacao: TDBEdit;
@@ -90,13 +88,13 @@ type
     editHrFimRealCortado: TDBEdit;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
-    procedure acaoAbrirProdAcabExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
   public
     { Public declarations }
-    function isDataValida(Value: String): Boolean;
   end;
 
 var
@@ -109,10 +107,6 @@ implementation
 uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule;
 
 
-procedure TformIniciarCorte.acaoAbrirProdAcabExecute(Sender: TObject);
-begin
-    formProdutoAcabado.ShowModal;
-end;
 
 procedure TformIniciarCorte.acaoCoresExecute(Sender: TObject);
 begin
@@ -127,55 +121,25 @@ begin
     formPrincipal.butHistoricOrdem.Enabled := true;
 end;
 
-
-
 procedure TformIniciarCorte.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-    Release;
-    formIniciarCorte := nil;
+    FreeAndNil(formIniciarCorte);
 end;
 
-function TformIniciarCorte.isDataValida(Value: String): Boolean;
-
-var
-    ano, mes, dia, dateAsmmddyyy : String;
-    stringListDate : TStringList;
-    match : Boolean;
+procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
 begin
-    match := TRegEx.IsMatch( Value, '[0-9] {1,2} - [0-9] {1,2} - [0-9] {4}');
-    if not match then
-    begin
-      Result := False;
-      exit;
-    end;
-    stringListDate := TStringList.Create;
-    stringListDate.Delimiter := '-';
-    stringListDate.DelimitedText := Value;
-    dia := stringListDate[ 0 ];
-    mes := stringListDate[ 1 ];
-    ano := stringListDate[ 2 ];
-    dateAsmmddyyy := dia + '/' + mes + '/' + ano;
-    Result := true;
-    try
-      StrToDate(dateAsmmddyyy);
-    except
-      Result := false;
-    end;
+  if key = 113 then
+     begin
 
-
-
-//  const
-//    Format = '^([0-9]\\/[0-9]\\/[0-9])$'; // expressão regular
-//    begin
-//        if (match:=TRegEx.IsMatch(Value, Format)) then // valida o formato
-//          if (StrToDate(Value) < NOW()) then // Converte e verifica se é menor que data atudal
-//              isDataValida := TRUE // retorna true
-//          else
-//             raise EDataNascimento.Create('Data de Nascimento maior que data atual') // senao cria uma exception
-//          else
-//              raise EDataNascimento.Create('Data de Nascimento invalida');// senao cria uma exception
-//    end;
+          try
+             application.CreateForm(TformProdutoAcabado, formProdutoAcabado);
+             formProdutoAcabado.ShowModal;
+          finally
+             FreeAndNil(formProdutoAcabado);
+          end;
+     end;
 end;
 
 end.

@@ -90,6 +90,7 @@ type
     procedure acaoCoresExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure editObservacaoKeyPress(Sender: TObject; var Key: Char);
+    procedure editObservacaoExit(Sender: TObject);
     procedure editDtSolicitacaoExit(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -129,6 +130,11 @@ end;
 procedure TformIniciarCorte.editDtSolicitacaoExit(Sender: TObject);
 begin
     isDataValida(editDtSolicitacao.Text);
+end;
+
+procedure TformIniciarCorte.editObservacaoExit(Sender: TObject);
+begin
+   // isDataValida(editDtSolicitacao.Text);
 end;
 
 procedure TformIniciarCorte.editObservacaoKeyPress(Sender: TObject;
