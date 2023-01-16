@@ -169,9 +169,15 @@ object formProdutoAcabado: TformProdutoAcabado
   object Label1: TLabel
     Left = 56
     Top = 65
-    Width = 83
+    Width = 97
     Height = 13
     Caption = 'Data de cadastro'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object comboFiltro: TComboBox
     Left = 56
@@ -311,9 +317,5 @@ object formProdutoAcabado: TformProdutoAcabado
     ParentFont = False
     TabOrder = 5
     OnClick = butLimpaColecaoClick
-  end
-  object ApplicationEvents1: TApplicationEvents
-    Left = 488
-    Top = 72
   end
 end

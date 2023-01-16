@@ -6,7 +6,7 @@ uses
   System.RegularExpressions, Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls,
   Vcl.StdCtrls, System.Actions, Vcl.ActnList, Data.DB, Vcl.Mask,
-  Vcl.DBCtrls;
+  Vcl.DBCtrls, Vcl.ComCtrls;
 
 type
   TformIniciarCorte = class(TForm)
@@ -35,7 +35,6 @@ type
     labOrdCorte: TLabel;
     labCortePrevisto: TLabel;
     labRealCortado: TLabel;
-    acaoAbrirProdAcab: TAction;
     DBEdit1: TDBEdit;
     Label2: TLabel;
     DBEdit2: TDBEdit;
@@ -62,10 +61,8 @@ type
     Label13: TLabel;
     DBEdit13: TDBEdit;
     Label1: TLabel;
-    DataSource1: TDataSource;
     Label14: TLabel;
     Label15: TLabel;
-    editObservacao: TDBEdit;
     Label16: TLabel;
     Label17: TLabel;
     labTipoCorte: TLabel;
@@ -76,29 +73,27 @@ type
     butDesistir: TBitBtn;
     Label18: TLabel;
     Label20: TLabel;
-    editDtSolicitacao: TDBEdit;
-    editHrSolicitacao: TDBEdit;
-    editDtFinSolicitacao: TDBEdit;
-    editHrFinSolicitacao: TDBEdit;
-    editDtIniPrevisto: TDBEdit;
-    editHrIniPrevisto: TDBEdit;
-    editDtFimPrevisto: TDBEdit;
-    editHrFimPrevisto: TDBEdit;
-    editDtIniRealCortado: TDBEdit;
-    editHrIniRealCortado: TDBEdit;
-    editDtFimRealCortado: TDBEdit;
-    editHrFimRealCortado: TDBEdit;
+    dataSolicitacao: TDateTimePicker;
+    horaSolicitacao: TDateTimePicker;
+    dataOrdemFinalizacao: TDateTimePicker;
+    horaOrdemFinalizacao: TDateTimePicker;
+    DateTimePicker5: TDateTimePicker;
+    DateTimePicker6: TDateTimePicker;
+    DateTimePicker7: TDateTimePicker;
+    DateTimePicker8: TDateTimePicker;
+    DateTimePicker9: TDateTimePicker;
+    DateTimePicker10: TDateTimePicker;
+    DateTimePicker11: TDateTimePicker;
+    DateTimePicker12: TDateTimePicker;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
-    procedure acaoAbrirProdAcabExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure editObservacaoKeyPress(Sender: TObject; var Key: Char);
-    procedure editObservacaoExit(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
   public
     { Public declarations }
-    function isDataValida(Value: String): Boolean;
   end;
 
 var
@@ -111,10 +106,6 @@ implementation
 uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule;
 
 
-procedure TformIniciarCorte.acaoAbrirProdAcabExecute(Sender: TObject);
-begin
-    formProdutoAcabado.ShowModal;
-end;
 
 procedure TformIniciarCorte.acaoCoresExecute(Sender: TObject);
 begin
@@ -129,66 +120,25 @@ begin
     formPrincipal.butHistoricOrdem.Enabled := true;
 end;
 
-
-
-procedure TformIniciarCorte.editObservacaoExit(Sender: TObject);
-begin
-    isDataValida(editDtSolicitacao.Text);
-end;
-
-procedure TformIniciarCorte.editObservacaoKeyPress(Sender: TObject;
-  var Key: Char);
-begin
-      //isDataValida(editDtSolicitacao.Text);
-end;
-
 procedure TformIniciarCorte.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-    Release;
-    formIniciarCorte := nil;
+    FreeAndNil(formIniciarCorte);
 end;
 
-function TformIniciarCorte.isDataValida(Value: String): Boolean;
-
-var
-    ano, mes, dia, dateAsmmddyyy : String;
-    stringListDate : TStringList;
-    match : Boolean;
+procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
 begin
-    match := TRegEx.IsMatch( Value, '[0-9] {1,2} - [0-9] {1,2} - [0-9] {4}');
-    if not match then
-    begin
-      Result := False;
-      exit;
-    end;
-    stringListDate := TStringList.Create;
-    stringListDate.Delimiter := '-';
-    stringListDate.DelimitedText := Value;
-    dia := stringListDate[ 0 ];
-    mes := stringListDate[ 1 ];
-    ano := stringListDate[ 2 ];
-    dateAsmmddyyy := dia + '/' + mes + '/' + ano;
-    Result := true;
-    try
-      StrToDate(dateAsmmddyyy);
-    except
-      Result := false;
-    end;
+  if key = 113 then
+     begin
 
-
-
-//  const
-//    Format = '^([0-9]\\/[0-9]\\/[0-9])$'; // expressão regular
-//    begin
-//        if (match:=TRegEx.IsMatch(Value, Format)) then // valida o formato
-//          if (StrToDate(Value) < NOW()) then // Converte e verifica se é menor que data atudal
-//              isDataValida := TRUE // retorna true
-//          else
-//             raise EDataNascimento.Create('Data de Nascimento maior que data atual') // senao cria uma exception
-//          else
-//              raise EDataNascimento.Create('Data de Nascimento invalida');// senao cria uma exception
-//    end;
+          try
+             application.CreateForm(TformProdutoAcabado, formProdutoAcabado);
+             formProdutoAcabado.ShowModal;
+          finally
+             FreeAndNil(formProdutoAcabado);
+          end;
+     end;
 end;
 
 end.

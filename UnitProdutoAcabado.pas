@@ -17,7 +17,6 @@ type
     butProdutoPesquisar: TSpeedButton;
     gridProdutoAcabado: TDBGrid;
     dtCadastro: TDateTimePicker;
-    ApplicationEvents1: TApplicationEvents;
     Label1: TLabel;
     dbLCBoxColecao: TDBLookupComboBox;
     butLimpaColecao: TButton;

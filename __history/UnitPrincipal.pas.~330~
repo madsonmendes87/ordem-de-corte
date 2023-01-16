@@ -111,6 +111,7 @@ type
     procedure gridViewOrdemCorte;
   public
     { Public declarations }
+    procedure boxColecao;
   end;
 
 var
@@ -138,6 +139,23 @@ procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
       if butHistoricOrdem.Enabled = true then
             ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
+end;
+
+procedure TformPrincipal.boxColecao;
+begin
+
+
+     With dmOrdemCorte.qyBoxColecao do
+     begin
+     Close;
+     SQl.Clear;
+     SQl.add('Select co_id,');
+     SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
+     SQl.add('from colecao');
+     SQl.add('order by co_descricao');
+     Open;
+     end;
+
 end;
 
 procedure TformPrincipal.butCortePrevistoClick(Sender: TObject);
@@ -215,12 +233,12 @@ begin
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
                 qyOrdemCorte.SQL.Add('and oc.oc_idfichatecnica = :fichatecnica');
-                qyOrdemCorte.ParamByName('fichatecnica').AsInteger := strtoint(editSearch.Text);
+                qyOrdemCorte.ParamByName('fichatecnica').AsInteger := strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'ORDEM DE CORTE' then
             begin
                 qyOrdemCorte.SQL.Add('and oc.oc_id = :ordemdecorte');
-                qyOrdemCorte.ParamByName('ordemdecorte').AsInteger := strtoint(editSearch.Text);
+                qyOrdemCorte.ParamByName('ordemdecorte').AsInteger := strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
@@ -354,6 +372,14 @@ begin
     butVerCorte.Enabled := false;
     butCortePrevisto.Enabled := false;
     butHistoricOrdem.Enabled := false;
+    comboFiltro.Enabled := false;
+    comboSituacao.Enabled := false;
+    editSearch.Enabled := false;
+    comboIniOrd.Enabled := false;
+    comboTipo.Enabled := false;
+    comboColecao.Enabled := false;
+    comboEstilista.Enabled := false;
+    comboFiltroData.Enabled := false;
 end;
 
 end.

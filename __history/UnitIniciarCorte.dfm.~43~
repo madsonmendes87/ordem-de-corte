@@ -11,9 +11,11 @@ object formIniciarCorte: TformIniciarCorte
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Visible = True
   OnClose = FormClose
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object butSairInicioCorte: TSpeedButton
@@ -271,7 +273,6 @@ object formIniciarCorte: TformIniciarCorte
     Width = 67
     Height = 13
     Caption = 'Observa'#231#227'o'
-    FocusControl = editObservacao
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -609,17 +610,6 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
     TabOrder = 5
   end
-  object editObservacao: TDBEdit
-    Left = 29
-    Top = 304
-    Width = 1066
-    Height = 21
-    DataField = 'oc_observacao'
-    DataSource = DataSource1
-    TabOrder = 6
-    OnExit = editObservacaoExit
-    OnKeyPress = editObservacaoKeyPress
-  end
   object butNovo: TBitBtn
     Left = 27
     Top = 354
@@ -702,7 +692,7 @@ object formIniciarCorte: TformIniciarCorte
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000}
-    TabOrder = 7
+    TabOrder = 6
   end
   object butSalvar: TBitBtn
     Left = 152
@@ -767,7 +757,7 @@ object formIniciarCorte: TformIniciarCorte
       8080805F5F5F5A5A5A797979FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    TabOrder = 8
+    TabOrder = 7
   end
   object butRemover: TBitBtn
     Left = 280
@@ -832,7 +822,7 @@ object formIniciarCorte: TformIniciarCorte
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFEFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFEFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    TabOrder = 9
+    TabOrder = 8
   end
   object butEditar: TBitBtn
     Left = 406
@@ -897,7 +887,7 @@ object formIniciarCorte: TformIniciarCorte
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFDBECDF55A56A0A7D2874B685FDFEFDFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    TabOrder = 10
+    TabOrder = 9
   end
   object butDesistir: TBitBtn
     Left = 534
@@ -962,128 +952,119 @@ object formIniciarCorte: TformIniciarCorte
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+    TabOrder = 10
+  end
+  object dataSolicitacao: TDateTimePicker
+    Left = 29
+    Top = 215
+    Width = 131
+    Height = 21
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
     TabOrder = 11
   end
-  object editDtSolicitacao: TDBEdit
-    Left = 35
-    Top = 212
-    Width = 128
-    Height = 21
-    DataField = 'oc_dtsolicitacao'
-    DataSource = DataSource1
-    MaxLength = 10
-    TabOrder = 12
-    OnExit = editDtSolicitacaoExit
-  end
-  object editHrSolicitacao: TDBEdit
-    Left = 169
+  object horaSolicitacao: TDateTimePicker
+    Left = 166
     Top = 215
-    Width = 105
+    Width = 91
     Height = 21
-    DataField = 'oc_horasolicitacao'
-    DataSource = DataSource1
-    MaxLength = 8
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
+    Kind = dtkTime
+    TabOrder = 12
+  end
+  object dataOrdemFinalizacao: TDateTimePicker
+    Left = 27
+    Top = 258
+    Width = 133
+    Height = 21
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
     TabOrder = 13
   end
-  object editDtFinSolicitacao: TDBEdit
-    Left = 31
+  object horaOrdemFinalizacao: TDateTimePicker
+    Left = 166
     Top = 258
-    Width = 132
+    Width = 89
     Height = 21
-    DataField = 'oc_dtprevisaofinalizacao'
-    DataSource = DataSource1
-    MaxLength = 10
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
+    Kind = dtkTime
     TabOrder = 14
   end
-  object editHrFinSolicitacao: TDBEdit
-    Left = 169
-    Top = 258
-    Width = 105
+  object dataCortePrevisto: TDateTimePicker
+    Left = 429
+    Top = 215
+    Width = 131
     Height = 21
-    DataField = 'oc_hrprevisaofinalizacao'
-    DataSource = DataSource1
-    MaxLength = 8
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
     TabOrder = 15
   end
-  object editDtIniPrevisto: TDBEdit
-    Left = 406
-    Top = 210
-    Width = 132
+  object horaCortePrevisto: TDateTimePicker
+    Left = 568
+    Top = 215
+    Width = 91
     Height = 21
-    DataField = 'oc_datapreviniciocorteprevisto'
-    DataSource = DataSource1
-    MaxLength = 10
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
+    Kind = dtkTime
     TabOrder = 16
   end
-  object editHrIniPrevisto: TDBEdit
-    Left = 544
-    Top = 210
-    Width = 111
+  object dataFinalCortePrevisto: TDateTimePicker
+    Left = 429
+    Top = 256
+    Width = 131
     Height = 21
-    DataField = 'oc_horapreviniciocorteprevisto'
-    DataSource = DataSource1
-    MaxLength = 8
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
     TabOrder = 17
   end
-  object editDtFimPrevisto: TDBEdit
-    Left = 405
-    Top = 258
-    Width = 132
+  object horaFinalCortePrevisto: TDateTimePicker
+    Left = 568
+    Top = 256
+    Width = 91
     Height = 21
-    DataField = 'oc_dataprevfimcorteprevisto'
-    DataSource = DataSource1
-    MaxLength = 10
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
+    Kind = dtkTime
     TabOrder = 18
   end
-  object editHrFimPrevisto: TDBEdit
-    Left = 543
-    Top = 258
-    Width = 112
+  object DateTimePicker9: TDateTimePicker
+    Left = 853
+    Top = 215
+    Width = 111
     Height = 21
-    DataField = 'oc_horaprevfimcorteprevisto'
-    DataSource = DataSource1
-    MaxLength = 8
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
     TabOrder = 19
   end
-  object editDtIniRealCortado: TDBEdit
-    Left = 823
-    Top = 212
-    Width = 132
+  object DateTimePicker10: TDateTimePicker
+    Left = 970
+    Top = 215
+    Width = 111
     Height = 21
-    DataField = 'oc_datapreviniciorealcortado'
-    DataSource = DataSource1
-    MaxLength = 10
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
     TabOrder = 20
   end
-  object editHrIniRealCortado: TDBEdit
-    Left = 961
-    Top = 212
-    Width = 96
+  object DateTimePicker11: TDateTimePicker
+    Left = 853
+    Top = 258
+    Width = 111
     Height = 21
-    DataField = 'oc_horapreviniciorealcortado'
-    DataSource = DataSource1
-    MaxLength = 8
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
     TabOrder = 21
   end
-  object editDtFimRealCortado: TDBEdit
-    Left = 823
+  object DateTimePicker12: TDateTimePicker
+    Left = 970
     Top = 258
-    Width = 132
+    Width = 111
     Height = 21
-    DataField = 'oc_dataprevfimrealcortado'
-    DataSource = DataSource1
-    MaxLength = 10
+    Date = 44942.000000000000000000
+    Time = 0.308124120369029700
     TabOrder = 22
-  end
-  object editHrFimRealCortado: TDBEdit
-    Left = 961
-    Top = 258
-    Width = 96
-    Height = 21
-    DataField = 'oc_horaprevfimrealcortado'
-    DataSource = DataSource1
-    MaxLength = 8
-    TabOrder = 23
   end
   object ActionList1: TActionList
     Left = 872
@@ -1094,16 +1075,5 @@ object formIniciarCorte: TformIniciarCorte
       ShortCut = 117
       OnExecute = acaoCoresExecute
     end
-    object acaoAbrirProdAcab: TAction
-      Category = 'produtoacabado'
-      Caption = 'acaoAbrirProdAcab'
-      ShortCut = 113
-      OnExecute = acaoAbrirProdAcabExecute
-    end
-  end
-  object DataSource1: TDataSource
-    DataSet = dmOrdemCorte.tbOrdemCorte
-    Left = 376
-    Top = 96
   end
 end

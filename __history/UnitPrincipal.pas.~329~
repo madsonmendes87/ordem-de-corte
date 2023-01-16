@@ -108,8 +108,10 @@ type
     procedure IniciarCorte1Click(Sender: TObject);
   private
     { Private declarations }
+    procedure gridViewOrdemCorte;
   public
     { Public declarations }
+    procedure boxColecao;
   end;
 
 var
@@ -137,6 +139,23 @@ procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
       if butHistoricOrdem.Enabled = true then
             ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
+end;
+
+procedure TformPrincipal.boxColecao;
+begin
+
+
+     With dmOrdemCorte.qyBoxColecao do
+     begin
+     Close;
+     SQl.Clear;
+     SQl.add('Select co_id,');
+     SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
+     SQl.add('from colecao');
+     SQl.add('order by co_descricao');
+     Open;
+     end;
+
 end;
 
 procedure TformPrincipal.butCortePrevistoClick(Sender: TObject);
@@ -214,12 +233,12 @@ begin
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
                 qyOrdemCorte.SQL.Add('and oc.oc_idfichatecnica = :fichatecnica');
-                qyOrdemCorte.ParamByName('fichatecnica').AsInteger := strtoint(editSearch.Text);
+                qyOrdemCorte.ParamByName('fichatecnica').AsInteger := strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'ORDEM DE CORTE' then
             begin
                 qyOrdemCorte.SQL.Add('and oc.oc_id = :ordemdecorte');
-                qyOrdemCorte.ParamByName('ordemdecorte').AsInteger := strtoint(editSearch.Text);
+                qyOrdemCorte.ParamByName('ordemdecorte').AsInteger := strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
@@ -275,37 +294,7 @@ begin
             qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
             qyOrdemCorte.Open;
       end;
-
-      gridOrdem.Columns[0].Title.Alignment:=taCenter;
-      gridOrdem.Columns[0].Title.Caption:='Nº Corte';
-      gridOrdem.Columns[1].Title.Alignment:=taCenter;
-      gridOrdem.Columns[1].Title.Caption:='Coleção';
-      gridOrdem.Columns[2].Title.Alignment:=taCenter;
-      gridOrdem.Columns[2].Title.Caption:='Situação';
-      gridOrdem.Columns[3].Title.Alignment:=taCenter;
-      gridOrdem.Columns[3].Title.Caption:='Estilista';
-      gridOrdem.Columns[4].Title.Alignment:=taCenter;
-      gridOrdem.Columns[4].Title.Caption:='Ficha Técnica';
-      gridOrdem.Columns[5].Title.Alignment:=taCenter;
-      gridOrdem.Columns[5].Title.Caption:='Ordem de Produção';
-      gridOrdem.Columns[6].Title.Alignment:=taCenter;
-      gridOrdem.Columns[6].Title.Caption:='Dias em Processo';
-      gridOrdem.Columns[7].Title.Alignment:=taCenter;
-      gridOrdem.Columns[7].Title.Caption:='Tipo';
-      gridOrdem.Columns[8].Title.Alignment:=taCenter;
-      gridOrdem.Columns[8].Title.Caption:='Referência';
-      gridOrdem.Columns[9].Title.Alignment:=taCenter;
-      gridOrdem.Columns[9].Title.Caption:='Produto Acabado';
-      gridOrdem.Columns[10].Title.Alignment:=taCenter;
-      gridOrdem.Columns[10].Title.Caption:='Inicio Ordem de Corte';
-      gridOrdem.Columns[11].Title.Alignment:=taCenter;
-      gridOrdem.Columns[11].Title.Caption:='Corte Previsto';
-      gridOrdem.Columns[12].Title.Alignment:=taCenter;
-      gridOrdem.Columns[12].Title.Caption:='Real Cortado';
-      gridOrdem.Columns[13].Title.Alignment:=taCenter;
-      gridOrdem.Columns[13].Title.Caption:='Localização Empenho';
-      gridOrdem.Columns[14].Title.Alignment:=taCenter;
-      gridOrdem.Columns[14].Title.Caption:='Observação'
+      gridViewOrdemCorte;
     end;
 end;
 
@@ -329,6 +318,11 @@ end;
 procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
+    gridViewOrdemCorte;
+end;
+
+procedure TformPrincipal.gridViewOrdemCorte;
+begin
     gridOrdem.Columns[0].Title.Alignment:=taCenter;
     gridOrdem.Columns[0].Title.Caption:='Nº Corte';
     gridOrdem.Columns[1].Title.Alignment:=taCenter;
@@ -378,6 +372,14 @@ begin
     butVerCorte.Enabled := false;
     butCortePrevisto.Enabled := false;
     butHistoricOrdem.Enabled := false;
+    comboFiltro.Enabled := false;
+    comboSituacao.Enabled := false;
+    editSearch.Enabled := false;
+    comboIniOrd.Enabled := false;
+    comboTipo.Enabled := false;
+    comboColecao.Enabled := false;
+    comboEstilista.Enabled := false;
+
 end;
 
 end.

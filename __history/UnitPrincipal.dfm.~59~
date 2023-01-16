@@ -1578,7 +1578,8 @@ object formPrincipal: TformPrincipal
     Panels = <
       item
         Alignment = taCenter
-        Width = 190
+        Text = 'VERS'#195'O: 0.0.0.0'
+        Width = 182
       end
       item
         Width = 50
@@ -1886,8 +1887,7 @@ object formPrincipal: TformPrincipal
         Left = 422
         Top = 32
         Width = 201
-        Height = 22
-        Style = csOwnerDrawFixed
+        Height = 24
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -1903,8 +1903,7 @@ object formPrincipal: TformPrincipal
         Left = 648
         Top = 32
         Width = 225
-        Height = 22
-        Style = csOwnerDrawFixed
+        Height = 24
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -1930,8 +1929,7 @@ object formPrincipal: TformPrincipal
         Left = 896
         Top = 32
         Width = 257
-        Height = 22
-        Style = csOwnerDrawFixed
+        Height = 24
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -1948,8 +1946,7 @@ object formPrincipal: TformPrincipal
         Left = 24
         Top = 35
         Width = 145
-        Height = 22
-        Style = csOwnerDrawFixed
+        Height = 24
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -1982,8 +1979,7 @@ object formPrincipal: TformPrincipal
         Left = 24
         Top = 80
         Width = 145
-        Height = 22
-        Style = csOwnerDrawFixed
+        Height = 24
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -1999,8 +1995,7 @@ object formPrincipal: TformPrincipal
         Left = 192
         Top = 81
         Width = 201
-        Height = 22
-        Style = csOwnerDrawFixed
+        Height = 24
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -2016,8 +2011,7 @@ object formPrincipal: TformPrincipal
         Left = 423
         Top = 81
         Width = 200
-        Height = 22
-        Style = csOwnerDrawFixed
+        Height = 24
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -2044,8 +2038,7 @@ object formPrincipal: TformPrincipal
         Left = 650
         Top = 81
         Width = 145
-        Height = 22
-        Style = csOwnerDrawFixed
+        Height = 24
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13

@@ -78,15 +78,15 @@ begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_descricao = :descricao');
                 qyProdutoAcabado.ParamByName('descricao').AsString := editSearchPA.Text;
             end;
-            if DBLCBoxColecao.KeyValue <> Null then
+            if dbLCBoxColecao.KeyValue <> Null then
             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_idcolecao = :colecao');
-                qyProdutoAcabado.ParamByName('colecao').AsInteger := DBLCBoxColecao.KeyValue;
+                qyProdutoAcabado.ParamByName('colecao').AsInteger := dbLCBoxColecao.KeyValue;
             end;
-            if DTCadastro.Checked = true then
+            if dtCadastro.Checked = true then
             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
-                qyProdutoAcabado.ParamByName('dtcadastro').AsDate := DTCadastro.Date;
+                qyProdutoAcabado.ParamByName('dtcadastro').AsDate := dtCadastro.Date;
             end;
             qyProdutoAcabado.SQL.Add('order by ft.fi_id desc limit 15');
             qyProdutoAcabado.Open;
