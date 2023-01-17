@@ -112,6 +112,8 @@ type
   public
     { Public declarations }
     procedure boxColecao;
+    //function versionamento(var V1, V2, V3, V4: Integer);
+    function GetBuildInfo(Prog: String): String;
   end;
 
 var
@@ -319,6 +321,7 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
+  //  footerPrincipal.Panels.Items[0].Text := intToStr(versionamento);
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -362,6 +365,33 @@ begin
     comboTipo.Text:='';
 end;
 
+function GetBuildInfo(Prog: String): String;
+var
+ VerInfoSize: DWORD;
+ VerInfo: Pointer;
+ VerValueSize: DWORD;
+ VerValue: PVSFixedFileInfo;
+ Dummy: DWORD;
+ V1, V2, V3, V4: Word;
+begin
+    try
+      VerInfoSize := GetFileVersionInfoSize(PChar(Prog), Dummy);
+      GetMem(VerInfo, VerInfoSize);
+      GetFileVersionInfo(PChar(prog), 0, VerInfoSize, VerInfo);
+      VerQueryValue(VerInfo, '', Pointer(VerValue), VerValueSize);
+    with (VerValue^) do
+    begin
+       V1 := dwFileVersionMS shr 16;
+       V2 := dwFileVersionMS and $FFFF;
+       V3 := dwFileVersionLS shr 16;
+       V4 := dwFileVersionLS and $FFFF;
+    end;
+    FreeMem(VerInfo, VerInfoSize);
+    Result := Format('%d.%d.%d.%d', [v1, v2, v3, v4]);
+    except
+      Result := '1.0.0';
+    end;
+end;
 procedure TformPrincipal.IniciarCorte1Click(Sender: TObject);
 begin
     formIniciarCorte:=TformIniciarCorte.Create(Self);
@@ -377,6 +407,13 @@ begin
     editSearch.Enabled := false;
     comboIniOrd.Enabled := false;
     comboTipo.Enabled := false;
+    comboColecao.Enabled := false;
+    comboEstilista.Enabled := false;
+    comboFiltroData.Enabled := false;
+    comboSetor.Enabled := false;
+    dateTimePicker1.Enabled := false;
+    dateTimePicker2.Enabled := false;
+    butOrdemPesquisar.Enabled := false;
 end;
 
 end.

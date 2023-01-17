@@ -307,6 +307,7 @@ procedure TformPrincipal.FormCreate(Sender: TObject);
 begin
     dateTimePicker1.Date := now;
     dateTimePicker2.Date := now;
+    //footerPrincipal.Panels.Items[0].Text := intToStr(VersaoExe);
 end;
 
 procedure TformPrincipal.FormResize(Sender: TObject);
@@ -319,6 +320,7 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
+    //footerPrincipal.Panels.Items[0].Text := ;
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -380,6 +382,10 @@ begin
     comboColecao.Enabled := false;
     comboEstilista.Enabled := false;
     comboFiltroData.Enabled := false;
+    comboSetor.Enabled := false;
+    dateTimePicker1.Enabled := false;
+    dateTimePicker2.Enabled := false;
+    butOrdemPesquisar.Enabled := false;
 end;
 
 end.
