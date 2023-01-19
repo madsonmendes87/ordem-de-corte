@@ -112,6 +112,8 @@ type
   public
     { Public declarations }
     procedure boxColecao;
+    //function versionamento(var V1, V2, V3, V4: Integer);
+    function VersaoExe: String;
   end;
 
 var
@@ -319,6 +321,7 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
+    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -362,6 +365,42 @@ begin
     comboTipo.Text:='';
 end;
 
+function TformPrincipal.VersaoExe: string;
+type
+   PFFI = ^vs_FixedFileInfo;
+var
+   F       : PFFI;
+   Handle  : Dword;
+   Len     : Longint;
+   Data    : Pchar;
+   Buffer  : Pointer;
+   Tamanho : Dword;
+   Parquivo: Pchar;
+   Arquivo : String;
+begin
+   Arquivo  := Application.ExeName;
+   Parquivo := StrAlloc(Length(Arquivo) + 1);
+   StrPcopy(Parquivo, Arquivo);
+   Len := GetFileVersionInfoSize(Parquivo, Handle);
+   Result := '';
+   if Len > 0 then
+   begin
+      Data:=StrAlloc(Len+1);
+      if GetFileVersionInfo(Parquivo,Handle,Len,Data) then
+      begin
+         VerQueryValue(Data, '',Buffer,Tamanho);
+         F := PFFI(Buffer);
+         Result := Format('%d.%d.%d.%d',
+                          [HiWord(F^.dwFileVersionMs),
+                           LoWord(F^.dwFileVersionMs),
+                           HiWord(F^.dwFileVersionLs),
+                           Loword(F^.dwFileVersionLs)]
+                         );
+      end;
+      StrDispose(Data);
+   end;
+   StrDispose(Parquivo);
+end;
 procedure TformPrincipal.IniciarCorte1Click(Sender: TObject);
 begin
     formIniciarCorte:=TformIniciarCorte.Create(Self);

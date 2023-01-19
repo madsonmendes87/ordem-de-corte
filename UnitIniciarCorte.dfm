@@ -15,6 +15,7 @@ object formIniciarCorte: TformIniciarCorte
   OldCreateOrder = False
   Visible = True
   OnClose = FormClose
+  OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
@@ -34,8 +35,8 @@ object formIniciarCorte: TformIniciarCorte
     OnClick = butSairInicioCorteClick
   end
   object labNumOrd: TLabel
-    Left = 32
-    Top = 24
+    Left = 27
+    Top = 28
     Width = 177
     Height = 25
     Caption = 'N'#186' Ordem de Corte:'
@@ -60,8 +61,8 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labCodigo: TLabel
-    Left = 35
-    Top = 55
+    Left = 30
+    Top = 59
     Width = 44
     Height = 13
     Caption = 'C'#211'DIGO'
@@ -73,8 +74,8 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labF2: TLabel
-    Left = 146
-    Top = 77
+    Left = 141
+    Top = 81
     Width = 14
     Height = 16
     Caption = 'F2'
@@ -86,8 +87,8 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labReferencia: TLabel
-    Left = 166
-    Top = 53
+    Left = 161
+    Top = 57
     Width = 67
     Height = 13
     Caption = 'REFER'#202'NCIA'
@@ -99,8 +100,8 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labFicha: TLabel
-    Left = 286
-    Top = 53
+    Left = 281
+    Top = 57
     Width = 34
     Height = 13
     Caption = 'FICHA'
@@ -112,8 +113,8 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labDescricao: TLabel
-    Left = 406
-    Top = 53
+    Left = 401
+    Top = 57
     Width = 64
     Height = 13
     Caption = 'DESCRI'#199#195'O'
@@ -125,7 +126,7 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labSituacao: TLabel
-    Left = 32
+    Left = 27
     Top = 114
     Width = 58
     Height = 13
@@ -140,9 +141,9 @@ object formIniciarCorte: TformIniciarCorte
   object labNormal: TLabel
     Left = 32
     Top = 133
-    Width = 47
+    Width = 5
     Height = 13
-    Caption = 'NORMAL'
+    Caption = '-'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -11
@@ -166,9 +167,9 @@ object formIniciarCorte: TformIniciarCorte
   object labNaoComp: TLabel
     Left = 119
     Top = 133
-    Width = 23
+    Width = 5
     Height = 13
-    Caption = 'NAO'
+    Caption = '-'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -11
@@ -192,9 +193,9 @@ object formIniciarCorte: TformIniciarCorte
   object labNaoAprov: TLabel
     Left = 239
     Top = 133
-    Width = 23
+    Width = 5
     Height = 13
-    Caption = 'NAO'
+    Caption = '-'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMaroon
     Font.Height = -11
@@ -561,8 +562,8 @@ object formIniciarCorte: TformIniciarCorte
     end
   end
   object editCodigo: TEdit
-    Left = 35
-    Top = 72
+    Left = 30
+    Top = 76
     Width = 105
     Height = 21
     Color = clBtnFace
@@ -570,8 +571,8 @@ object formIniciarCorte: TformIniciarCorte
     TabOrder = 1
   end
   object editReferencia: TEdit
-    Left = 166
-    Top = 72
+    Left = 161
+    Top = 76
     Width = 105
     Height = 21
     Color = clBtnFace
@@ -579,8 +580,8 @@ object formIniciarCorte: TformIniciarCorte
     TabOrder = 2
   end
   object editFicha: TEdit
-    Left = 286
-    Top = 72
+    Left = 281
+    Top = 76
     Width = 105
     Height = 21
     Color = clBtnFace
@@ -588,8 +589,8 @@ object formIniciarCorte: TformIniciarCorte
     TabOrder = 3
   end
   object editDescReferencia: TEdit
-    Left = 406
-    Top = 72
+    Left = 401
+    Top = 76
     Width = 294
     Height = 21
     Color = clBtnFace

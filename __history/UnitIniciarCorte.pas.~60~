@@ -143,17 +143,6 @@ end;
 procedure TformIniciarCorte.FormCreate(Sender: TObject);
 begin
     dataSolicitacao.Date := now;
-    horaSolicitacao.Time := now;
-    dataOrdemFinalizacao.Date := now;
-    horaOrdemFinalizacao.Time := now;
-    dataCortePrevisto.Date := now;
-    horaCortePrevisto.Time := now;
-    dataFinalCortePrevisto.Date := now;
-    horaFinalCortePrevisto.Time := now;
-    dataRealCortado.Date := now;
-    horaRealCortado.Time := now;
-    dataFinalRealCortado.Date := now;
-    horaFinalRealCortado.Time := now;
 end;
 
 procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;

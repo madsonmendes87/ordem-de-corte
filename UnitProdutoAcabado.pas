@@ -122,6 +122,8 @@ begin
     formIniciarCorte.editReferencia.Text := gridProdutoAcabado.Fields[1].Value;
     formIniciarCorte.editFicha.Text := gridProdutoAcabado.Fields[3].Value;
     formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
+    formIniciarCorte.labNaoComp.Caption := gridProdutoAcabado.Fields[4].Value;
+    formIniciarCorte.labNaoAprov.Caption := gridProdutoAcabado.Fields[5].Value;
     formProdutoAcabado.Close;
 end;
 
