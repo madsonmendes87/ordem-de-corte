@@ -82,7 +82,6 @@ type
     labIniOrdem: TLabel;
     comboIniOrd: TComboBox;
     labColecao: TLabel;
-    comboColecao: TComboBox;
     labData: TLabel;
     comboFiltroData: TComboBox;
     dateTimePicker1: TDateTimePicker;
@@ -95,6 +94,7 @@ type
     butCortePrevisto: TBitBtn;
     acaoBotaoHistorico: TAction;
     butHistoricOrdem: TBitBtn;
+    dbLColecao: TDBLookupComboBox;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -106,13 +106,13 @@ type
     procedure acaoBotaoCortePrevistoExecute(Sender: TObject);
     procedure acaoBotaoHistoricoExecute(Sender: TObject);
     procedure IniciarCorte1Click(Sender: TObject);
+    procedure dbLColecaoDropDown(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
   public
     { Public declarations }
     procedure boxColecao;
-    //function versionamento(var V1, V2, V3, V4: Integer);
     function VersaoExe: String;
   end;
 
@@ -145,18 +145,16 @@ end;
 
 procedure TformPrincipal.boxColecao;
 begin
-
-
-     With dmOrdemCorte.qyBoxColecao do
-     begin
-     Close;
-     SQl.Clear;
-     SQl.add('Select co_id,');
-     SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
-     SQl.add('from colecao');
-     SQl.add('order by co_descricao');
-     Open;
-     end;
+    With dmOrdemCorte.qyBoxColecao do
+    begin
+        Close;
+        SQl.Clear;
+        SQl.add('Select co_id,');
+        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
+        SQl.add('from colecao');
+        SQl.add('order by co_descricao');
+        Open;
+    end;
 
 end;
 
@@ -197,14 +195,14 @@ begin
             qyOrdemCorte.SQL.Add('     WHERE oci.oc_id=oc.oc_id');
             qyOrdemCorte.SQL.Add('     LIMIT 1');
             qyOrdemCorte.SQL.Add(') AS diasemprocesso,');
-            qyOrdemCorte.SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''Protótipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
+            qyOrdemCorte.SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''ProtÃ³tipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
             qyOrdemCorte.SQL.Add('(pa.cad_idreferencia)as referencia,');
             qyOrdemCorte.SQL.Add('(pa.cad_descricao)as produtoacabado,');
             qyOrdemCorte.SQL.Add('(oc.oc_dtgerada)as datagerada,');
             qyOrdemCorte.SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_previsto WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradeprevisto,');
             qyOrdemCorte.SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_real WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradereal,');
             qyOrdemCorte.SQL.Add('  Cast(CASE');
-            qyOrdemCorte.SQL.Add('      WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idordemcorte= oc.oc_id And emp_situacao <>''C'' LIMIT 1) IS NULL THEN ''NÃO EMPENHADO''');
+            qyOrdemCorte.SQL.Add('      WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idordemcorte= oc.oc_id And emp_situacao <>''C'' LIMIT 1) IS NULL THEN ''NÃƒO EMPENHADO''');
             qyOrdemCorte.SQL.Add('      ELSE');
             qyOrdemCorte.SQL.Add('          (CASE');
             qyOrdemCorte.SQL.Add('              WHEN (SELECT emp_tipo FROM controle_empenho');
@@ -274,10 +272,10 @@ begin
                     qyOrdemCorte.SQL.Add('and not exists(');
                     qyOrdemCorte.SQL.Add('select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
             end;
-            if comboColecao.ItemIndex <> -1 then
+            if dbLColecao.KeyValue <> Null then
             begin
-                qyOrdemCorte.SQL.Add('and cc.co_descricao = :colecao');
-                qyOrdemCorte.ParamByName('colecao').AsString := comboColecao.Text;
+                qyOrdemCorte.SQL.Add('and pa.cad_idcolecao = :colecao');
+                qyOrdemCorte.ParamByName('colecao').AsInteger := dbLColecao.KeyValue;
             end;
            if comboFiltroData.ItemIndex <> -1 then
            begin
@@ -305,6 +303,11 @@ begin
     acaoBotaoCorteRealExecute(Sender);
 end;
 
+procedure TformPrincipal.dbLColecaoDropDown(Sender: TObject);
+begin
+
+end;
+
 procedure TformPrincipal.FormCreate(Sender: TObject);
 begin
     dateTimePicker1.Date := now;
@@ -321,29 +324,31 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
-    footerPrincipal.Panels.Items[0].Text := 'VERSÃO:'+ VersaoExe;
+    footerPrincipal.Panels.Items[0].Text := 'VERSÃƒO: '+ VersaoExe;
+    boxColecao;
+    //dbLColecao.
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
 begin
     gridOrdem.Columns[0].Title.Alignment:=taCenter;
-    gridOrdem.Columns[0].Title.Caption:='Nº Corte';
+    gridOrdem.Columns[0].Title.Caption:='NÂº Corte';
     gridOrdem.Columns[1].Title.Alignment:=taCenter;
-    gridOrdem.Columns[1].Title.Caption:='Coleção';
+    gridOrdem.Columns[1].Title.Caption:='ColeÃ§Ã£o';
     gridOrdem.Columns[2].Title.Alignment:=taCenter;
-    gridOrdem.Columns[2].Title.Caption:='Situação';
+    gridOrdem.Columns[2].Title.Caption:='SituaÃ§Ã£o';
     gridOrdem.Columns[3].Title.Alignment:=taCenter;
     gridOrdem.Columns[3].Title.Caption:='Estilista';
     gridOrdem.Columns[4].Title.Alignment:=taCenter;
-    gridOrdem.Columns[4].Title.Caption:='Ficha Técnica';
+    gridOrdem.Columns[4].Title.Caption:='Ficha TÃ©cnica';
     gridOrdem.Columns[5].Title.Alignment:=taCenter;
-    gridOrdem.Columns[5].Title.Caption:='Ordem de Produção';
+    gridOrdem.Columns[5].Title.Caption:='Ordem de ProduÃ§Ã£o';
     gridOrdem.Columns[6].Title.Alignment:=taCenter;
     gridOrdem.Columns[6].Title.Caption:='Dias em Processo';
     gridOrdem.Columns[7].Title.Alignment:=taCenter;
     gridOrdem.Columns[7].Title.Caption:='Tipo';
     gridOrdem.Columns[8].Title.Alignment:=taCenter;
-    gridOrdem.Columns[8].Title.Caption:='Referência';
+    gridOrdem.Columns[8].Title.Caption:='ReferÃªncia';
     gridOrdem.Columns[9].Title.Alignment:=taCenter;
     gridOrdem.Columns[9].Title.Caption:='Produto Acabado';
     gridOrdem.Columns[10].Title.Alignment:=taCenter;
@@ -353,9 +358,9 @@ begin
     gridOrdem.Columns[12].Title.Alignment:=taCenter;
     gridOrdem.Columns[12].Title.Caption:='Real Cortado';
     gridOrdem.Columns[13].Title.Alignment:=taCenter;
-    gridOrdem.Columns[13].Title.Caption:='Localização Empenho';
+    gridOrdem.Columns[13].Title.Caption:='LocalizaÃ§Ã£o Empenho';
     gridOrdem.Columns[14].Title.Alignment:=taCenter;
-    gridOrdem.Columns[14].Title.Caption:='Observação';
+    gridOrdem.Columns[14].Title.Caption:='ObservaÃ§Ã£o';
     butVerCorte.Font.Color:=clMenuHighlight;
     butVerCorte.Font.Style:=[fsBold];
     butCortePrevisto.Font.Color:=clMenuHighlight;
@@ -416,7 +421,6 @@ begin
     editSearch.Enabled := false;
     comboIniOrd.Enabled := false;
     comboTipo.Enabled := false;
-    comboColecao.Enabled := false;
     comboEstilista.Enabled := false;
     comboFiltroData.Enabled := false;
     comboSetor.Enabled := false;

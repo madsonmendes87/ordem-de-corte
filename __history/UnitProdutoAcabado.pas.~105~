@@ -17,15 +17,14 @@ type
     butProdutoPesquisar: TSpeedButton;
     gridProdutoAcabado: TDBGrid;
     dtCadastro: TDateTimePicker;
-    ApplicationEvents1: TApplicationEvents;
     Label1: TLabel;
-    DBLCBoxColecao: TDBLookupComboBox;
-    BtnLimpColecao: TButton;
+    dbLCBoxColecao: TDBLookupComboBox;
+    butLimpaColecao: TButton;
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridProdutoAcabadoDblClick(Sender: TObject);
-    procedure BtnLimpColecaoClick(Sender: TObject);
+    procedure butLimpaColecaoClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
@@ -43,9 +42,10 @@ implementation
 
 uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
 
-procedure TformProdutoAcabado.BtnLimpColecaoClick(Sender: TObject);
+
+procedure TformProdutoAcabado.butLimpaColecaoClick(Sender: TObject);
 begin
-     DBLCBoxColecao.KeyValue := Null;
+     dbLCBoxColecao.KeyValue := Null;
 end;
 
 procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
@@ -78,20 +78,19 @@ begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_descricao = :descricao');
                 qyProdutoAcabado.ParamByName('descricao').AsString := editSearchPA.Text;
             end;
-            if DBLCBoxColecao.KeyValue <> Null then
+            if dbLCBoxColecao.KeyValue <> Null then
             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_idcolecao = :colecao');
-                qyProdutoAcabado.ParamByName('colecao').AsInteger := DBLCBoxColecao.KeyValue;
+                qyProdutoAcabado.ParamByName('colecao').AsInteger := dbLCBoxColecao.KeyValue;
             end;
-            if DTCadastro.Checked = true then
+            if dtCadastro.Checked = true then
             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
-                qyProdutoAcabado.ParamByName('dtcadastro').AsDate := DTCadastro.Date;
+                qyProdutoAcabado.ParamByName('dtcadastro').AsDate := dtCadastro.Date;
             end;
             qyProdutoAcabado.SQL.Add('order by ft.fi_id desc limit 15');
             qyProdutoAcabado.Open;
         end;
-       // gridViewProdutoAcabado;
     end;
 end;
 
@@ -99,20 +98,20 @@ procedure TformProdutoAcabado.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
 
-     dmOrdemCorte.fdq_BoxColecao.active   := false;
+     dmOrdemCorte.qyBoxColecao.active   := false;
      dmOrdemCorte.tbProdutoAcabado.Active := false;
 
 end;
 
 procedure TformProdutoAcabado.FormCreate(Sender: TObject);
 begin
-     DTCadastro.Date := now;
+     dtCadastro.Date := now;
+     dtCadastro.Checked := false;
 end;
 
 procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyProdutoAcabado.Active := false;
-
     formPrincipal.BoxColecao;
 
 end;
@@ -123,6 +122,8 @@ begin
     formIniciarCorte.editReferencia.Text := gridProdutoAcabado.Fields[1].Value;
     formIniciarCorte.editFicha.Text := gridProdutoAcabado.Fields[3].Value;
     formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
+    formIniciarCorte.labNaoComp.Caption := gridProdutoAcabado.Fields[4].Value;
+    formIniciarCorte.labNaoAprov.Caption := gridProdutoAcabado.Fields[5].Value;
     formProdutoAcabado.Close;
 end;
 

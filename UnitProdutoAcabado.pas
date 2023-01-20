@@ -112,7 +112,7 @@ end;
 procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyProdutoAcabado.Active := false;
-    formPrincipal.BoxColecao;
+    formPrincipal.boxColecao;
 
 end;
 

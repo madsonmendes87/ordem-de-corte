@@ -1772,7 +1772,7 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labSetor: TLabel
-        Left = 873
+        Left = 897
         Top = 14
         Width = 31
         Height = 13
@@ -2110,6 +2110,7 @@ object formPrincipal: TformPrincipal
       ListField = 'nome'
       ListSource = dmOrdemCorte.dsBoxColecao
       TabOrder = 5
+      OnDropDown = dbLColecaoDropDown
     end
   end
   object popupMenuOrdem: TPopupMenu

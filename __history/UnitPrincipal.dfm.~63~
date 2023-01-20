@@ -1,7 +1,6 @@
 object formPrincipal: TformPrincipal
   Left = 293
   Top = 0
-  BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Corte'
   ClientHeight = 705
   ClientWidth = 1369
@@ -115,7 +114,6 @@ object formPrincipal: TformPrincipal
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 1
-    ExplicitHeight = 8
     object btnOrdemCorte: TSpeedButton
       Left = 1
       Top = -2
@@ -1580,8 +1578,7 @@ object formPrincipal: TformPrincipal
     Panels = <
       item
         Alignment = taCenter
-        Text = 'VERS'#195'O: 0.0.0.0'
-        Width = 182
+        Width = 190
       end
       item
         Width = 50
@@ -1594,17 +1591,13 @@ object formPrincipal: TformPrincipal
     Height = 663
     Align = alClient
     BevelOuter = bvNone
-    Color = clWhite
-    ParentBackground = False
+    ParentColor = True
     TabOrder = 3
-    ExplicitLeft = 185
-    ExplicitWidth = 1184
-    ExplicitHeight = 661
     object gridOrdem: TDBGrid
       Left = 0
       Top = 0
       Width = 1176
-      Height = 443
+      Height = 489
       Align = alTop
       Anchors = [akLeft, akTop, akRight, akBottom]
       Color = clWhite
@@ -1626,14 +1619,14 @@ object formPrincipal: TformPrincipal
     object Panel2: TPanel
       Left = 0
       Top = 545
-      Width = 1185
+      Width = 1177
       Height = 112
       Color = clInactiveBorder
       ParentBackground = False
       TabOrder = 1
       object labFiltro: TLabel
-        Left = 576
-        Top = 0
+        Left = 553
+        Top = 1
         Width = 32
         Height = 16
         Caption = 'Filtro'
@@ -1645,8 +1638,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labTipo: TLabel
-        Left = 422
-        Top = 13
+        Left = 423
+        Top = 14
         Width = 24
         Height = 13
         Caption = 'Tipo'
@@ -1658,8 +1651,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object butOrdemPesquisar: TSpeedButton
-        Left = 1056
-        Top = 72
+        Left = 1057
+        Top = 73
         Width = 97
         Height = 33
         Caption = 'Consultar'
@@ -1766,8 +1759,8 @@ object formPrincipal: TformPrincipal
         OnClick = butOrdemPesquisarClick
       end
       object labEstilista: TLabel
-        Left = 648
-        Top = 16
+        Left = 649
+        Top = 17
         Width = 44
         Height = 13
         Caption = 'Estilista'
@@ -1779,8 +1772,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labSetor: TLabel
-        Left = 896
-        Top = 13
+        Left = 873
+        Top = 14
         Width = 31
         Height = 13
         Caption = 'Setor'
@@ -1792,8 +1785,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labFiltrarPor: TLabel
-        Left = 24
-        Top = 16
+        Left = 30
+        Top = 17
         Width = 78
         Height = 13
         Caption = 'Filtrar pelo(a)'
@@ -1805,8 +1798,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labDadosConsulta: TLabel
-        Left = 192
-        Top = 16
+        Left = 193
+        Top = 17
         Width = 115
         Height = 13
         Caption = 'Dados para consulta'
@@ -1818,8 +1811,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labSituacao: TLabel
-        Left = 24
-        Top = 62
+        Left = 25
+        Top = 63
         Width = 49
         Height = 13
         Caption = 'Situacao'
@@ -1831,8 +1824,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labIniOrdem: TLabel
-        Left = 192
-        Top = 62
+        Left = 193
+        Top = 63
         Width = 124
         Height = 13
         Caption = 'Iniciada Ord Produ'#231#227'o'
@@ -1844,8 +1837,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labColecao: TLabel
-        Left = 423
-        Top = 62
+        Left = 424
+        Top = 63
         Width = 103
         Height = 13
         Caption = 'Cole'#231#227'o deste ano'
@@ -1857,8 +1850,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labData: TLabel
-        Left = 650
-        Top = 62
+        Left = 651
+        Top = 63
         Width = 85
         Height = 13
         Caption = 'Filtrar por data'
@@ -1870,8 +1863,8 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labA: TLabel
-        Left = 927
-        Top = 82
+        Left = 928
+        Top = 83
         Width = 8
         Height = 16
         Caption = 'a'
@@ -1883,20 +1876,34 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object comboTipo: TComboBox
-        Left = 422
-        Top = 32
+        Left = 423
+        Top = 33
         Width = 201
-        Height = 21
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 2
         Items.Strings = (
           'Prototipo'
           'Grande Escala')
       end
       object comboEstilista: TComboBox
-        Left = 648
-        Top = 32
+        Left = 649
+        Top = 33
         Width = 225
-        Height = 21
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 3
         Items.Strings = (
           'ALESSANDRA'
@@ -1913,10 +1920,17 @@ object formPrincipal: TformPrincipal
           'TAINARA')
       end
       object comboSetor: TComboBox
-        Left = 896
-        Top = 32
+        Left = 897
+        Top = 33
         Width = 257
-        Height = 21
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 4
         Items.Strings = (
           'PLANEJAMENTO'
@@ -1924,10 +1938,17 @@ object formPrincipal: TformPrincipal
           'CORTE')
       end
       object comboFiltro: TComboBox
-        Left = 24
-        Top = 35
+        Left = 25
+        Top = 36
         Width = 145
-        Height = 21
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 0
         Items.Strings = (
           '<<  N'#227'o Informar >>'
@@ -1937,40 +1958,68 @@ object formPrincipal: TformPrincipal
           'DESCRICAO REFERENCIA')
       end
       object editSearch: TEdit
-        Left = 192
-        Top = 35
+        Left = 193
+        Top = 36
         Width = 201
-        Height = 21
+        Height = 24
         CharCase = ecUpperCase
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 1
       end
       object comboSituacao: TComboBox
-        Left = 24
-        Top = 80
+        Left = 25
+        Top = 81
         Width = 145
-        Height = 21
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 5
         Items.Strings = (
           'NORMAL'
           'FINALIZADA')
       end
       object comboIniOrd: TComboBox
-        Left = 192
-        Top = 81
+        Left = 193
+        Top = 82
         Width = 201
-        Height = 21
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 6
         Items.Strings = (
           'SIM'
           'NAO')
       end
       object comboColecao: TComboBox
-        Left = 423
-        Top = 81
+        Left = 424
+        Top = 82
         Width = 200
-        Height = 21
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 7
         Items.Strings = (
+          ''
           'JANEIRO'
           'FEVEREIRO'
           'MARCO'
@@ -1985,10 +2034,17 @@ object formPrincipal: TformPrincipal
           'DEZEMBRO')
       end
       object comboFiltroData: TComboBox
-        Left = 650
-        Top = 81
+        Left = 651
+        Top = 82
         Width = 145
-        Height = 21
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 8
         Items.Strings = (
           '<<  Nao Informar >>'
@@ -1997,21 +2053,33 @@ object formPrincipal: TformPrincipal
           'PRAZO DO CORTE')
       end
       object dateTimePicker1: TDateTimePicker
-        Left = 811
-        Top = 80
+        Left = 812
+        Top = 81
         Width = 110
-        Height = 21
+        Height = 24
         Date = 44910.000000000000000000
         Time = 0.437829849535774000
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 9
       end
       object dateTimePicker2: TDateTimePicker
-        Left = 940
-        Top = 80
+        Left = 941
+        Top = 81
         Width = 110
-        Height = 21
+        Height = 24
         Date = 44910.000000000000000000
         Time = 0.437829849535774000
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
         TabOrder = 10
       end
     end
@@ -2021,26 +2089,44 @@ object formPrincipal: TformPrincipal
       Width = 145
       Height = 33
       Caption = 'Ver Corte Real (F4)'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 2
       OnClick = butVerCorteClick
     end
     object butCortePrevisto: TBitBtn
       Left = 192
       Top = 506
-      Width = 145
+      Width = 153
       Height = 33
       Action = acaoBotaoCortePrevisto
       Caption = 'Ver Corte Previsto (F5)'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 3
       OnClick = butCortePrevistoClick
     end
     object butHistoricOrdem: TBitBtn
-      Left = 977
+      Left = 960
       Top = 506
-      Width = 177
+      Width = 194
       Height = 33
       Action = acaoBotaoHistorico
       Caption = 'Historico Ordem de Corte (F7)'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 4
     end
   end
