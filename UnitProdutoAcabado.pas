@@ -107,6 +107,7 @@ procedure TformProdutoAcabado.FormCreate(Sender: TObject);
 begin
      dtCadastro.Date := now;
      dtCadastro.Checked := false;
+     //dbLCBoxColecao.KeyValue := KEY_CREATE_SUB_KEY = 4;
 end;
 
 procedure TformProdutoAcabado.FormShow(Sender: TObject);

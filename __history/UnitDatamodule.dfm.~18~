@@ -9,8 +9,8 @@ object dmOrdemCorte: TdmOrdemCorte
       'Database=dberp'
       'Password=#maga2020'
       'DriverID=PG')
-    Connected = True
-    Left = 48
+    LoginPrompt = False
+    Left = 32
     Top = 16
   end
   object FDTransaction1: TFDTransaction
@@ -29,12 +29,76 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object tbOrdemCorte: TFDTable
-    Active = True
     IndexFieldNames = 'oc_id'
     Connection = Conexao
     TableName = 'ordem_corte'
     Left = 40
     Top = 72
+    object tbOrdemCorteoc_dtsolicitacao: TDateField
+      FieldName = 'oc_dtsolicitacao'
+      Origin = 'oc_dtsolicitacao'
+      EditMask = '99/99/9999;1;_'
+    end
+    object tbOrdemCorteoc_dtprevisaofinalizacao: TDateField
+      FieldName = 'oc_dtprevisaofinalizacao'
+      Origin = 'oc_dtprevisaofinalizacao'
+      EditMask = '99/99/9999;1;_'
+    end
+    object tbOrdemCorteoc_observacao: TWideStringField
+      FieldName = 'oc_observacao'
+      Origin = 'oc_observacao'
+      Size = 35
+    end
+    object tbOrdemCorteoc_datapreviniciocorteprevisto: TDateField
+      FieldName = 'oc_datapreviniciocorteprevisto'
+      Origin = 'oc_datapreviniciocorteprevisto'
+      EditMask = '99/99/9999;1;_'
+    end
+    object tbOrdemCorteoc_dataprevfimcorteprevisto: TDateField
+      FieldName = 'oc_dataprevfimcorteprevisto'
+      Origin = 'oc_dataprevfimcorteprevisto'
+      EditMask = '99/99/9999;1;_'
+    end
+    object tbOrdemCorteoc_datapreviniciorealcortado: TDateField
+      FieldName = 'oc_datapreviniciorealcortado'
+      Origin = 'oc_datapreviniciorealcortado'
+      EditMask = '99/99/9999;1;_'
+    end
+    object tbOrdemCorteoc_dataprevfimrealcortado: TDateField
+      FieldName = 'oc_dataprevfimrealcortado'
+      Origin = 'oc_dataprevfimrealcortado'
+      EditMask = '99/99/9999;1;_'
+    end
+    object tbOrdemCorteoc_hrprevisaofinalizacao: TTimeField
+      FieldName = 'oc_hrprevisaofinalizacao'
+      Origin = 'oc_hrprevisaofinalizacao'
+      EditMask = '00:00:00;1;_'
+    end
+    object tbOrdemCorteoc_horapreviniciocorteprevisto: TTimeField
+      FieldName = 'oc_horapreviniciocorteprevisto'
+      Origin = 'oc_horapreviniciocorteprevisto'
+      EditMask = '00:00:00;1;_'
+    end
+    object tbOrdemCorteoc_horaprevfimcorteprevisto: TTimeField
+      FieldName = 'oc_horaprevfimcorteprevisto'
+      Origin = 'oc_horaprevfimcorteprevisto'
+      EditMask = '00:00:00;1;_'
+    end
+    object tbOrdemCorteoc_horapreviniciorealcortado: TTimeField
+      FieldName = 'oc_horapreviniciorealcortado'
+      Origin = 'oc_horapreviniciorealcortado'
+      EditMask = '99:99:99;1;_'
+    end
+    object tbOrdemCorteoc_horaprevfimrealcortado: TTimeField
+      FieldName = 'oc_horaprevfimrealcortado'
+      Origin = 'oc_horaprevfimrealcortado'
+      EditMask = '00:00:00;1;_'
+    end
+    object tbOrdemCorteoc_horasolicitacao: TTimeField
+      FieldName = 'oc_horasolicitacao'
+      Origin = 'oc_horasolicitacao'
+      EditMask = '00:00:00;1;_'
+    end
   end
   object dsOrdemCorte: TDataSource
     DataSet = qyOrdemCorte
@@ -42,7 +106,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object tbOrdemCorteCores: TFDTable
-    Active = True
     IndexFieldNames = 'occ_id'
     Connection = Conexao
     TableName = 'ordem_corte_cores'
@@ -55,7 +118,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object tbOrdemCorteEmpenho: TFDTable
-    Active = True
     IndexFieldNames = 'oce_id'
     Connection = Conexao
     TableName = 'ordem_corte_empenho'
@@ -68,7 +130,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object tbOrdemCorteEmpenhoAdicional: TFDTable
-    Active = True
     IndexFieldNames = 'ocea_id'
     Connection = Conexao
     TableName = 'ordem_corte_empenho_adicional'
@@ -81,7 +142,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object tbOrdemCorteEmpenhoReal: TFDTable
-    Active = True
     IndexFieldNames = 'id'
     Connection = Conexao
     TableName = 'ordem_corte_empenho_real'
@@ -94,7 +154,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 136
   end
   object tbOrdemCorteEstoqueSobras: TFDTable
-    Active = True
     IndexFieldNames = 'oce_id'
     Connection = Conexao
     TableName = 'ordem_corte_estoque_sobras'
@@ -106,7 +165,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 136
   end
   object tbOrdemCorteItensPrevisto: TFDTable
-    Active = True
     IndexFieldNames = 'oci_id'
     Connection = Conexao
     TableName = 'ordem_corte_itens_previsto'
@@ -119,7 +177,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 136
   end
   object tbOrdemCorteItensReal: TFDTable
-    Active = True
     IndexFieldNames = 'oci_id'
     Connection = Conexao
     TableName = 'ordem_corte_itens_real'
@@ -142,7 +199,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 208
   end
   object tbOrdemCorteItensRealSobra: TFDTable
-    Active = True
     IndexFieldNames = 'ocirs_id'
     Connection = Conexao
     TableName = 'ordem_corte_itens_real_sobra'
@@ -155,7 +211,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 208
   end
   object tbOrdemCorteItensSituacao: TFDTable
-    Active = True
     IndexFieldNames = 'id'
     Connection = Conexao
     TableName = 'ordem_corte_itens_situacao'
@@ -168,7 +223,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 280
   end
   object tbOrdemCortePrototipoFase: TFDTable
-    Active = True
     IndexFieldNames = 'ocpf_id'
     Connection = Conexao
     TableName = 'ordem_corte_prototipo_fase'
@@ -181,7 +235,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 280
   end
   object tbOrdemCorteRealHistoricoGrade: TFDTable
-    Active = True
     IndexFieldNames = 'ocrhg_id'
     Connection = Conexao
     TableName = 'ordem_corte_real_historico_grade'
@@ -194,7 +247,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 280
   end
   object tbOrdemCorteRetalhosPrevisto: TFDTable
-    Active = True
     IndexFieldNames = 'ocrp_id'
     Connection = Conexao
     TableName = 'ordem_corte_retalhos_previsto'
@@ -207,7 +259,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 360
   end
   object tbOrdemCorteRetalhosReserva: TFDTable
-    Active = True
     IndexFieldNames = 'ocrr_id'
     Connection = Conexao
     TableName = 'ordem_corte_retalhos_reserva'
@@ -220,7 +271,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 360
   end
   object tbOrdemCorteSituacao: TFDTable
-    Active = True
     IndexFieldNames = 'os_id'
     Connection = Conexao
     TableName = 'ordem_corte_situacao'
@@ -233,7 +283,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 360
   end
   object tbOrdemCorteSobraSituacao: TFDTable
-    Active = True
     IndexFieldNames = 'id'
     Connection = Conexao
     TableName = 'ordem_corte_sobra_situacao'
@@ -246,7 +295,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object tbOrdemCorteTrocaItem: TFDTable
-    Active = True
     IndexFieldNames = 'octi_id'
     Connection = Conexao
     TableName = 'ordem_corte_troca_item'
@@ -361,7 +409,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object tbEstilista: TFDTable
-    Active = True
     IndexFieldNames = 'es_id'
     Connection = Conexao
     TableName = 'cadastro_estilista'
@@ -391,20 +438,36 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'where pa.cad_situacao='#39'A'#39' and ft.fi_situacao in ('#39'F'#39', '#39'Z'#39') order' +
         ' By ft.fi_id desc limit 15;')
-    Left = 528
+    Left = 576
     Top = 16
   end
   object dsProdutoAcabado: TDataSource
     DataSet = qyProdutoAcabado
-    Left = 616
+    Left = 672
     Top = 16
   end
   object tbProdutoAcabado: TFDTable
-    Active = True
     IndexFieldNames = 'cad_id'
     Connection = Conexao
     TableName = 'produto_acabado'
-    Left = 704
+    Left = 792
     Top = 16
+  end
+  object qyBoxColecao: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'Select co_id, '
+      
+        'Cast(concat(co_descricao,'#39' '#39', to_char(co_anocolecao, '#39'YYYY'#39'))as ' +
+        'character varying(15))as nome'
+      'from colecao'
+      'order by co_descricao')
+    Left = 752
+    Top = 440
+  end
+  object dsBoxColecao: TDataSource
+    DataSet = qyBoxColecao
+    Left = 848
+    Top = 440
   end
 end

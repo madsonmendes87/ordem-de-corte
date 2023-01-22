@@ -9,6 +9,7 @@ object dmOrdemCorte: TdmOrdemCorte
       'Database=dberp'
       'Password=#maga2020'
       'DriverID=PG')
+    Connected = True
     LoginPrompt = False
     Left = 32
     Top = 16
@@ -454,6 +455,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object qyBoxColecao: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
       'Select co_id, '

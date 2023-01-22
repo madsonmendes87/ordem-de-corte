@@ -125,7 +125,6 @@ begin
     formPrincipal.editSearch.Enabled := true;
     formPrincipal.comboIniOrd.Enabled := true;
     formPrincipal.comboTipo.Enabled := true;
-    formPrincipal.comboColecao.Enabled := true;
     formPrincipal.comboEstilista.Enabled := true;
     formPrincipal.comboFiltroData.Enabled := true;
     formPrincipal.comboSetor.Enabled := true;

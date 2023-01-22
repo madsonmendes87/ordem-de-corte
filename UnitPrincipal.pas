@@ -151,7 +151,7 @@ begin
         SQl.add('Select co_id,');
         SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
         SQl.add('from colecao');
-        SQl.add('order by co_descricao');
+        SQl.add('order by co_anocolecao desc limit 7');
         Open;
     end;
 
@@ -320,6 +320,7 @@ begin
     gridViewOrdemCorte;
     footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
     boxColecao;
+    //dbLColecao.
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;

@@ -17,7 +17,6 @@ type
     butProdutoPesquisar: TSpeedButton;
     gridProdutoAcabado: TDBGrid;
     dtCadastro: TDateTimePicker;
-    ApplicationEvents1: TApplicationEvents;
     Label1: TLabel;
     dbLCBoxColecao: TDBLookupComboBox;
     butLimpaColecao: TButton;
@@ -79,15 +78,15 @@ begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_descricao = :descricao');
                 qyProdutoAcabado.ParamByName('descricao').AsString := editSearchPA.Text;
             end;
-            if DBLCBoxColecao.KeyValue <> Null then
+            if dbLCBoxColecao.KeyValue <> Null then
             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_idcolecao = :colecao');
-                qyProdutoAcabado.ParamByName('colecao').AsInteger := DBLCBoxColecao.KeyValue;
+                qyProdutoAcabado.ParamByName('colecao').AsInteger := dbLCBoxColecao.KeyValue;
             end;
-            if DTCadastro.Checked = true then
+            if dtCadastro.Checked = true then
             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
-                qyProdutoAcabado.ParamByName('dtcadastro').AsDate := DTCadastro.Date;
+                qyProdutoAcabado.ParamByName('dtcadastro').AsDate := dtCadastro.Date;
             end;
             qyProdutoAcabado.SQL.Add('order by ft.fi_id desc limit 15');
             qyProdutoAcabado.Open;
@@ -113,8 +112,7 @@ end;
 procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyProdutoAcabado.Active := false;
-
-    formPrincipal.BoxColecao;
+    formPrincipal.boxColecao;
 
 end;
 
@@ -124,6 +122,8 @@ begin
     formIniciarCorte.editReferencia.Text := gridProdutoAcabado.Fields[1].Value;
     formIniciarCorte.editFicha.Text := gridProdutoAcabado.Fields[3].Value;
     formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
+    formIniciarCorte.labNaoComp.Caption := gridProdutoAcabado.Fields[4].Value;
+    formIniciarCorte.labNaoAprov.Caption := gridProdutoAcabado.Fields[5].Value;
     formProdutoAcabado.Close;
 end;
 

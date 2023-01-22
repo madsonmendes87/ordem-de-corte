@@ -1772,7 +1772,7 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labSetor: TLabel
-        Left = 873
+        Left = 897
         Top = 14
         Width = 31
         Height = 13

@@ -82,7 +82,6 @@ type
     labIniOrdem: TLabel;
     comboIniOrd: TComboBox;
     labColecao: TLabel;
-    comboColecao: TComboBox;
     labData: TLabel;
     comboFiltroData: TComboBox;
     dateTimePicker1: TDateTimePicker;
@@ -113,7 +112,6 @@ type
   public
     { Public declarations }
     procedure boxColecao;
-    //function versionamento(var V1, V2, V3, V4: Integer);
     function VersaoExe: String;
   end;
 
@@ -146,18 +144,16 @@ end;
 
 procedure TformPrincipal.boxColecao;
 begin
-
-
-     With dmOrdemCorte.qyBoxColecao do
-     begin
-     Close;
-     SQl.Clear;
-     SQl.add('Select co_id,');
-     SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
-     SQl.add('from colecao');
-     SQl.add('order by co_descricao');
-     Open;
-     end;
+    With dmOrdemCorte.qyBoxColecao do
+    begin
+        Close;
+        SQl.Clear;
+        SQl.add('Select co_id,');
+        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
+        SQl.add('from colecao');
+        SQl.add('order by co_descricao asc limit 3');
+        Open;
+    end;
 
 end;
 
@@ -180,9 +176,7 @@ begin
             qyOrdemCorte.SQL.Clear;
             qyOrdemCorte.SQL.Add('SELECT');
             qyOrdemCorte.SQL.Add('Cast(concat(lpad(cast(oc.oc_id As varchar), 7, ''0''), ''-'', lpad(cast(oc.oc_ordem As varchar), 3, ''0'') )as character varying(15))as NumerodoCorte,');
-            //qyOrdemCorte.SQL.Add('cc.co_descricao,');
-            qyOrdemCorte.SQL.Add('Cast(concat(cc.co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome,');
-            qyOrdemCorte.SQL.Add('(ocs.os_nome)as situacao,');
+            qyOrdemCorte.SQL.Add('cc.co_descricao, (ocs.os_nome)as situacao,');
             qyOrdemCorte.SQL.Add('(ce.es_nome)as estilista,');
             qyOrdemCorte.SQL.Add('oc.oc_idfichatecnica,');
             qyOrdemCorte.SQL.Add('(SELECT op.op_id FROM ordem_producao AS op WHERE op.op_idordemcorte = oc.oc_id AND op.op_idstatus <> ''4'')as noordproducao,');
@@ -279,7 +273,7 @@ begin
             end;
             if dbLColecao.KeyValue <> Null then
             begin
-                qyOrdemCorte.SQL.Add('and cc.co_descricao = :colecao');
+                qyOrdemCorte.SQL.Add('and pa.cad_idcolecao = :colecao');
                 qyOrdemCorte.ParamByName('colecao').AsInteger := dbLColecao.KeyValue;
             end;
            if comboFiltroData.ItemIndex <> -1 then
@@ -325,6 +319,8 @@ begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
     footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
+    boxColecao;
+    //dbLColecao.
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -419,7 +415,6 @@ begin
     editSearch.Enabled := false;
     comboIniOrd.Enabled := false;
     comboTipo.Enabled := false;
-    comboColecao.Enabled := false;
     comboEstilista.Enabled := false;
     comboFiltroData.Enabled := false;
     comboSetor.Enabled := false;
