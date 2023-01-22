@@ -131,6 +131,7 @@ begin
     formPrincipal.dateTimePicker1.Enabled := true;
     formPrincipal.dateTimePicker2.Enabled := true;
     formPrincipal.butOrdemPesquisar.Enabled := true;
+    formPrincipal.dbLColecao.Enabled := true;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

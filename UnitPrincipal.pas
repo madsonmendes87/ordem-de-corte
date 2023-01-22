@@ -95,6 +95,7 @@ type
     acaoBotaoHistorico: TAction;
     butHistoricOrdem: TBitBtn;
     dbLColecao: TDBLookupComboBox;
+    labMostrAnos: TLabel;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -106,6 +107,7 @@ type
     procedure acaoBotaoCortePrevistoExecute(Sender: TObject);
     procedure acaoBotaoHistoricoExecute(Sender: TObject);
     procedure IniciarCorte1Click(Sender: TObject);
+    procedure labMostrAnosClick(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -320,7 +322,6 @@ begin
     gridViewOrdemCorte;
     footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
     boxColecao;
-    //dbLColecao.
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -421,6 +422,21 @@ begin
     dateTimePicker1.Enabled := false;
     dateTimePicker2.Enabled := false;
     butOrdemPesquisar.Enabled := false;
+    dbLColecao.Enabled := false;
+end;
+
+procedure TformPrincipal.labMostrAnosClick(Sender: TObject);
+begin
+    With dmOrdemCorte.qyBoxColecao do
+    begin
+        Close;
+        SQl.Clear;
+        SQl.add('Select co_id,');
+        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
+        SQl.add('from colecao');
+        SQl.add('order by co_anocolecao');
+        Open;
+    end;
 end;
 
 end.

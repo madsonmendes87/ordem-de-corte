@@ -100,7 +100,7 @@ procedure TformProdutoAcabado.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
 
-    // dmOrdemCorte.qyBoxColecao.active   := false;
+     dmOrdemCorte.qyBoxColecao.active   := false;
      dmOrdemCorte.tbProdutoAcabado.Active := false;
 
 end;

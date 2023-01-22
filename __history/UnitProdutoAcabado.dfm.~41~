@@ -48,9 +48,9 @@ object formProdutoAcabado: TformProdutoAcabado
   object labColecao: TLabel
     Left = 447
     Top = 16
-    Width = 44
+    Width = 103
     Height = 13
-    Caption = 'Cole'#231#227'o'
+    Caption = 'Cole'#231#227'o deste ano'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -178,20 +178,6 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
-  end
-  object labMosColPacabado: TLabel
-    Left = 497
-    Top = 16
-    Width = 111
-    Height = 13
-    Caption = '(Mostra todos os anos)'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlue
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    OnClick = labMosColPacabadoClick
   end
   object comboFiltro: TComboBox
     Left = 56

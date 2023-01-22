@@ -14,6 +14,7 @@ object formProdutoAcabado: TformProdutoAcabado
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
@@ -47,9 +48,9 @@ object formProdutoAcabado: TformProdutoAcabado
   object labColecao: TLabel
     Left = 447
     Top = 16
-    Width = 103
+    Width = 44
     Height = 13
-    Caption = 'Cole'#231#227'o deste ano'
+    Caption = 'Cole'#231#227'o'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -168,9 +169,29 @@ object formProdutoAcabado: TformProdutoAcabado
   object Label1: TLabel
     Left = 56
     Top = 65
-    Width = 83
+    Width = 97
     Height = 13
     Caption = 'Data de cadastro'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labMosColPacabado: TLabel
+    Left = 497
+    Top = 16
+    Width = 111
+    Height = 13
+    Caption = '(Mostra todos os anos)'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    OnClick = labMosColPacabadoClick
   end
   object comboFiltro: TComboBox
     Left = 56
@@ -252,7 +273,7 @@ object formProdutoAcabado: TformProdutoAcabado
         Expanded = False
         FieldName = 'ficha_id'
         Title.Alignment = taCenter
-        Title.Caption = 'N'#176' da F. Tec.'
+        Title.Caption = 'Ficha T'#233'cnica'
         Width = 79
         Visible = True
       end
@@ -273,7 +294,7 @@ object formProdutoAcabado: TformProdutoAcabado
         Visible = True
       end>
   end
-  object DTCadastro: TDateTimePicker
+  object dtCadastro: TDateTimePicker
     Left = 56
     Top = 84
     Width = 121
@@ -282,19 +303,21 @@ object formProdutoAcabado: TformProdutoAcabado
     Time = 0.493591724538418900
     ShowCheckbox = True
     Checked = False
+    ParentShowHint = False
+    ShowHint = False
     TabOrder = 2
   end
-  object DBLCBoxColecao: TDBLookupComboBox
+  object dbLCBoxColecao: TDBLookupComboBox
     Left = 431
     Top = 35
     Width = 200
     Height = 21
     KeyField = 'co_id'
     ListField = 'nome'
-    ListSource = dmOrdemCorte.DS_BoxColecao
+    ListSource = dmOrdemCorte.dsBoxColecao
     TabOrder = 4
   end
-  object BtnLimpColecao: TButton
+  object butLimpaColecao: TButton
     Left = 632
     Top = 34
     Width = 16
@@ -307,10 +330,6 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
-    OnClick = BtnLimpColecaoClick
-  end
-  object ApplicationEvents1: TApplicationEvents
-    Left = 488
-    Top = 72
+    OnClick = butLimpaColecaoClick
   end
 end

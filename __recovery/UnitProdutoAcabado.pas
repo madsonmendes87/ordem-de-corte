@@ -20,12 +20,14 @@ type
     Label1: TLabel;
     dbLCBoxColecao: TDBLookupComboBox;
     butLimpaColecao: TButton;
+    labMosColPacabado: TLabel;
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridProdutoAcabadoDblClick(Sender: TObject);
     procedure butLimpaColecaoClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure labMosColPacabadoClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -58,8 +60,8 @@ begin
             qyProdutoAcabado.SQL.Clear;
             qyProdutoAcabado.SQL.Add('SELECT');
             qyProdutoAcabado.SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
-            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strComplementar,');
-            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strAproveitamento');
+            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strComplementar,');
+            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strAproveitamento');
             qyProdutoAcabado.SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
             qyProdutoAcabado.SQL.Add('  where pa.cad_situacao=''A''');
             qyProdutoAcabado.SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
@@ -97,10 +99,7 @@ end;
 procedure TformProdutoAcabado.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
-
-     dmOrdemCorte.qyBoxColecao.active   := false;
      dmOrdemCorte.tbProdutoAcabado.Active := false;
-
 end;
 
 procedure TformProdutoAcabado.FormCreate(Sender: TObject);
@@ -112,7 +111,7 @@ end;
 procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyProdutoAcabado.Active := false;
-    formPrincipal.BoxColecao;
+    formPrincipal.boxColecao;
 
 end;
 
@@ -122,8 +121,24 @@ begin
     formIniciarCorte.editReferencia.Text := gridProdutoAcabado.Fields[1].Value;
     formIniciarCorte.editFicha.Text := gridProdutoAcabado.Fields[3].Value;
     formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
+    formIniciarCorte.labNaoComp.Caption := gridProdutoAcabado.Fields[4].Value;
+    formIniciarCorte.labNaoAprov.Caption := gridProdutoAcabado.Fields[5].Value;
     formProdutoAcabado.Close;
 end;
 
+
+procedure TformProdutoAcabado.labMosColPacabadoClick(Sender: TObject);
+begin
+    With dmOrdemCorte.qyBoxColecao do
+    begin
+        Close;
+        SQl.Clear;
+        SQl.add('Select co_id,');
+        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
+        SQl.add('from colecao');
+        SQl.add('order by co_anocolecao');
+        Open;
+    end;
+end;
 
 end.

@@ -1875,6 +1875,20 @@ object formPrincipal: TformPrincipal
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object labMostrAnos: TLabel
+        Left = 474
+        Top = 63
+        Width = 115
+        Height = 13
+        Caption = '(Mostrar todos os anos)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        OnClick = labMostrAnosClick
+      end
       object comboTipo: TComboBox
         Left = 423
         Top = 35
@@ -1961,7 +1975,7 @@ object formPrincipal: TformPrincipal
         Left = 193
         Top = 36
         Width = 201
-        Height = 22
+        Height = 24
         CharCase = ecUpperCase
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
