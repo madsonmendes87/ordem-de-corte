@@ -95,6 +95,8 @@ type
     acaoBotaoHistorico: TAction;
     butHistoricOrdem: TBitBtn;
     dbLColecao: TDBLookupComboBox;
+    labMostrAnos: TLabel;
+    butClearTipo: TButton;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -106,6 +108,8 @@ type
     procedure acaoBotaoCortePrevistoExecute(Sender: TObject);
     procedure acaoBotaoHistoricoExecute(Sender: TObject);
     procedure IniciarCorte1Click(Sender: TObject);
+    procedure labMostrAnosClick(Sender: TObject);
+    procedure butClearTipoClick(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -113,6 +117,7 @@ type
     { Public declarations }
     procedure boxColecao;
     function VersaoExe: String;
+    procedure boxEstilista;
   end;
 
 var
@@ -142,6 +147,18 @@ begin
             ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
 end;
 
+procedure TformPrincipal.boxEstilista;
+begin
+    With dmOrdemCorte.qyBoxEstilista do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('select es_id, es_nome');
+        SQL.Add('from cadastro_estilista');
+        SQL.Add('order by es_nome');
+        Open;
+    end;
+end;
 procedure TformPrincipal.boxColecao;
 begin
     With dmOrdemCorte.qyBoxColecao do
@@ -151,10 +168,15 @@ begin
         SQl.add('Select co_id,');
         SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
         SQl.add('from colecao');
-        SQl.add('order by co_anocolecao asc limit 7');
+        SQl.add('order by co_anocolecao desc limit 7');
         Open;
     end;
 
+end;
+
+procedure TformPrincipal.butClearTipoClick(Sender: TObject);
+begin
+    comboTipo.ClearSelection;
 end;
 
 procedure TformPrincipal.butCortePrevistoClick(Sender: TObject);
@@ -320,7 +342,6 @@ begin
     gridViewOrdemCorte;
     footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
     boxColecao;
-    //dbLColecao.
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -421,6 +442,21 @@ begin
     dateTimePicker1.Enabled := false;
     dateTimePicker2.Enabled := false;
     butOrdemPesquisar.Enabled := false;
+    dbLColecao.Enabled := false;
+end;
+
+procedure TformPrincipal.labMostrAnosClick(Sender: TObject);
+begin
+    With dmOrdemCorte.qyBoxColecao do
+    begin
+        Close;
+        SQl.Clear;
+        SQl.add('Select co_id,');
+        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
+        SQl.add('from colecao');
+        SQl.add('order by co_anocolecao');
+        Open;
+    end;
 end;
 
 end.

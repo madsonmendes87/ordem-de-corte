@@ -92,7 +92,7 @@ type
     qyBoxColecao: TFDQuery;
     dsBoxColecao: TDataSource;
     qyBoxEstilista: TFDQuery;
-    dsBoxEstilista: TDataSource;
+    dsBoxExtilista: TDataSource;
   private
     { Private declarations }
   public

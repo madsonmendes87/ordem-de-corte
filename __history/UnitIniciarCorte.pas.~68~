@@ -81,15 +81,17 @@ type
     horaCortePrevisto: TDateTimePicker;
     dataFinalCortePrevisto: TDateTimePicker;
     horaFinalCortePrevisto: TDateTimePicker;
-    DateTimePicker9: TDateTimePicker;
-    DateTimePicker10: TDateTimePicker;
-    DateTimePicker11: TDateTimePicker;
-    DateTimePicker12: TDateTimePicker;
+    dataRealCortado: TDateTimePicker;
+    horaRealCortado: TDateTimePicker;
+    dataFinalRealCortado: TDateTimePicker;
+    horaFinalRealCortado: TDateTimePicker;
+    editObservacao: TEdit;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -118,12 +120,46 @@ begin
     formPrincipal.butVerCorte.Enabled := true;
     formPrincipal.butCortePrevisto.Enabled := true;
     formPrincipal.butHistoricOrdem.Enabled := true;
+    formPrincipal.comboFiltro.Enabled := true;
+    formPrincipal.comboSituacao.Enabled := true;
+    formPrincipal.editSearch.Enabled := true;
+    formPrincipal.comboIniOrd.Enabled := true;
+    formPrincipal.comboTipo.Enabled := true;
+    formPrincipal.dbLkComboEstilo.Enabled := true;
+    formPrincipal.comboFiltroData.Enabled := true;
+    formPrincipal.comboSetor.Enabled := true;
+    formPrincipal.dateTimePicker1.Enabled := true;
+    formPrincipal.dateTimePicker2.Enabled := true;
+    formPrincipal.butOrdemPesquisar.Enabled := true;
+    formPrincipal.dbLColecao.Enabled := true;
+    formPrincipal.butClearTipo.Enabled := false;
+    formPrincipal.butClearEstilo.Enabled := false;
+    formPrincipal.butClearSetor.Enabled := false;
+    formPrincipal.butClearSituacao.Enabled := false;
+    formPrincipal.butLimpaIniOrdem.Enabled := false;
+    formPrincipal.butClearColecao.Enabled := false;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
     FreeAndNil(formIniciarCorte);
+end;
+
+procedure TformIniciarCorte.FormCreate(Sender: TObject);
+begin
+    dataSolicitacao.Date := now;
+    horaSolicitacao.Time := now;
+    dataOrdemFinalizacao.Date := now;
+    horaOrdemFinalizacao.Time := now;
+    dataCortePrevisto.Date := now;
+    horaCortePrevisto.Time := now;
+    dataFinalCortePrevisto.Date := now;
+    horaFinalCortePrevisto.Time := now;
+    dataRealCortado.Date := now;
+    horaRealCortado.Time := now;
+    dataFinalRealCortado.Date := now;
+    horaFinalRealCortado.Time := now;
 end;
 
 procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;

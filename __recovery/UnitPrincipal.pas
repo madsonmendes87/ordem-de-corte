@@ -100,8 +100,8 @@ type
     butClearEstilo: TButton;
     butClearSetor: TButton;
     butClearSituacao: TButton;
-    butLimpaColecao: TButton;
-    Button1: TButton;
+    butLimpaIniOrdem: TButton;
+    butClearColecao: TButton;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -118,8 +118,8 @@ type
     procedure butClearEstiloClick(Sender: TObject);
     procedure butClearSetorClick(Sender: TObject);
     procedure butClearSituacaoClick(Sender: TObject);
-    procedure butLimpaColecaoClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure butLimpaIniOrdemClick(Sender: TObject);
+    procedure butClearColecaoClick(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -214,7 +214,7 @@ begin
     acaoBotaoHistoricoExecute(Sender);
 end;
 
-procedure TformPrincipal.butLimpaColecaoClick(Sender: TObject);
+procedure TformPrincipal.butLimpaIniOrdemClick(Sender: TObject);
 begin
     comboIniOrd.ClearSelection;
 end;
@@ -222,134 +222,134 @@ end;
 procedure TformPrincipal.butOrdemPesquisarClick(Sender: TObject);
 begin
     begin
-      With dmOrdemCorte do
+      With dmOrdemCorte.qyOrdemCorte do
       begin
-            qyOrdemCorte.Close;
-            qyOrdemCorte.SQL.Clear;
-            qyOrdemCorte.SQL.Add('SELECT');
-            qyOrdemCorte.SQL.Add('Cast(concat(lpad(cast(oc.oc_id As varchar), 7, ''0''), ''-'', lpad(cast(oc.oc_ordem As varchar), 3, ''0'') )as character varying(15))as NumerodoCorte,');
-            qyOrdemCorte.SQL.Add('cc.co_descricao, (ocs.os_nome)as situacao,');
-            qyOrdemCorte.SQL.Add('(ce.es_nome)as estilista,');
-            qyOrdemCorte.SQL.Add('oc.oc_idfichatecnica,');
-            qyOrdemCorte.SQL.Add('(SELECT op.op_id FROM ordem_producao AS op WHERE op.op_idordemcorte = oc.oc_id AND op.op_idstatus <> ''4'')as noordproducao,');
-            qyOrdemCorte.SQL.Add('(SELECT (CASE WHEN ((oc.oc_situacao = 1) AND (coalesce(ocpi.oci_id, 0) = 0) AND (coalesce(ocri.oci_id,0) = 0)) THEN');
-            qyOrdemCorte.SQL.Add('                  CURRENT_DATE - oc.oc_dtgerada::DATE');
-            qyOrdemCorte.SQL.Add('              WHEN ((oc.oc_situacao = 1) AND (coalesce(ocpi.oci_id, 0) > 0) AND (coalesce(ocri.oci_id,0) = 0)) THEN');
-            qyOrdemCorte.SQL.Add('                  CURRENT_DATE - ocpi.oci_dtlanc::DATE');
-            qyOrdemCorte.SQL.Add('              WHEN ((oc.oc_situacao = 1) AND (coalesce(ocpi.oci_id, 0) > 0) AND (coalesce(ocri.oci_id,0) > 0)) THEN');
-            qyOrdemCorte.SQL.Add('                  CURRENT_DATE - ocri.oci_dtlanc::DATE');
-            qyOrdemCorte.SQL.Add('         ELSE 0 END)');
-            qyOrdemCorte.SQL.Add('     FROM ordem_corte as oci LEFT JOIN ordem_corte_itens_previsto as ocpi on');
-            qyOrdemCorte.SQL.Add('     ((ocpi.oci_idocorte = oci.oc_id) and (ocpi.oci_situacao_id NOT IN (2, 4)))');
-            qyOrdemCorte.SQL.Add('     LEFT JOIN ordem_corte_itens_real as ocri on');
-            qyOrdemCorte.SQL.Add('     ((ocri.oci_idocorte = oci.oc_id) and (ocpi.oci_situacao_id NOT IN (2, 4)))');
-            qyOrdemCorte.SQL.Add('     WHERE oci.oc_id=oc.oc_id');
-            qyOrdemCorte.SQL.Add('     LIMIT 1');
-            qyOrdemCorte.SQL.Add(') AS diasemprocesso,');
-            qyOrdemCorte.SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''Protótipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
-            qyOrdemCorte.SQL.Add('(pa.cad_idreferencia)as referencia,');
-            qyOrdemCorte.SQL.Add('(pa.cad_descricao)as produtoacabado,');
-            qyOrdemCorte.SQL.Add('(oc.oc_dtgerada)as datagerada,');
-            qyOrdemCorte.SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_previsto WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradeprevisto,');
-            qyOrdemCorte.SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_real WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradereal,');
-            qyOrdemCorte.SQL.Add('  Cast(CASE');
-            qyOrdemCorte.SQL.Add('      WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idordemcorte= oc.oc_id And emp_situacao <>''C'' LIMIT 1) IS NULL THEN ''NÃO EMPENHADO''');
-            qyOrdemCorte.SQL.Add('      ELSE');
-            qyOrdemCorte.SQL.Add('          (CASE');
-            qyOrdemCorte.SQL.Add('              WHEN (SELECT emp_tipo FROM controle_empenho');
-            qyOrdemCorte.SQL.Add('                          WHERE emp_idordemcorte=oc.oc_id');
-            qyOrdemCorte.SQL.Add('                          AND emp_situacao IN (''N'', ''P'')');
-            qyOrdemCorte.SQL.Add('                          AND emp_mod = ''0''');
-            qyOrdemCorte.SQL.Add('                          ORDER BY emp_id DESC LIMIT 1)= ''S'' THEN ''PLANEJAMENTO => ALMOXARIFADO''');
-            qyOrdemCorte.SQL.Add('              WHEN (SELECT emp_tipo FROM controle_empenho');
-            qyOrdemCorte.SQL.Add('                          WHERE emp_idordemcorte=oc.oc_id');
-            qyOrdemCorte.SQL.Add('                          AND emp_situacao=''N''');
-            qyOrdemCorte.SQL.Add('                          AND emp_mod = ''1''');
-            qyOrdemCorte.SQL.Add('                          ORDER BY emp_id DESC LIMIT 1)= ''E'' THEN ''ALMOXARIFADO => CORTE''');
-            qyOrdemCorte.SQL.Add('              WHEN (SELECT emp_tipo FROM controle_empenho');
-            qyOrdemCorte.SQL.Add('                          WHERE emp_idordemcorte=oc.oc_id');
-            qyOrdemCorte.SQL.Add('                          AND emp_situacao= ''P''');
-            qyOrdemCorte.SQL.Add('                          AND emp_mod = ''1''');
-            qyOrdemCorte.SQL.Add('                          ORDER BY emp_id DESC LIMIT 1) =''E'' THEN ''RECEBIDO NO CORTE''');
-            qyOrdemCorte.SQL.Add('              END)');
-            qyOrdemCorte.SQL.Add('  END as character varying(30)) AS processoempenho,');
-            qyOrdemCorte.SQL.Add('oc.oc_observacao FROM ordem_corte as oc JOIN produto_acabado as pa on pa.cad_id = oc.oc_idcodprodutoacabado LEFT JOIN colecao as cc on');
-            qyOrdemCorte.SQL.Add('cc.co_id = pa.cad_idcolecao LEFT JOIN cadastro_estilista as ce on pa.cad_idestilista = ce.es_id LEFT JOIN ordem_corte_situacao as ocs on');
-            qyOrdemCorte.SQL.Add('ocs.os_id = oc.oc_situacao WHERE oc.oc_situacao <> ''2''');
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('Cast(concat(lpad(cast(oc.oc_id As varchar), 7, ''0''), ''-'', lpad(cast(oc.oc_ordem As varchar), 3, ''0'') )as character varying(15))as NumerodoCorte,');
+            SQL.Add('cc.co_descricao, (ocs.os_nome)as situacao,');
+            SQL.Add('(ce.es_nome)as estilista,');
+            SQL.Add('oc.oc_idfichatecnica,');
+            SQL.Add('(SELECT op.op_id FROM ordem_producao AS op WHERE op.op_idordemcorte = oc.oc_id AND op.op_idstatus <> ''4'')as noordproducao,');
+            SQL.Add('(SELECT (CASE WHEN ((oc.oc_situacao = 1) AND (coalesce(ocpi.oci_id, 0) = 0) AND (coalesce(ocri.oci_id,0) = 0)) THEN');
+            SQL.Add('                  CURRENT_DATE - oc.oc_dtgerada::DATE');
+            SQL.Add('              WHEN ((oc.oc_situacao = 1) AND (coalesce(ocpi.oci_id, 0) > 0) AND (coalesce(ocri.oci_id,0) = 0)) THEN');
+            SQL.Add('                  CURRENT_DATE - ocpi.oci_dtlanc::DATE');
+            SQL.Add('              WHEN ((oc.oc_situacao = 1) AND (coalesce(ocpi.oci_id, 0) > 0) AND (coalesce(ocri.oci_id,0) > 0)) THEN');
+            SQL.Add('                  CURRENT_DATE - ocri.oci_dtlanc::DATE');
+            SQL.Add('         ELSE 0 END)');
+            SQL.Add('     FROM ordem_corte as oci LEFT JOIN ordem_corte_itens_previsto as ocpi on');
+            SQL.Add('     ((ocpi.oci_idocorte = oci.oc_id) and (ocpi.oci_situacao_id NOT IN (2, 4)))');
+            SQL.Add('     LEFT JOIN ordem_corte_itens_real as ocri on');
+            SQL.Add('     ((ocri.oci_idocorte = oci.oc_id) and (ocpi.oci_situacao_id NOT IN (2, 4)))');
+            SQL.Add('     WHERE oci.oc_id=oc.oc_id');
+            SQL.Add('     LIMIT 1');
+            SQL.Add(') AS diasemprocesso,');
+            SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''ProtÃ³tipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
+            SQL.Add('(pa.cad_idreferencia)as referencia,');
+            SQL.Add('(pa.cad_descricao)as produtoacabado,');
+            SQL.Add('(oc.oc_dtgerada)as datagerada,');
+            SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_previsto WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradeprevisto,');
+            SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_real WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradereal,');
+            SQL.Add('  Cast(CASE');
+            SQL.Add('      WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idordemcorte= oc.oc_id And emp_situacao <>''C'' LIMIT 1) IS NULL THEN ''NÃƒO EMPENHADO''');
+            SQL.Add('      ELSE');
+            SQL.Add('          (CASE');
+            SQL.Add('              WHEN (SELECT emp_tipo FROM controle_empenho');
+            SQL.Add('                          WHERE emp_idordemcorte=oc.oc_id');
+            SQL.Add('                          AND emp_situacao IN (''N'', ''P'')');
+            SQL.Add('                          AND emp_mod = ''0''');
+            SQL.Add('                          ORDER BY emp_id DESC LIMIT 1)= ''S'' THEN ''PLANEJAMENTO => ALMOXARIFADO''');
+            SQL.Add('              WHEN (SELECT emp_tipo FROM controle_empenho');
+            SQL.Add('                          WHERE emp_idordemcorte=oc.oc_id');
+            SQL.Add('                          AND emp_situacao=''N''');
+            SQL.Add('                          AND emp_mod = ''1''');
+            SQL.Add('                          ORDER BY emp_id DESC LIMIT 1)= ''E'' THEN ''ALMOXARIFADO => CORTE''');
+            SQL.Add('              WHEN (SELECT emp_tipo FROM controle_empenho');
+            SQL.Add('                          WHERE emp_idordemcorte=oc.oc_id');
+            SQL.Add('                          AND emp_situacao= ''P''');
+            SQL.Add('                          AND emp_mod = ''1''');
+            SQL.Add('                          ORDER BY emp_id DESC LIMIT 1) =''E'' THEN ''RECEBIDO NO CORTE''');
+            SQL.Add('              END)');
+            SQL.Add('  END as character varying(30)) AS processoempenho,');
+            SQL.Add('oc.oc_observacao FROM ordem_corte as oc JOIN produto_acabado as pa on pa.cad_id = oc.oc_idcodprodutoacabado LEFT JOIN colecao as cc on');
+            SQL.Add('cc.co_id = pa.cad_idcolecao LEFT JOIN cadastro_estilista as ce on pa.cad_idestilista = ce.es_id LEFT JOIN ordem_corte_situacao as ocs on');
+            SQL.Add('ocs.os_id = oc.oc_situacao WHERE oc.oc_situacao <> ''2''');
             if comboFiltro.Text = 'REFERENCIA' then
             begin
-                qyOrdemCorte.SQL.Add('and pa.cad_idreferencia = :referencia');
-                qyOrdemCorte.ParamByName('referencia').AsString := editSearch.Text;
+                SQL.Add('and pa.cad_idreferencia = :referencia');
+                ParamByName('referencia').AsString := editSearch.Text;
             end;
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
-                qyOrdemCorte.SQL.Add('and oc.oc_idfichatecnica = :fichatecnica');
-                qyOrdemCorte.ParamByName('fichatecnica').AsInteger := strtointdef(editSearch.Text,0);
+                SQL.Add('and oc.oc_idfichatecnica = :fichatecnica');
+                ParamByName('fichatecnica').AsInteger := strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'ORDEM DE CORTE' then
             begin
-                qyOrdemCorte.SQL.Add('and oc.oc_id = :ordemdecorte');
-                qyOrdemCorte.ParamByName('ordemdecorte').AsInteger := strtointdef(editSearch.Text,0);
+                SQL.Add('and oc.oc_id = :ordemdecorte');
+                ParamByName('ordemdecorte').AsInteger := strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
-                qyOrdemCorte.SQL.Add('and pa.cad_descricao = :descricao');
-                qyOrdemCorte.ParamByName('descricao').AsString := editSearch.Text;
+                SQL.Add('and pa.cad_descricao = :descricao');
+                ParamByName('descricao').AsString := editSearch.Text;
             end;
             if comboTipo.Text = 'Prototipo' then
-                qyOrdemCorte.SQL.Add('and oc.oc_prototipo = true');
+                SQL.Add('and oc.oc_prototipo = true');
             if comboTipo.Text = 'Grande Escala' then
-                qyOrdemCorte.SQL.Add('and oc.oc_prototipo = false');
+                SQL.Add('and oc.oc_prototipo = false');
 //            if comboEstilista.ItemIndex <> -1 then
 //            begin
-//                qyOrdemCorte.SQL.Add('and ce.es_nome = :estilista');
-//                qyOrdemCorte.ParamByName('estilista').AsString := comboEstilista.Text;
+//                SQL.Add('and ce.es_nome = :estilista');
+//                ParamByName('estilista').AsString := comboEstilista.Text;
 //            end;
             if comboSetor.Text = 'ALMOXARIFADO' then
-                qyOrdemCorte.SQL.Add('and (select emp_tipo from controle_empenho where emp_idordemcorte=oc.oc_id and emp_situacao in (''N'', ''P'') and emp_mod = 0 ORDER BY emp_id DESC LIMIT 1) = ''S''');
+                SQL.Add('and (select emp_tipo from controle_empenho where emp_idordemcorte=oc.oc_id and emp_situacao in (''N'', ''P'') and emp_mod = 0 ORDER BY emp_id DESC LIMIT 1) = ''S''');
             if comboSetor.Text = 'PLANEJAMENTO' then
-                qyOrdemCorte.SQL.Add('and (select emp_tipo from controle_empenho where emp_idordemcorte=oc.oc_id and emp_situacao = ''N'' and emp_mod = 1 ORDER BY emp_id DESC LIMIT 1) = ''E''');
+                SQL.Add('and (select emp_tipo from controle_empenho where emp_idordemcorte=oc.oc_id and emp_situacao = ''N'' and emp_mod = 1 ORDER BY emp_id DESC LIMIT 1) = ''E''');
             if comboSetor.Text = 'CORTE' then
-                qyOrdemCorte.SQL.Add('and (select emp_tipo from controle_empenho where emp_idordemcorte=oc.oc_id and emp_situacao = ''P'' and emp_mod = 1 ORDER BY emp_id DESC LIMIT 1) = ''E''');
+                SQL.Add('and (select emp_tipo from controle_empenho where emp_idordemcorte=oc.oc_id and emp_situacao = ''P'' and emp_mod = 1 ORDER BY emp_id DESC LIMIT 1) = ''E''');
             if comboSituacao.Text = 'NORMAL' then
-                qyOrdemCorte.SQL.Add('and oc.oc_situacao = 1');
+                SQL.Add('and oc.oc_situacao = 1');
             if comboSituacao.Text = 'FINALIZADA' then
-                qyOrdemCorte.SQL.Add('and oc.oc_situacao = 3');
+                SQL.Add('and oc.oc_situacao = 3');
             if comboIniOrd.ItemIndex <> -1 then
             begin
                 if comboIniOrd.ItemIndex = 0 then
-                    qyOrdemCorte.SQL.Add('and exists(');
+                    SQL.Add('and exists(');
                 if comboIniOrd.ItemIndex = 1 then
-                    qyOrdemCorte.SQL.Add('and not exists(');
-                    qyOrdemCorte.SQL.Add('select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
+                    SQL.Add('and not exists(');
+                    SQL.Add('select * from ordem_producao as op where op.op_idordemcorte = oc.oc_id and op.op_idstatus <> 4)');
             end;
             if dbLColecao.KeyValue <> Null then
             begin
-                qyOrdemCorte.SQL.Add('and pa.cad_idcolecao = :colecao');
-                qyOrdemCorte.ParamByName('colecao').AsInteger := dbLColecao.KeyValue;
+                SQL.Add('and pa.cad_idcolecao = :colecao');
+                ParamByName('colecao').AsInteger := dbLColecao.KeyValue;
             end;
            if comboFiltroData.ItemIndex <> -1 then
            begin
               if comboFiltroData.ItemIndex <> 0 then
               begin
                 if comboFiltroData.ItemIndex = 1 then
-                    qyOrdemCorte.SQL.Add('and oc_dtgerada between :data1 and :data2');
+                    SQL.Add('and oc_dtgerada between :data1 and :data2');
                 if comboFiltroData.ItemIndex = 2 then
-                    qyOrdemCorte.SQL.Add('and oc_dtsolicitacao between :data1 and :data2');
+                    SQL.Add('and oc_dtsolicitacao between :data1 and :data2');
                 if comboFiltroData.ItemIndex = 3 then
-                    qyOrdemCorte.SQL.Add('and oc_dtprevisaofinalizacao between :data1 and :data2');
-                    qyOrdemCorte.ParamByName('data1').AsDate := dateTimePicker1.Date;
-                    qyOrdemCorte.ParamByName('data2').AsDate := dateTimePicker2.Date;
+                    SQL.Add('and oc_dtprevisaofinalizacao between :data1 and :data2');
+                    ParamByName('data1').AsDate := dateTimePicker1.Date;
+                    ParamByName('data2').AsDate := dateTimePicker2.Date;
               end;
            end;
-            qyOrdemCorte.SQL.Add('ORDER BY oc.oc_id desc limit 30');
-            qyOrdemCorte.Open;
+            SQL.Add('ORDER BY oc.oc_id desc limit 30');
+            Open;
       end;
       gridViewOrdemCorte;
     end;
 end;
 
-procedure TformPrincipal.Button1Click(Sender: TObject);
+procedure TformPrincipal.butClearColecaoClick(Sender: TObject);
 begin
     dbLColecao.KeyValue := Null;
 end;
@@ -375,30 +375,30 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
-    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
+    footerPrincipal.Panels.Items[0].Text := 'VERSÃƒO: '+ VersaoExe;
     boxColecao;
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
 begin
     gridOrdem.Columns[0].Title.Alignment:=taCenter;
-    gridOrdem.Columns[0].Title.Caption:='Nº Corte';
+    gridOrdem.Columns[0].Title.Caption:='NÂº Corte';
     gridOrdem.Columns[1].Title.Alignment:=taCenter;
-    gridOrdem.Columns[1].Title.Caption:='Coleção';
+    gridOrdem.Columns[1].Title.Caption:='ColeÃ§Ã£o';
     gridOrdem.Columns[2].Title.Alignment:=taCenter;
-    gridOrdem.Columns[2].Title.Caption:='Situação';
+    gridOrdem.Columns[2].Title.Caption:='SituaÃ§Ã£o';
     gridOrdem.Columns[3].Title.Alignment:=taCenter;
     gridOrdem.Columns[3].Title.Caption:='Estilista';
     gridOrdem.Columns[4].Title.Alignment:=taCenter;
-    gridOrdem.Columns[4].Title.Caption:='Ficha Técnica';
+    gridOrdem.Columns[4].Title.Caption:='Ficha TÃ©cnica';
     gridOrdem.Columns[5].Title.Alignment:=taCenter;
-    gridOrdem.Columns[5].Title.Caption:='Ordem de Produção';
+    gridOrdem.Columns[5].Title.Caption:='Ordem de ProduÃ§Ã£o';
     gridOrdem.Columns[6].Title.Alignment:=taCenter;
     gridOrdem.Columns[6].Title.Caption:='Dias em Processo';
     gridOrdem.Columns[7].Title.Alignment:=taCenter;
     gridOrdem.Columns[7].Title.Caption:='Tipo';
     gridOrdem.Columns[8].Title.Alignment:=taCenter;
-    gridOrdem.Columns[8].Title.Caption:='Referência';
+    gridOrdem.Columns[8].Title.Caption:='ReferÃªncia';
     gridOrdem.Columns[9].Title.Alignment:=taCenter;
     gridOrdem.Columns[9].Title.Caption:='Produto Acabado';
     gridOrdem.Columns[10].Title.Alignment:=taCenter;
@@ -408,9 +408,9 @@ begin
     gridOrdem.Columns[12].Title.Alignment:=taCenter;
     gridOrdem.Columns[12].Title.Caption:='Real Cortado';
     gridOrdem.Columns[13].Title.Alignment:=taCenter;
-    gridOrdem.Columns[13].Title.Caption:='Localização Empenho';
+    gridOrdem.Columns[13].Title.Caption:='LocalizaÃ§Ã£o Empenho';
     gridOrdem.Columns[14].Title.Alignment:=taCenter;
-    gridOrdem.Columns[14].Title.Caption:='Observação';
+    gridOrdem.Columns[14].Title.Caption:='ObservaÃ§Ã£o';
     butVerCorte.Font.Color:=clMenuHighlight;
     butVerCorte.Font.Style:=[fsBold];
     butCortePrevisto.Font.Color:=clMenuHighlight;
@@ -478,6 +478,13 @@ begin
     dateTimePicker2.Enabled := false;
     butOrdemPesquisar.Enabled := false;
     dbLColecao.Enabled := false;
+    butClearTipo.Enabled := false;
+    butClearEstilo.Enabled := false;
+    butClearSetor.Enabled := false;
+    butClearSituacao.Enabled := false;
+    butLimpaIniOrdem.Enabled := false;
+    butClearColecao.Enabled := false;
+    labMostrAnos.Enabled := false;
 end;
 
 procedure TformPrincipal.labMostrAnosClick(Sender: TObject);

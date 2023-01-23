@@ -472,4 +472,17 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 848
     Top = 440
   end
+  object qyBoxEstilista: TFDQuery
+    Active = True
+    Connection = Conexao
+    SQL.Strings = (
+      'select es_id, es_nome from cadastro_estilista order by es_nome;')
+    Left = 88
+    Top = 488
+  end
+  object dsBoxEstilista: TDataSource
+    DataSet = qyBoxEstilista
+    Left = 160
+    Top = 488
+  end
 end

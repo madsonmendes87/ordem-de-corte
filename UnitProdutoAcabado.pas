@@ -66,7 +66,7 @@ begin
             qyProdutoAcabado.SQL.Add('  where pa.cad_situacao=''A''');
             qyProdutoAcabado.SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
             if comboFiltro.Text = 'REFERENCIA' then
-            begin
+             begin
                 qyProdutoAcabado.SQL.Add('and pa.cad_idreferencia = :referencia');
                 qyProdutoAcabado.ParamByName('referencia').AsString := editSearchPA.Text;
             end;
@@ -99,10 +99,7 @@ end;
 procedure TformProdutoAcabado.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
-
-    // dmOrdemCorte.qyBoxColecao.active   := false;
      dmOrdemCorte.tbProdutoAcabado.Active := false;
-
 end;
 
 procedure TformProdutoAcabado.FormCreate(Sender: TObject);

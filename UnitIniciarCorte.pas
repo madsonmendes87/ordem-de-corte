@@ -125,13 +125,20 @@ begin
     formPrincipal.editSearch.Enabled := true;
     formPrincipal.comboIniOrd.Enabled := true;
     formPrincipal.comboTipo.Enabled := true;
-    formPrincipal.comboEstilista.Enabled := true;
+    formPrincipal.dbLkComboEstilo.Enabled := true;
     formPrincipal.comboFiltroData.Enabled := true;
     formPrincipal.comboSetor.Enabled := true;
     formPrincipal.dateTimePicker1.Enabled := true;
     formPrincipal.dateTimePicker2.Enabled := true;
     formPrincipal.butOrdemPesquisar.Enabled := true;
     formPrincipal.dbLColecao.Enabled := true;
+    formPrincipal.butClearTipo.Enabled := true;
+    formPrincipal.butClearEstilo.Enabled := true;
+    formPrincipal.butClearSetor.Enabled := true;
+    formPrincipal.butClearSituacao.Enabled := true;
+    formPrincipal.butLimpaIniOrdem.Enabled := true;
+    formPrincipal.butClearColecao.Enabled := true;
+    formPrincipal.labMostrAnos.Enabled := true;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;
@@ -161,7 +168,6 @@ procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;
 begin
   if key = 113 then
      begin
-
           try
              application.CreateForm(TformProdutoAcabado, formProdutoAcabado);
              formProdutoAcabado.ShowModal;

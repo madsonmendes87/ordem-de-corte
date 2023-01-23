@@ -1759,7 +1759,7 @@ object formPrincipal: TformPrincipal
         OnClick = butOrdemPesquisarClick
       end
       object labEstilista: TLabel
-        Left = 651
+        Left = 649
         Top = 17
         Width = 44
         Height = 13
@@ -1772,7 +1772,7 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labSetor: TLabel
-        Left = 881
+        Left = 897
         Top = 14
         Width = 31
         Height = 13
@@ -1785,7 +1785,7 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labFiltrarPor: TLabel
-        Left = 18
+        Left = 30
         Top = 17
         Width = 78
         Height = 13
@@ -1798,7 +1798,7 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labDadosConsulta: TLabel
-        Left = 186
+        Left = 193
         Top = 17
         Width = 115
         Height = 13
@@ -1811,7 +1811,7 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labSituacao: TLabel
-        Left = 18
+        Left = 25
         Top = 63
         Width = 49
         Height = 13
@@ -1824,7 +1824,7 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labIniOrdem: TLabel
-        Left = 186
+        Left = 193
         Top = 63
         Width = 124
         Height = 13
@@ -1837,7 +1837,7 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labColecao: TLabel
-        Left = 413
+        Left = 424
         Top = 63
         Width = 44
         Height = 13
@@ -1876,7 +1876,7 @@ object formPrincipal: TformPrincipal
         ParentFont = False
       end
       object labMostrAnos: TLabel
-        Left = 463
+        Left = 474
         Top = 63
         Width = 115
         Height = 13
@@ -1906,10 +1906,10 @@ object formPrincipal: TformPrincipal
           'Prototipo'
           'Grande Escala')
       end
-      object comboSetor: TComboBox
-        Left = 881
+      object comboEstilista: TComboBox
+        Left = 649
         Top = 33
-        Width = 248
+        Width = 225
         Height = 22
         Style = csOwnerDrawFixed
         Font.Charset = DEFAULT_CHARSET
@@ -1920,13 +1920,40 @@ object formPrincipal: TformPrincipal
         ParentFont = False
         TabOrder = 3
         Items.Strings = (
+          'ALESSANDRA'
+          'DIANA'
+          'FLAVIO'
+          'GRACIELE'
+          'HELIOFABIA'
+          'JOSELAIDE'
+          'JULLYANE'
+          'LOTARIO'
+          'MAURO'
+          'NAO CATALOGADO'
+          'SIMONE'
+          'TAINARA')
+      end
+      object comboSetor: TComboBox
+        Left = 897
+        Top = 33
+        Width = 257
+        Height = 22
+        Style = csOwnerDrawFixed
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 4
+        Items.Strings = (
           'PLANEJAMENTO'
           'ALMOXARIFADO'
           'CORTE')
       end
       object comboFiltro: TComboBox
-        Left = 18
-        Top = 35
+        Left = 25
+        Top = 36
         Width = 145
         Height = 22
         Style = csOwnerDrawFixed
@@ -1945,10 +1972,10 @@ object formPrincipal: TformPrincipal
           'DESCRICAO REFERENCIA')
       end
       object editSearch: TEdit
-        Left = 186
+        Left = 193
         Top = 36
         Width = 201
-        Height = 21
+        Height = 22
         CharCase = ecUpperCase
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -1959,8 +1986,8 @@ object formPrincipal: TformPrincipal
         TabOrder = 1
       end
       object comboSituacao: TComboBox
-        Left = 18
-        Top = 82
+        Left = 25
+        Top = 81
         Width = 145
         Height = 22
         Style = csOwnerDrawFixed
@@ -1970,13 +1997,13 @@ object formPrincipal: TformPrincipal
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        TabOrder = 4
+        TabOrder = 5
         Items.Strings = (
           'NORMAL'
           'FINALIZADA')
       end
       object comboIniOrd: TComboBox
-        Left = 186
+        Left = 193
         Top = 82
         Width = 201
         Height = 22
@@ -1987,7 +2014,7 @@ object formPrincipal: TformPrincipal
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        TabOrder = 5
+        TabOrder = 6
         Items.Strings = (
           'SIM'
           'NAO')
@@ -2004,7 +2031,7 @@ object formPrincipal: TformPrincipal
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 7
         Items.Strings = (
           '<<  Nao Informar >>'
           'GERADA'
@@ -2024,7 +2051,7 @@ object formPrincipal: TformPrincipal
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 8
       end
       object dateTimePicker2: TDateTimePicker
         Left = 941
@@ -2039,31 +2066,14 @@ object formPrincipal: TformPrincipal
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        TabOrder = 8
+        TabOrder = 9
       end
       object butClearTipo: TButton
         Left = 608
         Top = 34
         Width = 16
         Height = 25
-        Hint = 'Limpar Tipo'
-        Caption = 'X'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 9
-        OnClick = butClearTipoClick
-      end
-      object butClearSetor: TButton
-        Left = 1128
-        Top = 32
-        Width = 16
-        Height = 25
-        Hint = 'Limpar Setor'
-        Caption = 'X'
+        Caption = 'I'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -2071,55 +2081,7 @@ object formPrincipal: TformPrincipal
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 10
-        OnClick = butClearSetorClick
-      end
-      object butClearSituacao: TButton
-        Left = 164
-        Top = 82
-        Width = 16
-        Height = 25
-        Hint = 'Limpar Situa'#231#227'o'
-        Caption = 'X'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 11
-        OnClick = butClearSituacaoClick
-      end
-      object butLimpaColecao: TButton
-        Left = 384
-        Top = 80
-        Width = 16
-        Height = 25
-        Hint = 'Limpar Iniciada Ord Produ'#231#227'o'
-        Caption = 'X'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 12
-        OnClick = butLimpaColecaoClick
-      end
-      object Button1: TButton
-        Left = 608
-        Top = 80
-        Width = 16
-        Height = 25
-        Hint = 'Limpar Cole'#231#227'o'
-        Caption = 'X'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 13
-        OnClick = Button1Click
+        OnClick = butClearTipoClick
       end
     end
     object butVerCorte: TBitBtn
@@ -2169,41 +2131,15 @@ object formPrincipal: TformPrincipal
       TabOrder = 4
     end
     object dbLColecao: TDBLookupComboBox
-      Left = 419
+      Left = 423
       Top = 627
-      Width = 195
+      Width = 201
       Height = 21
       KeyField = 'co_id'
       ListField = 'nome'
       ListSource = dmOrdemCorte.dsBoxColecao
       TabOrder = 5
     end
-    object dbLkComboEstilo: TDBLookupComboBox
-      Left = 657
-      Top = 581
-      Width = 198
-      Height = 21
-      KeyField = 'es_id'
-      ListField = 'es_nome'
-      ListSource = dmOrdemCorte.dsBoxEstilista
-      TabOrder = 6
-    end
-  end
-  object butClearEstilo: TButton
-    Left = 1047
-    Top = 606
-    Width = 16
-    Height = 22
-    Hint = 'Limpar Estilista'
-    Caption = 'X'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 4
-    OnClick = butClearEstiloClick
   end
   object popupMenuOrdem: TPopupMenu
     Left = 952
