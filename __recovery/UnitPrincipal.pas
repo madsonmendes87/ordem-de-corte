@@ -102,6 +102,8 @@ type
     butClearSituacao: TButton;
     butLimpaIniOrdem: TButton;
     butClearColecao: TButton;
+    butRealCortado: TBitBtn;
+    acaoRealCortado: TAction;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -120,6 +122,9 @@ type
     procedure butClearSituacaoClick(Sender: TObject);
     procedure butLimpaIniOrdemClick(Sender: TObject);
     procedure butClearColecaoClick(Sender: TObject);
+    procedure acaoRealCortadoExecute(Sender: TObject);
+    procedure butRealCortadoClick(Sender: TObject);
+    procedure gridOrdemCellClick(Column: TColumn);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -155,6 +160,12 @@ procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
       if butHistoricOrdem.Enabled = true then
             ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
+end;
+
+procedure TformPrincipal.acaoRealCortadoExecute(Sender: TObject);
+begin
+      if butRealCortado.Enabled = true then
+            ShowMessage('Mensagem de teste: Ver Real Cortado');
 end;
 
 procedure TformPrincipal.boxEstilista;
@@ -300,11 +311,11 @@ begin
                 SQL.Add('and oc.oc_prototipo = true');
             if comboTipo.Text = 'Grande Escala' then
                 SQL.Add('and oc.oc_prototipo = false');
-//            if comboEstilista.ItemIndex <> -1 then
-//            begin
-//                SQL.Add('and ce.es_nome = :estilista');
-//                ParamByName('estilista').AsString := comboEstilista.Text;
-//            end;
+            if dbLkComboEstilo.KeyValue <> Null then
+            begin
+                SQL.Add('and ce.es_id = :estilista');
+                ParamByName('estilista').AsInteger := dbLkComboEstilo.KeyValue;
+            end;
             if comboSetor.Text = 'ALMOXARIFADO' then
                 SQL.Add('and (select emp_tipo from controle_empenho where emp_idordemcorte=oc.oc_id and emp_situacao in (''N'', ''P'') and emp_mod = 0 ORDER BY emp_id DESC LIMIT 1) = ''S''');
             if comboSetor.Text = 'PLANEJAMENTO' then
@@ -349,6 +360,11 @@ begin
     end;
 end;
 
+procedure TformPrincipal.butRealCortadoClick(Sender: TObject);
+begin
+      acaoRealCortadoExecute(Sender);
+end;
+
 procedure TformPrincipal.butClearColecaoClick(Sender: TObject);
 begin
     dbLColecao.KeyValue := Null;
@@ -377,6 +393,14 @@ begin
     gridViewOrdemCorte;
     footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
     boxColecao;
+    //if gridOrdem.SelectedRows. then
+
+end;
+
+procedure TformPrincipal.gridOrdemCellClick(Column: TColumn);
+begin
+ //   if gridOrdem.Columns[2].Field := 'FINALIZADA' then
+  //     butRealCortado.Enabled := true;
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -417,6 +441,9 @@ begin
     butCortePrevisto.Font.Style:=[fsBold];
     butHistoricOrdem.Font.Color:=clMenuHighlight;
     butHistoricOrdem.Font.Style:=[fsBold];
+    butRealCortado.Font.Color:=clMenuhighlight;
+    butRealCortado.Font.Style:=[fsBold];
+    butRealCortado.Enabled := false;
     comboTipo.Text:='';
 end;
 

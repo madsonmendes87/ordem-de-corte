@@ -1607,7 +1607,7 @@ object formPrincipal: TformPrincipal
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
-      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       ParentFont = False
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
@@ -1615,6 +1615,7 @@ object formPrincipal: TformPrincipal
       TitleFont.Height = -13
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
+      OnCellClick = gridOrdemCellClick
     end
     object Panel2: TPanel
       Left = 6
@@ -1948,7 +1949,7 @@ object formPrincipal: TformPrincipal
         Left = 186
         Top = 36
         Width = 201
-        Height = 21
+        Height = 24
         CharCase = ecUpperCase
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -2127,7 +2128,7 @@ object formPrincipal: TformPrincipal
       Top = 506
       Width = 145
       Height = 33
-      Caption = 'Ver Corte Real (F4)'
+      Caption = 'Ver Corte (F4)'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -2187,6 +2188,15 @@ object formPrincipal: TformPrincipal
       ListField = 'es_nome'
       ListSource = dmOrdemCorte.dsBoxEstilista
       TabOrder = 6
+    end
+    object butRealCortado: TBitBtn
+      Left = 368
+      Top = 506
+      Width = 145
+      Height = 33
+      Caption = 'Ver Real Cortado (F6)'
+      TabOrder = 7
+      OnClick = butRealCortadoClick
     end
   end
   object butClearEstilo: TButton
@@ -2278,6 +2288,12 @@ object formPrincipal: TformPrincipal
       Caption = 'Historico Ordem de Corte (F7)'
       ShortCut = 118
       OnExecute = acaoBotaoHistoricoExecute
+    end
+    object acaoRealCortado: TAction
+      Category = 'verCorte'
+      Caption = 'acaoRealCortado'
+      ShortCut = 117
+      OnExecute = acaoRealCortadoExecute
     end
   end
 end

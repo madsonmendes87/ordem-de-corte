@@ -54,44 +54,44 @@ procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
 var key: Char;
 begin
     begin
-        With dmOrdemCorte.qyProdutoAcabado do
+        With dmOrdemCorte do
         begin
-            Close;
-            SQL.Clear;
-            SQL.Add('SELECT');
-            SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
-            SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strComplementar,');
-            SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strAproveitamento');
-            SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
-            SQL.Add('  where pa.cad_situacao=''A''');
-            SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
+            qyProdutoAcabado.Close;
+            qyProdutoAcabado.SQL.Clear;
+            qyProdutoAcabado.SQL.Add('SELECT');
+            qyProdutoAcabado.SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
+            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strComplementar,');
+            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strAproveitamento');
+            qyProdutoAcabado.SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
+            qyProdutoAcabado.SQL.Add('  where pa.cad_situacao=''A''');
+            qyProdutoAcabado.SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
             if comboFiltro.Text = 'REFERENCIA' then
              begin
-                SQL.Add('and pa.cad_idreferencia = :referencia');
-                ParamByName('referencia').AsString := editSearchPA.Text;
+                qyProdutoAcabado.SQL.Add('and pa.cad_idreferencia = :referencia');
+                qyProdutoAcabado.ParamByName('referencia').AsString := editSearchPA.Text;
             end;
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
-                SQL.Add('and ft.fi_id = :fichatecnica');
-                ParamByName('fichatecnica').AsInteger := strtointdef(editSearchPA.Text,0);
+                qyProdutoAcabado.SQL.Add('and ft.fi_id = :fichatecnica');
+                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtointdef(editSearchPA.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
-                SQL.Add('and pa.cad_descricao = :descricao');
-                ParamByName('descricao').AsString := editSearchPA.Text;
+                qyProdutoAcabado.SQL.Add('and pa.cad_descricao = :descricao');
+                qyProdutoAcabado.ParamByName('descricao').AsString := editSearchPA.Text;
             end;
             if dbLCBoxColecao.KeyValue <> Null then
             begin
-                SQL.Add('and pa.cad_idcolecao = :colecao');
-                ParamByName('colecao').AsInteger := dbLCBoxColecao.KeyValue;
+                qyProdutoAcabado.SQL.Add('and pa.cad_idcolecao = :colecao');
+                qyProdutoAcabado.ParamByName('colecao').AsInteger := dbLCBoxColecao.KeyValue;
             end;
             if dtCadastro.Checked = true then
             begin
-                SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
-                ParamByName('dtcadastro').AsDate := dtCadastro.Date;
+                qyProdutoAcabado.SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
+                qyProdutoAcabado.ParamByName('dtcadastro').AsDate := dtCadastro.Date;
             end;
-            SQL.Add('order by ft.fi_id desc limit 15');
-            Open;
+            qyProdutoAcabado.SQL.Add('order by ft.fi_id desc limit 15');
+            qyProdutoAcabado.Open;
         end;
     end;
 end;

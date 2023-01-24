@@ -1948,7 +1948,7 @@ object formPrincipal: TformPrincipal
         Left = 186
         Top = 36
         Width = 201
-        Height = 21
+        Height = 24
         CharCase = ecUpperCase
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -2089,7 +2089,7 @@ object formPrincipal: TformPrincipal
         TabOrder = 11
         OnClick = butClearSituacaoClick
       end
-      object butLimpaColecao: TButton
+      object butLimpaIniOrdem: TButton
         Left = 384
         Top = 80
         Width = 16
@@ -2103,13 +2103,13 @@ object formPrincipal: TformPrincipal
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 12
-        OnClick = butLimpaColecaoClick
+        OnClick = butLimpaIniOrdemClick
       end
-      object Button1: TButton
+      object butClearColecao: TButton
         Left = 608
         Top = 80
         Width = 16
-        Height = 25
+        Height = 24
         Hint = 'Limpar Cole'#231#227'o'
         Caption = 'X'
         Font.Charset = DEFAULT_CHARSET
@@ -2119,7 +2119,7 @@ object formPrincipal: TformPrincipal
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 13
-        OnClick = Button1Click
+        OnClick = butClearColecaoClick
       end
     end
     object butVerCorte: TBitBtn
@@ -2127,7 +2127,7 @@ object formPrincipal: TformPrincipal
       Top = 506
       Width = 145
       Height = 33
-      Caption = 'Ver Corte Real (F4)'
+      Caption = 'Ver Corte (F4)'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -2187,6 +2187,15 @@ object formPrincipal: TformPrincipal
       ListField = 'es_nome'
       ListSource = dmOrdemCorte.dsBoxEstilista
       TabOrder = 6
+    end
+    object butRealCortado: TBitBtn
+      Left = 368
+      Top = 506
+      Width = 145
+      Height = 33
+      Caption = 'Ver Real Cortado(F6)'
+      TabOrder = 7
+      OnClick = butRealCortadoClick
     end
   end
   object butClearEstilo: TButton
@@ -2278,6 +2287,12 @@ object formPrincipal: TformPrincipal
       Caption = 'Historico Ordem de Corte (F7)'
       ShortCut = 118
       OnExecute = acaoBotaoHistoricoExecute
+    end
+    object acaoRealCortado: TAction
+      Category = 'verCorte'
+      Caption = 'acaoRealCortado'
+      ShortCut = 117
+      OnExecute = acaoRealCortadoExecute
     end
   end
 end
