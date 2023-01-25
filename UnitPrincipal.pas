@@ -124,6 +124,7 @@ type
     procedure butClearColecaoClick(Sender: TObject);
     procedure acaoRealCortadoExecute(Sender: TObject);
     procedure butRealCortadoClick(Sender: TObject);
+    procedure gridOrdemCellClick(Column: TColumn);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -392,6 +393,15 @@ begin
     gridViewOrdemCorte;
     footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
     boxColecao;
+
+end;
+
+procedure TformPrincipal.gridOrdemCellClick(Column: TColumn);
+begin
+   if gridOrdem.Fields[2].Value = 'FINALIZADA' then
+      butRealCortado.Enabled := true
+   else
+      butRealCortado.Enabled := false;
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -432,6 +442,9 @@ begin
     butCortePrevisto.Font.Style:=[fsBold];
     butHistoricOrdem.Font.Color:=clMenuHighlight;
     butHistoricOrdem.Font.Style:=[fsBold];
+    butRealCortado.Font.Color:=clMenuhighlight;
+    butRealCortado.Font.Style:=[fsBold];
+    butRealCortado.Enabled := false;
     comboTipo.Text:='';
 end;
 

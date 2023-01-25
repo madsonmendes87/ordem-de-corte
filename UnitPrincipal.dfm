@@ -1607,7 +1607,7 @@ object formPrincipal: TformPrincipal
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
-      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       ParentFont = False
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
@@ -1615,6 +1615,7 @@ object formPrincipal: TformPrincipal
       TitleFont.Height = -13
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
+      OnCellClick = gridOrdemCellClick
     end
     object Panel2: TPanel
       Left = 6
@@ -2193,7 +2194,7 @@ object formPrincipal: TformPrincipal
       Top = 506
       Width = 145
       Height = 33
-      Caption = 'Ver Real Cortado(F6)'
+      Caption = 'Ver Real Cortado (F6)'
       TabOrder = 7
       OnClick = butRealCortadoClick
     end
