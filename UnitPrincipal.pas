@@ -142,7 +142,8 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDatamodule, UnitIniciarCorte;
+uses UnitDatamodule, UnitIniciarCorte, UnitHistoricOrdem,
+  UnitProdutoAcabado;
 
 procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
@@ -159,7 +160,10 @@ end;
 procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
       if butHistoricOrdem.Enabled = true then
-            ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
+      begin
+          application.CreateForm(TformHistoricOrdem, formHistoricOrdem);
+          formHistoricOrdem.ShowModal;
+      end;
 end;
 
 procedure TformPrincipal.acaoRealCortadoExecute(Sender: TObject);

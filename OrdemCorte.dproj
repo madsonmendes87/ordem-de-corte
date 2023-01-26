@@ -88,8 +88,8 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <DCC_ExeOutput>C:\Sistema DiaERP\DiaAplicativo</DCC_ExeOutput>
-        <VerInfo_Build>9</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.9;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>10</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.10;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Debug>true</VerInfo_Debug>
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
@@ -129,6 +129,10 @@
             <Form>formProdutoAcabado</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UnitHistoricOrdem.pas">
+            <Form>formHistoricOrdem</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -155,7 +159,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Win32\Debug\OrdemCorte.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="C:\Sistema DiaERP\DiaAplicativo\OrdemCorte.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>OrdemCorte.exe</RemoteName>
                         <Overwrite>true</Overwrite>

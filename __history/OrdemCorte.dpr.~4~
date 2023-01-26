@@ -5,8 +5,7 @@ uses
   UnitPrincipal in 'UnitPrincipal.pas' {formPrincipal},
   UnitDatamodule in 'UnitDatamodule.pas' {dmOrdemCorte: TDataModule},
   UnitIniciarCorte in 'UnitIniciarCorte.pas' {formIniciarCorte},
-  UnitProdutoAcabado in 'UnitProdutoAcabado.pas' {formProdutoAcabado},
-  UnitHistoricOrdem in 'UnitHistoricOrdem.pas' {formHistoricOrdem};
+  UnitProdutoAcabado in 'UnitProdutoAcabado.pas' {formProdutoAcabado};
 
 {$R *.res}
 
@@ -15,6 +14,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmOrdemCorte, dmOrdemCorte);
   Application.CreateForm(TFormPrincipal, FormPrincipal);
-  Application.CreateForm(TformHistoricOrdem, formHistoricOrdem);
   Application.Run;
 end.
