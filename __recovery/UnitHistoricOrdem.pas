@@ -34,23 +34,26 @@ end;
 
 procedure TformHistoricOrdem.FormShow(Sender: TObject);
 begin
-    if(treeHistoricOrdem.Items.Count=0) then  {Testa se existe um Nó Principal}
+    if(treeHistoricOrdem.Items.Count=0) then  {Testa se existe um NÃ³ Principal}
     begin
         with treeHistoricOrdem.Items.AddFirst(nil, formPrincipal.gridOrdem.Fields[0].Value) do
         begin
             Selected := true;
         end;
         with treeHistoricOrdem.Items.AddChildFirst(treeHistoricOrdem.Selected, 'ESTILISTA: '+ formPrincipal.gridOrdem.Fields[3].Value + '    ' +
-        'REFERÊNCIA: ' + formPrincipal.gridOrdem.Fields[8].Value) do
+        'REFERÃŠNCIA: ' + formPrincipal.gridOrdem.Fields[8].Value) do
         begin
             Selected := false;
         end;
-        with treeHistoricOrdem.Items.AddChild(treeHistoricOrdem.Selected, 'DATA INICIO: '+ dateToStr(formPrincipal.gridOrdem.Fields[10].Value) + ' ' +
-        dmOrdemCorte.tbOrdemCorte.FieldByName('oc_hrgerada').AsString) do
+        with dmOrdemCorte.qyOrdemCorte do
         begin
-            Selected := false;
+            Close;
+            SQL.Clear;
+            treeHistoricOrdem.Items.AddChild(treeHistoricOrdem.Selected, 'Select oc_dtgerada from ordem_corte where oc_id = :ordemdecorte');
+            ParamByName('ordemdecorte').AsString := formPrincipal.gridOrdem.Fields[0].Value;
+            //Selected := false;
         end;
-        with treeHistoricOrdem.Items.AddChild(treeHistoricOrdem.Selected, 'TESTE DE NÓ') do
+        with treeHistoricOrdem.Items.AddChild(treeHistoricOrdem.Selected, 'TESTE DE NÃ“') do
         begin
             Selected := false;
         end;

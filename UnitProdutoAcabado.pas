@@ -66,7 +66,7 @@ begin
             SQL.Add('  where pa.cad_situacao=''A''');
             SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
             if comboFiltro.Text = 'REFERENCIA' then
-             begin
+            begin
                 SQL.Add('and pa.cad_idreferencia = :referencia');
                 ParamByName('referencia').AsString := editSearchPA.Text;
             end;

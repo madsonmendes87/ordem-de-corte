@@ -40,17 +40,20 @@ begin
         begin
             Selected := true;
         end;
+        with treeHistoricOrdem.Items.AddChildFirst(treeHistoricOrdem.Selected, 'DATA INICIO: '+ dateToStr(formPrincipal.gridOrdem.Fields[10].Value)) do
+        begin
+            Selected := false;
+        end;
         with treeHistoricOrdem.Items.AddChildFirst(treeHistoricOrdem.Selected, 'ESTILISTA: '+ formPrincipal.gridOrdem.Fields[3].Value + '    ' +
         'REFERÊNCIA: ' + formPrincipal.gridOrdem.Fields[8].Value) do
         begin
             Selected := false;
         end;
-        with treeHistoricOrdem.Items.AddChild(treeHistoricOrdem.Selected, 'DATA INICIO: '+ dateToStr(formPrincipal.gridOrdem.Fields[10].Value) + ' ' +
-        dmOrdemCorte.tbOrdemCorte.FieldByName('oc_hrgerada').AsString) do
-        begin
-            Selected := false;
-        end;
-        with treeHistoricOrdem.Items.AddChild(treeHistoricOrdem.Selected, 'TESTE DE NÓ') do
+       // with treeHistoricOrdem.Items.AddChildFirst(treeHistoricOrdem.Selected, 'DATA INICIO: '+ dateToStr(formPrincipal.gridOrdem.Fields[10].Value)) do
+       // begin
+       //     Selected := false;
+       // end;
+       with treeHistoricOrdem.Items.AddChildFirst(treeHistoricOrdem.Selected, 'CORTE PREVISTO: ') do
         begin
             Selected := false;
         end;

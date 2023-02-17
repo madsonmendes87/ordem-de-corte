@@ -3,12 +3,30 @@ unit UnitDatamodule;
 interface
 
 uses
-  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
-  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
-  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.PG,
-  FireDAC.Phys.PGDef, FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.Comp.Client,
-  Data.DB, FireDAC.Phys.MSAcc, FireDAC.Phys.MSAccDef, FireDAC.Stan.Param,
-  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet;
+  System.SysUtils,
+  System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Stan.Async,
+  FireDAC.Phys,
+  FireDAC.Phys.PG,
+  FireDAC.Phys.PGDef,
+  FireDAC.VCLUI.Wait,
+  FireDAC.Comp.UI,
+  FireDAC.Comp.Client,
+  Data.DB,
+  FireDAC.Phys.MSAcc,
+  FireDAC.Phys.MSAccDef,
+  FireDAC.Stan.Param,
+  FireDAC.DatS,
+  FireDAC.DApt.Intf,
+  FireDAC.DApt,
+  FireDAC.Comp.DataSet;
 
 type
   TdmOrdemCorte = class(TDataModule)
@@ -53,6 +71,28 @@ type
     tbOrdemCorteTrocaItem: TFDTable;
     dsOrdemCorteTrocaItem: TDataSource;
     qyOrdemCorte: TFDQuery;
+    tbEstilista: TFDTable;
+    dsEstilista: TDataSource;
+    qyProdutoAcabado: TFDQuery;
+    dsProdutoAcabado: TDataSource;
+    tbProdutoAcabado: TFDTable;
+    tbOrdemCorteoc_dtsolicitacao: TDateField;
+    tbOrdemCorteoc_dtprevisaofinalizacao: TDateField;
+    tbOrdemCorteoc_observacao: TWideStringField;
+    tbOrdemCorteoc_datapreviniciocorteprevisto: TDateField;
+    tbOrdemCorteoc_dataprevfimcorteprevisto: TDateField;
+    tbOrdemCorteoc_datapreviniciorealcortado: TDateField;
+    tbOrdemCorteoc_dataprevfimrealcortado: TDateField;
+    tbOrdemCorteoc_hrprevisaofinalizacao: TTimeField;
+    tbOrdemCorteoc_horapreviniciocorteprevisto: TTimeField;
+    tbOrdemCorteoc_horaprevfimcorteprevisto: TTimeField;
+    tbOrdemCorteoc_horapreviniciorealcortado: TTimeField;
+    tbOrdemCorteoc_horaprevfimrealcortado: TTimeField;
+    tbOrdemCorteoc_horasolicitacao: TTimeField;
+    qyBoxColecao: TFDQuery;
+    dsBoxColecao: TDataSource;
+    qyBoxEstilista: TFDQuery;
+    dsBoxEstilista: TDataSource;
   private
     { Private declarations }
   public
@@ -67,7 +107,5 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
-
-
 
 end.

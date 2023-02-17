@@ -45,15 +45,6 @@ begin
         begin
             Selected := false;
         end;
-        with treeHistoricOrdem.Items.AddChild(treeHistoricOrdem.Selected, 'DATA INICIO: '+ dateToStr(formPrincipal.gridOrdem.Fields[10].Value) + ' ' +
-        dmOrdemCorte.tbOrdemCorte.FieldByName('oc_hrgerada').AsString) do
-        begin
-            Selected := false;
-        end;
-        with treeHistoricOrdem.Items.AddChild(treeHistoricOrdem.Selected, 'TESTE DE NÓ') do
-        begin
-            Selected := false;
-        end;
     end;
 end;
 
