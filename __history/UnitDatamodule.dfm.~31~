@@ -491,7 +491,10 @@ object dmOrdemCorte: TdmOrdemCorte
     Active = True
     Connection = Conexao
     SQL.Strings = (
-      'select * from ordem_corte;')
+      
+        'select oc_id, oc_dtgerada, oc_hrgerada, oc_usugerou from ordem_c' +
+        'orte'
+      'order by oc_id;')
     Left = 944
     Top = 24
   end

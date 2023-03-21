@@ -129,13 +129,13 @@ uses UnitDatamodule, UnitIniciarCorte, UnitHistoricOrdem,
 procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
       if butCortePrevisto.Enabled = true then
-            ShowMessage('Mensagem de teste: Ver Corte Previsto');
+            ShowMessage('Mensagem de teste: Corte Previsto');
 end;
 
 procedure TformPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
 begin
       if butVerCorte.Enabled = true then
-            ShowMessage('Mensagem de teste: Ver Corte');
+            ShowMessage('Mensagem de teste: Corte Real');
 end;
 
 procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);

@@ -1597,9 +1597,8 @@ object formPrincipal: TformPrincipal
       Left = 0
       Top = 0
       Width = 1176
-      Height = 489
+      Height = 500
       Align = alTop
-      Anchors = [akLeft, akTop, akRight, akBottom]
       Color = clWhite
       DataSource = dmOrdemCorte.dsOrdemCorte
       Font.Charset = DEFAULT_CHARSET

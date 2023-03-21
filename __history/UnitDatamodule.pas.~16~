@@ -81,6 +81,7 @@ type
     cdsOrdemHistoricooc_dtgerada: TDateField;
     cdsOrdemHistoricooc_hrgerada: TTimeField;
     cdsOrdemHistoricooc_usugerou: TIntegerField;
+    cdsOrdemHistoricooc_idfichatecnica: TIntegerField;
   private
     { Private declarations }
   public

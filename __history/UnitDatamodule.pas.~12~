@@ -5,8 +5,7 @@ interface
 uses
   System.SysUtils,System.Classes,FireDAC.Stan.Intf,FireDAC.Stan.Option,FireDAC.Stan.Error,FireDAC.UI.Intf,FireDAC.Phys.Intf,
   FireDAC.Stan.Def,FireDAC.Stan.Pool,FireDAC.Stan.Async,FireDAC.Phys,FireDAC.Phys.PG,FireDAC.Phys.PGDef,FireDAC.VCLUI.Wait,FireDAC.Comp.UI,FireDAC.Comp.Client,
-  Data.DB,FireDAC.Phys.MSAcc,FireDAC.Phys.MSAccDef,FireDAC.Stan.Param,FireDAC.DatS,FireDAC.DApt.Intf,FireDAC.DApt,FireDAC.Comp.DataSet,
-  Datasnap.Provider, Datasnap.DBClient;
+  Data.DB,FireDAC.Phys.MSAcc,FireDAC.Phys.MSAccDef,FireDAC.Stan.Param,FireDAC.DatS,FireDAC.DApt.Intf,FireDAC.DApt,FireDAC.Comp.DataSet;
 
 type
   TdmOrdemCorte = class(TDataModule)
@@ -73,14 +72,6 @@ type
     dsBoxColecao: TDataSource;
     qyBoxEstilista: TFDQuery;
     dsBoxEstilista: TDataSource;
-    qyOrdemHistorico: TFDQuery;
-    dsOrdemHistorico: TDataSource;
-    cdsOrdemHistorico: TClientDataSet;
-    dataSetOrdemHistorico: TDataSetProvider;
-    cdsOrdemHistoricooc_id: TIntegerField;
-    cdsOrdemHistoricooc_dtgerada: TDateField;
-    cdsOrdemHistoricooc_hrgerada: TTimeField;
-    cdsOrdemHistoricooc_usugerou: TIntegerField;
   private
     { Private declarations }
   public

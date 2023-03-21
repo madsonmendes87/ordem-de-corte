@@ -35,7 +35,7 @@ procedure TformHistoricOrdem.FormShow(Sender: TObject);
 
 var
     treeHistoricOrdem: TTreeView;
-    no, noprev: TTreeNode;
+    no: TTreeNode;
     noPai: TTreeNode;
     I: Integer;
 begin
@@ -49,9 +49,12 @@ begin
     no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[3].Value + '        REFERÊNCIA: '
     + formPrincipal.gridOrdem.Fields[8].Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + DateToStr(formPrincipal.gridOrdem.Fields[10].Value));
-    no := treeHistoricOrdem.Items.AddChild(noPai, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_dtgerada').AsString);
-    no := treeHistoricOrdem.Items.AddChild(noPai, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_hrgerada').AsString);
-    noprev := treeHistoricOrdem.Items.AddChildFirst(no, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_id').AsString);
+    with dmOrdemCorte.qyOrdemHistorico do
+    begin
+        SQL.Add('Select oc_dtgerada from ordem_corte where oc_idfichatecnica = :ficha');
+        ParamByName('ficha').AsString := formPrincipal.gridOrdem.Fields[4].Value;
+        no := treeHistoricOrdem.Items.AddChild(noPai, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_dtgerada').AsString);
+    end;
 end;
 
 end.
