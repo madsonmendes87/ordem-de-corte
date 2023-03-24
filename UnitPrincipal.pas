@@ -112,7 +112,7 @@ type
   public
     { Public declarations }
     procedure boxColecao;
-    function VersaoExe: String;
+    function versaoExe: String;
     procedure boxEstilista;
   end;
 
@@ -375,7 +375,7 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
-    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
+    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ versaoExe;
     boxColecao;
 
 end;
@@ -432,7 +432,7 @@ begin
     comboTipo.Text:='';
 end;
 
-function TformPrincipal.VersaoExe: string;
+function TformPrincipal.versaoExe: string;
 type
    PFFI = ^vs_FixedFileInfo;
 var

@@ -488,10 +488,9 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 488
   end
   object qyOrdemHistorico: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
-      'select * from ordem_corte;')
+      'select * from ordem_corte order by oc_id;')
     Left = 944
     Top = 24
   end

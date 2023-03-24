@@ -35,7 +35,7 @@ procedure TformHistoricOrdem.FormShow(Sender: TObject);
 
 var
     treeHistoricOrdem: TTreeView;
-    no: TTreeNode;
+    no, noprev: TTreeNode;
     noPai: TTreeNode;
     I: Integer;
 begin
@@ -46,15 +46,19 @@ begin
     begin
       noPai.Selected := false;
     end;
-    no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[3].Value + '        REFERÊNCIA: '
+    no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[3].Value + '        REFERÃŠNCIA: '
     + formPrincipal.gridOrdem.Fields[8].Value);
-    no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + DateToStr(formPrincipal.gridOrdem.Fields[10].Value));
-    //no := treeHistoricOrdem.Items.AddChild(noPai, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_dtgerada').AsString);
+    no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_dtgerada').AsString);
+    no := treeHistoricOrdem.Items.AddChild(noPai, 'CORTE PREVISTO');
+    noprev := treeHistoricOrdem.Items.AddChildFirst(no, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_id').AsString);
     with dmOrdemCorte.qyOrdemHistorico do
     begin
-        SQL.Add('Select oc_dtgerada from ordem_corte where oc_idfichatecnica = 1');
-        //ParamByName('ficha').AsString := formPrincipal.gridOrdem.Fields[4].AsString;
-        no := treeHistoricOrdem.Items.AddChild(noPai, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_dtgerada').AsString);
+        Close;
+        SQL.Text := 'select oc_dtgerada from ordem_corte';
+        SQL.Add('where oc_idfichatecnica = :ficha and oc_prototipo = :eprototipo');
+        ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
+        Open;
+        treeHistoricOrdem.Items.AddChild(no, dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value);
     end;
 end;
 
