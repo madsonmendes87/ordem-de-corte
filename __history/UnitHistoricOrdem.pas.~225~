@@ -68,9 +68,30 @@ begin
     end;
     no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[3].Value + '        REFERÊNCIA: '
     + formPrincipal.gridOrdem.Fields[8].Value);
-    no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value));
+    no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'CORTE PREVISTO');
     noprev := treeHistoricOrdem.Items.AddChildFirst(no, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_id').AsString);
+//    if(formPrincipal.gridOrdem.Fields[7].Value = 'Protótipo') then
+//    begin
+//        with dmOrdemCorte.qyOrdemHistorico do
+//        begin
+//            Close;
+//            SQL.Text := 'select oc_dtgerada from ordem_corte';
+//            SQL.Add('where oc_idfichatecnica = :ficha and oc_prototipo = true');
+//            ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
+//            Open;
+//        end;
+//    end
+//    else
+//        with dmOrdemCorte.qyOrdemHistorico do
+//        begin
+//            Close;
+//            SQL.Text := 'select oc_dtgerada from ordem_corte';
+//            SQL.Add('where oc_idfichatecnica = :ficha and oc_prototipo = false');
+//            ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
+//            Open;
+//        end;
+//     treeHistoricOrdem.Items.AddChild(no, dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value);
 end;
 
 end.

@@ -51,16 +51,23 @@ begin
     no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_dtgerada').AsString);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'CORTE PREVISTO');
     noprev := treeHistoricOrdem.Items.AddChildFirst(no, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_id').AsString);
-    with dmOrdemCorte.qyOrdemHistorico do
+    if(formPrincipal.gridOrdem.Fields[7].Value = 'Protótipo') then
     begin
-        Close;
-        SQL.Text := 'select oc_dtgerada from ordem_corte';
-        SQL.Add('where oc_idfichatecnica = :ficha'); //and oc_prototipo = :eprototipo');
-        ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
-        //ParamByName('eprototipo').AsString := formPrincipal.gridOrdem.Fields[7].Value;
-        Open;
-        treeHistoricOrdem.Items.AddChild(no, dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value);
-    end;
+        with dmOrdemCorte.qyOrdemHistorico do
+        begin
+            Close;
+            SQL.Text := 'select oc_dtgerada from ordem_corte';
+            SQL.Add('where oc_idfichatecnica = :ficha and oc_prototipo = true');
+            //SQL.Add('or (oc_idfichatecnica = :ficha and oc_prototipo = false)');
+            ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
+          //ParamByName('tipo').AsBoolean := dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_prototipo').Value;
+            Open;
+         //   treeHistoricOrdem.Items.AddChild(no, dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value);
+        end;
+       // treeHistoricOrdem.Items.AddChild(no, dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value)
+    end
+    else
+        ShowMessage('Teste');
 end;
 
 end.
