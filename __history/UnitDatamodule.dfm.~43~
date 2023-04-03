@@ -488,13 +488,12 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 488
   end
   object qyOrdemHistorico: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       
-        'select oc_id, oc_dtgerada, oc_hrgerada, oc_usugerou from ordem_c' +
-        'orte'
-      'order by oc_id;')
+        'select oc_dtgerada, oc_hrgerada, us_nome from ordem_corte, usuar' +
+        'io'
+      'where oc_usugerou = us_id;')
     Left = 944
     Top = 24
   end
@@ -526,11 +525,6 @@ object dmOrdemCorte: TdmOrdemCorte
     object cdsOrdemHistoricooc_usugerou: TIntegerField
       FieldName = 'oc_usugerou'
       Origin = 'oc_usugerou'
-    end
-    object cdsOrdemHistoricooc_idfichatecnica: TIntegerField
-      FieldKind = fkCalculated
-      FieldName = 'oc_idfichatecnica'
-      Calculated = True
     end
   end
   object dataSetOrdemHistorico: TDataSetProvider
