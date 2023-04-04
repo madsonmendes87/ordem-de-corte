@@ -490,7 +490,10 @@ object dmOrdemCorte: TdmOrdemCorte
   object qyOrdemHistorico: TFDQuery
     Connection = Conexao
     SQL.Strings = (
-      'select oc_id, oc_dtgerada from ordem_corte;')
+      
+        'select oc_id, oc_usugerou, oc_dtgerada, oc_hrgerada, us_nome fro' +
+        'm ordem_corte, usuario'
+      'where oc_usugerou = us_id;')
     Left = 944
     Top = 24
   end

@@ -46,8 +46,8 @@ begin
         with dmOrdemCorte.qyOrdemHistorico do
         begin
             Close;
-            SQL.Text := 'select oc_dtgerada, oc_hrgerada from ordem_corte';
-            SQL.Add('where oc_idfichatecnica = :ficha and oc_prototipo = true and oc_situacao <> ''2''');
+            SQL.Text := 'select oc_dtgerada, oc_hrgerada, us_nome from ordem_corte, usuario';
+            SQL.Add('where oc_usugerou = us_id and oc_idfichatecnica = :ficha and oc_prototipo = true and oc_situacao <> ''2''');
             ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
             Open;
         end
@@ -55,8 +55,8 @@ begin
         with dmOrdemCorte.qyOrdemHistorico do
         begin
             Close;
-            SQL.Text := 'select oc_dtgerada, oc_hrgerada from ordem_corte';
-            SQL.Add('where oc_idfichatecnica = :ficha and oc_prototipo = false and oc_situacao <> ''2''');
+            SQL.Text := 'select oc_dtgerada, oc_hrgerada, us_nome from ordem_corte, usuario';
+            SQL.Add('where oc_usugerou = us_id and oc_idfichatecnica = :ficha and oc_prototipo = false and oc_situacao <> ''2''');
             ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
             Open;
         end;
@@ -67,7 +67,8 @@ begin
     no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[3].Value + '        REFERÊNCIA: '
     + formPrincipal.gridOrdem.Fields[8].Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value)
-    + datetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value));
+    + '  ' + timetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUARIO INICIOU: ' +
+    dmOrdemCorte.qyOrdemHistorico.FieldByName('us_nome').Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'CORTE PREVISTO');
     noprev := treeHistoricOrdem.Items.AddChildFirst(no, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_id').AsString);
 end;

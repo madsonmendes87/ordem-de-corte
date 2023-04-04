@@ -532,4 +532,14 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 960
     Top = 184
   end
+  object qyPrevisto: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select oci_idocorte, oci_dtlanc, oci_hrlanc, oci_codusulanc, us_' +
+        'nome from ordem_corte_itens_previsto, usuario'
+      'where oci_codusulanc = us_id;')
+    Left = 968
+    Top = 232
+  end
 end

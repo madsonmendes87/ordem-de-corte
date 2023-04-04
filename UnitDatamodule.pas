@@ -81,6 +81,7 @@ type
     cdsOrdemHistoricooc_dtgerada: TDateField;
     cdsOrdemHistoricooc_hrgerada: TTimeField;
     cdsOrdemHistoricooc_usugerou: TIntegerField;
+    qyPrevisto: TFDQuery;
   private
     { Private declarations }
   public
