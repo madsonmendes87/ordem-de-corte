@@ -490,7 +490,10 @@ object dmOrdemCorte: TdmOrdemCorte
   object qyOrdemHistorico: TFDQuery
     Connection = Conexao
     SQL.Strings = (
-      'select oc_id, oc_dtgerada, oc_hrgerada from ordem_corte;')
+      
+        'select oc_id, oc_usugerou, oc_dtgerada, oc_hrgerada, us_nome fro' +
+        'm ordem_corte, usuario'
+      'where oc_usugerou = us_id;')
     Left = 944
     Top = 24
   end
@@ -528,5 +531,15 @@ object dmOrdemCorte: TdmOrdemCorte
     DataSet = qyOrdemHistorico
     Left = 960
     Top = 184
+  end
+  object qyPrevisto: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select oci_idocorte, oci_dtlanc, oci_hrlanc, oci_codusulanc, us_' +
+        'nome from ordem_corte_itens_previsto, usuario'
+      'where oci_codusulanc = us_id;')
+    Left = 968
+    Top = 232
   end
 end

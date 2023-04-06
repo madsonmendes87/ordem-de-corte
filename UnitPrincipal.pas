@@ -221,8 +221,7 @@ begin
       begin
             Close;
             SQL.Clear;
-            SQL.Add('SELECT');
-            SQL.Add('Cast(concat(lpad(cast(oc.oc_id As varchar), 7, ''0''), ''-'', lpad(cast(oc.oc_ordem As varchar), 3, ''0'') )as character varying(15))as NumerodoCorte,');
+            SQL.Add('SELECT oc.oc_id,');
             SQL.Add('cc.co_descricao, (ocs.os_nome)as situacao,');
             SQL.Add('(ce.es_nome)as estilista,');
             SQL.Add('oc.oc_idfichatecnica,');

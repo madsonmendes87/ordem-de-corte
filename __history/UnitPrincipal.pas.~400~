@@ -3,27 +3,8 @@ unit UnitPrincipal;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.Menus,
-  Vcl.ToolWin,
-  Vcl.ActnMan,
-  Vcl.ActnCtrls,
-  Vcl.ActnMenus,
-  Vcl.ComCtrls,
-  Vcl.StdCtrls,
-  Vcl.ExtCtrls,
-  Vcl.Buttons,
-  Data.DB,
-  Vcl.Grids,
-  Vcl.DBGrids,
+  Winapi.Windows,Winapi.Messages,System.SysUtils,System.Variants,System.Classes,Vcl.Graphics,Vcl.Controls,Vcl.Forms,Vcl.Dialogs,Vcl.Menus,
+  Vcl.ToolWin,Vcl.ActnMan,Vcl.ActnCtrls,Vcl.ActnMenus,Vcl.ComCtrls,Vcl.StdCtrls,Vcl.ExtCtrls,Vcl.Buttons,Data.DB,Vcl.Grids,Vcl.DBGrids,
   Vcl.DBCtrls, System.Actions, Vcl.ActnList;
 
 type
@@ -131,7 +112,7 @@ type
   public
     { Public declarations }
     procedure boxColecao;
-    function VersaoExe: String;
+    function versaoExe: String;
     procedure boxEstilista;
   end;
 
@@ -142,24 +123,28 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDatamodule, UnitIniciarCorte;
+uses UnitDatamodule, UnitIniciarCorte, UnitHistoricOrdem,
+  UnitProdutoAcabado;
 
 procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
       if butCortePrevisto.Enabled = true then
-            ShowMessage('Mensagem de teste: Corte Previsto');
+            ShowMessage('Mensagem de teste: Ver Corte Previsto');
 end;
 
 procedure TformPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
 begin
       if butVerCorte.Enabled = true then
-            ShowMessage('Mensagem de teste: Corte Real');
+            ShowMessage('Mensagem de teste: Ver Corte');
 end;
 
 procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
       if butHistoricOrdem.Enabled = true then
-            ShowMessage('Mensagem de teste: Ver o Historico Ordem de Corte');
+      begin
+          application.CreateForm(TformHistoricOrdem, formHistoricOrdem);
+          formHistoricOrdem.ShowModal;
+      end;
 end;
 
 procedure TformPrincipal.acaoRealCortadoExecute(Sender: TObject);
@@ -192,7 +177,6 @@ begin
         SQl.add('order by co_anocolecao desc limit 7');
         Open;
     end;
-
 end;
 
 procedure TformPrincipal.butClearEstiloClick(Sender: TObject);
@@ -391,7 +375,7 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
-    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
+    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ versaoExe;
     boxColecao;
 
 end;
@@ -399,7 +383,9 @@ end;
 procedure TformPrincipal.gridOrdemCellClick(Column: TColumn);
 begin
    if gridOrdem.Fields[2].Value = 'FINALIZADA' then
-      butRealCortado.Enabled := true;
+      butRealCortado.Enabled := true
+   else
+      butRealCortado.Enabled := false;
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -446,7 +432,7 @@ begin
     comboTipo.Text:='';
 end;
 
-function TformPrincipal.VersaoExe: string;
+function TformPrincipal.versaoExe: string;
 type
    PFFI = ^vs_FixedFileInfo;
 var

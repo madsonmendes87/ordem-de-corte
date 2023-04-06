@@ -309,15 +309,10 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object qyOrdemCorte: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       'SELECT'
-      '    Cast(concat(lpad(cast(oc.oc_id As varchar), 7, '#39'0'#39'),'
-      
-        '    '#39'-'#39', lpad(cast(oc.oc_ordem As varchar), 3, '#39'0'#39') )as characte' +
-        'r varying(15))'
-      '    as NumerodoCorte,'
+      '    oc.oc_id as NumerodoCorte,'
       
         '    cc.co_descricao, (ocs.os_nome)as situacao, (ce.es_nome)as es' +
         'tilista,'

@@ -43,23 +43,36 @@ begin
     treeHistoricOrdem.Parent := formHistoricOrdem;
     treeHistoricOrdem.Align := alClient;
     if formPrincipal.gridOrdem.Fields[7].Value = 'Protótipo' then
+    begin
         with dmOrdemCorte.qyOrdemHistorico do
         begin
             Close;
-            SQL.Text := 'select oc_dtgerada, oc_hrgerada, oc_usugerou from ordem_corte';
-            SQL.Add('where oc_idfichatecnica = :ficha and oc_prototipo = true and oc_situacao <> ''2''');
-            ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
-            Open;
-        end
-    else
-        with dmOrdemCorte.qyOrdemHistorico do
-        begin
-            Close;
-            SQL.Text := 'select oc_dtgerada, oc_hrgerada, oc_usugerou from ordem_corte';
-            SQL.Add('where oc_idfichatecnica = :ficha and oc_prototipo = false and oc_situacao <> ''2''');
+            SQL.Text := 'select oc_dtgerada, oc_hrgerada, us_nome from ordem_corte, usuario';
+            SQL.Add('where oc_usugerou = us_id and oc_idfichatecnica = :ficha and oc_prototipo = true and oc_situacao <> ''2''');
             ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
             Open;
         end;
+    end
+    else
+    begin
+        with dmOrdemCorte.qyOrdemHistorico do
+        begin
+            Close;
+            SQL.Text := 'select oc_dtgerada, oc_hrgerada, us_nome from ordem_corte, usuario';
+            SQL.Add('where oc_usugerou = us_id and oc_idfichatecnica = :ficha and oc_prototipo = false and oc_situacao <> ''2''');
+            ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
+            Open;
+        end;
+    end;
+
+    with dmOrdemCorte.qyPrevisto do
+    begin
+        Close;
+        SQL.Text := 'select oci_dtlanc, oci_hrlanc, oci_codusulanc, us_nome from ordem_corte_itens_previsto, usuario';
+        SQL.Add('where oci_codusulanc = us_id and oci_idocorte = :ocorte');
+        ParamByName('ocorte').AsInteger := formPrincipal.gridOrdem.Fields[0].Size;
+        Open;
+    end;
     noPai := treeHistoricOrdem.Items.Add(nil, 'ORDEM DE CORTE: ' + formPrincipal.gridOrdem.Fields[0].Value);
     begin
       noPai.Selected := false;
@@ -68,9 +81,9 @@ begin
     + formPrincipal.gridOrdem.Fields[8].Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value)
     + '  ' + timetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUARIO INICIOU: ' +
-    intToStr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_usugerou').Value));
+    dmOrdemCorte.qyOrdemHistorico.FieldByName('us_nome').Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'CORTE PREVISTO');
-    noprev := treeHistoricOrdem.Items.AddChildFirst(no, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_id').AsString);
+    noprev := treeHistoricOrdem.Items.AddChildFirst(no, datetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_dtlanc').Value));
 end;
 
 end.

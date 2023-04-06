@@ -43,6 +43,7 @@ begin
     treeHistoricOrdem.Parent := formHistoricOrdem;
     treeHistoricOrdem.Align := alClient;
     if formPrincipal.gridOrdem.Fields[7].Value = 'Protótipo' then
+    begin
         with dmOrdemCorte.qyOrdemHistorico do
         begin
             Close;
@@ -50,8 +51,10 @@ begin
             SQL.Add('where oc_usugerou = us_id and oc_idfichatecnica = :ficha and oc_prototipo = true and oc_situacao <> ''2''');
             ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
             Open;
-        end
+        end;
+    end
     else
+    begin
         with dmOrdemCorte.qyOrdemHistorico do
         begin
             Close;
@@ -60,7 +63,17 @@ begin
             ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
             Open;
         end;
-    noPai := treeHistoricOrdem.Items.Add(nil, 'ORDEM DE CORTE: ' + formPrincipal.gridOrdem.Fields[0].Value);
+    end;
+
+    with dmOrdemCorte.qyPrevisto do
+    begin
+        Close;
+        SQL.Text := 'select oci_dtlanc, oci_hrlanc, oci_codusulanc, us_nome from ordem_corte_itens_previsto, usuario';
+        SQL.Add('where oci_codusulanc = us_id and oci_idocorte = :ocorte');
+        ParamByName('ocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+        Open;
+    end;
+    noPai := treeHistoricOrdem.Items.Add(nil, 'ORDEM DE CORTE: ' + intTostr(formPrincipal.gridOrdem.Fields[0].Value));
     begin
       noPai.Selected := false;
     end;
@@ -70,7 +83,7 @@ begin
     + '  ' + timetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUARIO INICIOU: ' +
     dmOrdemCorte.qyOrdemHistorico.FieldByName('us_nome').Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'CORTE PREVISTO');
-    noprev := treeHistoricOrdem.Items.AddChildFirst(no, dmOrdemCorte.cdsOrdemHistorico.FieldByName('oc_id').AsString);
+    noprev := treeHistoricOrdem.Items.AddChildFirst(no, datetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_dtlanc').Value));
 end;
 
 end.

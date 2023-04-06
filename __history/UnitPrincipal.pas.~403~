@@ -3,27 +3,8 @@ unit UnitPrincipal;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.Menus,
-  Vcl.ToolWin,
-  Vcl.ActnMan,
-  Vcl.ActnCtrls,
-  Vcl.ActnMenus,
-  Vcl.ComCtrls,
-  Vcl.StdCtrls,
-  Vcl.ExtCtrls,
-  Vcl.Buttons,
-  Data.DB,
-  Vcl.Grids,
-  Vcl.DBGrids,
+  Winapi.Windows,Winapi.Messages,System.SysUtils,System.Variants,System.Classes,Vcl.Graphics,Vcl.Controls,Vcl.Forms,Vcl.Dialogs,Vcl.Menus,
+  Vcl.ToolWin,Vcl.ActnMan,Vcl.ActnCtrls,Vcl.ActnMenus,Vcl.ComCtrls,Vcl.StdCtrls,Vcl.ExtCtrls,Vcl.Buttons,Data.DB,Vcl.Grids,Vcl.DBGrids,
   Vcl.DBCtrls, System.Actions, Vcl.ActnList;
 
 type
@@ -131,7 +112,7 @@ type
   public
     { Public declarations }
     procedure boxColecao;
-    function VersaoExe: String;
+    function versaoExe: String;
     procedure boxEstilista;
   end;
 
@@ -148,13 +129,13 @@ uses UnitDatamodule, UnitIniciarCorte, UnitHistoricOrdem,
 procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
       if butCortePrevisto.Enabled = true then
-            ShowMessage('Mensagem de teste: Corte Previsto');
+            ShowMessage('Mensagem de teste: Ver Corte Previsto');
 end;
 
 procedure TformPrincipal.acaoBotaoCorteRealExecute(Sender: TObject);
 begin
       if butVerCorte.Enabled = true then
-            ShowMessage('Mensagem de teste: Corte Real');
+            ShowMessage('Mensagem de teste: Ver Corte');
 end;
 
 procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
@@ -196,7 +177,6 @@ begin
         SQl.add('order by co_anocolecao desc limit 7');
         Open;
     end;
-
 end;
 
 procedure TformPrincipal.butClearEstiloClick(Sender: TObject);
@@ -241,8 +221,8 @@ begin
       begin
             Close;
             SQL.Clear;
-            SQL.Add('SELECT');
-            SQL.Add('Cast(concat(lpad(cast(oc.oc_id As varchar), 7, ''0''), ''-'', lpad(cast(oc.oc_ordem As varchar), 3, ''0'') )as character varying(15))as NumerodoCorte,');
+            SQL.Add('SELECT oc.oc_id,');
+            //SQL.Add('Cast(concat(lpad(cast(oc.oc_id As varchar), 7, ''0''), ''-'', lpad(cast(oc.oc_ordem As varchar), 3, ''0'') )as character varying(15))as NumerodoCorte,');
             SQL.Add('cc.co_descricao, (ocs.os_nome)as situacao,');
             SQL.Add('(ce.es_nome)as estilista,');
             SQL.Add('oc.oc_idfichatecnica,');
@@ -395,7 +375,7 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
-    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ VersaoExe;
+    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ versaoExe;
     boxColecao;
 
 end;
@@ -452,7 +432,7 @@ begin
     comboTipo.Text:='';
 end;
 
-function TformPrincipal.VersaoExe: string;
+function TformPrincipal.versaoExe: string;
 type
    PFFI = ^vs_FixedFileInfo;
 var
