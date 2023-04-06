@@ -42,28 +42,28 @@ begin
     treeHistoricOrdem := TTreeView.Create(Self);
     treeHistoricOrdem.Parent := formHistoricOrdem;
     treeHistoricOrdem.Align := alClient;
-    if formPrincipal.gridOrdem.Fields[7].Value = 'Protótipo' then
-    begin
+    //if formPrincipal.gridOrdem.Fields[7].Value = 'Protótipo' then
+    //begin
         with dmOrdemCorte.qyOrdemHistorico do
         begin
             Close;
             SQL.Text := 'select oc_dtgerada, oc_hrgerada, us_nome from ordem_corte, usuario';
-            SQL.Add('where oc_usugerou = us_id and oc_idfichatecnica = :ficha and oc_prototipo = true and oc_situacao <> ''2''');
-            ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
+            SQL.Add('where oc_usugerou = us_id and oc_id = :ordemcorte');
+            ParamByName('ordemcorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
             Open;
         end;
-    end
-    else
-    begin
-        with dmOrdemCorte.qyOrdemHistorico do
-        begin
-            Close;
-            SQL.Text := 'select oc_dtgerada, oc_hrgerada, us_nome from ordem_corte, usuario';
-            SQL.Add('where oc_usugerou = us_id and oc_idfichatecnica = :ficha and oc_prototipo = false and oc_situacao <> ''2''');
-            ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
-            Open;
-        end;
-    end;
+//    end
+//    else
+//    begin
+//        with dmOrdemCorte.qyOrdemHistorico do
+//        begin
+//            Close;
+//            SQL.Text := 'select oc_dtgerada, oc_hrgerada, us_nome from ordem_corte, usuario';
+//            SQL.Add('where oc_usugerou = us_id and oc_idfichatecnica = :ficha and oc_prototipo = false and oc_situacao <> ''2''');
+//            ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
+//            Open;
+//        end;
+//    end;
 
     with dmOrdemCorte.qyPrevisto do
     begin
@@ -73,7 +73,7 @@ begin
         ParamByName('ocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
         Open;
     end;
-    noPai := treeHistoricOrdem.Items.Add(nil, 'ORDEM DE CORTE: ' + formPrincipal.gridOrdem.Fields[0].Value);
+    noPai := treeHistoricOrdem.Items.Add(nil, 'ORDEM DE CORTE: ' + intTostr(formPrincipal.gridOrdem.Fields[0].Value));
     begin
       noPai.Selected := false;
     end;

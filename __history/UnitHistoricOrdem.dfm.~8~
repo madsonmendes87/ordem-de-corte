@@ -5,7 +5,7 @@ object formHistoricOrdem: TformHistoricOrdem
   BorderStyle = bsSingle
   Caption = 'Historico Ordem de Corte'
   ClientHeight = 410
-  ClientWidth = 671
+  ClientWidth = 669
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

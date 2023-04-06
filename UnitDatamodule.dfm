@@ -492,49 +492,15 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 944
     Top = 24
   end
-  object dsOrdemHistorico: TDataSource
-    DataSet = cdsOrdemHistorico
-    Left = 952
-    Top = 80
-  end
-  object cdsOrdemHistorico: TClientDataSet
-    Active = True
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dataSetOrdemHistorico'
-    Left = 960
-    Top = 136
-    object cdsOrdemHistoricooc_id: TIntegerField
-      FieldName = 'oc_id'
-      Origin = 'oc_id'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-    end
-    object cdsOrdemHistoricooc_dtgerada: TDateField
-      FieldName = 'oc_dtgerada'
-      Origin = 'oc_dtgerada'
-    end
-    object cdsOrdemHistoricooc_hrgerada: TTimeField
-      FieldName = 'oc_hrgerada'
-      Origin = 'oc_hrgerada'
-    end
-    object cdsOrdemHistoricooc_usugerou: TIntegerField
-      FieldName = 'oc_usugerou'
-      Origin = 'oc_usugerou'
-    end
-  end
-  object dataSetOrdemHistorico: TDataSetProvider
-    DataSet = qyOrdemHistorico
-    Left = 960
-    Top = 184
-  end
   object qyPrevisto: TFDQuery
     Connection = Conexao
     SQL.Strings = (
       
-        'select oci_idocorte, oci_dtlanc, oci_hrlanc, oci_codusulanc, us_' +
-        'nome from ordem_corte_itens_previsto, usuario'
-      'where oci_codusulanc = us_id;')
-    Left = 968
-    Top = 232
+        'select oci_idocorte, oci_dtlanc, oci_hrlanc, oci_codusulanc, oci' +
+        '_situacao_id, descricao, us_nome from ordem_corte_itens_previsto' +
+        ', usuario, ordem_corte_itens_situacao'
+      'where oci_codusulanc = us_id and oci_situacao_id = id;')
+    Left = 864
+    Top = 24
   end
 end

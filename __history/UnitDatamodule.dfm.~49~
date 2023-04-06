@@ -309,15 +309,10 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object qyOrdemCorte: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       'SELECT'
-      '    Cast(concat(lpad(cast(oc.oc_id As varchar), 7, '#39'0'#39'),'
-      
-        '    '#39'-'#39', lpad(cast(oc.oc_ordem As varchar), 3, '#39'0'#39') )as characte' +
-        'r varying(15))'
-      '    as NumerodoCorte,'
+      '    oc.oc_id as NumerodoCorte,'
       
         '    cc.co_descricao, (ocs.os_nome)as situacao, (ce.es_nome)as es' +
         'tilista,'
@@ -488,10 +483,12 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 488
   end
   object qyOrdemHistorico: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
-      'select * from ordem_corte order by oc_id;')
+      
+        'select oc_id, oc_usugerou, oc_dtgerada, oc_hrgerada, us_nome fro' +
+        'm ordem_corte, usuario'
+      'where oc_usugerou = us_id;')
     Left = 944
     Top = 24
   end
@@ -529,5 +526,15 @@ object dmOrdemCorte: TdmOrdemCorte
     DataSet = qyOrdemHistorico
     Left = 960
     Top = 184
+  end
+  object qyPrevisto: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select oci_idocorte, oci_dtlanc, oci_hrlanc, oci_codusulanc, us_' +
+        'nome from ordem_corte_itens_previsto, usuario'
+      'where oci_codusulanc = us_id;')
+    Left = 968
+    Top = 232
   end
 end

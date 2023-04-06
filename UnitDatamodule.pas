@@ -74,13 +74,6 @@ type
     qyBoxEstilista: TFDQuery;
     dsBoxEstilista: TDataSource;
     qyOrdemHistorico: TFDQuery;
-    dsOrdemHistorico: TDataSource;
-    cdsOrdemHistorico: TClientDataSet;
-    dataSetOrdemHistorico: TDataSetProvider;
-    cdsOrdemHistoricooc_id: TIntegerField;
-    cdsOrdemHistoricooc_dtgerada: TDateField;
-    cdsOrdemHistoricooc_hrgerada: TTimeField;
-    cdsOrdemHistoricooc_usugerou: TIntegerField;
     qyPrevisto: TFDQuery;
   private
     { Private declarations }
