@@ -75,6 +75,7 @@ type
     dsBoxEstilista: TDataSource;
     qyOrdemHistorico: TFDQuery;
     qyPrevisto: TFDQuery;
+    qyTroca: TFDQuery;
   private
     { Private declarations }
   public

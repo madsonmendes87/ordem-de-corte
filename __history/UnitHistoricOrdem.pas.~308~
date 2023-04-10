@@ -35,7 +35,7 @@ procedure TformHistoricOrdem.FormShow(Sender: TObject);
 
 var
     treeHistoricOrdem: TTreeView;
-    no, noprev: TTreeNode;
+    no, noPrev, noTroca: TTreeNode;
     noPai: TTreeNode;
     I: Integer;
 begin
@@ -58,6 +58,14 @@ begin
           ParamByName('ocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
+    with dmOrdemCorte.qyTroca do
+    begin
+          Close;
+          SQL.Text := 'select pti_idusuariosolicitacao, pti_dtsolicitacao, pti_idusuarioconfirmacao, us_nome from producao_troca_item, usuario';
+          SQL.Add('where pti_idusuariosolicitacao = us_id and pti_idusuarioconfirmacao = us_id and pti_idfichatecnica = :ficha');
+          ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
+          Open;
+    end;
     noPai := treeHistoricOrdem.Items.Add(nil, 'ORDEM DE CORTE: ' + intTostr(formPrincipal.gridOrdem.Fields[0].Value));
     begin
       noPai.Selected := false;
@@ -68,9 +76,11 @@ begin
     + '  ' + timetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUARIO INICIOU: ' +
     dmOrdemCorte.qyOrdemHistorico.FieldByName('us_nome').Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'CORTE PREVISTO');
-    noprev := treeHistoricOrdem.Items.AddChildFirst(no, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_dtlanc').Value)
+    noPrev := treeHistoricOrdem.Items.AddChildFirst(no, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_dtlanc').Value)
     + '  ' + timetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_hrlanc').Value) + '        USUARIO INICIOU: ' +
-    dmOrdemCorte.qyPrevisto.FieldByName('us_nome').Value) + '        SITUAÇÃO: ' + dmOrdemCorte.qyPrevisto.FieldByName('descricao').Value);
+    dmOrdemCorte.qyPrevisto.FieldByName('us_nome').Value + '        SITUAÇÃO: ' + dmOrdemCorte.qyPrevisto.FieldByName('descricao').Value);
+    if dmOrdemCorte.qyTroca.recordcount > 0 then
+        noPrev := treeHistoricOrdem.Items.AddChild(no, 'TROCA DE PRODUTO');
 end;
 
 end.

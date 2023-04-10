@@ -503,4 +503,17 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 864
     Top = 24
   end
+  object qyTroca: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select pti_idfichatecnica, pti_idusuariosolicitacao, pti_dtsolic' +
+        'itacao, pti_idusuarioconfirmacao, fi_id, us_nome from producao_t' +
+        'roca_item, ficha_tecnica, usuario'
+      
+        'where pti_idusuariosolicitacao = us_id and pti_idusuarioconfirma' +
+        'cao = us_id and pti_idfichatecnica = fi_id;')
+    Left = 960
+    Top = 80
+  end
 end

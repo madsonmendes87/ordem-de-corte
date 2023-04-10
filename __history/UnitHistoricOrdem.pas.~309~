@@ -73,17 +73,16 @@ begin
     no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[3].Value + '        REFERÊNCIA: '
     + formPrincipal.gridOrdem.Fields[8].Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value)
-    + '  ' + timetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUÁRIO INICIOU: ' +
+    + '  ' + timetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUARIO INICIOU: ' +
     dmOrdemCorte.qyOrdemHistorico.FieldByName('us_nome').Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'CORTE PREVISTO');
     noPrev := treeHistoricOrdem.Items.AddChildFirst(no, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_dtlanc').Value)
-    + '  ' + timetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_hrlanc').Value) + '        USUÁRIO INICIOU: ' +
+    + '  ' + timetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_hrlanc').Value) + '        USUARIO INICIOU: ' +
     dmOrdemCorte.qyPrevisto.FieldByName('us_nome').Value + '        SITUAÇÃO: ' + dmOrdemCorte.qyPrevisto.FieldByName('descricao').Value);
     if dmOrdemCorte.qyTroca.recordcount > 0 then
     begin
         noPrev := treeHistoricOrdem.Items.AddChild(no, 'TROCA DE PRODUTO');
-        noTroca := treeHistoricOrdem.Items.AddChildFirst(noPrev, 'DATA SOLICITAÇÃO: ' + DateTimeToStr(dmOrdemCorte.qyTroca.FieldByName('pti_dtsolicitacao').Value)
-        + '        USUÁRIO GEROU: ' + dmOrdemCorte.qyTroca.FieldByName('us_nome').Value + '        USUÁRIO CONFIRMOU: ' + dmOrdemCorte.qyTroca.FieldByName('us_nome').Value);
+        noTroca := treeHistoricOrdem.Items.AddChildFirst(noPrev, 'DATA SOLICITAÇÃO: ' + datetostr(dmOrdemCorte.qyTroca.FieldByName('pti_dtsolicitacao').Value));
     end;
 end;
 
