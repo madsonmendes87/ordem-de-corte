@@ -3,30 +3,10 @@ unit UnitDatamodule;
 interface
 
 uses
-  System.SysUtils,
-  System.Classes,
-  FireDAC.Stan.Intf,
-  FireDAC.Stan.Option,
-  FireDAC.Stan.Error,
-  FireDAC.UI.Intf,
-  FireDAC.Phys.Intf,
-  FireDAC.Stan.Def,
-  FireDAC.Stan.Pool,
-  FireDAC.Stan.Async,
-  FireDAC.Phys,
-  FireDAC.Phys.PG,
-  FireDAC.Phys.PGDef,
-  FireDAC.VCLUI.Wait,
-  FireDAC.Comp.UI,
-  FireDAC.Comp.Client,
-  Data.DB,
-  FireDAC.Phys.MSAcc,
-  FireDAC.Phys.MSAccDef,
-  FireDAC.Stan.Param,
-  FireDAC.DatS,
-  FireDAC.DApt.Intf,
-  FireDAC.DApt,
-  FireDAC.Comp.DataSet;
+  System.SysUtils,System.Classes,FireDAC.Stan.Intf,FireDAC.Stan.Option,FireDAC.Stan.Error,FireDAC.UI.Intf,FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,FireDAC.Stan.Pool,FireDAC.Stan.Async,FireDAC.Phys,FireDAC.Phys.PG,FireDAC.Phys.PGDef,FireDAC.VCLUI.Wait,FireDAC.Comp.UI,FireDAC.Comp.Client,
+  Data.DB,FireDAC.Phys.MSAcc,FireDAC.Phys.MSAccDef,FireDAC.Stan.Param,FireDAC.DatS,FireDAC.DApt.Intf,FireDAC.DApt,FireDAC.Comp.DataSet,
+  Datasnap.Provider, Datasnap.DBClient;
 
 type
   TdmOrdemCorte = class(TDataModule)
@@ -92,7 +72,11 @@ type
     qyBoxColecao: TFDQuery;
     dsBoxColecao: TDataSource;
     qyBoxEstilista: TFDQuery;
-    dsBoxExtilista: TDataSource;
+    dsBoxEstilista: TDataSource;
+    qyOrdemHistorico: TFDQuery;
+    qyPrevisto: TFDQuery;
+    qyTroca: TFDQuery;
+    qyEmpenho: TFDQuery;
   private
     { Private declarations }
   public

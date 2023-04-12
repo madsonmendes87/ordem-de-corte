@@ -309,15 +309,10 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object qyOrdemCorte: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       'SELECT'
-      '    Cast(concat(lpad(cast(oc.oc_id As varchar), 7, '#39'0'#39'),'
-      
-        '    '#39'-'#39', lpad(cast(oc.oc_ordem As varchar), 3, '#39'0'#39') )as characte' +
-        'r varying(15))'
-      '    as NumerodoCorte,'
+      '    oc.oc_id as NumerodoCorte,'
       
         '    cc.co_descricao, (ocs.os_nome)as situacao, (ce.es_nome)as es' +
         'tilista,'
@@ -491,45 +486,44 @@ object dmOrdemCorte: TdmOrdemCorte
     Connection = Conexao
     SQL.Strings = (
       
-        'select oc_id, oc_dtgerada, oc_hrgerada, us_nome from ordem_corte' +
-        ', usuario'
+        'select oc_id, oc_usugerou, oc_dtgerada, oc_hrgerada, us_nome fro' +
+        'm ordem_corte, usuario'
       'where oc_usugerou = us_id;')
     Left = 944
     Top = 24
   end
-  object dsOrdemHistorico: TDataSource
-    DataSet = cdsOrdemHistorico
-    Left = 952
+  object qyPrevisto: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select oci_idocorte, oci_dtlanc, oci_hrlanc, oci_codusulanc, oci' +
+        '_situacao_id, descricao, us_nome from ordem_corte_itens_previsto' +
+        ', usuario, ordem_corte_itens_situacao'
+      'where oci_codusulanc = us_id and oci_situacao_id = id;')
+    Left = 864
+    Top = 24
+  end
+  object qyTroca: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select pti_idfichatecnica, pti_idusuariosolicitacao, pti_dtsolic' +
+        'itacao, pti_idusuarioconfirmacao, fi_id, us_nome from producao_t' +
+        'roca_item, ficha_tecnica, usuario'
+      
+        'where pti_idusuariosolicitacao = us_id and pti_idusuarioconfirma' +
+        'cao = us_id and pti_idfichatecnica = fi_id;')
+    Left = 960
     Top = 80
   end
-  object cdsOrdemHistorico: TClientDataSet
-    Active = True
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dataSetOrdemHistorico'
+  object qyEmpenho: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select emp_dtlanc, emp_hrlanc, emp_idordemcorte, emp_idusulanc, ' +
+        'us_nome from controle_empenho, ordem_corte, usuario'
+      'where emp_idordemcorte = oc_id and emp_idusulanc = us_id;')
     Left = 960
     Top = 136
-    object cdsOrdemHistoricooc_id: TIntegerField
-      FieldName = 'oc_id'
-      Origin = 'oc_id'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-    end
-    object cdsOrdemHistoricooc_dtgerada: TDateField
-      FieldName = 'oc_dtgerada'
-      Origin = 'oc_dtgerada'
-    end
-    object cdsOrdemHistoricooc_hrgerada: TTimeField
-      FieldName = 'oc_hrgerada'
-      Origin = 'oc_hrgerada'
-    end
-    object cdsOrdemHistoricooc_usugerou: TIntegerField
-      FieldName = 'oc_usugerou'
-      Origin = 'oc_usugerou'
-    end
-  end
-  object dataSetOrdemHistorico: TDataSetProvider
-    DataSet = qyOrdemHistorico
-    Left = 960
-    Top = 184
   end
 end

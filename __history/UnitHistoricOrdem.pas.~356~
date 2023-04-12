@@ -68,14 +68,14 @@ begin
     begin
           Close;
           SQL.Text := 'select emp_dtlanc, emp_hrlanc, emp_dtsaidaent, us_nome from controle_empenho, usuario';
-          SQL.Add('where emp_idusulanc = us_id and emp_hrlanc <> ''00:00:00-03:00'' and emp_idordemcorte = :ordem');
+          SQL.Add('where emp_idusulanc = us_id and emp_idordemcorte = :ordem');
           ParamByName('ordem').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
     with dmOrdemCorte.qyRealCortado do
     begin
           Close;
-          SQL.Text := 'select oci_dtlanc, oci_hrlanc, oci_codusulanc, oci_dtfinalizada, us_nome, oci_situacao_id, descricao from ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
+          SQL.Text := 'select oci_dtlanc, oci_hrlanc, oci_codusulanc, us_nome, oci_situacao_id, descricao from ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
           SQL.Add('where oci_codusulanc = us_id and oci_situacao_id = id and oci_idocorte = :ocorte');
           ParamByName('ocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
@@ -91,7 +91,7 @@ begin
     with dmOrdemCorte.qyRealFinal do
     begin
           Close;
-          SQL.Text := 'select oci_dtfinalizada, oci_hrfinalizada, oci_idusualterou, oci_idusualterou, oci_idusualterou, oci_idusufinalizou, oci_dtultalteracao, us_nome, oci_situacao_id, descricao from ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
+          SQL.Text := 'select oci_dtfinalizada, oci_hrfinalizada, oci_idusualterou, oci_idusualterou, oci_idusufinalizou, us_nome, oci_situacao_id, descricao from ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
           SQL.Add('where oci_idusufinalizou = us_id and oci_situacao_id = id and oci_idocorte = :ocorte');
           ParamByName('ocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
@@ -139,9 +139,9 @@ begin
         noEmpenho := treeHistoricOrdem.Items.AddChildFirst(noRealCortado, 'DATA ENVIO: ' + datetostr(dmOrdemCorte.qyEmpenhoReal.FieldByName('emp_dtsaidaent').Value)
         + '  ' + timetostr(dmOrdemCorte.qyEmpenhoReal.FieldByName('emp_hrsaidaent').Value) + '        USUÁRIO: ' + dmOrdemCorte.qyEmpenhoReal.FieldByName('us_nome').Value);
     end;
-    if dmOrdemCorte.qyRealFinal.FieldByName('oci_idusualterou').Value <> NULL then
+    if dmOrdemCorte.qyRealCortado.FieldByName('oci_idusualterou').Value <> NULL then
     begin
-        noRealCortado := treeHistoricOrdem.Items.AddChild(no, 'DATA CORTE: ' + datetostr(dmOrdemCorte.qyRealFinal.FieldByName('oci_dtultalteracao').Value)
+        noRealCortado := treeHistoricOrdem.Items.AddChild(no, 'DATA CORTE: ' + datetostr(dmOrdemCorte.qyRealCortado.FieldByName('oci_dtultalteracao').Value)
         + '        USUÁRIO CORTOU: ' + dmOrdemCorte.qyRealCortado.FieldByName('us_nome').Value);
     end;
     if dmOrdemCorte.qyRealFinal.FieldByName('oci_situacao_id').Value = '4' then

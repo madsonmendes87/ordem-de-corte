@@ -516,4 +516,46 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 960
     Top = 80
   end
+  object qyEmpenho: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select emp_dtlanc, emp_hrlanc, emp_idordemcorte, emp_idusulanc, ' +
+        'us_nome from controle_empenho, ordem_corte, usuario'
+      'where emp_idordemcorte = oc_id and emp_idusulanc = us_id;')
+    Left = 960
+    Top = 136
+  end
+  object qyRealCortado: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select oci_dtlanc, oci_hrlanc, oci_codusulanc, oci_dtfinalizada,' +
+        ' us_nome, oci_situacao_id, descricao from ordem_corte_itens_real' +
+        ', usuario, ordem_corte_itens_situacao'
+      'where oci_codusulanc = us_id and oci_situacao_id = id;')
+    Left = 960
+    Top = 192
+  end
+  object qyEmpenhoReal: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select emp_dtsaidaent, emp_hrsaidaent, emp_idususaidaent, us_nom' +
+        'e from controle_empenho, ordem_corte, usuario'
+      'where emp_idordemcorte = oc_id and emp_idususaidaent = us_id;')
+    Left = 968
+    Top = 248
+  end
+  object qyRealFinal: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select oci_dtfinalizada, oci_hrfinalizada, oci_idusualterou, oci' +
+        '_idusufinalizou, us_nome, oci_situacao_id, descricao from ordem_' +
+        'corte_itens_real, usuario, ordem_corte_itens_situacao'
+      'where oci_idusualterou = us_id and oci_situacao_id = id;')
+    Left = 968
+    Top = 296
+  end
 end
