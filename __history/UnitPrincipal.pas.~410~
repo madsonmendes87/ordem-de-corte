@@ -115,7 +115,6 @@ type
     procedure boxColecao;
     function versaoExe: String;
     procedure boxEstilista;
-    procedure habComponentes;
   end;
 
 var
@@ -465,40 +464,6 @@ begin
     butRealCortado.Font.Style:=[fsBold];
     butRealCortado.Enabled := false;
     comboTipo.Text:='';
-end;
-
-procedure TformPrincipal.habComponentes;
-begin
-    butVerCorte.Enabled := true;
-    butCortePrevisto.Enabled := true;
-    butHistoricOrdem.Enabled := true;
-    comboFiltro.Enabled := true;
-    comboSituacao.Enabled := true;
-    editSearch.Enabled := true;
-    comboIniOrd.Enabled := true;
-    comboTipo.Enabled := true;
-    dbLkComboEstilo.Enabled := true;
-    comboFiltroData.Enabled := true;
-    comboSetor.Enabled := true;
-    dateTimePicker1.Enabled := true;
-    dateTimePicker2.Enabled := true;
-    butOrdemPesquisar.Enabled := true;
-    dbLColecao.Enabled := true;
-    butClearTipo.Enabled := true;
-    butClearEstilo.Enabled := true;
-    butClearSetor.Enabled := true;
-    butClearSituacao.Enabled := true;
-    butLimpaIniOrdem.Enabled := true;
-    butClearColecao.Enabled := true;
-    labMostrAnos.Enabled := true;
-    btnOrdemCorte.Enabled := true;
-    btnEmpAlmoxarifado.Enabled := true;
-    btnEmpFase.Enabled := true;
-    btnEstoqueFase.Enabled := true;
-    btnEstAproveitamento.Enabled := true;
-    btnEntregaPecas.Enabled := true;
-    btnObservacoes.Enabled := true;
-    btnProcRestrito.Enabled := true;
 end;
 
 function TformPrincipal.versaoExe: string;

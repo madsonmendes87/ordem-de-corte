@@ -109,13 +109,12 @@ type
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
-    procedure desabComponentes;
+    function desabComponentes: Boolean;
   public
     { Public declarations }
     procedure boxColecao;
     function versaoExe: String;
     procedure boxEstilista;
-    procedure habComponentes;
   end;
 
 var
@@ -360,7 +359,7 @@ begin
     acaoBotaoCorteRealExecute(Sender);
 end;
 
-procedure TformPrincipal.desabComponentes;
+function TformPrincipal.desabComponentes: Boolean;
 begin
     butVerCorte.Enabled := false;
     butCortePrevisto.Enabled := false;
@@ -384,14 +383,6 @@ begin
     butLimpaIniOrdem.Enabled := false;
     butClearColecao.Enabled := false;
     labMostrAnos.Enabled := false;
-    btnOrdemCorte.Enabled := false;
-    btnEmpAlmoxarifado.Enabled := false;
-    btnEmpFase.Enabled := false;
-    btnEstoqueFase.Enabled := false;
-    btnEstAproveitamento.Enabled := false;
-    btnEntregaPecas.Enabled := false;
-    btnObservacoes.Enabled := false;
-    btnProcRestrito.Enabled := false;
 end;
 
 procedure TformPrincipal.FormCreate(Sender: TObject);
@@ -467,40 +458,6 @@ begin
     comboTipo.Text:='';
 end;
 
-procedure TformPrincipal.habComponentes;
-begin
-    butVerCorte.Enabled := true;
-    butCortePrevisto.Enabled := true;
-    butHistoricOrdem.Enabled := true;
-    comboFiltro.Enabled := true;
-    comboSituacao.Enabled := true;
-    editSearch.Enabled := true;
-    comboIniOrd.Enabled := true;
-    comboTipo.Enabled := true;
-    dbLkComboEstilo.Enabled := true;
-    comboFiltroData.Enabled := true;
-    comboSetor.Enabled := true;
-    dateTimePicker1.Enabled := true;
-    dateTimePicker2.Enabled := true;
-    butOrdemPesquisar.Enabled := true;
-    dbLColecao.Enabled := true;
-    butClearTipo.Enabled := true;
-    butClearEstilo.Enabled := true;
-    butClearSetor.Enabled := true;
-    butClearSituacao.Enabled := true;
-    butLimpaIniOrdem.Enabled := true;
-    butClearColecao.Enabled := true;
-    labMostrAnos.Enabled := true;
-    btnOrdemCorte.Enabled := true;
-    btnEmpAlmoxarifado.Enabled := true;
-    btnEmpFase.Enabled := true;
-    btnEstoqueFase.Enabled := true;
-    btnEstAproveitamento.Enabled := true;
-    btnEntregaPecas.Enabled := true;
-    btnObservacoes.Enabled := true;
-    btnProcRestrito.Enabled := true;
-end;
-
 function TformPrincipal.versaoExe: string;
 type
    PFFI = ^vs_FixedFileInfo;
@@ -544,7 +501,30 @@ begin
     formIniciarCorte.Align:=alClient;
     formIniciarCorte.BorderStyle:=bsNone;
     formIniciarCorte.Show;
+    //formPrincipal.desabComponentes;
     desabComponentes;
+//    butVerCorte.Enabled := false;
+//    butCortePrevisto.Enabled := false;
+//    butHistoricOrdem.Enabled := false;
+//    comboFiltro.Enabled := false;
+//    comboSituacao.Enabled := false;
+//    editSearch.Enabled := false;
+//    comboIniOrd.Enabled := false;
+//    comboTipo.Enabled := false;
+//    dbLkComboEstilo.Enabled := false;
+//    comboFiltroData.Enabled := false;
+//    comboSetor.Enabled := false;
+//    dateTimePicker1.Enabled := false;
+//    dateTimePicker2.Enabled := false;
+//    butOrdemPesquisar.Enabled := false;
+//    dbLColecao.Enabled := false;
+//    butClearTipo.Enabled := false;
+//    butClearEstilo.Enabled := false;
+//    butClearSetor.Enabled := false;
+//    butClearSituacao.Enabled := false;
+//    butLimpaIniOrdem.Enabled := false;
+//    butClearColecao.Enabled := false;
+//    labMostrAnos.Enabled := false;
 end;
 
 procedure TformPrincipal.labMostrAnosClick(Sender: TObject);

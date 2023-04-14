@@ -679,7 +679,7 @@ object formIniciarCorte: TformIniciarCorte
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000}
-    TabOrder = 6
+    TabOrder = 5
     OnClick = butNovoClick
   end
   object butSalvar: TBitBtn
@@ -745,7 +745,7 @@ object formIniciarCorte: TformIniciarCorte
       8080805F5F5F5A5A5A797979FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    TabOrder = 7
+    TabOrder = 6
   end
   object butRemover: TBitBtn
     Left = 280
@@ -810,7 +810,7 @@ object formIniciarCorte: TformIniciarCorte
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFEFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFEFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    TabOrder = 8
+    TabOrder = 7
   end
   object butEditar: TBitBtn
     Left = 406
@@ -875,7 +875,7 @@ object formIniciarCorte: TformIniciarCorte
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFDBECDF55A56A0A7D2874B685FDFEFDFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    TabOrder = 9
+    TabOrder = 8
   end
   object butDesistir: TBitBtn
     Left = 534
@@ -940,7 +940,7 @@ object formIniciarCorte: TformIniciarCorte
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    TabOrder = 10
+    TabOrder = 9
     OnClick = butDesistirClick
   end
   object dataSolicitacao: TDateTimePicker
@@ -950,7 +950,7 @@ object formIniciarCorte: TformIniciarCorte
     Height = 21
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
-    TabOrder = 11
+    TabOrder = 10
   end
   object horaSolicitacao: TDateTimePicker
     Left = 166
@@ -960,7 +960,7 @@ object formIniciarCorte: TformIniciarCorte
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
     Kind = dtkTime
-    TabOrder = 12
+    TabOrder = 11
   end
   object dataOrdemFinalizacao: TDateTimePicker
     Left = 27
@@ -969,7 +969,7 @@ object formIniciarCorte: TformIniciarCorte
     Height = 21
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
-    TabOrder = 13
+    TabOrder = 12
   end
   object horaOrdemFinalizacao: TDateTimePicker
     Left = 166
@@ -979,7 +979,7 @@ object formIniciarCorte: TformIniciarCorte
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
     Kind = dtkTime
-    TabOrder = 14
+    TabOrder = 13
   end
   object dataCortePrevisto: TDateTimePicker
     Left = 429
@@ -988,7 +988,7 @@ object formIniciarCorte: TformIniciarCorte
     Height = 21
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
-    TabOrder = 15
+    TabOrder = 14
   end
   object horaCortePrevisto: TDateTimePicker
     Left = 568
@@ -998,7 +998,7 @@ object formIniciarCorte: TformIniciarCorte
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
     Kind = dtkTime
-    TabOrder = 16
+    TabOrder = 15
   end
   object dataFinalCortePrevisto: TDateTimePicker
     Left = 429
@@ -1007,7 +1007,7 @@ object formIniciarCorte: TformIniciarCorte
     Height = 21
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
-    TabOrder = 17
+    TabOrder = 16
   end
   object horaFinalCortePrevisto: TDateTimePicker
     Left = 568
@@ -1017,7 +1017,7 @@ object formIniciarCorte: TformIniciarCorte
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
     Kind = dtkTime
-    TabOrder = 18
+    TabOrder = 17
   end
   object dataRealCortado: TDateTimePicker
     Left = 853
@@ -1026,7 +1026,7 @@ object formIniciarCorte: TformIniciarCorte
     Height = 21
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
-    TabOrder = 19
+    TabOrder = 18
   end
   object horaRealCortado: TDateTimePicker
     Left = 990
@@ -1036,7 +1036,7 @@ object formIniciarCorte: TformIniciarCorte
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
     Kind = dtkTime
-    TabOrder = 20
+    TabOrder = 19
   end
   object dataFinalRealCortado: TDateTimePicker
     Left = 853
@@ -1045,7 +1045,7 @@ object formIniciarCorte: TformIniciarCorte
     Height = 21
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
-    TabOrder = 21
+    TabOrder = 20
   end
   object horaFinalRealCortado: TDateTimePicker
     Left = 990
@@ -1055,37 +1055,36 @@ object formIniciarCorte: TformIniciarCorte
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
     Kind = dtkTime
-    TabOrder = 22
+    TabOrder = 21
   end
   object editObservacao: TEdit
     Left = 29
     Top = 304
     Width = 1052
     Height = 21
-    TabOrder = 23
+    TabOrder = 22
   end
   object butEscolherCores: TBitBtn
-    Left = 902
+    Left = 910
     Top = 70
     Width = 139
     Height = 25
-    Caption = 'Escolher Cores (F8)'
+    Caption = 'Escolher Cores(F6)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 5
-    OnClick = acaoCoresExecute
+    TabOrder = 23
   end
   object ActionListIniCorte: TActionList
     Left = 744
     Top = 40
     object acaoCores: TAction
       Category = 'Cores'
-      Caption = 'Escolher Cores(F6)'
-      ShortCut = 119
+      Caption = 'acaoCores'
+      ShortCut = 117
       OnExecute = acaoCoresExecute
     end
   end

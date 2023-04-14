@@ -108,16 +108,14 @@ implementation
 
 {$R *.dfm}
 
-uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
-  UnitOrdemCorteCores;
+uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule;
 
 
 
 procedure TformIniciarCorte.acaoCoresExecute(Sender: TObject);
 begin
     if butEscolherCores.Enabled = true then
-        application.CreateForm(TformOrdemCorteCores, formOrdemCorteCores);
-        formOrdemCorteCores.ShowModal;
+        ShowMessage('Teste Escolher Cores');
 end;
 
 procedure TformIniciarCorte.butDesistirClick(Sender: TObject);
@@ -143,6 +141,27 @@ procedure TformIniciarCorte.butSairInicioCorteClick(Sender: TObject);
 begin
     formIniciarCorte.Close;
     formPrincipal.habComponentes;
+//    formPrincipal.butCortePrevisto.Enabled := true;
+//    formPrincipal.butHistoricOrdem.Enabled := true;
+//    formPrincipal.comboFiltro.Enabled := true;
+//    formPrincipal.comboSituacao.Enabled := true;
+//    formPrincipal.editSearch.Enabled := true;
+//    formPrincipal.comboIniOrd.Enabled := true;
+//    formPrincipal.comboTipo.Enabled := true;
+//    formPrincipal.dbLkComboEstilo.Enabled := true;
+//    formPrincipal.comboFiltroData.Enabled := true;
+//    formPrincipal.comboSetor.Enabled := true;
+//    formPrincipal.dateTimePicker1.Enabled := true;
+//    formPrincipal.dateTimePicker2.Enabled := true;
+//    formPrincipal.butOrdemPesquisar.Enabled := true;
+//    formPrincipal.dbLColecao.Enabled := true;
+//    formPrincipal.butClearTipo.Enabled := true;
+//    formPrincipal.butClearEstilo.Enabled := true;
+//    formPrincipal.butClearSetor.Enabled := true;
+//    formPrincipal.butClearSituacao.Enabled := true;
+//    formPrincipal.butLimpaIniOrdem.Enabled := true;
+//    formPrincipal.butClearColecao.Enabled := true;
+//    formPrincipal.labMostrAnos.Enabled := true;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

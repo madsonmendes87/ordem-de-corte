@@ -1066,10 +1066,10 @@ object formIniciarCorte: TformIniciarCorte
   end
   object butEscolherCores: TBitBtn
     Left = 902
-    Top = 70
+    Top = 74
     Width = 139
     Height = 25
-    Caption = 'Escolher Cores (F8)'
+    Caption = 'Escolher Cores(F6)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -1079,13 +1079,13 @@ object formIniciarCorte: TformIniciarCorte
     TabOrder = 5
     OnClick = acaoCoresExecute
   end
-  object ActionListIniCorte: TActionList
+  object ActionList1: TActionList
     Left = 744
     Top = 40
     object acaoCores: TAction
       Category = 'Cores'
       Caption = 'Escolher Cores(F6)'
-      ShortCut = 119
+      ShortCut = 117
       OnExecute = acaoCoresExecute
     end
   end

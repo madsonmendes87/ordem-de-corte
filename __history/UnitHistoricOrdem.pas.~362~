@@ -75,7 +75,7 @@ begin
     with dmOrdemCorte.qyRealCortado do
     begin
           Close;
-          SQL.Text := 'select oci_dtlanc, oci_hrlanc, oci_codusulanc, us_nome, oci_situacao_id, descricao from ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
+          SQL.Text := 'select oci_dtlanc, oci_hrlanc, oci_codusulanc, oci_dtfinalizada, us_nome, oci_situacao_id, descricao from ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
           SQL.Add('where oci_codusulanc = us_id and oci_situacao_id = id and oci_idocorte = :ocorte');
           ParamByName('ocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;

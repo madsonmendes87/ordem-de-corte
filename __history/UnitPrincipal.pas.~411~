@@ -392,6 +392,7 @@ begin
     btnEntregaPecas.Enabled := false;
     btnObservacoes.Enabled := false;
     btnProcRestrito.Enabled := false;
+    gridOrdem.Enabled := false;
 end;
 
 procedure TformPrincipal.FormCreate(Sender: TObject);
@@ -499,6 +500,7 @@ begin
     btnEntregaPecas.Enabled := true;
     btnObservacoes.Enabled := true;
     btnProcRestrito.Enabled := true;
+    gridOrdem.Enabled := true;
 end;
 
 function TformPrincipal.versaoExe: string;

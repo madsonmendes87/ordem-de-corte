@@ -116,6 +116,7 @@ uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
 procedure TformIniciarCorte.acaoCoresExecute(Sender: TObject);
 begin
     if butEscolherCores.Enabled = true then
+        //ShowMessage('Teste Escolher Cores');
         application.CreateForm(TformOrdemCorteCores, formOrdemCorteCores);
         formOrdemCorteCores.ShowModal;
 end;

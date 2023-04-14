@@ -7,8 +7,7 @@ uses
   UnitIniciarCorte in 'UnitIniciarCorte.pas' {formIniciarCorte},
   UnitProdutoAcabado in 'UnitProdutoAcabado.pas' {formProdutoAcabado},
   UnitHistoricOrdem in 'UnitHistoricOrdem.pas' {formHistoricOrdem},
-  UnitDMHistoricOrdem in 'UnitDMHistoricOrdem.pas' {dmHistoricOrdem: TDataModule},
-  UnitOrdemCorteCores in 'UnitOrdemCorteCores.pas' {formOrdemCorteCores};
+  UnitDMHistoricOrdem in 'UnitDMHistoricOrdem.pas' {dmHistoricOrdem: TDataModule};
 
 {$R *.res}
 
@@ -19,6 +18,5 @@ begin
   Application.CreateForm(TFormPrincipal, FormPrincipal);
   Application.CreateForm(TformHistoricOrdem, formHistoricOrdem);
   Application.CreateForm(TdmHistoricOrdem, dmHistoricOrdem);
-  Application.CreateForm(TformOrdemCorteCores, formOrdemCorteCores);
   Application.Run;
 end.
