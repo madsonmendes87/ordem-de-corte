@@ -14,26 +14,18 @@ type
     FDTransaction1: TFDTransaction;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     FDPhysPgDriverLink1: TFDPhysPgDriverLink;
-    tbOrdemCorte: TFDTable;
     dsOrdemCorte: TDataSource;
-    tbOrdemCorteCores: TFDTable;
     dsOrdemCorteCores: TDataSource;
     tbOrdemCorteEmpenho: TFDTable;
-    dsOrdemCorteEmpenho: TDataSource;
-    tbOrdemCorteEmpenhoAdicional: TFDTable;
-    dsOrdemCorteEmpenhoAdicional: TDataSource;
     tbOrdemCorteEmpenhoReal: TFDTable;
     dsOrdemCorteEmpenhoReal: TDataSource;
     tbOrdemCorteEstoqueSobras: TFDTable;
     dsOrdemCorteEstoqueSobras: TDataSource;
-    tbOrdemCorteItensPrevisto: TFDTable;
     dsOrdemCorteItensPrevisto: TDataSource;
     tbOrdemCorteItensReal: TFDTable;
     dsOrdemCorteItensReal: TDataSource;
     tbOrdemCorteItensRealNaopro: TFDTable;
     dsOrdemCorteItensRealNaopro: TDataSource;
-    tbOrdemCorteItensRealSobra: TFDTable;
-    dsOrdemCorteItensRealSobra: TDataSource;
     tbOrdemCorteItensSituacao: TFDTable;
     dsOrdemCorteItensSituacao: TDataSource;
     tbOrdemCortePrototipoFase: TFDTable;
@@ -55,20 +47,6 @@ type
     dsEstilista: TDataSource;
     qyProdutoAcabado: TFDQuery;
     dsProdutoAcabado: TDataSource;
-    tbProdutoAcabado: TFDTable;
-    tbOrdemCorteoc_dtsolicitacao: TDateField;
-    tbOrdemCorteoc_dtprevisaofinalizacao: TDateField;
-    tbOrdemCorteoc_observacao: TWideStringField;
-    tbOrdemCorteoc_datapreviniciocorteprevisto: TDateField;
-    tbOrdemCorteoc_dataprevfimcorteprevisto: TDateField;
-    tbOrdemCorteoc_datapreviniciorealcortado: TDateField;
-    tbOrdemCorteoc_dataprevfimrealcortado: TDateField;
-    tbOrdemCorteoc_hrprevisaofinalizacao: TTimeField;
-    tbOrdemCorteoc_horapreviniciocorteprevisto: TTimeField;
-    tbOrdemCorteoc_horaprevfimcorteprevisto: TTimeField;
-    tbOrdemCorteoc_horapreviniciorealcortado: TTimeField;
-    tbOrdemCorteoc_horaprevfimrealcortado: TTimeField;
-    tbOrdemCorteoc_horasolicitacao: TTimeField;
     qyBoxColecao: TFDQuery;
     dsBoxColecao: TDataSource;
     qyBoxEstilista: TFDQuery;
@@ -81,6 +59,7 @@ type
     qyEmpenhoReal: TFDQuery;
     qyRealFinal: TFDQuery;
     qyCores: TFDQuery;
+    tbProdutoAcabado: TFDTable;
   private
     { Private declarations }
   public

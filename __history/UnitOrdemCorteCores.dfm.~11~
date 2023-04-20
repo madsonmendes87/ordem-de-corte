@@ -77,7 +77,6 @@ object formOrdemCorteCores: TformOrdemCorteCores
     Height = 25
     Caption = 'Adicionar'
     TabOrder = 4
-    OnClick = butAddClick
   end
   object butAddTodas: TBitBtn
     Left = 89

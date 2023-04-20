@@ -115,7 +115,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object dsOrdemCorteCores: TDataSource
-    DataSet = tbOrdemCorteCores
+    DataSet = qyCores
     Left = 312
     Top = 72
   end
@@ -309,15 +309,10 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 440
   end
   object qyOrdemCorte: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       'SELECT'
-      '    Cast(concat(lpad(cast(oc.oc_id As varchar), 7, '#39'0'#39'),'
-      
-        '    '#39'-'#39', lpad(cast(oc.oc_ordem As varchar), 3, '#39'0'#39') )as characte' +
-        'r varying(15))'
-      '    as NumerodoCorte,'
+      '    oc.oc_id as NumerodoCorte,'
       
         '    cc.co_descricao, (ocs.os_nome)as situacao, (ce.es_nome)as es' +
         'tilista,'
@@ -497,49 +492,84 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 944
     Top = 24
   end
-  object dsOrdemHistorico: TDataSource
-    DataSet = cdsOrdemHistorico
-    Left = 952
-    Top = 80
-  end
-  object cdsOrdemHistorico: TClientDataSet
-    Active = True
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dataSetOrdemHistorico'
-    Left = 960
-    Top = 136
-    object cdsOrdemHistoricooc_id: TIntegerField
-      FieldName = 'oc_id'
-      Origin = 'oc_id'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-    end
-    object cdsOrdemHistoricooc_dtgerada: TDateField
-      FieldName = 'oc_dtgerada'
-      Origin = 'oc_dtgerada'
-    end
-    object cdsOrdemHistoricooc_hrgerada: TTimeField
-      FieldName = 'oc_hrgerada'
-      Origin = 'oc_hrgerada'
-    end
-    object cdsOrdemHistoricooc_usugerou: TIntegerField
-      FieldName = 'oc_usugerou'
-      Origin = 'oc_usugerou'
-    end
-  end
-  object dataSetOrdemHistorico: TDataSetProvider
-    DataSet = qyOrdemHistorico
-    Left = 960
-    Top = 184
-  end
   object qyPrevisto: TFDQuery
     Connection = Conexao
     SQL.Strings = (
       
-        'select oci_idocorte, oci_dtlanc, oci_hrlanc, oci_codusulanc, us_' +
-        'nome from ordem_corte_itens_previsto, usuario'
-      'where oci_codusulanc = us_id;')
+        'select oci_idocorte, oci_dtlanc, oci_hrlanc, oci_codusulanc, oci' +
+        '_situacao_id, descricao, us_nome from ordem_corte_itens_previsto' +
+        ', usuario, ordem_corte_itens_situacao'
+      'where oci_codusulanc = us_id and oci_situacao_id = id;')
+    Left = 864
+    Top = 24
+  end
+  object qyTroca: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select pti_idfichatecnica, pti_idusuariosolicitacao, pti_dtsolic' +
+        'itacao, pti_idusuarioconfirmacao, fi_id, us_nome from producao_t' +
+        'roca_item, ficha_tecnica, usuario'
+      
+        'where pti_idusuariosolicitacao = us_id and pti_idusuarioconfirma' +
+        'cao = us_id and pti_idfichatecnica = fi_id;')
+    Left = 960
+    Top = 80
+  end
+  object qyEmpenho: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select emp_dtlanc, emp_hrlanc, emp_idordemcorte, emp_idusulanc, ' +
+        'us_nome from controle_empenho, ordem_corte, usuario'
+      'where emp_idordemcorte = oc_id and emp_idusulanc = us_id;')
+    Left = 960
+    Top = 136
+  end
+  object qyRealCortado: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select oci_dtlanc, oci_hrlanc, oci_codusulanc, oci_dtfinalizada,' +
+        ' us_nome, oci_situacao_id, descricao from ordem_corte_itens_real' +
+        ', usuario, ordem_corte_itens_situacao'
+      'where oci_codusulanc = us_id and oci_situacao_id = id;')
+    Left = 960
+    Top = 192
+  end
+  object qyEmpenhoReal: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select emp_dtsaidaent, emp_hrsaidaent, emp_idususaidaent, us_nom' +
+        'e from controle_empenho, ordem_corte, usuario'
+      'where emp_idordemcorte = oc_id and emp_idususaidaent = us_id;')
     Left = 968
-    Top = 232
+    Top = 248
+  end
+  object qyRealFinal: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'select oci_dtfinalizada, oci_hrfinalizada, oci_idusualterou, oci' +
+        '_idusufinalizou, us_nome, oci_situacao_id, descricao from ordem_' +
+        'corte_itens_real, usuario, ordem_corte_itens_situacao'
+      'where oci_idusualterou = us_id and oci_situacao_id = id;')
+    Left = 968
+    Top = 296
+  end
+  object qyCores: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT (cast('#39'Cod Uso: '#39' || (gc.grc_codexterno) ||'#39'    '#39' ||'
+      #9#9#9#9'   TRIM(GC.grc_nome) || '#39' ('#39' ||'
+      
+        #9#9#9#9'   TRIM(GC.grc_sigla) || '#39')'#39' as character varying(50))) AS g' +
+        'rc_nome'
+      #9#9#9#9'   FROM ordem_corte ,ordem_corte_cores AS occ'
+      #9#9#9#9'   JOIN grade_cor AS gc ON gc.grc_id = occ.occ_idcor'
+      #9#9#9#9'   WHERE occ_idordemcorte=oc_id')
+    Left = 896
+    Top = 136
   end
 end

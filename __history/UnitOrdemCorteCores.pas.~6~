@@ -5,14 +5,18 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Data.DB, Vcl.Grids, Vcl.DBGrids;
+  Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.Buttons;
 
 type
   TformOrdemCorteCores = class(TForm)
     RadioGroup1: TRadioGroup;
     RadioGroup2: TRadioGroup;
     gridCoresReferencia: TDBGrid;
-    DBGrid1: TDBGrid;
+    gridCoresCorte: TDBGrid;
+    butAdd: TBitBtn;
+    butAddTodas: TBitBtn;
+    butRetirar: TBitBtn;
+    butRetirarTodas: TBitBtn;
   private
     { Private declarations }
   public

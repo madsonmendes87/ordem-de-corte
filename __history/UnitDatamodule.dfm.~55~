@@ -115,7 +115,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object dsOrdemCorteCores: TDataSource
-    DataSet = qyCores
+    DataSet = tbOrdemCorteCores
     Left = 312
     Top = 72
   end
@@ -557,19 +557,5 @@ object dmOrdemCorte: TdmOrdemCorte
       'where oci_idusualterou = us_id and oci_situacao_id = id;')
     Left = 968
     Top = 296
-  end
-  object qyCores: TFDQuery
-    Connection = Conexao
-    SQL.Strings = (
-      'SELECT (cast('#39'Cod Uso: '#39' || (gc.grc_codexterno) ||'#39'    '#39' ||'
-      #9#9#9#9'   TRIM(GC.grc_nome) || '#39' ('#39' ||'
-      
-        #9#9#9#9'   TRIM(GC.grc_sigla) || '#39')'#39' as character varying(120))) AS ' +
-        'grc_nome'
-      #9#9#9#9'   FROM ordem_corte ,ordem_corte_cores AS occ'
-      #9#9#9#9'   JOIN grade_cor AS gc ON gc.grc_id = occ.occ_idcor'
-      #9#9#9#9'   WHERE occ_idordemcorte=oc_id')
-    Left = 896
-    Top = 136
   end
 end

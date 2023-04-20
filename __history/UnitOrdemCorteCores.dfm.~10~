@@ -50,7 +50,6 @@ object formOrdemCorteCores: TformOrdemCorteCores
     Top = 24
     Width = 684
     Height = 185
-    DataSource = dmOrdemCorte.dsOrdemCorteCores
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -77,7 +76,6 @@ object formOrdemCorteCores: TformOrdemCorteCores
     Height = 25
     Caption = 'Adicionar'
     TabOrder = 4
-    OnClick = butAddClick
   end
   object butAddTodas: TBitBtn
     Left = 89

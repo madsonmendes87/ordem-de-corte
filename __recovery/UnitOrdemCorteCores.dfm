@@ -4,7 +4,7 @@ object formOrdemCorteCores: TformOrdemCorteCores
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Ordem Corte Cores'
-  ClientHeight = 512
+  ClientHeight = 496
   ClientWidth = 703
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,6 +14,7 @@ object formOrdemCorteCores: TformOrdemCorteCores
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object RadioGroup1: TRadioGroup
@@ -49,6 +50,7 @@ object formOrdemCorteCores: TformOrdemCorteCores
     Top = 24
     Width = 684
     Height = 185
+    DataSource = dmOrdemCorte.dsOrdemCorteCores
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -67,5 +69,38 @@ object formOrdemCorteCores: TformOrdemCorteCores
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+  end
+  object butAdd: TBitBtn
+    Left = 8
+    Top = 215
+    Width = 75
+    Height = 25
+    Caption = 'Adicionar'
+    TabOrder = 4
+    OnClick = butAddClick
+  end
+  object butAddTodas: TBitBtn
+    Left = 89
+    Top = 215
+    Width = 88
+    Height = 25
+    Caption = 'Adicionar Todas'
+    TabOrder = 5
+  end
+  object butRetirar: TBitBtn
+    Left = 8
+    Top = 463
+    Width = 75
+    Height = 25
+    Caption = 'Retirar'
+    TabOrder = 6
+  end
+  object butRetirarTodas: TBitBtn
+    Left = 89
+    Top = 463
+    Width = 75
+    Height = 25
+    Caption = 'Retirar Todas'
+    TabOrder = 7
   end
 end
