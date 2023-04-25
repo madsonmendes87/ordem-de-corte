@@ -20,12 +20,14 @@ type
     Label1: TLabel;
     dbLCBoxColecao: TDBLookupComboBox;
     butLimpaColecao: TButton;
+    labMosColPacabado: TLabel;
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridProdutoAcabadoDblClick(Sender: TObject);
     procedure butLimpaColecaoClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure labMosColPacabadoClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -52,44 +54,44 @@ procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
 var key: Char;
 begin
     begin
-        With dmOrdemCorte do
+        With dmOrdemCorte.qyProdutoAcabado do
         begin
-            qyProdutoAcabado.Close;
-            qyProdutoAcabado.SQL.Clear;
-            qyProdutoAcabado.SQL.Add('SELECT');
-            qyProdutoAcabado.SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
-            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''NÃO'' END as character varying(5)) strComplementar,');
-            qyProdutoAcabado.SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''NÃO'' END as character varying(5)) strAproveitamento');
-            qyProdutoAcabado.SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
-            qyProdutoAcabado.SQL.Add('  where pa.cad_situacao=''A''');
-            qyProdutoAcabado.SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
+            SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''NÃO'' END as character varying(5)) strComplementar,');
+            SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''NÃO'' END as character varying(5)) strAproveitamento');
+            SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
+            SQL.Add('  where pa.cad_situacao=''A''');
+            SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
             if comboFiltro.Text = 'REFERENCIA' then
             begin
-                qyProdutoAcabado.SQL.Add('and pa.cad_idreferencia = :referencia');
-                qyProdutoAcabado.ParamByName('referencia').AsString := editSearchPA.Text;
+                SQL.Add('and pa.cad_idreferencia = :referencia');
+                ParamByName('referencia').AsString := editSearchPA.Text;
             end;
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
-                qyProdutoAcabado.SQL.Add('and ft.fi_id = :fichatecnica');
-                qyProdutoAcabado.ParamByName('fichatecnica').AsInteger := strtointdef(editSearchPA.Text,0);
+                SQL.Add('and ft.fi_id = :fichatecnica');
+                ParamByName('fichatecnica').AsInteger := strtointdef(editSearchPA.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
-                qyProdutoAcabado.SQL.Add('and pa.cad_descricao = :descricao');
-                qyProdutoAcabado.ParamByName('descricao').AsString := editSearchPA.Text;
+                SQL.Add('and pa.cad_descricao = :descricao');
+                ParamByName('descricao').AsString := editSearchPA.Text;
             end;
             if dbLCBoxColecao.KeyValue <> Null then
             begin
-                qyProdutoAcabado.SQL.Add('and pa.cad_idcolecao = :colecao');
-                qyProdutoAcabado.ParamByName('colecao').AsInteger := dbLCBoxColecao.KeyValue;
+                SQL.Add('and pa.cad_idcolecao = :colecao');
+                ParamByName('colecao').AsInteger := dbLCBoxColecao.KeyValue;
             end;
             if dtCadastro.Checked = true then
             begin
-                qyProdutoAcabado.SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
-                qyProdutoAcabado.ParamByName('dtcadastro').AsDate := dtCadastro.Date;
+                SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
+                ParamByName('dtcadastro').AsDate := dtCadastro.Date;
             end;
-            qyProdutoAcabado.SQL.Add('order by ft.fi_id desc limit 15');
-            qyProdutoAcabado.Open;
+            SQL.Add('order by ft.fi_id desc limit 15');
+            Open;
         end;
     end;
 end;
@@ -97,10 +99,7 @@ end;
 procedure TformProdutoAcabado.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
-
-     dmOrdemCorte.qyBoxColecao.active   := false;
      dmOrdemCorte.tbProdutoAcabado.Active := false;
-
 end;
 
 procedure TformProdutoAcabado.FormCreate(Sender: TObject);
@@ -124,8 +123,36 @@ begin
     formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
     formIniciarCorte.labNaoComp.Caption := gridProdutoAcabado.Fields[4].Value;
     formIniciarCorte.labNaoAprov.Caption := gridProdutoAcabado.Fields[5].Value;
+    With dmOrdemCorte.qyFichaTecnica do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('Select fi_situacao from ficha_tecnica');
+        SQL.Add('where fi_idprodutoacabado = :prodAcabado');
+        ParamByName('prodAcabado').AsInteger := strtoint(gridProdutoAcabado.Fields[0].Value);
+        SQL.Add('CASE WHEN (fi_situacao = ''F'') THEN');
+        formIniciarCorte.labTipoCorte.Caption := 'Protótipo';
+        SQL.Add('CASE WHEN (fi_situacao = ''Z'')');
+        formIniciarCorte.labTipoCorte.Caption := 'Grande Escala';
+    end;
+
+
     formProdutoAcabado.Close;
 end;
 
+
+procedure TformProdutoAcabado.labMosColPacabadoClick(Sender: TObject);
+begin
+    With dmOrdemCorte.qyBoxColecao do
+    begin
+        Close;
+        SQl.Clear;
+        SQl.add('Select co_id,');
+        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
+        SQl.add('from colecao');
+        SQl.add('order by co_anocolecao');
+        Open;
+    end;
+end;
 
 end.

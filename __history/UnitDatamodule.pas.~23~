@@ -73,6 +73,14 @@ type
     dsBoxColecao: TDataSource;
     qyBoxEstilista: TFDQuery;
     dsBoxEstilista: TDataSource;
+    qyOrdemHistorico: TFDQuery;
+    qyPrevisto: TFDQuery;
+    qyTroca: TFDQuery;
+    qyEmpenho: TFDQuery;
+    qyRealCortado: TFDQuery;
+    qyEmpenhoReal: TFDQuery;
+    qyRealFinal: TFDQuery;
+    qyCores: TFDQuery;
   private
     { Private declarations }
   public

@@ -95,6 +95,7 @@ type
     procedure butDesistirClick(Sender: TObject);
     procedure butEscolherCoresClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
+    procedure butSalvarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -134,6 +135,7 @@ end;
 
 procedure TformIniciarCorte.butNovoClick(Sender: TObject);
 begin
+    dmOrdemCorte.tbOrdemdeCorte.Append;
     butNovo.Enabled := false;
     butSalvar.Enabled := true;
     butDesistir.Enabled := true;
@@ -143,6 +145,11 @@ procedure TformIniciarCorte.butSairInicioCorteClick(Sender: TObject);
 begin
     formIniciarCorte.Close;
     formPrincipal.habComponentes;
+end;
+
+procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
+begin
+    //dmOrdemCorte.tbOrdemdeCorte.Post;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

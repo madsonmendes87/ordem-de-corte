@@ -16,273 +16,32 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object FDTransaction1: TFDTransaction
     Connection = Conexao
-    Left = 144
+    Left = 96
     Top = 16
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 368
+    Left = 272
     Top = 16
   end
   object FDPhysPgDriverLink1: TFDPhysPgDriverLink
     VendorLib = 'C:\Program Files (x86)\PostgreSQL\psqlODBC\bin\libpq.dll'
-    Left = 256
+    Left = 176
     Top = 16
-  end
-  object tbOrdemCorte: TFDTable
-    Active = True
-    IndexFieldNames = 'oc_id'
-    Connection = Conexao
-    TableName = 'ordem_corte'
-    Left = 40
-    Top = 72
-    object tbOrdemCorteoc_dtsolicitacao: TDateField
-      FieldName = 'oc_dtsolicitacao'
-      Origin = 'oc_dtsolicitacao'
-      EditMask = '99/99/9999;1;_'
-    end
-    object tbOrdemCorteoc_dtprevisaofinalizacao: TDateField
-      FieldName = 'oc_dtprevisaofinalizacao'
-      Origin = 'oc_dtprevisaofinalizacao'
-      EditMask = '99/99/9999;1;_'
-    end
-    object tbOrdemCorteoc_observacao: TWideStringField
-      FieldName = 'oc_observacao'
-      Origin = 'oc_observacao'
-      Size = 35
-    end
-    object tbOrdemCorteoc_datapreviniciocorteprevisto: TDateField
-      FieldName = 'oc_datapreviniciocorteprevisto'
-      Origin = 'oc_datapreviniciocorteprevisto'
-      EditMask = '99/99/9999;1;_'
-    end
-    object tbOrdemCorteoc_dataprevfimcorteprevisto: TDateField
-      FieldName = 'oc_dataprevfimcorteprevisto'
-      Origin = 'oc_dataprevfimcorteprevisto'
-      EditMask = '99/99/9999;1;_'
-    end
-    object tbOrdemCorteoc_datapreviniciorealcortado: TDateField
-      FieldName = 'oc_datapreviniciorealcortado'
-      Origin = 'oc_datapreviniciorealcortado'
-      EditMask = '99/99/9999;1;_'
-    end
-    object tbOrdemCorteoc_dataprevfimrealcortado: TDateField
-      FieldName = 'oc_dataprevfimrealcortado'
-      Origin = 'oc_dataprevfimrealcortado'
-      EditMask = '99/99/9999;1;_'
-    end
-    object tbOrdemCorteoc_hrprevisaofinalizacao: TTimeField
-      FieldName = 'oc_hrprevisaofinalizacao'
-      Origin = 'oc_hrprevisaofinalizacao'
-      EditMask = '00:00:00;1;_'
-    end
-    object tbOrdemCorteoc_horapreviniciocorteprevisto: TTimeField
-      FieldName = 'oc_horapreviniciocorteprevisto'
-      Origin = 'oc_horapreviniciocorteprevisto'
-      EditMask = '00:00:00;1;_'
-    end
-    object tbOrdemCorteoc_horaprevfimcorteprevisto: TTimeField
-      FieldName = 'oc_horaprevfimcorteprevisto'
-      Origin = 'oc_horaprevfimcorteprevisto'
-      EditMask = '00:00:00;1;_'
-    end
-    object tbOrdemCorteoc_horapreviniciorealcortado: TTimeField
-      FieldName = 'oc_horapreviniciorealcortado'
-      Origin = 'oc_horapreviniciorealcortado'
-      EditMask = '99:99:99;1;_'
-    end
-    object tbOrdemCorteoc_horaprevfimrealcortado: TTimeField
-      FieldName = 'oc_horaprevfimrealcortado'
-      Origin = 'oc_horaprevfimrealcortado'
-      EditMask = '00:00:00;1;_'
-    end
-    object tbOrdemCorteoc_horasolicitacao: TTimeField
-      FieldName = 'oc_horasolicitacao'
-      Origin = 'oc_horasolicitacao'
-      EditMask = '00:00:00;1;_'
-    end
   end
   object dsOrdemCorte: TDataSource
     DataSet = qyOrdemCorte
-    Left = 112
-    Top = 72
-  end
-  object tbOrdemCorteCores: TFDTable
-    IndexFieldNames = 'occ_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_cores'
-    Left = 200
-    Top = 72
+    Left = 440
+    Top = 16
   end
   object dsOrdemCorteCores: TDataSource
     DataSet = qyCores
-    Left = 312
-    Top = 72
+    Left = 880
+    Top = 16
   end
-  object tbOrdemCorteEmpenho: TFDTable
-    IndexFieldNames = 'oce_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_empenho'
-    Left = 424
-    Top = 72
-  end
-  object dsOrdemCorteEmpenho: TDataSource
-    DataSet = tbOrdemCorteEmpenho
-    Left = 528
-    Top = 72
-  end
-  object tbOrdemCorteEmpenhoAdicional: TFDTable
-    IndexFieldNames = 'ocea_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_empenho_adicional'
-    Left = 672
-    Top = 72
-  end
-  object dsOrdemCorteEmpenhoAdicional: TDataSource
-    DataSet = tbOrdemCorteEmpenhoAdicional
-    Left = 832
-    Top = 72
-  end
-  object tbOrdemCorteEmpenhoReal: TFDTable
-    IndexFieldNames = 'id'
-    Connection = Conexao
-    TableName = 'ordem_corte_empenho_real'
-    Left = 64
-    Top = 136
-  end
-  object dsOrdemCorteEmpenhoReal: TDataSource
-    DataSet = tbOrdemCorteEmpenhoReal
-    Left = 192
-    Top = 136
-  end
-  object tbOrdemCorteEstoqueSobras: TFDTable
-    IndexFieldNames = 'oce_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_estoque_sobras'
-    Left = 336
-    Top = 136
-  end
-  object dsOrdemCorteEstoqueSobras: TDataSource
-    Left = 488
-    Top = 136
-  end
-  object tbOrdemCorteItensPrevisto: TFDTable
-    IndexFieldNames = 'oci_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_itens_previsto'
-    Left = 640
-    Top = 136
-  end
-  object dsOrdemCorteItensPrevisto: TDataSource
-    DataSet = tbOrdemCorteItensPrevisto
-    Left = 784
-    Top = 136
-  end
-  object tbOrdemCorteItensReal: TFDTable
-    IndexFieldNames = 'oci_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_itens_real'
-    Left = 56
-    Top = 208
-  end
-  object dsOrdemCorteItensReal: TDataSource
-    DataSet = tbOrdemCorteItensReal
-    Left = 176
-    Top = 208
-  end
-  object tbOrdemCorteItensRealNaopro: TFDTable
-    Connection = Conexao
-    Left = 320
-    Top = 208
-  end
-  object dsOrdemCorteItensRealNaopro: TDataSource
-    DataSet = tbOrdemCorteItensRealNaopro
-    Left = 480
-    Top = 208
-  end
-  object tbOrdemCorteItensRealSobra: TFDTable
-    IndexFieldNames = 'ocirs_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_itens_real_sobra'
+  object dsOrdemdeCorte: TDataSource
     Left = 632
-    Top = 208
-  end
-  object dsOrdemCorteItensRealSobra: TDataSource
-    DataSet = tbOrdemCorteItensRealSobra
-    Left = 784
-    Top = 208
-  end
-  object tbOrdemCorteItensSituacao: TFDTable
-    IndexFieldNames = 'id'
-    Connection = Conexao
-    TableName = 'ordem_corte_itens_situacao'
-    Left = 64
-    Top = 280
-  end
-  object dsOrdemCorteItensSituacao: TDataSource
-    DataSet = tbOrdemCorteItensSituacao
-    Left = 200
-    Top = 280
-  end
-  object tbOrdemCortePrototipoFase: TFDTable
-    IndexFieldNames = 'ocpf_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_prototipo_fase'
-    Left = 344
-    Top = 280
-  end
-  object dsOrdemCortePrototipoFase: TDataSource
-    DataSet = tbOrdemCortePrototipoFase
-    Left = 496
-    Top = 280
-  end
-  object tbOrdemCorteRealHistoricoGrade: TFDTable
-    IndexFieldNames = 'ocrhg_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_real_historico_grade'
-    Left = 648
-    Top = 280
-  end
-  object dsOrdemCorteRealHistoricoGrade: TDataSource
-    DataSet = tbOrdemCorteRealHistoricoGrade
-    Left = 816
-    Top = 280
-  end
-  object tbOrdemCorteRetalhosPrevisto: TFDTable
-    IndexFieldNames = 'ocrp_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_retalhos_previsto'
-    Left = 80
-    Top = 360
-  end
-  object dsOrdemCorteRetalhosPrevisto: TDataSource
-    DataSet = tbOrdemCorteRetalhosPrevisto
-    Left = 240
-    Top = 360
-  end
-  object tbOrdemCorteRetalhosReserva: TFDTable
-    IndexFieldNames = 'ocrr_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_retalhos_reserva'
-    Left = 408
-    Top = 360
-  end
-  object dsOrdemCorteRetalhosReserva: TDataSource
-    DataSet = tbOrdemCorteRetalhosReserva
-    Left = 576
-    Top = 360
-  end
-  object tbOrdemCorteSituacao: TFDTable
-    IndexFieldNames = 'os_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_situacao'
-    Left = 712
-    Top = 360
-  end
-  object dsOrdemCorteSituacao: TDataSource
-    DataSet = tbOrdemCorteSituacao
-    Left = 832
-    Top = 360
+    Top = 72
   end
   object tbOrdemCorteSobraSituacao: TFDTable
     IndexFieldNames = 'id'
@@ -403,7 +162,7 @@ object dmOrdemCorte: TdmOrdemCorte
       '  WHERE op.op_idordemcorte=oc.oc_id and op.op_idstatus <> 4)'
       'ORDER BY oc.oc_id desc limit 30'
       '')
-    Left = 480
+    Left = 368
     Top = 16
   end
   object tbEstilista: TFDTable
@@ -436,19 +195,12 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'where pa.cad_situacao='#39'A'#39' and ft.fi_situacao in ('#39'F'#39', '#39'Z'#39') order' +
         ' By ft.fi_id desc limit 15;')
-    Left = 576
+    Left = 520
     Top = 16
   end
   object dsProdutoAcabado: TDataSource
     DataSet = qyProdutoAcabado
-    Left = 672
-    Top = 16
-  end
-  object tbProdutoAcabado: TFDTable
-    IndexFieldNames = 'cad_id'
-    Connection = Conexao
-    TableName = 'produto_acabado'
-    Left = 792
+    Left = 616
     Top = 16
   end
   object qyBoxColecao: TFDQuery
@@ -489,8 +241,8 @@ object dmOrdemCorte: TdmOrdemCorte
         'select oc_id, oc_usugerou, oc_dtgerada, oc_hrgerada, us_nome fro' +
         'm ordem_corte, usuario'
       'where oc_usugerou = us_id;')
-    Left = 944
-    Top = 24
+    Left = 32
+    Top = 72
   end
   object qyPrevisto: TFDQuery
     Connection = Conexao
@@ -500,8 +252,8 @@ object dmOrdemCorte: TdmOrdemCorte
         '_situacao_id, descricao, us_nome from ordem_corte_itens_previsto' +
         ', usuario, ordem_corte_itens_situacao'
       'where oci_codusulanc = us_id and oci_situacao_id = id;')
-    Left = 864
-    Top = 24
+    Left = 176
+    Top = 72
   end
   object qyTroca: TFDQuery
     Connection = Conexao
@@ -513,8 +265,8 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'where pti_idusuariosolicitacao = us_id and pti_idusuarioconfirma' +
         'cao = us_id and pti_idfichatecnica = fi_id;')
-    Left = 960
-    Top = 80
+    Left = 240
+    Top = 72
   end
   object qyEmpenho: TFDQuery
     Connection = Conexao
@@ -523,8 +275,8 @@ object dmOrdemCorte: TdmOrdemCorte
         'select emp_dtlanc, emp_hrlanc, emp_idordemcorte, emp_idusulanc, ' +
         'us_nome from controle_empenho, ordem_corte, usuario'
       'where emp_idordemcorte = oc_id and emp_idusulanc = us_id;')
-    Left = 960
-    Top = 136
+    Left = 112
+    Top = 72
   end
   object qyRealCortado: TFDQuery
     Connection = Conexao
@@ -534,8 +286,8 @@ object dmOrdemCorte: TdmOrdemCorte
         ' us_nome, oci_situacao_id, descricao from ordem_corte_itens_real' +
         ', usuario, ordem_corte_itens_situacao'
       'where oci_codusulanc = us_id and oci_situacao_id = id;')
-    Left = 960
-    Top = 192
+    Left = 304
+    Top = 72
   end
   object qyEmpenhoReal: TFDQuery
     Connection = Conexao
@@ -544,8 +296,8 @@ object dmOrdemCorte: TdmOrdemCorte
         'select emp_dtsaidaent, emp_hrsaidaent, emp_idususaidaent, us_nom' +
         'e from controle_empenho, ordem_corte, usuario'
       'where emp_idordemcorte = oc_id and emp_idususaidaent = us_id;')
-    Left = 968
-    Top = 248
+    Left = 384
+    Top = 72
   end
   object qyRealFinal: TFDQuery
     Connection = Conexao
@@ -555,8 +307,8 @@ object dmOrdemCorte: TdmOrdemCorte
         '_idusufinalizou, us_nome, oci_situacao_id, descricao from ordem_' +
         'corte_itens_real, usuario, ordem_corte_itens_situacao'
       'where oci_idusualterou = us_id and oci_situacao_id = id;')
-    Left = 968
-    Top = 296
+    Left = 456
+    Top = 72
   end
   object qyCores: TFDQuery
     Connection = Conexao
@@ -569,7 +321,30 @@ object dmOrdemCorte: TdmOrdemCorte
       #9#9#9#9'   FROM ordem_corte ,ordem_corte_cores AS occ'
       #9#9#9#9'   JOIN grade_cor AS gc ON gc.grc_id = occ.occ_idcor'
       #9#9#9#9'   WHERE occ_idordemcorte=oc_id')
-    Left = 896
-    Top = 136
+    Left = 800
+    Top = 16
+  end
+  object tbProdutoAcabado: TFDTable
+    IndexFieldNames = 'cad_id'
+    Connection = Conexao
+    TableName = 'produto_acabado'
+    Left = 712
+    Top = 16
+  end
+  object tbOrdemdeCorte: TFDTable
+    Active = True
+    IndexFieldNames = 'oc_id'
+    MasterSource = dsOrdemdeCorte
+    Connection = Conexao
+    TableName = 'ordem_corte'
+    Left = 528
+    Top = 72
+  end
+  object qyFichaTecnica: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select * from ficha_tecnica order by fi_id')
+    Left = 720
+    Top = 72
   end
 end

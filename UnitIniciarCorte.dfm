@@ -746,6 +746,7 @@ object formIniciarCorte: TformIniciarCorte
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     TabOrder = 7
+    OnClick = butSalvarClick
   end
   object butRemover: TBitBtn
     Left = 280

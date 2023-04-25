@@ -16,28 +16,7 @@ type
     FDPhysPgDriverLink1: TFDPhysPgDriverLink;
     dsOrdemCorte: TDataSource;
     dsOrdemCorteCores: TDataSource;
-    tbOrdemCorteEmpenho: TFDTable;
-    tbOrdemCorteEmpenhoReal: TFDTable;
-    dsOrdemCorteEmpenhoReal: TDataSource;
-    tbOrdemCorteEstoqueSobras: TFDTable;
-    dsOrdemCorteEstoqueSobras: TDataSource;
-    dsOrdemCorteItensPrevisto: TDataSource;
-    tbOrdemCorteItensReal: TFDTable;
-    dsOrdemCorteItensReal: TDataSource;
-    tbOrdemCorteItensRealNaopro: TFDTable;
-    dsOrdemCorteItensRealNaopro: TDataSource;
-    tbOrdemCorteItensSituacao: TFDTable;
-    dsOrdemCorteItensSituacao: TDataSource;
-    tbOrdemCortePrototipoFase: TFDTable;
-    dsOrdemCortePrototipoFase: TDataSource;
-    tbOrdemCorteRealHistoricoGrade: TFDTable;
-    dsOrdemCorteRealHistoricoGrade: TDataSource;
-    tbOrdemCorteRetalhosPrevisto: TFDTable;
-    dsOrdemCorteRetalhosPrevisto: TDataSource;
-    tbOrdemCorteRetalhosReserva: TFDTable;
-    dsOrdemCorteRetalhosReserva: TDataSource;
-    tbOrdemCorteSituacao: TFDTable;
-    dsOrdemCorteSituacao: TDataSource;
+    dsOrdemdeCorte: TDataSource;
     tbOrdemCorteSobraSituacao: TFDTable;
     dsOrdemCorteSobraSituacao: TDataSource;
     tbOrdemCorteTrocaItem: TFDTable;
@@ -60,6 +39,7 @@ type
     qyRealFinal: TFDQuery;
     qyCores: TFDQuery;
     tbProdutoAcabado: TFDTable;
+    tbOrdemdeCorte: TFDTable;
   private
     { Private declarations }
   public
@@ -74,5 +54,6 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
 
 end.

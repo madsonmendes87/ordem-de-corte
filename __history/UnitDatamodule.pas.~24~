@@ -16,7 +16,8 @@ type
     FDPhysPgDriverLink1: TFDPhysPgDriverLink;
     dsOrdemCorte: TDataSource;
     dsOrdemCorteCores: TDataSource;
-    dsOrdemdeCorte: TDataSource;
+    tbOrdemCorteSituacao: TFDTable;
+    dsOrdemCorteSituacao: TDataSource;
     tbOrdemCorteSobraSituacao: TFDTable;
     dsOrdemCorteSobraSituacao: TDataSource;
     tbOrdemCorteTrocaItem: TFDTable;
@@ -39,8 +40,6 @@ type
     qyRealFinal: TFDQuery;
     qyCores: TFDQuery;
     tbProdutoAcabado: TFDTable;
-    tbOrdemdeCorte: TFDTable;
-    qyFichaTecnica: TFDQuery;
   private
     { Private declarations }
   public

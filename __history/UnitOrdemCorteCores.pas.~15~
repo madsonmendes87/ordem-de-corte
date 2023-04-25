@@ -37,9 +37,22 @@ uses UnitIniciarCorte, UnitDatamodule, UnitDMHistoricOrdem,
 
 procedure TformOrdemCorteCores.butAddClick(Sender: TObject);
 begin
+      //gridCoresCorte.Fields[0].Value := gridCoresReferencia.Fields[0].Value;
+      With dmOrdemCorte.qyCores do
+      begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT (cast(''Cod Uso: '' || (gc.grc_codexterno) ||''    '' ||');
+				    SQL.Add('   TRIM(GC.grc_nome) || '' ('' ||');
+				    SQL.Add('   TRIM(GC.grc_sigla) || '')'' as character varying(120))) AS grc_nome');
+				    SQL.Add('   FROM ordem_corte_cores AS occ');
+				    SQL.Add('   JOIN grade_cor AS gc ON gc.grc_id = occ.occ_idcor');
+				    SQL.Add('WHERE occ_idordemcorte=:ordemCorte');
+            ParamByName('ordemCorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+            Open;
+      end;
       gridCoresCorte.Columns[0].Title.Caption := 'COR';
       gridCoresCorte.Columns[0].Title.Font.Style := [fsBold];
-      //gridCoresReferencia.
 end;
 
 procedure TformOrdemCorteCores.FormShow(Sender: TObject);
@@ -59,6 +72,8 @@ begin
       end;
       gridCoresReferencia.Columns[0].Title.Caption := 'COR';
       gridCoresReferencia.Columns[0].Title.Font.Style := [fsBold];
+//      gridCoresCorte.Columns[0].Title.Caption := 'COR';
+//      gridCoresCorte.Columns[0].Title.Font.Style := [fsBold];
 end;
 
 end.
