@@ -127,14 +127,16 @@ begin
     begin
         Close;
         SQL.Clear;
-        SQL.Add('Select fi_situacao from ficha_tecnica');
-        SQL.Add('where fi_idprodutoacabado = :prodAcabado');
+        SQL.Add('Select fi_situacao, cad_id from ficha_tecnica, produto_acabado');
+        SQL.Add('where fi_idprodutoacabado = :prodAcabado and cad_id = fi_idprodutoacabado');
         ParamByName('prodAcabado').AsInteger := strtoint(gridProdutoAcabado.Fields[0].Value);
-        SQL.Add('CASE WHEN (fi_situacao = ''F'')');
-        formIniciarCorte.labTipoCorte.Caption := 'Prototpo';
+        if dmOrdemCorte.qyFichaTecnica.FieldByName('fi_situacao').Value = 'F' then
+            formIniciarCorte.labTipoCorte.Caption := 'Prototipo';
+        //SQL.Add('CASE WHEN fi_situacao = ''F'' THEN');
+        //formIniciarCorte.labTipoCorte.Caption := 'Protótipo';
+        //SQL.Add('ELSE');
+        //formIniciarCorte.labTipoCorte.Caption := 'Grande Escala';
     end;
-
-
     formProdutoAcabado.Close;
 end;
 

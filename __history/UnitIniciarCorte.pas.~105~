@@ -95,6 +95,7 @@ type
     procedure butDesistirClick(Sender: TObject);
     procedure butEscolherCoresClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
+    procedure butSalvarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -115,9 +116,51 @@ uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
 
 procedure TformIniciarCorte.acaoCoresExecute(Sender: TObject);
 begin
+    With dmOrdemCorte.qyOrdemIniciarCorte do
+    begin
+         Close;
+         SQL.Clear;
+         SQL.Add('select oc_situacao from ordem_corte');
+         SQL.Add('where oc_id = :ordem');
+         ParamByName('ordem').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+         Open;
+    end;
     if butEscolherCores.Enabled = true then
-        application.CreateForm(TformOrdemCorteCores, formOrdemCorteCores);
-        formOrdemCorteCores.ShowModal;
+    begin
+        if editCodigo.Text = ''  then
+            Showmessage('Selecione o produto acabado')
+        else
+            if labTipoCorte.Caption = 'Prototipo' then
+                Showmessage('Este corte é prototipo e a cor de corte já foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada')
+            else
+            if labTipoCorte.Caption = 'Grande Escala' then
+            begin
+                if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
+                    Showmessage('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte');
+                With dmOrdemCorte.qyPrevisto do
+                begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add('select oci_situacao_id from ordem_corte_itens_previsto');
+                    SQL.Add('where oci_idocorte = :numerocorte');
+                    ParamByName('numerocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+                    Open;
+                end;
+                dmOrdemCorte.qyPrevisto.First;
+                while not dmOrdemCorte.qyPrevisto.Eof do
+                begin
+                  if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
+                    ShowMessage('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor incie um outra ordem de corte para esta referencia');
+                  dmOrdemCorte.qyPrevisto.Next;
+                end;
+            end
+             else
+                 begin
+                    application.CreateForm(TformOrdemCorteCores, formOrdemCorteCores);
+                    formOrdemCorteCores.ShowModal;
+                 end;
+
+    end;
 end;
 
 procedure TformIniciarCorte.butDesistirClick(Sender: TObject);
@@ -134,6 +177,7 @@ end;
 
 procedure TformIniciarCorte.butNovoClick(Sender: TObject);
 begin
+    dmOrdemCorte.tbOrdemdeCorte.Append;
     butNovo.Enabled := false;
     butSalvar.Enabled := true;
     butDesistir.Enabled := true;
@@ -143,6 +187,11 @@ procedure TformIniciarCorte.butSairInicioCorteClick(Sender: TObject);
 begin
     formIniciarCorte.Close;
     formPrincipal.habComponentes;
+end;
+
+procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
+begin
+    //dmOrdemCorte.tbOrdemdeCorte.Post;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

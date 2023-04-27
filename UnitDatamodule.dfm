@@ -245,6 +245,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object qyPrevisto: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
       
@@ -343,8 +344,17 @@ object dmOrdemCorte: TdmOrdemCorte
   object qyFichaTecnica: TFDQuery
     Connection = Conexao
     SQL.Strings = (
-      'select * from ficha_tecnica order by fi_id')
+      
+        'select fi_situacao from ficha_tecnica, produto_acabado where fi_' +
+        'idprodutoacabado = cad_id')
     Left = 720
+    Top = 72
+  end
+  object qyOrdemIniciarCorte: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select oc_situacao from ordem_corte where oc_id = 8132')
+    Left = 792
     Top = 72
   end
 end

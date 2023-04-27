@@ -123,6 +123,21 @@ begin
     formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
     formIniciarCorte.labNaoComp.Caption := gridProdutoAcabado.Fields[4].Value;
     formIniciarCorte.labNaoAprov.Caption := gridProdutoAcabado.Fields[5].Value;
+    With dmOrdemCorte.qyFichaTecnica do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('Select fi_situacao, cad_id from ficha_tecnica, produto_acabado');
+        SQL.Add('where fi_idprodutoacabado = :prodAcabado and cad_id = fi_idprodutoacabado');
+        ParamByName('prodAcabado').AsInteger := strtoint(gridProdutoAcabado.Fields[0].Value);
+        if dmOrdemCorte.qyFichaTecnica.FieldByName('fi_situacao').Value = 'F' then
+            formIniciarCorte.labTipoCorte.Caption := 'Prototipo';
+        //SQL.Add('CASE WHEN fi_situacao = ''F'' THEN');
+        //formIniciarCorte.labTipoCorte.Caption := 'Protótipo';
+        //SQL.Add('ELSE');
+        //formIniciarCorte.labTipoCorte.Caption := 'Grande Escala';
+        Open;
+    end;
     formProdutoAcabado.Close;
 end;
 

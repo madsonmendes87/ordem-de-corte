@@ -130,10 +130,10 @@ begin
         SQL.Add('Select fi_situacao from ficha_tecnica');
         SQL.Add('where fi_idprodutoacabado = :prodAcabado');
         ParamByName('prodAcabado').AsInteger := strtoint(gridProdutoAcabado.Fields[0].Value);
-        SQL.Add('WHEN (fi_situacao = ''F'') THEN');
+        SQL.Add('CASE WHEN fi_situacao = ''F'' THEN');
         formIniciarCorte.labTipoCorte.Caption := 'Protótipo';
-        SQL.Add('ELSE CASE WHEN (fi_situacao = ''Z'') END');
-        //formIniciarCorte.labTipoCorte.Caption := 'Grande Escala';
+        SQL.Add('ELSE');
+        formIniciarCorte.labTipoCorte.Caption := 'Grande Escala';
     end;
 
 

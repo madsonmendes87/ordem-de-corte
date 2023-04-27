@@ -95,10 +95,12 @@ type
     procedure butDesistirClick(Sender: TObject);
     procedure butEscolherCoresClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
+    procedure butSalvarClick(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
+    procedure abrirProdutoAcabado;
   end;
 
 var
@@ -108,14 +110,64 @@ implementation
 
 {$R *.dfm}
 
-uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule;
+uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
+  UnitOrdemCorteCores;
 
 
+
+procedure TformIniciarCorte.abrirProdutoAcabado;
+begin
+     application.CreateForm(TformOrdemCorteCores, formOrdemCorteCores);
+     formOrdemCorteCores.ShowModal;
+end;
 
 procedure TformIniciarCorte.acaoCoresExecute(Sender: TObject);
 begin
-    if butEscolherCores.Enabled = true then
-        ShowMessage('Teste Escolher Cores');
+    With dmOrdemCorte.qyOrdemIniciarCorte do
+    begin
+         Close;
+         SQL.Clear;
+         SQL.Add('select oc_situacao from ordem_corte');
+         SQL.Add('where oc_id = :ordem');
+         ParamByName('ordem').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+         Open;
+    end;
+    if editCodigo.Text = ''  then
+    begin
+        Showmessage('Selecione o produto acabado');
+        exit;
+    end;
+    if labTipoCorte.Caption = 'Prototipo' then
+    begin
+        Showmessage('Este corte é prototipo e a cor de corte já foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada');
+        exit;
+    end;
+    if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
+    begin
+        Showmessage('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte');
+        exit;
+    end;
+    With dmOrdemCorte.qyPrevisto do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('select oci_situacao_id from ordem_corte_itens_previsto');
+        SQL.Add('where oci_idocorte = :numerocorte');
+        ParamByName('numerocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+        Open;
+    end;
+    dmOrdemCorte.qyPrevisto.First;
+    while not dmOrdemCorte.qyPrevisto.Eof do
+    begin
+        if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
+        ShowMessage('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor incie um outra ordem de corte para esta referencia');
+        dmOrdemCorte.qyPrevisto.Next;
+        exit;
+    end;
+    abrirProdutoAcabado;
+
+
+
 end;
 
 procedure TformIniciarCorte.butDesistirClick(Sender: TObject);
@@ -132,6 +184,7 @@ end;
 
 procedure TformIniciarCorte.butNovoClick(Sender: TObject);
 begin
+    dmOrdemCorte.tbOrdemdeCorte.Append;
     butNovo.Enabled := false;
     butSalvar.Enabled := true;
     butDesistir.Enabled := true;
@@ -140,28 +193,12 @@ end;
 procedure TformIniciarCorte.butSairInicioCorteClick(Sender: TObject);
 begin
     formIniciarCorte.Close;
-//    formPrincipal.butVerCorte.Enabled := true;
-//    formPrincipal.butCortePrevisto.Enabled := true;
-//    formPrincipal.butHistoricOrdem.Enabled := true;
-//    formPrincipal.comboFiltro.Enabled := true;
-//    formPrincipal.comboSituacao.Enabled := true;
-//    formPrincipal.editSearch.Enabled := true;
-//    formPrincipal.comboIniOrd.Enabled := true;
-//    formPrincipal.comboTipo.Enabled := true;
-//    formPrincipal.dbLkComboEstilo.Enabled := true;
-//    formPrincipal.comboFiltroData.Enabled := true;
-//    formPrincipal.comboSetor.Enabled := true;
-//    formPrincipal.dateTimePicker1.Enabled := true;
-//    formPrincipal.dateTimePicker2.Enabled := true;
-//    formPrincipal.butOrdemPesquisar.Enabled := true;
-//    formPrincipal.dbLColecao.Enabled := true;
-//    formPrincipal.butClearTipo.Enabled := true;
-//    formPrincipal.butClearEstilo.Enabled := true;
-//    formPrincipal.butClearSetor.Enabled := true;
-//    formPrincipal.butClearSituacao.Enabled := true;
-//    formPrincipal.butLimpaIniOrdem.Enabled := true;
-//    formPrincipal.butClearColecao.Enabled := true;
-//    formPrincipal.labMostrAnos.Enabled := true;
+    formPrincipal.habComponentes;
+end;
+
+procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
+begin
+    //dmOrdemCorte.tbOrdemdeCorte.Post;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

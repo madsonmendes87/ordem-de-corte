@@ -308,9 +308,9 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labTipoCorte: TLabel
-    Left = 816
+    Left = 760
     Top = 75
-    Width = 5
+    Width = 13
     Height = 13
     Caption = '-'
     Font.Charset = DEFAULT_CHARSET
@@ -1081,8 +1081,8 @@ object formIniciarCorte: TformIniciarCorte
     OnClick = acaoCoresExecute
   end
   object ActionListIniCorte: TActionList
-    Left = 744
-    Top = 40
+    Left = 640
+    Top = 32
     object acaoCores: TAction
       Category = 'Cores'
       Caption = 'Escolher Cores(F6)'
