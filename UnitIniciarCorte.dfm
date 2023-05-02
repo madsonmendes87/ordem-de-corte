@@ -310,7 +310,7 @@ object formIniciarCorte: TformIniciarCorte
   object labTipoCorte: TLabel
     Left = 760
     Top = 75
-    Width = 13
+    Width = 5
     Height = 13
     Caption = '-'
     Font.Charset = DEFAULT_CHARSET

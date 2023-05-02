@@ -161,15 +161,12 @@ begin
     begin
         if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
         begin
-            ShowMessage('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor incie um outra ordem de corte para esta referencia');
+            ShowMessage('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia');
             exit;
         end;
         dmOrdemCorte.qyPrevisto.Next;
     end;
         abrirProdutoAcabado;
-
-
-
 end;
 
 procedure TformIniciarCorte.butDesistirClick(Sender: TObject);
@@ -200,6 +197,15 @@ end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 begin
+    With dmOrdemCorte.tbOrdemdeCorte do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('insert into ordem_corte(oc_dtsolicitacao,oc_dtprevisaofinalizacao, oc_observacao, oc_prototipo,oc_idsetor, oc_datapreviniciocorteprevisto');
+        SQL.Add('oc_dataprevfimcorteprevisto, oc_datapreviniciorealcortado, oc_dataprevfimrealcortado, oc_situacao)');
+        SQL.Add('values(:dtsol, :dtprev, :obs, :eprot, :idsetor, :dtinicorteprev, :dtfimcorteprev, :dtinirealcort, :dtfimrealcor, :situacao)');
+        execSQL;
+    end;
     //dmOrdemCorte.tbOrdemdeCorte.Post;
 end;
 

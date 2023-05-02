@@ -124,6 +124,7 @@ begin
     formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
     formIniciarCorte.labNaoComp.Caption := gridProdutoAcabado.Fields[4].Value;
     formIniciarCorte.labNaoAprov.Caption := gridProdutoAcabado.Fields[5].Value;
+    formIniciarCorte.labNormal.Caption := 'NORMAL';
     With dmOrdemCorte.qyFichaTecnica do
     begin
         Close;
