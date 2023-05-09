@@ -308,7 +308,7 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labTipoCorte: TLabel
-    Left = 816
+    Left = 760
     Top = 75
     Width = 5
     Height = 13
@@ -746,6 +746,7 @@ object formIniciarCorte: TformIniciarCorte
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     TabOrder = 7
+    OnClick = butSalvarClick
   end
   object butRemover: TBitBtn
     Left = 280
@@ -1065,12 +1066,11 @@ object formIniciarCorte: TformIniciarCorte
     TabOrder = 23
   end
   object butEscolherCores: TBitBtn
-    Left = 910
+    Left = 902
     Top = 70
     Width = 139
     Height = 25
-    Action = acaoCores
-    Caption = 'Escolher Cores(F6)'
+    Caption = 'Escolher Cores (F8)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -1078,14 +1078,15 @@ object formIniciarCorte: TformIniciarCorte
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
+    OnClick = acaoCoresExecute
   end
-  object ActionList1: TActionList
-    Left = 744
-    Top = 40
+  object ActionListIniCorte: TActionList
+    Left = 640
+    Top = 32
     object acaoCores: TAction
       Category = 'Cores'
       Caption = 'Escolher Cores(F6)'
-      ShortCut = 117
+      ShortCut = 119
       OnExecute = acaoCoresExecute
     end
   end

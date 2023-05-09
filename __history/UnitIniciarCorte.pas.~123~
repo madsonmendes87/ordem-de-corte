@@ -86,6 +86,7 @@ type
     ActionListIniCorte: TActionList;
     acaoCores: TAction;
     butEscolherCores: TBitBtn;
+    labTipoProducao: TLabel;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
@@ -160,14 +161,13 @@ begin
     while not dmOrdemCorte.qyPrevisto.Eof do
     begin
         if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
-        ShowMessage('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor incie um outra ordem de corte para esta referencia');
+        begin
+            ShowMessage('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia');
+            exit;
+        end;
         dmOrdemCorte.qyPrevisto.Next;
-        exit;
     end;
-    abrirProdutoAcabado;
-
-
-
+        abrirProdutoAcabado;
 end;
 
 procedure TformIniciarCorte.butDesistirClick(Sender: TObject);
@@ -198,7 +198,27 @@ end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 begin
-    //dmOrdemCorte.tbOrdemdeCorte.Post;
+    With dmOrdemCorte.tbOrdemdeCorte do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('insert into ordem_corte(oc_dtgerada, oc_hrgerada, oc_usugerou, oc_dtsolicitacao, oc_horasolicitacao, oc_dtprevisaofinalizacao,');
+        SQL.Add('oc_hrprevisaofinalizacao, oc_situacao, oc_idcodprodutoacabado, oc_observacao, oc_idfichatecnica, oc_prototipo, oc_idsetor,');
+        SQL.Add('oc_datapreviniciocorteprevisto, oc_horapreviniciocorteprevisto, oc_dataprevfimcorteprevisto, oc_horaprevfimcorteprevisto');
+        SQL.Add('oc_datapreviniciorealcortado, oc_horapreviniciorealcortado, oc_dataprevfimrealcortado, oc_horaprevfimrealcortado, oc_situacao)');
+        SQL.Add('values(:dtgerada, :hrgerada, :usugerou, :dtsol, :hrsol, :dtprev, :hrprev, :situacao, :prodacabado, :obs, :fichatecnica, :eprot');
+        SQL.Add(':idsetor, :dtinicorteprev, :hrinicorteprev, :dtfimcorteprev, :hrfimcorteprev, :dtinirealcort, :hrinirealcort, :dtfimrealcor, :hrfimrealcor)');
+        ParamByName('dtgerada').AsDate := now;
+        ParamByName('hrgerada').AsTime := now;
+        //ParamByName('usugerou').Value := pesquisar;
+        ParamByName('dtsol').AsDate := dataSolicitacao.Date;
+        ParamByName('hrsol').AsTime := horaSolicitacao.Time;
+        ParamByName('dtprev').AsDate := dataOrdemFinalizacao.Date;
+        ParamByName('hrprev').AsTime := horaOrdemFinalizacao.Time;
+        ParamByName('situacao').AsInteger := 1;
+        ParamByName('prodacabado').AsInteger := strtoint(editCodigo.Text);
+        execSQL;
+    end;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

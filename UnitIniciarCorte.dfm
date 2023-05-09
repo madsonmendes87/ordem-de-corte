@@ -3,7 +3,7 @@ object formIniciarCorte: TformIniciarCorte
   Top = 0
   BorderIcons = [biSystemMenu]
   Caption = 'Iniciar Corte'
-  ClientHeight = 403
+  ClientHeight = 405
   ClientWidth = 1190
   Color = clBtnHighlight
   Font.Charset = DEFAULT_CHARSET
@@ -309,12 +309,12 @@ object formIniciarCorte: TformIniciarCorte
   end
   object labTipoCorte: TLabel
     Left = 760
-    Top = 75
-    Width = 5
+    Top = 79
+    Width = 9
     Height = 13
     Caption = '-'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clMaroon
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
@@ -339,6 +339,19 @@ object formIniciarCorte: TformIniciarCorte
     Width = 100
     Height = 13
     Caption = 'Previs'#227'o de In'#237'cio'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTipoProducao: TLabel
+    Left = 745
+    Top = 56
+    Width = 109
+    Height = 13
+    Caption = 'TIPO DE PRODU'#199#195'O'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -1067,7 +1080,7 @@ object formIniciarCorte: TformIniciarCorte
   end
   object butEscolherCores: TBitBtn
     Left = 902
-    Top = 70
+    Top = 74
     Width = 139
     Height = 25
     Caption = 'Escolher Cores (F8)'
