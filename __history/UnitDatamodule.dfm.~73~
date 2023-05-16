@@ -21,7 +21,7 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 272
+    Left = 280
     Top = 16
   end
   object FDPhysPgDriverLink1: TFDPhysPgDriverLink
@@ -40,7 +40,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object dsOrdemdeCorte: TDataSource
-    Left = 632
+    Left = 616
     Top = 72
   end
   object tbOrdemCorteSobraSituacao: TFDTable
@@ -245,6 +245,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object qyPrevisto: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
       
@@ -335,6 +336,26 @@ object dmOrdemCorte: TdmOrdemCorte
     Active = True
     IndexFieldNames = 'oc_id'
     MasterSource = dsOrdemdeCorte
+    DetailFields = 
+      'oc_complementar;oc_corte_aproveitamento;oc_datafinalizada;oc_dat' +
+      'aprevfimcorteprevisto;oc_dataprevfimrealcortado;oc_dataprevinici' +
+      'ocorteprevisto;oc_datapreviniciorealcortado;oc_dtalterada;oc_dtc' +
+      'ancelada;oc_dtempenho;oc_dtenvioempenho;oc_dtgerada;oc_dtprevisa' +
+      'ofinalizacao;oc_dtrecempenho;oc_dtsolicitacao;oc_horafinalizada;' +
+      'oc_horaprevfimcorteprevisto;oc_horaprevfimrealcortado;oc_horapre' +
+      'viniciocorteprevisto;oc_horapreviniciorealcortado;oc_horasolicit' +
+      'acao;oc_hralterada;oc_hrcancelada;oc_hrempenho;oc_hrenvioempenho' +
+      ';oc_hrgerada;oc_hrprevisaofinalizacao;oc_hrrecempenho;oc_id;oc_i' +
+      'dcodprodutoacabado;oc_idfichatecnica;oc_idprototipo;oc_idsetor;o' +
+      'c_idsetorresponsavel;oc_idusualterou;oc_idusufinalizou;oc_motivo' +
+      'cancelada;oc_observacao;oc_ordem;oc_permite_artigonaoprogramado;' +
+      'oc_permite_consnaoprogramado;oc_permite_retirarartigo;oc_permite' +
+      '_trocaartigo;oc_prototipo;oc_prototipoprocproducao;oc_qtdpecaspr' +
+      'evisto;oc_qtdpecasrealcortado;oc_situacao;oc_usuaddartigo_naopro' +
+      'gramado;oc_usucancelamento_artigo;oc_usucons_naoprogramado;oc_us' +
+      'ugerou;oc_usuidcancelada;oc_usupermite_cancelamentoartigo;oc_usu' +
+      'permite_trocarartigo;oc_usupermiteartigonaoprogramado;oc_usuperm' +
+      'iteconsnaoprogramado;oc_usutroca_artigo'
     Connection = Conexao
     TableName = 'ordem_corte'
     Left = 528
@@ -343,8 +364,17 @@ object dmOrdemCorte: TdmOrdemCorte
   object qyFichaTecnica: TFDQuery
     Connection = Conexao
     SQL.Strings = (
-      'select * from ficha_tecnica order by fi_id')
-    Left = 720
+      
+        'select fi_situacao from ficha_tecnica, produto_acabado where fi_' +
+        'idprodutoacabado = cad_id')
+    Left = 712
+    Top = 72
+  end
+  object qyOrdemIniciarCorte: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select oc_situacao from ordem_corte where oc_id = 8132')
+    Left = 808
     Top = 72
   end
 end

@@ -39,15 +39,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 880
     Top = 16
   end
-  object tbOrdemCorteSituacao: TFDTable
-    IndexFieldNames = 'os_id'
-    Connection = Conexao
-    TableName = 'ordem_corte_situacao'
-    Left = 712
-    Top = 360
-  end
   object dsOrdemdeCorte: TDataSource
-    DataSet = qyOrdemdeCorte
     Left = 632
     Top = 72
   end
@@ -253,6 +245,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object qyPrevisto: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
       
@@ -339,11 +332,29 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 712
     Top = 16
   end
-  object qyOrdemdeCorte: TFDQuery
+  object tbOrdemdeCorte: TFDTable
+    Active = True
+    IndexFieldNames = 'oc_id'
+    MasterSource = dsOrdemdeCorte
+    Connection = Conexao
+    TableName = 'ordem_corte'
+    Left = 528
+    Top = 72
+  end
+  object qyFichaTecnica: TFDQuery
     Connection = Conexao
     SQL.Strings = (
-      'select * from ordem_corte order by oc_id')
-    Left = 536
+      
+        'select fi_situacao from ficha_tecnica, produto_acabado where fi_' +
+        'idprodutoacabado = cad_id')
+    Left = 720
+    Top = 72
+  end
+  object qyOrdemIniciarCorte: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select oc_situacao from ordem_corte where oc_id = 8132')
+    Left = 792
     Top = 72
   end
 end

@@ -165,7 +165,7 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labNaoComp: TLabel
-    Left = 119
+    Left = 160
     Top = 133
     Width = 5
     Height = 13
@@ -191,7 +191,7 @@ object formIniciarCorte: TformIniciarCorte
     ParentFont = False
   end
   object labNaoAprov: TLabel
-    Left = 239
+    Left = 280
     Top = 133
     Width = 5
     Height = 13
@@ -310,7 +310,7 @@ object formIniciarCorte: TformIniciarCorte
   object labTipoCorte: TLabel
     Left = 760
     Top = 79
-    Width = 9
+    Width = 5
     Height = 13
     Caption = '-'
     Font.Charset = DEFAULT_CHARSET

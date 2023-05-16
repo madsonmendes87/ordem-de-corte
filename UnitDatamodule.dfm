@@ -21,7 +21,7 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 272
+    Left = 280
     Top = 16
   end
   object FDPhysPgDriverLink1: TFDPhysPgDriverLink
@@ -40,7 +40,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object dsOrdemdeCorte: TDataSource
-    Left = 632
+    Left = 616
     Top = 72
   end
   object tbOrdemCorteSobraSituacao: TFDTable
@@ -347,14 +347,14 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'select fi_situacao from ficha_tecnica, produto_acabado where fi_' +
         'idprodutoacabado = cad_id')
-    Left = 720
+    Left = 712
     Top = 72
   end
   object qyOrdemIniciarCorte: TFDQuery
     Connection = Conexao
     SQL.Strings = (
       'select oc_situacao from ordem_corte where oc_id = 8132')
-    Left = 792
+    Left = 808
     Top = 72
   end
 end

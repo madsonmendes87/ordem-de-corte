@@ -172,6 +172,7 @@ end;
 
 procedure TformIniciarCorte.butDesistirClick(Sender: TObject);
 begin
+    dmOrdemCorte.tbOrdemdeCorte.Cancel;
     butDesistir.Enabled := false;
     butSalvar.Enabled := false;
     butNovo.Enabled := true;
@@ -184,7 +185,9 @@ end;
 
 procedure TformIniciarCorte.butNovoClick(Sender: TObject);
 begin
+    dmOrdemCorte.tbOrdemdeCorte.Open();
     dmOrdemCorte.tbOrdemdeCorte.Append;
+    editCodigo.SetFocus;
     butNovo.Enabled := false;
     butSalvar.Enabled := true;
     butDesistir.Enabled := true;
@@ -198,27 +201,32 @@ end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 begin
-    With dmOrdemCorte.tbOrdemdeCorte do
-    begin
-        Close;
-        SQL.Clear;
-        SQL.Add('insert into ordem_corte(oc_dtgerada, oc_hrgerada, oc_usugerou, oc_dtsolicitacao, oc_horasolicitacao, oc_dtprevisaofinalizacao,');
-        SQL.Add('oc_hrprevisaofinalizacao, oc_situacao, oc_idcodprodutoacabado, oc_observacao, oc_idfichatecnica, oc_prototipo, oc_idsetor,');
-        SQL.Add('oc_datapreviniciocorteprevisto, oc_horapreviniciocorteprevisto, oc_dataprevfimcorteprevisto, oc_horaprevfimcorteprevisto');
-        SQL.Add('oc_datapreviniciorealcortado, oc_horapreviniciorealcortado, oc_dataprevfimrealcortado, oc_horaprevfimrealcortado, oc_situacao)');
-        SQL.Add('values(:dtgerada, :hrgerada, :usugerou, :dtsol, :hrsol, :dtprev, :hrprev, :situacao, :prodacabado, :obs, :fichatecnica, :eprot');
-        SQL.Add(':idsetor, :dtinicorteprev, :hrinicorteprev, :dtfimcorteprev, :hrfimcorteprev, :dtinirealcort, :hrinirealcort, :dtfimrealcor, :hrfimrealcor)');
-        ParamByName('dtgerada').AsDate := now;
-        ParamByName('hrgerada').AsTime := now;
-        //ParamByName('usugerou').Value := pesquisar;
-        ParamByName('dtsol').AsDate := dataSolicitacao.Date;
-        ParamByName('hrsol').AsTime := horaSolicitacao.Time;
-        ParamByName('dtprev').AsDate := dataOrdemFinalizacao.Date;
-        ParamByName('hrprev').AsTime := horaOrdemFinalizacao.Time;
-        ParamByName('situacao').AsInteger := 1;
-        ParamByName('prodacabado').AsInteger := strtoint(editCodigo.Text);
-        execSQL;
-    end;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtsolicitacao').Value := dataSolicitacao.Date;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horasolicitacao').Value := horaSolicitacao.Time;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtprevisaofinalizacao').Value := dataOrdemFinalizacao.Date;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrprevisaofinalizacao').Value := horaOrdemFinalizacao.Time;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_situacao').Value := 1;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idcodprodutoacabado').Value := strtoint(editCodigo.Text);
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_observacao').Value := editObservacao.Text;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idfichatecnica').Value := strtoint(editFicha.Text);
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := true;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idsetor').Value := 7;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciocorteprevisto').Value := dataCortePrevisto.Date;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciocorteprevisto').Value := horaCortePrevisto.Time;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimcorteprevisto').Value := dataFinalCortePrevisto.Date;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horaprevfimcorteprevisto').Value := horaFinalCortePrevisto.Time;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciorealcortado').Value := dataRealCortado.Date;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciorealcortado').Value := horaRealCortado.Time;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimrealcortado').Value := dataFinalRealCortado.Date;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horaprevfimrealcortado').Value := horaFinalRealCortado.Time;
+    dmOrdemCorte.tbOrdemdeCorte.Post;
+    dmOrdemCorte.tbOrdemdeCorte.Close;
+    dmOrdemCorte.tbOrdemdeCorte.Open();
+    //dmOrdemCorte.tbOrdemdeCorte.Last;
+
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;
