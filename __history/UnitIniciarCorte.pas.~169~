@@ -201,21 +201,6 @@ end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 begin
-    with dmOrdemCorte.qyOrdemDeCorte do
-    begin
-        Close;
-        SQL.Text := 'select oc_situacao from ordem_corte';
-        SQL.Add('where oc_idcodprodutoacabado = :prodacabado');
-        ParamByName('prodacabado').AsInteger := strtoint(editCodigo.Text);
-        Open;
-    end;
-    if dmOrdemCorte.qyOrdemDeCorte.FieldByName('oc_situacao').Value = 2 then
-    begin
-        Application.MessageBox('Houve um cancelamento de ordem de corte anterior para essa referência com empenhos devolvidos para almoxarifado!',
-        'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
-        Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devolução dos empenhos!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
-        exit;
-    end;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;
@@ -229,7 +214,6 @@ begin
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idfichatecnica').Value := strtoint(editFicha.Text);
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := true;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idsetor').Value := 7;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 1;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciocorteprevisto').Value := dataCortePrevisto.Date;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciocorteprevisto').Value := horaCortePrevisto.Time;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimcorteprevisto').Value := dataFinalCortePrevisto.Date;

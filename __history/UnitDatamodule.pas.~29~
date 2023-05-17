@@ -42,7 +42,6 @@ type
     tbOrdemdeCorte: TFDTable;
     qyFichaTecnica: TFDQuery;
     qyOrdemIniciarCorte: TFDQuery;
-    qyOrdemDeCorte: TFDQuery;
   private
     { Private declarations }
   public
@@ -60,7 +59,6 @@ uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
   UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado;
 
 {$R *.dfm}
-
 
 
 end.

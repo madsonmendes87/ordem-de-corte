@@ -37,7 +37,6 @@ var
     treeHistoricOrdem: TTreeView;
     no, noPai, noPrev, noTroca, noEmpenho, noRealCortado: TTreeNode;
 begin
-    Application.MessageBox('Teste de caixa', 'Ordem de Corte', mb_iconquestion + mb_retrycancel + mb_applmodal);
     treeHistoricOrdem := TTreeView.Create(Self);
     treeHistoricOrdem.Parent := formHistoricOrdem;
     treeHistoricOrdem.Align := alClient;

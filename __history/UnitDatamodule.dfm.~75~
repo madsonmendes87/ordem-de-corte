@@ -195,7 +195,7 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'where pa.cad_situacao='#39'A'#39' and ft.fi_situacao in ('#39'F'#39', '#39'Z'#39') order' +
         ' By ft.fi_id desc limit 15;')
-    Left = 528
+    Left = 520
     Top = 16
   end
   object dsProdutoAcabado: TDataSource
@@ -360,7 +360,7 @@ object dmOrdemCorte: TdmOrdemCorte
   object qyOrdemDeCorte: TFDQuery
     Connection = Conexao
     SQL.Strings = (
-      'select * from ordem_corte; ')
+      'select * from ordem_corte where ')
     Left = 904
     Top = 72
   end

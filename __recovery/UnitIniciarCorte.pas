@@ -140,12 +140,12 @@ begin
     end;
     if labTipoCorte.Caption = 'Prototipo' then
     begin
-        Showmessage('Este corte È prototipo e a cor de corte j· foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada');
+        Showmessage('Este corte √© prototipo e a cor de corte j√° foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada');
         exit;
     end;
     if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
     begin
-        Showmessage('Ordem de corte finalizada, por esse motivo È vedado qualquer modificaÁ„o na ordem de corte');
+        Showmessage('Ordem de corte finalizada, por esse motivo √© vedado qualquer modifica√ß√£o na ordem de corte');
         exit;
     end;
     With dmOrdemCorte.qyPrevisto do
@@ -162,7 +162,7 @@ begin
     begin
         if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
         begin
-            ShowMessage('Corte sob empenho, por este motivo n„o È possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia');
+            ShowMessage('Corte sob empenho, por este motivo n√£o √© possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia');
             exit;
         end;
         dmOrdemCorte.qyPrevisto.Next;
@@ -201,10 +201,26 @@ end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 begin
+    with dmOrdemCorte.qyOrdemDeCorte do
+    begin
+        Close;
+        SQL.Text := 'select oc_situacao from ordem_corte';
+        SQL.Add('where oc_idcodprodutoacabado = :prodacabado');
+        ParamByName('prodacabado').AsInteger := strtoint(editCodigo.Text);
+        Open;
+    end;
+    if dmOrdemCorte.qyOrdemDeCorte.FieldByName('oc_situacao').Value = 2 then
+    begin
+        Application.MessageBox('Houve um cancelamento de ordem de corte anterior para essa refer√™ncia com empenhos devolvidos para almoxarifado!',
+        'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devolu√ß√£o dos empenhos!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        exit;
+    end;
+
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtsolicitaao').Value := dataSolicitacao.Date;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtsolicitacao').Value := dataSolicitacao.Date;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horasolicitacao').Value := horaSolicitacao.Time;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtprevisaofinalizacao').Value := dataOrdemFinalizacao.Date;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrprevisaofinalizacao').Value := horaOrdemFinalizacao.Time;
@@ -214,6 +230,7 @@ begin
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idfichatecnica').Value := strtoint(editFicha.Text);
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := true;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idsetor').Value := 7;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 1;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciocorteprevisto').Value := dataCortePrevisto.Date;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciocorteprevisto').Value := horaCortePrevisto.Time;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimcorteprevisto').Value := dataFinalCortePrevisto.Date;
@@ -222,40 +239,12 @@ begin
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciorealcortado').Value := horaRealCortado.Time;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimrealcortado').Value := dataFinalRealCortado.Date;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horaprevfimrealcortado').Value := horaFinalRealCortado.Time;
+    dmOrdemCorte.tbOrdemdeCorte.Post;
+    butDesistir.Enabled := false;
+    butSalvar.Enabled := false;
+    butNovo.Enabled := true;
+    Application.MessageBox('Opera√ß√£o realizada com sucesso!', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
 
-    {With dmOrdemCorte.tbOrdemdeCorte do
-    begin
-        Close;
-        SQL.Clear;
-        SQL.Add('insert into ordem_corte(oc_dtgerada, oc_hrgerada, oc_usugerou, oc_dtsolicitacao, oc_horasolicitacao, oc_dtprevisaofinalizacao,');
-        SQL.Add('oc_hrprevisaofinalizacao, oc_situacao, oc_idcodprodutoacabado, oc_observacao, oc_idfichatecnica, oc_prototipo, oc_idsetor,');
-        SQL.Add('oc_datapreviniciocorteprevisto, oc_horapreviniciocorteprevisto, oc_dataprevfimcorteprevisto, oc_horaprevfimcorteprevisto,');
-        SQL.Add('oc_datapreviniciorealcortado, oc_horapreviniciorealcortado, oc_dataprevfimrealcortado, oc_horaprevfimrealcortado)');
-        SQL.Add('values(:dtgerada, :hrgerada, :usugerou, :dtsol, :hrsol, :dtprev, :hrprev, :situacao, :prodacabado, :obs, :fichatecnica, :eprot');
-        SQL.Add(':idsetor, :dtinicorteprev, :hrinicorteprev, :dtfimcorteprev, :hrfimcorteprev, :dtinirealcort, :hrinirealcort, :dtfimrealcor, :hrfimrealcor)');
-        ParamByName('dtgerada').AsDate := now;
-        ParamByName('hrgerada').AsTime := now;
-        ParamByName('usugerou').AsInteger := 16;
-        ParamByName('dtsol').AsDate := dataSolicitacao.Date;
-        ParamByName('hrsol').AsTime := horaSolicitacao.Time;
-        ParamByName('dtprev').AsDate := dataOrdemFinalizacao.Date;
-        ParamByName('hrprev').AsTime := horaOrdemFinalizacao.Time;
-        ParamByName('situacao').AsInteger := 1;
-        ParamByName('prodacabado').AsInteger := strtoint(editCodigo.Text);
-        ParamByName('obs').Value := editObservacao.Text;
-        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
-        ParamByName('eprot').AsBoolean := false;
-        ParamByName('idsetor').Value := 7;
-        ParamByName('dtinicorteprev').AsDate := dataCortePrevisto.Date;
-        ParamByName('hrinicorteprev').AsTime := horaCortePrevisto.Time;
-        ParamByName('dtfimcorteprev').AsDate := dataFinalCortePrevisto.Date;
-        ParamByName('hrfimcorteprev').AsTime := horaFinalCortePrevisto.Time;
-        ParamByName('dtinirealcort').AsDate := dataRealCortado.Date;
-        ParamByName('hrinirealcort').AsTime := horaRealCortado.Time;
-        ParamByName('dtfimrealcor').AsDate := dataFinalRealCortado.Date;
-        ParamByName('hrfimrealcor').AsTime := horaFinalRealCortado.Time;
-        execSQL;
-    end;}
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

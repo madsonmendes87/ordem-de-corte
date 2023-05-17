@@ -21,7 +21,7 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 272
+    Left = 280
     Top = 16
   end
   object FDPhysPgDriverLink1: TFDPhysPgDriverLink
@@ -40,7 +40,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object dsOrdemdeCorte: TDataSource
-    Left = 632
+    Left = 616
     Top = 72
   end
   object tbOrdemCorteSobraSituacao: TFDTable
@@ -195,7 +195,7 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'where pa.cad_situacao='#39'A'#39' and ft.fi_situacao in ('#39'F'#39', '#39'Z'#39') order' +
         ' By ft.fi_id desc limit 15;')
-    Left = 520
+    Left = 528
     Top = 16
   end
   object dsProdutoAcabado: TDataSource
@@ -245,6 +245,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object qyPrevisto: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
       
@@ -343,8 +344,29 @@ object dmOrdemCorte: TdmOrdemCorte
   object qyFichaTecnica: TFDQuery
     Connection = Conexao
     SQL.Strings = (
-      'select fi_situacao from ficha_tecnica order by fi_id')
-    Left = 720
+      
+        'select fi_situacao from ficha_tecnica, produto_acabado where fi_' +
+        'idprodutoacabado = cad_id')
+    Left = 712
     Top = 72
+  end
+  object qyOrdemIniciarCorte: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select oc_situacao from ordem_corte where oc_id = 8132')
+    Left = 808
+    Top = 72
+  end
+  object qyOrdemDeCorte: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select * from ordem_corte; ')
+    Left = 904
+    Top = 72
+  end
+  object qyGradeFicha: TFDQuery
+    Connection = Conexao
+    Left = 32
+    Top = 128
   end
 end
