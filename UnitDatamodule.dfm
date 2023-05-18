@@ -364,4 +364,24 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 904
     Top = 72
   end
+  object qyGradeFicha: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT'
+      #9'COUNT(oftr.oftr_id) AS oftr_id'
+      #9'FROM ordem_fabricacao_tamanhoreal AS oftr'
+      #9'JOIN ordem_producao AS op ON op.op_id = oftr.oftr_idordproducao'
+      #9'JOIN ordem_corte AS oc ON oc.oc_id = op.op_idordemcorte'
+      #9'JOIN ficha_tecnica AS ft ON ft.fi_id = oc.oc_idfichatecnica'
+      
+        #9'WHERE ft.fi_id='#39'5230'#39' AND ft.fi_situacao<>'#39'C'#39' AND oc.oc_prototi' +
+        'po = true')
+    Left = 32
+    Top = 128
+  end
+  object FDQuery1: TFDQuery
+    Connection = Conexao
+    Left = 112
+    Top = 128
+  end
 end

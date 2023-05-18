@@ -200,7 +200,10 @@ begin
 end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
+var
+  ficha : string;
 begin
+    {***********VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR***********}
     with dmOrdemCorte.qyOrdemDeCorte do
     begin
         Close;
@@ -217,6 +220,33 @@ begin
         exit;
     end;
 
+    {***********VERIFICA SE A GRADE ESTÁ INCORRETA***********}
+    ficha := editFicha.Text;
+    with dmOrdemCorte.qyGradeFicha do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('   COUNT(oftr.oftr_id) AS oftr_id');
+        SQL.Add('   FROM ordem_fabricacao_tamanhoreal AS oftr');
+        SQL.Add('   JOIN ordem_producao AS op ON op.op_id = oftr.oftr_idordproducao');
+        SQL.Add('   JOIN ordem_corte AS oc ON oc.oc_id = op.op_idordemcorte');
+        SQL.Add('   JOIN ficha_tecnica AS ft ON ft.fi_id = oc.oc_idfichatecnica');
+        SQL.Add('   WHERE ft.fi_id = :fichatecnica AND ft.fi_situacao<>''C'' AND oc.oc_prototipo = :eprot');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        if labTipoCorte.Caption = 'Prototipo' then
+           ParamByName('eprot').AsBoolean := true
+        else
+            ParamByName('eprot').AsBoolean := false;
+        Open;
+    end;
+    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value > 0 then
+    begin
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        exit;
+    end;
+
+    {***********VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)***********}
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;
@@ -244,7 +274,6 @@ begin
     butSalvar.Enabled := false;
     butNovo.Enabled := true;
     Application.MessageBox('Operação realizada com sucesso!', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
-
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

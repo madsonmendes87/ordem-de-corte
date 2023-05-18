@@ -43,6 +43,8 @@ type
     qyFichaTecnica: TFDQuery;
     qyOrdemIniciarCorte: TFDQuery;
     qyOrdemDeCorte: TFDQuery;
+    qyGradeFicha: TFDQuery;
+    FDQuery1: TFDQuery;
   private
     { Private declarations }
   public
