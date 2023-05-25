@@ -201,7 +201,7 @@ end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 var
-  ficha : char;
+  ficha : string;
 begin
     {***********VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR***********}
     with dmOrdemCorte.qyOrdemDeCorte do
@@ -219,7 +219,9 @@ begin
         Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devolução dos empenhos!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
+
     {***********VERIFICA SE A GRADE ESTÁ INCORRETA***********}
+    //ficha := editFicha.Text;
     with dmOrdemCorte.qyGradeFicha do
     begin
         Close;
@@ -238,10 +240,45 @@ begin
             ParamByName('eprot').AsBoolean := false;
         Open;
     end;
-    ficha := editFicha.Text;
-    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value = 0 then
+    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value > 0 then
     begin
-        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + formIniciarCorte.editFicha., 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        exit;
+    end;
+
+    {***********VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)***********}
+    with dmOrdemCorte.qyLinha120 do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT (TRUE) AS existe FROM ficha_tecnica_itens AS fti');
+        SQL.Add('   JOIN ficha_tecnica AS ft ON ft.fi_id = fti.fti_idfichatec');
+        SQL.Add('   JOIN produto_acabado AS pa ON pa.cad_id = ft.fi_idprodutoacabado');
+        SQL.Add('   JOIN tipo_tecido AS tt ON tt.tec_id = pa.cad_idtipotecido');
+        SQL.Add('   WHERE (');
+        SQL.Add('           (SELECT conf_idsubgrupotecjeans_cadprod FROM configuracao LIMIT 1)=tt.tec_id OR');
+        SQL.Add('           (SELECT conf_idsubgrupotecsarja_cadprod FROM configuracao LIMIT 1)=tt.tec_id');
+        SQL.Add('          )');
+        SQL.Add('   AND fti.fti_status<>''C''');
+        SQL.Add('   AND fti.fti_idproduto = 2296');
+        SQL.Add('   AND fti.fti_idgradetam = 439');
+        SQL.Add('   AND EXISTS (');
+        SQL.Add('                 SELECT * FROM ficha_tecnica_itensfase AS ftf WHERE ftf.ftf_iditemfichatecnica=fti.fti_id');
+        SQL.Add('                 AND ftf.ftf_idfaseproducao=10');
+        SQL.Add('               )');
+        SQL.Add('   AND fti.fti_idfichatec = :fichatecnica');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        if dmOrdemCorte.qyLinha120.FieldByName('existe').Value = true then
+        begin
+            Application.MessageBox('Ordem de corte não pode ser criada porque existe linha 120 lançada na costura!','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            Application.MessageBox('Linha Título 120 não é comum ser usado na fase de costura quando o segmento do tecido for JEANS ou SARJA.','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            with application do
+            begin
+                if MessageBox('Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
+                exit;
+            end;
+        end;
+        Open;
     end;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;

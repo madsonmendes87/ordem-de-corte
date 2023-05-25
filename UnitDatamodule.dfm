@@ -379,8 +379,34 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 32
     Top = 128
   end
-  object FDQuery1: TFDQuery
+  object qyLinha120: TFDQuery
     Connection = Conexao
+    SQL.Strings = (
+      'SELECT (TRUE) AS existe FROM ficha_tecnica_itens AS fti'
+      #9'JOIN ficha_tecnica AS ft ON ft.fi_id = fti.fti_idfichatec'
+      
+        #9'JOIN produto_acabado AS pa ON pa.cad_id = ft.fi_idprodutoacabad' +
+        'o'
+      #9'JOIN tipo_tecido AS tt ON tt.tec_id = pa.cad_idtipotecido'
+      #9'WHERE ('
+      
+        #9#9#9'(SELECT conf_idsubgrupotecjeans_cadprod FROM configuracao LIM' +
+        'IT 1)=tt.tec_id OR'
+      
+        #9#9#9'(SELECT conf_idsubgrupotecsarja_cadprod FROM configuracao LIM' +
+        'IT 1)=tt.tec_id'
+      #9#9'  )'
+      #9'AND fti.fti_status<>'#39'C'#39
+      #9'AND fti.fti_idproduto=2296'
+      #9'AND fti.fti_idgradetam=439'
+      #9'And EXISTS ('
+      
+        #9#9'SELECT * FROM ficha_tecnica_itensfase AS ftf WHERE ftf.ftf_idi' +
+        'temfichatecnica=fti.fti_id'
+      #9#9'AND ftf.ftf_idfaseproducao=10'
+      #9#9#9'   )'
+      #9#9'AND fti.fti_idfichatec=5142'
+      #9#9)
     Left = 112
     Top = 128
   end

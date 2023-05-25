@@ -200,6 +200,8 @@ begin
 end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
+var
+  ficha : string;
 begin
     {***********VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR***********}
     with dmOrdemCorte.qyOrdemDeCorte do
@@ -217,7 +219,9 @@ begin
         Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devolução dos empenhos!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
+
     {***********VERIFICA SE A GRADE ESTÁ INCORRETA***********}
+    ficha := editFicha.Text;
     with dmOrdemCorte.qyGradeFicha do
     begin
         Close;
@@ -236,10 +240,14 @@ begin
             ParamByName('eprot').AsBoolean := false;
         Open;
     end;
-    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value = 0 then
+    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value > 0 then
     begin
-        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + dmOrdemCorte.qyGradeFicha.FieldByName('fi_id').AsString), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        exit;
     end;
+
+    {***********VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)***********}
+
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;

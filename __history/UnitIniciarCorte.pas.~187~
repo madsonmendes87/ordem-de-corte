@@ -200,6 +200,8 @@ begin
 end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
+var
+  ficha : string;
 begin
     {***********VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR***********}
     with dmOrdemCorte.qyOrdemDeCorte do
@@ -218,13 +220,14 @@ begin
         exit;
     end;
     {***********VERIFICA SE A GRADE ESTÁ INCORRETA***********}
+    ficha := editFicha.Text;
     with dmOrdemCorte.qyGradeFicha do
     begin
         Close;
         SQL.Clear;
         SQL.Add('SELECT');
-        SQL.Add('   COUNT(oftr.oftr_id) AS oftr_id, fi_id');
-        SQL.Add('   FROM ordem_fabricacao_tamanhoreal AS oftr, ficha_tecnica AS ft');
+        SQL.Add('   COUNT(oftr.oftr_id) AS oftr_id');
+        SQL.Add('   FROM ordem_fabricacao_tamanhoreal AS oftr');
         SQL.Add('   JOIN ordem_producao AS op ON op.op_id = oftr.oftr_idordproducao');
         SQL.Add('   JOIN ordem_corte AS oc ON oc.oc_id = op.op_idordemcorte');
         SQL.Add('   JOIN ficha_tecnica AS ft ON ft.fi_id = oc.oc_idfichatecnica');
@@ -236,9 +239,10 @@ begin
             ParamByName('eprot').AsBoolean := false;
         Open;
     end;
-    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value = 0 then
+    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value > 0 then
     begin
-        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + dmOrdemCorte.qyGradeFicha.FieldByName('fi_id').AsString), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        exit;
     end;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
