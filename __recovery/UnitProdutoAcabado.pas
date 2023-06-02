@@ -42,7 +42,8 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
+uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte, UnitDMHistoricOrdem,
+  UnitHistoricOrdem, UnitOrdemCorteCores;
 
 
 procedure TformProdutoAcabado.butLimpaColecaoClick(Sender: TObject);
@@ -60,8 +61,8 @@ begin
             SQL.Clear;
             SQL.Add('SELECT');
             SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
-            SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strComplementar,');
-            SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strAproveitamento');
+            SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strComplementar,');
+            SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strAproveitamento');
             SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
             SQL.Add('  where pa.cad_situacao=''A''');
             SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
@@ -90,7 +91,7 @@ begin
                 SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
                 ParamByName('dtcadastro').AsDate := dtCadastro.Date;
             end;
-            SQL.Add('order by ft.fi_id desc limit 15');
+            SQL.Add('ORDER BY ft.fi_id DESC LIMIT 15');
             Open;
         end;
     end;
@@ -123,20 +124,20 @@ begin
     formIniciarCorte.editDescReferencia.Text := gridProdutoAcabado.Fields[2].Value;
     formIniciarCorte.labNaoComp.Caption := gridProdutoAcabado.Fields[4].Value;
     formIniciarCorte.labNaoAprov.Caption := gridProdutoAcabado.Fields[5].Value;
+    formIniciarCorte.labNormal.Caption := 'NORMAL';
     With dmOrdemCorte.qyFichaTecnica do
     begin
         Close;
         SQL.Clear;
-        SQL.Add('Select fi_situacao from ficha_tecnica');
-        SQL.Add('where fi_idprodutoacabado = :prodAcabado');
+        SQL.Add('SELECT fi_situacao FROM ficha_tecnica');
+        SQL.Add('WHERE fi_idprodutoacabado = :prodAcabado');
         ParamByName('prodAcabado').AsInteger := strtoint(gridProdutoAcabado.Fields[0].Value);
-        SQL.Add('CASE WHEN fi_situacao = ''F'' THEN');
-        formIniciarCorte.labTipoCorte.Caption := 'ProtÛtipo';
-        SQL.Add('ELSE');
-        formIniciarCorte.labTipoCorte.Caption := 'Grande Escala';
+        Open;
     end;
-
-
+    if dmOrdemCorte.qyFichaTecnica.FieldByName('fi_situacao').Value = 'F' then
+        formIniciarCorte.labTipoCorte.Caption := 'Prototipo'
+    else
+        formIniciarCorte.labTipoCorte.Caption := 'Grande Escala';
     formProdutoAcabado.Close;
 end;
 
@@ -147,10 +148,10 @@ begin
     begin
         Close;
         SQl.Clear;
-        SQl.add('Select co_id,');
-        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
-        SQl.add('from colecao');
-        SQl.add('order by co_anocolecao');
+        SQl.add('SELECT co_id,');
+        SQl.add('CAST(CONCAT(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))AS character varying(25))AS nome');
+        SQl.add('FROM colecao');
+        SQl.add('ORDER BY co_anocolecao');
         Open;
     end;
 end;

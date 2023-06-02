@@ -45,7 +45,6 @@ type
     qyOrdemDeCorte: TFDQuery;
     qyGradeFicha: TFDQuery;
     qyLinha120: TFDQuery;
-    qyFaseInformada: TFDQuery;
   private
     { Private declarations }
   public

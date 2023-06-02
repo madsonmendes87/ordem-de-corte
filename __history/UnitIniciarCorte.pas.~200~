@@ -268,11 +268,41 @@ begin
         SQL.Add('               )');
         SQL.Add('   AND fti.fti_idfichatec = :fichatecnica');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
-        if dmOrdemCorte.qyLinha120.recordcount > 0  then
-        Application.
         Open;
+        if dmOrdemCorte.qyLinha120.FieldByName('existe').Value = true then
+        begin
+            Application.MessageBox('Ordem de corte não pode ser criada porque existe linha 120 lançada na costura!','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            Application.MessageBox('Linha Título 120 não é comum ser usado na fase de costura quando o segmento do tecido for JEANS ou SARJA.','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            with application do
+            begin
+                if MessageBox('Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
+                exit;
+            end;
+        end
     end;
 
+    {***********VERIFICA SE EXISTE ARTIGO DA REFERENCIA SEM FASE INFORMADA NA FICHA TECNICA***********}
+    with dmOrdemCorte.qyFaseInformada do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ficha_tecnica_itens WHERE');
+        SQL.Add('   fti_idfichatec = :fichatecnica AND fti_status = ''N''');
+        SQL.Add('   AND fti_tecido = ''N'' AND fti_id NOT IN(');
+        SQL.Add('   SELECT ftf_iditemfichatecnica FROM ficha_tecnica_itensfase)');
+        {SQL.Add('');
+        SQL.Add('');
+        SQL.Add('');
+        SQL.Add('');}
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+        if dmOrdemCorte.qyFaseInformada.RecordCount > 0 then
+        begin
+            Application.MessageBox('Existe artigo na ficha tecnica sem fase informada!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            exit;
+        end;
+
+    end;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;

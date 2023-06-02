@@ -410,4 +410,14 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 112
     Top = 128
   end
+  object qyFaseInformada: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select * from ficha_tecnica_itens where fti_idfichatec = '#39'5233'#39
+      
+        'and fti_status = '#39'N'#39' and fti_tecido = '#39'N'#39' and fti_id not in(sele' +
+        'ct ftf_iditemfichatecnica from ficha_tecnica_itensfase);')
+    Left = 192
+    Top = 128
+  end
 end

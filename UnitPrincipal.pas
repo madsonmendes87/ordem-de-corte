@@ -161,9 +161,9 @@ begin
     begin
         Close;
         SQL.Clear;
-        SQL.Add('select es_id, es_nome');
-        SQL.Add('from cadastro_estilista');
-        SQL.Add('order by es_nome');
+        SQL.Add('SELECT es_id, es_nome');
+        SQL.Add('FROM cadastro_estilista');
+        SQL.Add('ORDER BY es_nome');
         Open;
     end;
 end;
@@ -173,10 +173,10 @@ begin
     begin
         Close;
         SQl.Clear;
-        SQl.add('Select co_id,');
-        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
-        SQl.add('from colecao');
-        SQl.add('order by co_anocolecao desc limit 7');
+        SQl.add('SELECT co_id,');
+        SQl.add('CAST(CONCAT(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))AS nome');
+        SQl.add('FROM colecao');
+        SQl.add('ORDER BY co_anocolecao DESC LIMIT 7');
         Open;
     end;
 end;

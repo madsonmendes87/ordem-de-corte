@@ -39,6 +39,7 @@ procedure TformOrdemCorteCores.butAddClick(Sender: TObject);
 begin
       gridCoresCorte.Columns[0].Title.Caption := 'COR';
       gridCoresCorte.Columns[0].Title.Font.Style := [fsBold];
+      //gridCoresReferencia.
 end;
 
 procedure TformOrdemCorteCores.FormShow(Sender: TObject);

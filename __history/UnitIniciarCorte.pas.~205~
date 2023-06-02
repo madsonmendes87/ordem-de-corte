@@ -128,32 +128,34 @@ begin
     begin
          Close;
          SQL.Clear;
-         SQL.Add('select oc_situacao from ordem_corte');
-         SQL.Add('where oc_id = :ordem');
+         SQL.Add('SELECT oc_situacao FROM ordem_corte');
+         SQL.Add('WHERE oc_id = :ordem');
          ParamByName('ordem').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
          Open;
     end;
     if editCodigo.Text = ''  then
     begin
-        Showmessage('Selecione o produto acabado');
+        Application.MessageBox('Selecione o produto', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
         exit;
     end;
     if labTipoCorte.Caption = 'Prototipo' then
     begin
-        Showmessage('Este corte é prototipo e a cor de corte já foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada');
+        Application.MessageBox('Este corte é prototipo e a cor de corte já foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada',
+        'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
         exit;
     end;
     if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
     begin
-        Showmessage('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte');
+        Application.MessageBox('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte', 'Ordem de Corte', mb_iconexclamation +
+        mb_ok + mb_applmodal);
         exit;
     end;
     With dmOrdemCorte.qyPrevisto do
     begin
         Close;
         SQL.Clear;
-        SQL.Add('select oci_situacao_id from ordem_corte_itens_previsto');
-        SQL.Add('where oci_idocorte = :numerocorte');
+        SQL.Add('SELECT oci_situacao_id FROM ordem_corte_itens_previsto');
+        SQL.Add('WHERE oci_idocorte = :numerocorte');
         ParamByName('numerocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
         Open;
     end;
@@ -162,7 +164,8 @@ begin
     begin
         if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
         begin
-            ShowMessage('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia');
+            Application.MessageBox('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia',
+            'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
             exit;
         end;
         dmOrdemCorte.qyPrevisto.Next;
@@ -207,8 +210,8 @@ begin
     with dmOrdemCorte.qyOrdemDeCorte do
     begin
         Close;
-        SQL.Text := 'select oc_situacao from ordem_corte';
-        SQL.Add('where oc_idcodprodutoacabado = :prodacabado');
+        SQL.Text := 'SELECT oc_situacao FROM ordem_corte';
+        SQL.Add('WHERE oc_idcodprodutoacabado = :prodacabado');
         ParamByName('prodacabado').AsInteger := strtoint(editCodigo.Text);
         Open;
     end;
@@ -221,7 +224,6 @@ begin
     end;
 
     {***********VERIFICA SE A GRADE ESTÁ INCORRETA***********}
-    //ficha := editFicha.Text;
     with dmOrdemCorte.qyGradeFicha do
     begin
         Close;
@@ -268,6 +270,7 @@ begin
         SQL.Add('               )');
         SQL.Add('   AND fti.fti_idfichatec = :fichatecnica');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
         if dmOrdemCorte.qyLinha120.FieldByName('existe').Value = true then
         begin
             Application.MessageBox('Ordem de corte não pode ser criada porque existe linha 120 lançada na costura!','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
@@ -277,9 +280,28 @@ begin
                 if MessageBox('Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
                 exit;
             end;
-        end;
-        Open;
+        end
     end;
+
+    {***********VERIFICA SE EXISTE ARTIGO DA REFERENCIA SEM FASE INFORMADA NA FICHA TECNICA***********}
+    with dmOrdemCorte.qyFaseInformada do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ficha_tecnica_itens WHERE');
+        SQL.Add('   fti_idfichatec = :fichatecnica AND fti_status = ''N''');
+        SQL.Add('   AND fti_tecido = ''N'' AND fti_id NOT IN(');
+        SQL.Add('   SELECT ftf_iditemfichatecnica FROM ficha_tecnica_itensfase)');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+        if dmOrdemCorte.qyFaseInformada.RecordCount > 0 then
+        begin
+            Application.MessageBox('Existe artigo na ficha tecnica sem fase informada!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            exit;
+        end;
+    end;
+
+    {***********VERIFICA SE O TAMANHO E COR DO PROTOTIPO CONDIZ COM A GRADE E COR DA REFERENCIA***********}
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;

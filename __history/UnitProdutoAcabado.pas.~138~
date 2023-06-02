@@ -129,8 +129,8 @@ begin
     begin
         Close;
         SQL.Clear;
-        SQL.Add('SELECT fi_situacao FROM ficha_tecnica');
-        SQL.Add('WHERE fi_idprodutoacabado = :prodAcabado');
+        SQL.Add('Select fi_situacao from ficha_tecnica');
+        SQL.Add('where fi_idprodutoacabado = :prodAcabado');
         ParamByName('prodAcabado').AsInteger := strtoint(gridProdutoAcabado.Fields[0].Value);
         Open;
     end;
@@ -148,10 +148,10 @@ begin
     begin
         Close;
         SQl.Clear;
-        SQl.add('SELECT co_id,');
-        SQl.add('CAST(CONCAT(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))AS character varying(25))AS nome');
-        SQl.add('FROM colecao');
-        SQl.add('ORDER BY co_anocolecao');
+        SQl.add('Select co_id,');
+        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
+        SQl.add('from colecao');
+        SQl.add('order by co_anocolecao');
         Open;
     end;
 end;

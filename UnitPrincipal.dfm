@@ -1593,8 +1593,6 @@ object formPrincipal: TformPrincipal
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 3
-    ExplicitLeft = 193
-    ExplicitWidth = 1176
     object gridOrdem: TDBGrid
       Left = 0
       Top = 0
