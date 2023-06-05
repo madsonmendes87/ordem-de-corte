@@ -135,17 +135,19 @@ begin
     end;
     if editCodigo.Text = ''  then
     begin
-        Showmessage('Selecione o produto acabado');
+        Application.MessageBox('Selecione o produto', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
         exit;
     end;
     if labTipoCorte.Caption = 'Prototipo' then
     begin
-        Showmessage('Este corte é prototipo e a cor de corte já foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada');
+        Application.MessageBox('Este corte é prototipo e a cor de corte já foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada',
+        'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
         exit;
     end;
     if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
     begin
-        Showmessage('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte');
+        Application.MessageBox('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte', 'Ordem de Corte', mb_iconexclamation +
+        mb_ok + mb_taskmodal);
         exit;
     end;
     With dmOrdemCorte.qyPrevisto do
@@ -162,7 +164,8 @@ begin
     begin
         if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
         begin
-            ShowMessage('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia');
+            Application.MessageBox('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia',
+            'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
             exit;
         end;
         dmOrdemCorte.qyPrevisto.Next;
@@ -203,7 +206,7 @@ procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 var
   ficha : string;
 begin
-    {***********VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR***********}
+    {-----------VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR-----------}
     with dmOrdemCorte.qyOrdemDeCorte do
     begin
         Close;
@@ -220,7 +223,7 @@ begin
         exit;
     end;
 
-    {***********VERIFICA SE A GRADE ESTÁ INCORRETA***********}
+    {-----------VERIFICA SE A GRADE ESTÁ INCORRETA-----------}
     with dmOrdemCorte.qyGradeFicha do
     begin
         Close;
@@ -245,7 +248,7 @@ begin
         exit;
     end;
 
-    {***********VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)***********}
+    {-----------VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)-----------}
     with dmOrdemCorte.qyLinha120 do
     begin
         Close;
@@ -280,7 +283,7 @@ begin
         end
     end;
 
-    {***********VERIFICA SE EXISTE ARTIGO DA REFERENCIA SEM FASE INFORMADA NA FICHA TECNICA***********}
+    {-----------VERIFICA SE EXISTE ARTIGO DA REFERENCIA SEM FASE INFORMADA NA FICHA TECNICA-----------}
     with dmOrdemCorte.qyFaseInformada do
     begin
         Close;
@@ -298,7 +301,8 @@ begin
         end;
     end;
 
-    {***********VERIFICA SE O TAMANHO E COR DO PROTOTIPO CONDIZ COM A GRADE E COR DA REFERENCIA***********}
+    {-----------VERIFICA SE O TAMANHO E COR DO PROTOTIPO CONDIZ COM A GRADE E COR DA REFERENCIA-----------}
+    {-----------VERIFICA SE O TAMANHO E COR DO PROTOTIPO CONDIZ COM A GRADE E COR DA REFERENCIA-----------}
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;

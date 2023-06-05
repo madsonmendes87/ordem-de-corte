@@ -420,4 +420,37 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 192
     Top = 128
   end
+  object qyFichaPrototipo: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select * from ficha_tecnica_prototipo where fp_idfichatec = 5229')
+    Left = 288
+    Top = 128
+  end
+  object qyCorGradeProt: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT'
+      #9'*'
+      #9'FROM ficha_tecnica_itens, ficha_tecnica_prototipo'
+      #9'WHERE fti_idfichatec = '#39'5231'#39
+      #9'AND fp_idfichatec = '#39'5231'#39
+      #9'AND fti_status='#39'N'#39
+      #9'AND fti_tipo='#39'P'#39
+      #9'AND fti_cortecidoidgrade = fp_cortecido'
+      #9'AND'
+      #9#9'('
+      
+        #9#9#9'fti_tam1=fp_tamanho OR fti_tam2=fp_tamanho OR fti_tam3=fp_tam' +
+        'anho OR fti_tam4=fp_tamanho OR fti_tam5=fp_tamanho OR'
+      
+        #9#9' '#9'fti_tam6 =fp_tamanho OR fti_tam7=fp_tamanho OR fti_tam8=fp_t' +
+        'amanho OR fti_tam9=fp_tamanho OR fti_tam10=fp_tamanho OR'
+      
+        #9#9#9'fti_tam11=fp_tamanho OR fti_tam12=fp_tamanho OR fti_tam13=fp_' +
+        'tamanho OR fti_tam14=fp_tamanho OR fti_tam15=fp_tamanho'
+      #9#9')')
+    Left = 384
+    Top = 128
+  end
 end

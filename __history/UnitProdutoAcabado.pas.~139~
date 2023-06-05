@@ -61,8 +61,8 @@ begin
             SQL.Clear;
             SQL.Add('SELECT');
             SQL.Add('  pa.cad_id, pa.cad_idreferencia, pa.cad_descricao, ft.fi_id as ficha_id,');
-            SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strComplementar,');
-            SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√ÉO'' END as character varying(5)) strAproveitamento');
+            SQL.Add('    Cast(CASE WHEN ft.fi_complementar=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strComplementar,');
+            SQL.Add('    Cast(CASE WHEN ft.fi_aproveitamento=TRUE THEN ''SIM'' ELSE ''N√O'' END as character varying(5)) strAproveitamento');
             SQL.Add('  from produto_acabado as pa join ficha_tecnica as ft on ft.fi_idprodutoacabado = pa.cad_id');
             SQL.Add('  where pa.cad_situacao=''A''');
             SQL.Add(' and ft.fi_situacao in (''F'', ''Z'')');
@@ -91,7 +91,7 @@ begin
                 SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
                 ParamByName('dtcadastro').AsDate := dtCadastro.Date;
             end;
-            SQL.Add('ORDER BY ft.fi_id DESC LIMIT 15');
+            SQL.Add('order by ft.fi_id desc limit 15');
             Open;
         end;
     end;

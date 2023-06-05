@@ -91,7 +91,7 @@ begin
                 SQL.Add('and pa.cad_dtcadastro = :dtcadastro');
                 ParamByName('dtcadastro').AsDate := dtCadastro.Date;
             end;
-            SQL.Add('order by ft.fi_id desc limit 15');
+            SQL.Add('ORDER BY ft.fi_id DESC LIMIT 15');
             Open;
         end;
     end;

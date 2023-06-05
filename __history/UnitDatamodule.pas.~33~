@@ -46,8 +46,6 @@ type
     qyGradeFicha: TFDQuery;
     qyLinha120: TFDQuery;
     qyFaseInformada: TFDQuery;
-    qyFichaPrototipo: TFDQuery;
-    qyCorGradeProt: TFDQuery;
   private
     { Private declarations }
   public
