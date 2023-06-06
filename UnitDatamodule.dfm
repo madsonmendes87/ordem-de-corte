@@ -453,4 +453,17 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 384
     Top = 128
   end
+  object qyTecidoPrincipal: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'SELECT fti_cortecidoidgrade, count(fti_id) as qtdPrincipal FROM ' +
+        'ficha_tecnica_itens'
+      '      WHERE fti_idfichatec = '#39'5234'#39' AND'
+      '      fti_tipo ='#39'P'#39' AND'
+      '      fti_status='#39'N'#39
+      '      GROUP BY fti_cortecidoidgrade')
+    Left = 472
+    Top = 128
+  end
 end

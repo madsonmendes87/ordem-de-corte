@@ -48,6 +48,7 @@ type
     qyFaseInformada: TFDQuery;
     qyFichaPrototipo: TFDQuery;
     qyCorGradeProt: TFDQuery;
+    qyTecidoPrincipal: TFDQuery;
   private
     { Private declarations }
   public

@@ -344,7 +344,25 @@ begin
             exit;
         end;
     end;
-    {-----------VERIFICA SE O TAMANHO E COR DO PROTOTIPO CONDIZ COM A GRADE E COR DA REFERENCIA-----------}
+
+    {-----------VERIFICA SE EXISTE MAIS DE UMA TECIDO PRINCIPAL PARA MESMA COR INSERIDO NA FICHA TECNICA-----------}
+    with dmordemCorte.qyTecidoPrincipal do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT fti_cortecidoidgrade, count(fti_id) as qtdPrincipal FROM ficha_tecnica_itens');
+        SQL.Add('   WHERE fti_idfichatec = :fichatecnica AND');
+        SQL.Add('   fti_tipo =''P'' AND');
+        SQL.Add('   fti_status=''N''');
+        SQL.Add('   GROUP BY fti_cortecidoidgrade');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+        if dmOrdemCorte.qyTecidoPrincipal.FieldByName('qtdPrincipal').Value > 1 then
+        begin
+            Application.MessageBox('Há mais de um tecido principal na ficha tecnica, por favor realize o ajuste!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            exit;
+        end;
+    end;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;
