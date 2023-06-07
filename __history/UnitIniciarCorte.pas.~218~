@@ -135,19 +135,19 @@ begin
     end;
     if editCodigo.Text = ''  then
     begin
-        Application.MessageBox('Selecione o produto', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_systemmodal);
+        Application.MessageBox('Selecione o produto', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
         exit;
     end;
     if labTipoCorte.Caption = 'Prototipo' then
     begin
         Application.MessageBox('Este corte é prototipo e a cor de corte já foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada',
-        'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
+        'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
         exit;
     end;
     if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
     begin
         Application.MessageBox('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte', 'Ordem de Corte', mb_iconexclamation +
-        mb_ok + mb_applmodal);
+        mb_ok + mb_taskmodal);
         exit;
     end;
     With dmOrdemCorte.qyPrevisto do
@@ -165,7 +165,7 @@ begin
         if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
         begin
             Application.MessageBox('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia',
-            'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
+            'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
             exit;
         end;
         dmOrdemCorte.qyPrevisto.Next;
@@ -206,7 +206,7 @@ procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 var
   ficha : string;
 begin
-    {***********VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR***********}
+    {-----------VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR-----------}
     with dmOrdemCorte.qyOrdemDeCorte do
     begin
         Close;
@@ -223,8 +223,8 @@ begin
         exit;
     end;
 
-    {***********VERIFICA SE A GRADE ESTÁ INCORRETA***********}
-    with dmOrdemCorte.qyGradeFicha do
+    {-----------VERIFICA SE A GRADE ESTÁ INCORRETA-----------}
+    {with dmOrdemCorte.qyGradeFicha do
     begin
         Close;
         SQL.Clear;
@@ -241,14 +241,30 @@ begin
         else
             ParamByName('eprot').AsBoolean := false;
         Open;
-    end;
-    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value > 0 then
+    end;}
+    with dmOrdemCorte.qyGradeFicha do
     begin
-        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('   (fti.fti_id) AS itemId,');
+        SQL.Add('   (ftq.fti_id) gradeId');
+        SQL.Add('   FROM ficha_tecnica_itens AS fti');
+        SQL.Add('   LEFT JOIN ficha_tecnica_qtdtamanho AS ftq ON fti.fti_cortecidoidgrade = ftq.fti_cortecidoidgrade');
+        SQL.Add('   AND ftq.fti_idfichatec = fti.fti_idfichatec');
+        SQL.Add('   WHERE fti.fti_idfichatec=@fichaId');
+        SQL.Add('   AND fti.fti_tipo=''P''');
+        SQL.Add('   AND fti.fti_tecido=''A''');
+        SQL.Add('   AND fti.fti_status<>''C''');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+    end;
+    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value = 0 then
+    begin
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + fi_id), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
 
-    {***********VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)***********}
+    {-----------VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)-----------}
     with dmOrdemCorte.qyLinha120 do
     begin
         Close;
@@ -283,7 +299,7 @@ begin
         end
     end;
 
-    {***********VERIFICA SE EXISTE ARTIGO DA REFERENCIA SEM FASE INFORMADA NA FICHA TECNICA***********}
+    {-----------VERIFICA SE EXISTE ARTIGO DA REFERENCIA SEM FASE INFORMADA NA FICHA TECNICA-----------}
     with dmOrdemCorte.qyFaseInformada do
     begin
         Close;
@@ -301,7 +317,71 @@ begin
         end;
     end;
 
-    {***********VERIFICA SE O TAMANHO E COR DO PROTOTIPO CONDIZ COM A GRADE E COR DA REFERENCIA***********}
+    {-----------VERIFICA SE O TAMANHO E COR DO PROTOTIPO CONDIZ COM A GRADE E COR DA REFERENCIA-----------}
+    with dmOrdemCorte.qyFichaPrototipo do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ficha_tecnica_prototipo WHERE');
+        SQL.Add('   fp_idfichatec = :fichatecnica');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+        if dmOrdemCorte.qyFichaPrototipo.RecordCount = 0 then
+        begin
+            Application.MessageBox('O protótipo não foi informado na ficha tecnica, por favor re-abra a ficha tecnica e informe o tamanho e cor do protótipo',
+            'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            exit;
+        end;
+    end;
+    with dmOrdemCorte.qyCorGradeProt do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('   *');
+        SQL.Add('   FROM ficha_tecnica_itens, ficha_tecnica_prototipo');
+        SQL.Add('   WHERE fti_idfichatec = :fichatecnica');
+        SQL.Add('   AND fp_idfichatec = :fichatecnica');
+        SQL.Add('   AND fti_status=''N''');
+        SQL.Add('   AND fti_tipo=''P''');
+        SQL.Add('   AND fti_cortecidoidgrade = fp_cortecido');
+        SQL.Add('   AND');
+        SQL.Add('         (');
+        SQL.Add('             fti_tam1=fp_tamanho OR fti_tam2=fp_tamanho OR fti_tam3=fp_tamanho OR fti_tam4=fp_tamanho OR fti_tam5=fp_tamanho OR');
+        SQL.Add('             fti_tam6 =fp_tamanho OR fti_tam7=fp_tamanho OR fti_tam8=fp_tamanho OR fti_tam9=fp_tamanho OR fti_tam10=fp_tamanho OR');
+        SQL.Add('             fti_tam11=fp_tamanho OR fti_tam12=fp_tamanho OR fti_tam13=fp_tamanho OR fti_tam14=fp_tamanho OR fti_tam15=fp_tamanho');
+        SQL.Add('         )');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+        if dmOrdemCorte.qyCorGradeProt.RecordCount = 0 then
+        begin
+            Application.MessageBox('O tamanho do prototipo está fora da grade e/ou a cor diferente da programada, por favor ajuste a informação do prototipo na ficha tecnica',
+            'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            exit;
+        end;
+    end;
+
+    {-----------VERIFICA SE EXISTE MAIS DE UMA TECIDO PRINCIPAL PARA MESMA COR INSERIDO NA FICHA TECNICA-----------}
+    with dmordemCorte.qyTecidoPrincipal do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT fti_cortecidoidgrade, count(fti_id) as qtdPrincipal FROM ficha_tecnica_itens');
+        SQL.Add('   WHERE fti_idfichatec = :fichatecnica AND');
+        SQL.Add('   fti_tipo =''P'' AND');
+        SQL.Add('   fti_status=''N''');
+        SQL.Add('   GROUP BY fti_cortecidoidgrade');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+        if dmOrdemCorte.qyTecidoPrincipal.FieldByName('qtdPrincipal').Value > 1 then
+        begin
+            Application.MessageBox('Há mais de um tecido principal na ficha tecnica, por favor realize o ajuste!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            exit;
+        end;
+    end;
+
+    {-----------VERIFICA SE A COR DE REFERENCIA ESTÁ DIFERENTE DA COR DO ARTIGO-----------}
+
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;

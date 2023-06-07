@@ -224,7 +224,7 @@ begin
     end;
 
     {-----------VERIFICA SE A GRADE ESTÁ INCORRETA-----------}
-    with dmOrdemCorte.qyGradeFicha do
+    with dmOrdemCorte.qyGradeModificada do
     begin
         Close;
         SQL.Clear;
@@ -242,11 +242,94 @@ begin
             ParamByName('eprot').AsBoolean := false;
         Open;
     end;
-    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value > 0 then
+
+    if dmOrdemCorte.qyGradeModificada.FieldByName('oftr_id').Value > 0 then
+    begin
+        with dmOrdemCorte.qyGradeFicha do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('   DISTINCT');
+            SQL.Add('   (oftr.oftr_tam1) AS fti_tam1,');
+            SQL.Add('   (oftr.oftr_tam2) AS fti_tam2,');
+            SQL.Add('   (oftr.oftr_tam3) AS fti_tam3,');
+            SQL.Add('   (oftr.oftr_tam4) AS fti_tam4,');
+            SQL.Add('   (oftr.oftr_tam5) AS fti_tam5,');
+            SQL.Add('   (oftr.oftr_tam6) AS fti_tam6,');
+            SQL.Add('   (oftr.oftr_tam7) AS fti_tam7,');
+            SQL.Add('   (oftr.oftr_tam8) AS fti_tam8,');
+            SQL.Add('   (oftr.oftr_tam9) AS fti_tam9,');
+            SQL.Add('   (oftr.oftr_tam10) AS fti_tam10,');
+            SQL.Add('   (oftr.oftr_tam11) AS fti_tam11,');
+            SQL.Add('   (oftr.oftr_tam12) AS fti_tam12,');
+            SQL.Add('   (oftr.oftr_tam13) AS fti_tam13,');
+            SQL.Add('   (oftr.oftr_tam14) AS fti_tam14,');
+            SQL.Add('   (oftr.oftr_tam15) AS fti_tam15');
+            SQL.Add('   FROM ordem_fabricacao_tamanhoreal AS oftr');
+            SQL.Add('   JOIN ordem_producao AS op ON op.op_id = oftr.oftr_idordproducao');
+            SQL.Add('   JOIN ordem_corte AS oc ON oc.oc_id = op.op_idordemcorte');
+            SQL.Add('   JOIN ficha_tecnica AS ft ON ft.fi_id = oc.oc_idfichatecnica');
+            SQL.Add('   WHERE ft.fi_id = :fichatecnica AND ft.fi_situacao<>''C''');
+            ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+            Open;
+        end;
+    end
+    else
+    begin
+        with dmOrdemCorte.qyGradeFicha do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('   DISTINCT');
+            SQL.Add('   COALESCE(fti_tam1, '' '') AS fti_tam1,');
+            SQL.Add('   COALESCE(fti_tam2, '' '') AS fti_tam2,');
+            SQL.Add('   COALESCE(fti_tam3, '' '') AS fti_tam3,');
+            SQL.Add('   COALESCE(fti_tam4, '' '') AS fti_tam4,');
+            SQL.Add('   COALESCE(fti_tam5, '' '') AS fti_tam5,');
+            SQL.Add('   COALESCE(fti_tam6, '' '') AS fti_tam6,');
+            SQL.Add('   COALESCE(fti_tam7, '' '') AS fti_tam7,');
+            SQL.Add('   COALESCE(fti_tam8, '' '') AS fti_tam8,');
+            SQL.Add('   COALESCE(fti_tam9, '' '') AS fti_tam9,');
+            SQL.Add('   COALESCE(fti_tam10, '' '') AS fti_tam10,');
+            SQL.Add('   COALESCE(fti_tam11, '' '') AS fti_tam11,');
+            SQL.Add('   COALESCE(fti_tam12, '' '') AS fti_tam12,');
+            SQL.Add('   COALESCE(fti_tam13, '' '') AS fti_tam13,');
+            SQL.Add('   COALESCE(fti_tam14, '' '') AS fti_tam14,');
+            SQL.Add('   COALESCE(fti_tam15, '' '') AS fti_tam15');
+            SQL.Add('   FROM ficha_tecnica_itens AS fti');
+            SQL.Add('   WHERE fti_idfichatec = :fichatecnica AND fti_status<>''C''');
+            ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+            Open;
+        end;
+    end;
+    if dmOrdemCorte.qyGradeFicha.RecordCount > 1 then
     begin
         Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
+    {with dmOrdemCorte.qyGradeFicha do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('   (fti.fti_id) AS itemId,');
+        SQL.Add('   (ftq.fti_id) gradeId');
+        SQL.Add('   FROM ficha_tecnica_itens AS fti');
+        SQL.Add('   LEFT JOIN ficha_tecnica_qtdtamanho AS ftq ON fti.fti_cortecidoidgrade = ftq.fti_cortecidoidgrade');
+        SQL.Add('   AND ftq.fti_idfichatec = fti.fti_idfichatec');
+        SQL.Add('   WHERE fti.fti_idfichatec=@fichaId');
+        SQL.Add('   AND fti.fti_tipo=''P''');
+        SQL.Add('   AND fti.fti_tecido=''A''');
+        SQL.Add('   AND fti.fti_status<>''C''');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+    end;
+    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value = 0 then
+    begin
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        exit;
+    end;}
 
     {-----------VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)-----------}
     with dmOrdemCorte.qyLinha120 do
@@ -363,6 +446,9 @@ begin
             exit;
         end;
     end;
+
+    {-----------VERIFICA SE A COR DE REFERENCIA ESTÁ DIFERENTE DA COR DO ARTIGO-----------}
+
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;
