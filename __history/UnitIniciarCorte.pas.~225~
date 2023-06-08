@@ -140,13 +140,13 @@ begin
     end;
     if labTipoCorte.Caption = 'Prototipo' then
     begin
-        Application.MessageBox('Este corte √© prototipo e a cor de corte j√° foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada',
+        Application.MessageBox('Este corte È prototipo e a cor de corte j· foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada',
         'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
         exit;
     end;
     if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
     begin
-        Application.MessageBox('Ordem de corte finalizada, por esse motivo √© vedado qualquer modifica√ß√£o na ordem de corte', 'Ordem de Corte', mb_iconexclamation +
+        Application.MessageBox('Ordem de corte finalizada, por esse motivo È vedado qualquer modificaÁ„o na ordem de corte', 'Ordem de Corte', mb_iconexclamation +
         mb_ok + mb_taskmodal);
         exit;
     end;
@@ -164,7 +164,7 @@ begin
     begin
         if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
         begin
-            Application.MessageBox('Corte sob empenho, por este motivo n√£o √© possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia',
+            Application.MessageBox('Corte sob empenho, por este motivo n„o È possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia',
             'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
             exit;
         end;
@@ -217,13 +217,13 @@ begin
     end;
     if dmOrdemCorte.qyOrdemDeCorte.FieldByName('oc_situacao').Value = 2 then
     begin
-        Application.MessageBox('Houve um cancelamento de ordem de corte anterior para essa refer√™ncia com empenhos devolvidos para almoxarifado!',
+        Application.MessageBox('Houve um cancelamento de ordem de corte anterior para essa referÍncia com empenhos devolvidos para almoxarifado!',
         'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
-        Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devolu√ß√£o dos empenhos!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devoluÁ„o dos empenhos!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
 
-    {-----------VERIFICA SE A GRADE EST√Å INCORRETA-----------}
+    {-----------VERIFICA SE A GRADE EST¡ INCORRETA-----------}
     with dmOrdemCorte.qyGradeModificada do
     begin
         Close;
@@ -338,13 +338,13 @@ begin
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         Open;
     end;
-    if dmOrdemCorte.qyFichaSemGrade.FieldByName('oftr_id').Value = 0 then
+    if dmOrdemCorte.qyFichaSemGrade.FieldByName('gradeId').Value = null then
     begin
-        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Application.MessageBox('Ficha tecnica sem grade informarda! ', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
 
-    {-----------VERIFICA SE A LINHA 120 EST√Å INFORMA EM REFERENCIA DE SARJA OU JEANS (N√ÉO PODE LINHA 120 NESSA SITUA√á√ÉO)-----------}
+    {-----------VERIFICA SE A LINHA 120 EST¡ INFORMA EM REFERENCIA DE SARJA OU JEANS (N√O PODE LINHA 120 NESSA SITUA«√O)-----------}
     with dmOrdemCorte.qyLinha120 do
     begin
         Close;
@@ -369,8 +369,8 @@ begin
         Open;
         if dmOrdemCorte.qyLinha120.FieldByName('existe').Value = true then
         begin
-            Application.MessageBox('Ordem de corte n√£o pode ser criada porque existe linha 120 lan√ßada na costura!','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
-            Application.MessageBox('Linha T√≠tulo 120 n√£o √© comum ser usado na fase de costura quando o segmento do tecido for JEANS ou SARJA.','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            Application.MessageBox('Ordem de corte n„o pode ser criada porque existe linha 120 lanÁada na costura!','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            Application.MessageBox('Linha TÌtulo 120 n„o È comum ser usado na fase de costura quando o segmento do tecido for JEANS ou SARJA.','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
             with application do
             begin
                 if MessageBox('Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
@@ -408,7 +408,7 @@ begin
         Open;
         if dmOrdemCorte.qyFichaPrototipo.RecordCount = 0 then
         begin
-            Application.MessageBox('O prot√≥tipo n√£o foi informado na ficha tecnica, por favor re-abra a ficha tecnica e informe o tamanho e cor do prot√≥tipo',
+            Application.MessageBox('O protÛtipo n„o foi informado na ficha tecnica, por favor re-abra a ficha tecnica e informe o tamanho e cor do protÛtipo',
             'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
             exit;
         end;
@@ -435,7 +435,7 @@ begin
         Open;
         if dmOrdemCorte.qyCorGradeProt.RecordCount = 0 then
         begin
-            Application.MessageBox('O tamanho do prototipo est√° fora da grade e/ou a cor diferente da programada, por favor ajuste a informa√ß√£o do prototipo na ficha tecnica',
+            Application.MessageBox('O tamanho do prototipo est· fora da grade e/ou a cor diferente da programada, por favor ajuste a informaÁ„o do prototipo na ficha tecnica',
             'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
             exit;
         end;
@@ -455,12 +455,12 @@ begin
         Open;
         if dmOrdemCorte.qyTecidoPrincipal.FieldByName('qtdPrincipal').Value > 1 then
         begin
-            Application.MessageBox('H√° mais de um tecido principal na ficha tecnica, por favor realize o ajuste!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            Application.MessageBox('H· mais de um tecido principal na ficha tecnica, por favor realize o ajuste!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
             exit;
         end;
     end;
 
-    {-----------VERIFICA SE A COR DE REFERENCIA EST√Å DIFERENTE DA COR DO ARTIGO-----------}
+    {-----------VERIFICA SE A COR DE REFERENCIA EST¡ DIFERENTE DA COR DO ARTIGO-----------}
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
@@ -488,7 +488,7 @@ begin
     butDesistir.Enabled := false;
     butSalvar.Enabled := false;
     butNovo.Enabled := true;
-    Application.MessageBox('Opera√ß√£o realizada com sucesso!', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
+    Application.MessageBox('OperaÁ„o realizada com sucesso!', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

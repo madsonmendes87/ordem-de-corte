@@ -304,12 +304,24 @@ begin
             Open;
         end;
     end;
+    with dmOrdemCorte.qyFichaId do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('   *');
+        SQL.Add('   FROM ficha_tecnica');
+        SQL.Add('   WHERE fi_id = :fichatecnica');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+    end;
     if dmOrdemCorte.qyGradeFicha.RecordCount > 1 then
     begin
-        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        ShowMessage('Grade incorreta na Ficha Tecnica: ' + dmOrdemCorte.qyFichaId.FieldByName('fi_id').Value);
         exit;
     end;
-    {with dmOrdemCorte.qyGradeFicha do
+
+    {-----------VERIFICA SE FICHA TECNICA ESTA SEM GRADE-----------}
+    with dmOrdemCorte.qyFichaSemGrade do
     begin
         Close;
         SQL.Clear;
@@ -319,17 +331,18 @@ begin
         SQL.Add('   FROM ficha_tecnica_itens AS fti');
         SQL.Add('   LEFT JOIN ficha_tecnica_qtdtamanho AS ftq ON fti.fti_cortecidoidgrade = ftq.fti_cortecidoidgrade');
         SQL.Add('   AND ftq.fti_idfichatec = fti.fti_idfichatec');
-        SQL.Add('   WHERE fti.fti_idfichatec=@fichaId');
+        SQL.Add('   WHERE fti.fti_idfichatec = :fichatecnica');
         SQL.Add('   AND fti.fti_tipo=''P''');
         SQL.Add('   AND fti.fti_tecido=''A''');
         SQL.Add('   AND fti.fti_status<>''C''');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
     end;
-    if dmOrdemCorte.qyGradeFicha.FieldByName('oftr_id').Value = 0 then
+    if dmOrdemCorte.qyFichaSemGrade.FieldByName('gradeId').Value = null then
     begin
-        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: ' + ficha), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Application.MessageBox('Ficha tecnica sem grade informada!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
-    end;}
+    end;
 
     {-----------VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)-----------}
     with dmOrdemCorte.qyLinha120 do
