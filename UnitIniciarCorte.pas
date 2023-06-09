@@ -204,7 +204,7 @@ end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 var
-  ficha : string;
+  aux : string;
 begin
     {-----------VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR-----------}
     with dmOrdemCorte.qyOrdemDeCorte do
@@ -313,10 +313,11 @@ begin
         SQL.Add('   FROM ficha_tecnica');
         SQL.Add('   WHERE fi_id = :fichatecnica');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
     end;
     if dmOrdemCorte.qyGradeFicha.RecordCount > 1 then
     begin
-        ShowMessage('Grade incorreta na Ficha Tecnica: ' + dmOrdemCorte.qyFichaId.FieldByName('fi_id').Value);
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: '+ intTostr(dmOrdemCorte.qyFichaId.FieldByName('fi_id').Value)), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
 
@@ -442,7 +443,7 @@ begin
     end;
 
     {-----------VERIFICA SE EXISTE MAIS DE UMA TECIDO PRINCIPAL PARA MESMA COR INSERIDO NA FICHA TECNICA-----------}
-    with dmordemCorte.qyTecidoPrincipal do
+    with dmOrdemCorte.qyTecidoPrincipal do
     begin
         Close;
         SQL.Clear;
@@ -461,6 +462,52 @@ begin
     end;
 
     {-----------VERIFICA SE A COR DE REFERENCIA ESTÁ DIFERENTE DA COR DO ARTIGO-----------}
+    with dmOrdemCorte.qyRefArtigoCor do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ficha_tecnica_itens AS fti');
+        SQL.Add('   JOIN cadastro_produto AS cp ON cp.cp_id=fti.fti_idproduto');
+        SQL.Add('   WHERE');
+        SQL.Add('   fti.fti_idfichatec = :fichatecnica');
+        SQL.Add('   AND fti.fti_status = ''N''');
+        SQL.Add('   AND fti_tecido = ''A''');
+        SQL.Add('   AND fti_tipo = ''P''');
+        SQL.Add('   AND fti_cortecidoidgrade = fti_idgradecor');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+        if dmOrdemCorte.qyRefArtigoCor.RecordCount = 0 then
+        begin
+            Application.MessageBox('Cor de referência diferente da cor do tecido principal!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        end;
+        exit;
+     end;
+
+     {-----------VERIFICA SE EXISTE ALGUM ITEM COM ESTOQUE INFERIOR (PRODUÇÃO)-----------}
+     with dmOrdemCorte.qyAviamentosPorFicha do
+     begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('    cp.cp_id,');
+        SQL.Add('    gc.grc_id,');
+        SQL.Add('    gt.grt_id,');
+        SQL.Add('    cp.cp_descricao,');
+        SQL.Add('    (COALESCE(gc.grc_codexterno, '''') ||'' - '' || TRIM(gc.grc_nome)) AS grc_nome,');
+        SQL.Add('    gt.grt_nome,');
+        SQL.Add('    fti.*');
+        SQL.Add('    FROM ficha_tecnica_itens AS fti');
+        SQL.Add('    JOIN cadastro_produto AS cp ON cp.cp_id = fti.fti_idproduto');
+        SQL.Add('    JOIN grade_cor AS gc on gc.grc_id = fti.fti_idgradecor');
+        SQL.Add('    JOIN grade_cor AS gc_pa on gc_pa.grc_id = fti.fti_cortecidoidgrade');
+        SQL.Add('    JOIN grade_tamanho AS gt on gt.grt_id = fti.fti_idgradetam');
+        SQL.Add('    WHERE');
+        SQL.Add('    fti.fti_idfichatec = :fichatecnica');
+        SQL.Add('    AND fti.fti_status = ''N''');
+        SQL.Add('    AND fti.fti_tecido = ''N''');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+     end;
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;

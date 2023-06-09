@@ -195,7 +195,7 @@ object dmOrdemCorte: TdmOrdemCorte
       
         'where pa.cad_situacao='#39'A'#39' and ft.fi_situacao in ('#39'F'#39', '#39'Z'#39') order' +
         ' By ft.fi_id desc limit 15;')
-    Left = 520
+    Left = 528
     Top = 16
   end
   object dsProdutoAcabado: TDataSource
@@ -336,26 +336,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Active = True
     IndexFieldNames = 'oc_id'
     MasterSource = dsOrdemdeCorte
-    DetailFields = 
-      'oc_complementar;oc_corte_aproveitamento;oc_datafinalizada;oc_dat' +
-      'aprevfimcorteprevisto;oc_dataprevfimrealcortado;oc_dataprevinici' +
-      'ocorteprevisto;oc_datapreviniciorealcortado;oc_dtalterada;oc_dtc' +
-      'ancelada;oc_dtempenho;oc_dtenvioempenho;oc_dtgerada;oc_dtprevisa' +
-      'ofinalizacao;oc_dtrecempenho;oc_dtsolicitacao;oc_horafinalizada;' +
-      'oc_horaprevfimcorteprevisto;oc_horaprevfimrealcortado;oc_horapre' +
-      'viniciocorteprevisto;oc_horapreviniciorealcortado;oc_horasolicit' +
-      'acao;oc_hralterada;oc_hrcancelada;oc_hrempenho;oc_hrenvioempenho' +
-      ';oc_hrgerada;oc_hrprevisaofinalizacao;oc_hrrecempenho;oc_id;oc_i' +
-      'dcodprodutoacabado;oc_idfichatecnica;oc_idprototipo;oc_idsetor;o' +
-      'c_idsetorresponsavel;oc_idusualterou;oc_idusufinalizou;oc_motivo' +
-      'cancelada;oc_observacao;oc_ordem;oc_permite_artigonaoprogramado;' +
-      'oc_permite_consnaoprogramado;oc_permite_retirarartigo;oc_permite' +
-      '_trocaartigo;oc_prototipo;oc_prototipoprocproducao;oc_qtdpecaspr' +
-      'evisto;oc_qtdpecasrealcortado;oc_situacao;oc_usuaddartigo_naopro' +
-      'gramado;oc_usucancelamento_artigo;oc_usucons_naoprogramado;oc_us' +
-      'ugerou;oc_usuidcancelada;oc_usupermite_cancelamentoartigo;oc_usu' +
-      'permite_trocarartigo;oc_usupermiteartigonaoprogramado;oc_usuperm' +
-      'iteconsnaoprogramado;oc_usutroca_artigo'
     Connection = Conexao
     TableName = 'ordem_corte'
     Left = 528
@@ -376,5 +356,132 @@ object dmOrdemCorte: TdmOrdemCorte
       'select oc_situacao from ordem_corte where oc_id = 8132')
     Left = 808
     Top = 72
+  end
+  object qyOrdemDeCorte: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select * from ordem_corte; ')
+    Left = 904
+    Top = 72
+  end
+  object qyGradeModificada: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT'
+      #9'(fti.fti_id) AS itemId,'
+      #9'(ftq.fti_id) gradeId'
+      #9'FROM ficha_tecnica_itens AS fti'
+      
+        #9'LEFT JOIN ficha_tecnica_qtdtamanho AS ftq ON fti.fti_cortecidoi' +
+        'dgrade = ftq.fti_cortecidoidgrade'
+      #9'AND ftq.fti_idfichatec = fti.fti_idfichatec'
+      #9'WHERE fti.fti_idfichatec='#39'5234'#39' '
+      '        AND fti.fti_tipo='#39'P'#39
+      '        AND fti.fti_tecido='#39'A'#39
+      '        AND fti.fti_status<>'#39'C'#39)
+    Left = 32
+    Top = 128
+  end
+  object qyLinha120: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT (TRUE) AS existe FROM ficha_tecnica_itens AS fti'
+      #9'JOIN ficha_tecnica AS ft ON ft.fi_id = fti.fti_idfichatec'
+      
+        #9'JOIN produto_acabado AS pa ON pa.cad_id = ft.fi_idprodutoacabad' +
+        'o'
+      #9'JOIN tipo_tecido AS tt ON tt.tec_id = pa.cad_idtipotecido'
+      #9'WHERE ('
+      
+        #9#9#9'(SELECT conf_idsubgrupotecjeans_cadprod FROM configuracao LIM' +
+        'IT 1)=tt.tec_id OR'
+      
+        #9#9#9'(SELECT conf_idsubgrupotecsarja_cadprod FROM configuracao LIM' +
+        'IT 1)=tt.tec_id'
+      #9#9'  )'
+      #9'AND fti.fti_status<>'#39'C'#39
+      #9'AND fti.fti_idproduto=2296'
+      #9'AND fti.fti_idgradetam=439'
+      #9'And EXISTS ('
+      
+        #9#9'SELECT * FROM ficha_tecnica_itensfase AS ftf WHERE ftf.ftf_idi' +
+        'temfichatecnica=fti.fti_id'
+      #9#9'AND ftf.ftf_idfaseproducao=10'
+      #9#9#9'   )'
+      #9#9'AND fti.fti_idfichatec=5142'
+      #9#9)
+    Left = 112
+    Top = 128
+  end
+  object qyFaseInformada: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select * from ficha_tecnica_itens where fti_idfichatec = '#39'5233'#39
+      
+        'and fti_status = '#39'N'#39' and fti_tecido = '#39'N'#39' and fti_id not in(sele' +
+        'ct ftf_iditemfichatecnica from ficha_tecnica_itensfase);')
+    Left = 192
+    Top = 128
+  end
+  object qyFichaPrototipo: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'select * from ficha_tecnica_prototipo where fp_idfichatec = 5229')
+    Left = 288
+    Top = 128
+  end
+  object qyCorGradeProt: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT'
+      #9'*'
+      #9'FROM ficha_tecnica_itens, ficha_tecnica_prototipo'
+      #9'WHERE fti_idfichatec = '#39'5231'#39
+      #9'AND fp_idfichatec = '#39'5231'#39
+      #9'AND fti_status='#39'N'#39
+      #9'AND fti_tipo='#39'P'#39
+      #9'AND fti_cortecidoidgrade = fp_cortecido'
+      #9'AND'
+      #9#9'('
+      
+        #9#9#9'fti_tam1=fp_tamanho OR fti_tam2=fp_tamanho OR fti_tam3=fp_tam' +
+        'anho OR fti_tam4=fp_tamanho OR fti_tam5=fp_tamanho OR'
+      
+        #9#9' '#9'fti_tam6 =fp_tamanho OR fti_tam7=fp_tamanho OR fti_tam8=fp_t' +
+        'amanho OR fti_tam9=fp_tamanho OR fti_tam10=fp_tamanho OR'
+      
+        #9#9#9'fti_tam11=fp_tamanho OR fti_tam12=fp_tamanho OR fti_tam13=fp_' +
+        'tamanho OR fti_tam14=fp_tamanho OR fti_tam15=fp_tamanho'
+      #9#9')')
+    Left = 384
+    Top = 128
+  end
+  object qyTecidoPrincipal: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      
+        'SELECT fti_cortecidoidgrade, count(fti_id) as qtdPrincipal FROM ' +
+        'ficha_tecnica_itens'
+      '      WHERE fti_idfichatec = '#39'5234'#39' AND'
+      '      fti_tipo ='#39'P'#39' AND'
+      '      fti_status='#39'N'#39
+      '      GROUP BY fti_cortecidoidgrade')
+    Left = 472
+    Top = 128
+  end
+  object qyGradeFicha: TFDQuery
+    Connection = Conexao
+    Left = 560
+    Top = 128
+  end
+  object qyFichaId: TFDQuery
+    Connection = Conexao
+    Left = 640
+    Top = 128
+  end
+  object qyFichaSemGrade: TFDQuery
+    Connection = Conexao
+    Left = 712
+    Top = 128
   end
 end

@@ -16,7 +16,6 @@ type
     FDPhysPgDriverLink1: TFDPhysPgDriverLink;
     dsOrdemCorte: TDataSource;
     dsOrdemCorteCores: TDataSource;
-    tbOrdemCorteSituacao: TFDTable;
     dsOrdemdeCorte: TDataSource;
     tbOrdemCorteSobraSituacao: TFDTable;
     dsOrdemCorteSobraSituacao: TDataSource;
@@ -40,7 +39,16 @@ type
     qyRealFinal: TFDQuery;
     qyCores: TFDQuery;
     tbProdutoAcabado: TFDTable;
-    qyOrdemdeCorte: TFDQuery;
+    tbOrdemdeCorte: TFDTable;
+    qyFichaTecnica: TFDQuery;
+    qyOrdemIniciarCorte: TFDQuery;
+    qyOrdemDeCorte: TFDQuery;
+    qyGradeFicha: TFDQuery;
+    qyLinha120: TFDQuery;
+    qyFaseInformada: TFDQuery;
+    qyFichaPrototipo: TFDQuery;
+    qyCorGradeProt: TFDQuery;
+    qyTecidoPrincipal: TFDQuery;
   private
     { Private declarations }
   public
@@ -54,7 +62,11 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
+uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
+  UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado;
+
 {$R *.dfm}
+
 
 
 end.

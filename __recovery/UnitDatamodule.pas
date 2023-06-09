@@ -52,6 +52,8 @@ type
     qyGradeFicha: TFDQuery;
     qyFichaId: TFDQuery;
     qyFichaSemGrade: TFDQuery;
+    qyRefArtigoCor: TFDQuery;
+    qyAviamentosPorFicha: TFDQuery;
   private
     { Private declarations }
   public

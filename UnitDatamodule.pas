@@ -43,12 +43,16 @@ type
     qyFichaTecnica: TFDQuery;
     qyOrdemIniciarCorte: TFDQuery;
     qyOrdemDeCorte: TFDQuery;
-    qyGradeFicha: TFDQuery;
+    qyGradeModificada: TFDQuery;
     qyLinha120: TFDQuery;
     qyFaseInformada: TFDQuery;
     qyFichaPrototipo: TFDQuery;
     qyCorGradeProt: TFDQuery;
     qyTecidoPrincipal: TFDQuery;
+    qyGradeFicha: TFDQuery;
+    qyFichaId: TFDQuery;
+    qyFichaSemGrade: TFDQuery;
+    qyRefArtigoCor: TFDQuery;
   private
     { Private declarations }
   public

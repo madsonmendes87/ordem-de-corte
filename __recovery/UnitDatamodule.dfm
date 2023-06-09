@@ -484,4 +484,14 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 712
     Top = 128
   end
+  object qyRefArtigoCor: TFDQuery
+    Connection = Conexao
+    Left = 800
+    Top = 128
+  end
+  object qyAviamentosPorFicha: TFDQuery
+    Connection = Conexao
+    Left = 904
+    Top = 128
+  end
 end

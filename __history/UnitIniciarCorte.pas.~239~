@@ -204,7 +204,7 @@ end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 var
-  ficha : string;
+  aux : string;
 begin
     {-----------VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR-----------}
     with dmOrdemCorte.qyOrdemDeCorte do
@@ -313,10 +313,11 @@ begin
         SQL.Add('   FROM ficha_tecnica');
         SQL.Add('   WHERE fi_id = :fichatecnica');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
     end;
     if dmOrdemCorte.qyGradeFicha.RecordCount > 1 then
     begin
-        ShowMessage('Grade incorreta na Ficha Tecnica: ' + dmOrdemCorte.qyFichaId.FieldByName('fi_id').Value);
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: '+ intTostr(dmOrdemCorte.qyFichaId.FieldByName('fi_id').Value)), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
 
@@ -340,7 +341,7 @@ begin
     end;
     if dmOrdemCorte.qyFichaSemGrade.FieldByName('gradeId').Value = null then
     begin
-        Application.MessageBox('Ficha tecnica sem grade informarda! ', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Application.MessageBox('Ficha tecnica sem grade informada!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
 
@@ -442,7 +443,7 @@ begin
     end;
 
     {-----------VERIFICA SE EXISTE MAIS DE UMA TECIDO PRINCIPAL PARA MESMA COR INSERIDO NA FICHA TECNICA-----------}
-    with dmordemCorte.qyTecidoPrincipal do
+    with dmOrdemCorte.qyTecidoPrincipal do
     begin
         Close;
         SQL.Clear;
@@ -461,6 +462,27 @@ begin
     end;
 
     {-----------VERIFICA SE A COR DE REFERENCIA ESTÁ DIFERENTE DA COR DO ARTIGO-----------}
+    with dmOrdemCorte.qyRefArtigoCor do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ficha_tecnica_itens AS fti');
+        SQL.Add('   JOIN cadastro_produto AS cp ON cp.cp_id=fti.fti_idproduto');
+        SQL.Add('   WHERE');
+        SQL.Add('   fti.fti_idfichatec = :fichatecnica');
+        SQL.Add('   AND fti.fti_status = ''N''');
+        SQL.Add('   AND fti_tecido = ''A''');
+        SQL.Add('   AND fti_tipo = ''P''');
+        SQL.Add('   AND fti_cortecidoidgrade = fti_idgradecor');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+        aux := dmOrdemCorte.qyRefArtigoCor.FieldByName('cp_descricao').Value;
+        if dmOrdemCorte.qyRefArtigoCor.RecordCount = 0 then
+        begin
+            Application.MessageBox(PChar('COR DE REFERÊNCIA DIFERENTE DA COR DO TECIDO PRINCIPAL: ' + aux), 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        end;
+        exit;
+     end;
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
