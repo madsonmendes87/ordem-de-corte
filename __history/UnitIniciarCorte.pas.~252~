@@ -123,6 +123,7 @@ begin
 end;
 
 procedure TformIniciarCorte.acaoCoresExecute(Sender: TObject);
+
 begin
     With dmOrdemCorte.qyOrdemIniciarCorte do
     begin
@@ -204,7 +205,7 @@ end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 var
-  aux : string;
+        totalConsumo : real;
 begin
     {-----------VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR-----------}
     with dmOrdemCorte.qyOrdemDeCorte do
@@ -476,13 +477,61 @@ begin
         SQL.Add('   AND fti_cortecidoidgrade = fti_idgradecor');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         Open;
-        aux := dmOrdemCorte.qyRefArtigoCor.FieldByName('cp_descricao').Value;
         if dmOrdemCorte.qyRefArtigoCor.RecordCount = 0 then
         begin
-            Application.MessageBox('COR DE REFERÊNCIA DIFERENTE DA COR DO TECIDO PRINCIPAL', 'Ordem de Corte', mb_ok + mb_iconwarning);
+            Application.MessageBox('Cor de referência diferente da cor do tecido principal!', 'Ordem de Corte', mb_ok + mb_iconhand);
         end;
         exit;
      end;
+
+     {-----------VERIFICA SE EXISTE ALGUM ITEM COM ESTOQUE INFERIOR (PRODUÇÃO)-----------}
+     with dmOrdemCorte.qyAviamentosPorFicha do
+     begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('    cp.cp_id,');
+        SQL.Add('    gc.grc_id,');
+        SQL.Add('    gt.grt_id,');
+        SQL.Add('    cp.cp_descricao,');
+        SQL.Add('    (COALESCE(gc.grc_codexterno, '''') ||'' - '' || TRIM(gc.grc_nome)) AS grc_nome,');
+        SQL.Add('    gt.grt_nome,');
+        SQL.Add('    fti.*');
+        SQL.Add('    FROM ficha_tecnica_itens AS fti');
+        SQL.Add('    JOIN cadastro_produto AS cp ON cp.cp_id = fti.fti_idproduto');
+        SQL.Add('    JOIN grade_cor AS gc on gc.grc_id = fti.fti_idgradecor');
+        SQL.Add('    JOIN grade_cor AS gc_pa on gc_pa.grc_id = fti.fti_cortecidoidgrade');
+        SQL.Add('    JOIN grade_tamanho AS gt on gt.grt_id = fti.fti_idgradetam');
+        SQL.Add('    WHERE');
+        SQL.Add('    fti.fti_idfichatec = :fichatecnica');
+        SQL.Add('    AND fti.fti_status = ''N''');
+        SQL.Add('    AND fti.fti_tecido = ''N''');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        Open;
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti.qtdade1').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr2').Value));
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr3').Value));
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr4').Value));
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr5').Value));
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr6').Value));
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr7').Value));
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr8').Value));
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr9').Value));
+        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value > 0 then
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr10').Value));
+
+
+     end;
+
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;

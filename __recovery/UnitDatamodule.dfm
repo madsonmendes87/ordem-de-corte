@@ -494,4 +494,9 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 904
     Top = 128
   end
+  object qyEstoqueSemReservaProt: TFDQuery
+    Connection = Conexao
+    Left = 64
+    Top = 184
+  end
 end

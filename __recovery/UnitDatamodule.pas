@@ -54,6 +54,7 @@ type
     qyFichaSemGrade: TFDQuery;
     qyRefArtigoCor: TFDQuery;
     qyAviamentosPorFicha: TFDQuery;
+    qyEstoqueSemReservaProt: TFDQuery;
   private
     { Private declarations }
   public
