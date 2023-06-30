@@ -480,8 +480,8 @@ begin
         if dmOrdemCorte.qyRefArtigoCor.RecordCount = 0 then
         begin
             Application.MessageBox('Cor de referência diferente da cor do tecido principal!', 'Ordem de Corte', mb_ok + mb_iconhand);
+            exit;
         end;
-        exit;
      end;
 
      {-----------VERIFICA SE EXISTE ALGUM ITEM COM ESTOQUE INFERIOR (PRODUÇÃO)-----------}
@@ -509,7 +509,7 @@ begin
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         Open;
         if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti.qtdade1').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
         if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value > 0 then
             totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr2').Value));
         if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value > 0 then
@@ -597,6 +597,7 @@ begin
                         'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value);
          end
          else
+         begin
             if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
             begin
                ShowMessage('PRODUTO SEM ESTOQUE' +
@@ -610,7 +611,75 @@ begin
                   exit;
                end;
             end;
+         end;
      end;
+
+     {-----------VERIFICA SE DATAS E HORARIOS ESTÃO CORRETOS-----------}
+    if dataOrdemFinalizacao.Date < dataSolicitacao.Date then
+    begin
+        Application.MessageBox('Data de finalização do corte não pode ser anterior a atual!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    if horaOrdemFinalizacao.Time < horaSolicitacao.Time then
+    begin
+        Application.MessageBox('Horário de finalização do corte não pode ser anterior a atual!','Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    if dataCortePrevisto.Date < dataSolicitacao.Date then
+    begin
+         Application.MessageBox('Data de inicio do corte previsto não pode ser anterior a data de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
+         exit;
+    end;
+
+    if horaCortePrevisto.Time < horaSolicitacao.Time then
+    begin
+        Application.MessageBox('Horário de inicio do corte previsto não pode ser anterior ao horário de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    if dataFinalCortePrevisto.Date < dataCortePrevisto.Date then
+    begin
+        Application.MessageBox('Data de finalização do corte previsto não pode ser anterior a data de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    if horaFinalCortePrevisto.Time < horaCortePrevisto.Time then
+    begin
+        Application.MessageBox('Horário de finalização do corte previsto não pode ser anterior ao horário de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    if dataRealCortado.Date < dataFinalCortePrevisto.Date then
+    begin
+        Application.MessageBox('Data de inicio do real cortado não pode ser anterior a data de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    if horaRealCortado.Time < horaFinalCortePrevisto.Time then
+    begin
+        Application.MessageBox('Horário de inicio do real cortado não pode ser anterior ao horário de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    if dataFinalRealCortado.Date < dataRealCortado.Date then
+    begin
+        Application.MessageBox('Data de finalização do real cortado não pode ser anterior a data de inicio do real cortado!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    if horaFinalRealCortado.Time < horaRealCortado.Time then
+    begin
+        Application.MessageBox('Horário de finalização do corte real não pode ser anterior ao horário de inicio do corte real', 'Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+
+
+
+
+
 
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;

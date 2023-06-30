@@ -545,6 +545,8 @@ begin
     formIniciarCorte.BorderStyle:=bsNone;
     formIniciarCorte.Show;
     desabComponentes;
+    ShowScrollBar(gridOrdem.Handle, SB_VERT, False);
+    //ShowScrollBar(gridOrdem.Handle, SB_HORZ, False);
 end;
 
 procedure TformPrincipal.labMostrAnosClick(Sender: TObject);

@@ -480,8 +480,8 @@ begin
         if dmOrdemCorte.qyRefArtigoCor.RecordCount = 0 then
         begin
             Application.MessageBox('Cor de referência diferente da cor do tecido principal!', 'Ordem de Corte', mb_ok + mb_iconhand);
+            exit;
         end;
-        exit;
      end;
 
      {-----------VERIFICA SE EXISTE ALGUM ITEM COM ESTOQUE INFERIOR (PRODUÇÃO)-----------}
@@ -509,7 +509,7 @@ begin
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         Open;
         if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti.qtdade1').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
+            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
         if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value > 0 then
             totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr2').Value));
         if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value > 0 then
@@ -597,15 +597,41 @@ begin
                         'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value);
          end
          else
+         begin
             if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
             begin
                ShowMessage('PRODUTO SEM ESTOQUE' +
                         'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value +
                         'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value +
                         'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value);
+               Application.MessageBox('Por este motivo(s) o corte não pode ser inciado', 'Ordem de Corte', mb_ok + mb_iconhand);
+               with Application do
+               begin
+                  if MessageBox('Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
+                  exit;
+               end;
             end;
-
+         end;
      end;
+
+     {-----------VERIFICA SE DATAS E HORARIOS ESTÃO CORRETOS-----------}
+    if dataOrdemFinalizacao.Date < dataSolicitacao.Date then
+    begin
+        Application.MessageBox('Data de finalização do corte não pode ser anterior a atual!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    if horaOrdemFinalizacao.Time < horaSolicitacao.Time then
+    begin
+        Application.MessageBox('Hora de finalização do corte não pode ser anterior a atual!','Ordem de Corte', mb_ok + mb_iconhand);
+        exit;
+    end;
+
+    //if horaSolicitacao.Time < Time() then
+    //begin
+         //Application.MessageBox('Horário de solicitação tem de ser o atual', 'Ordem de Corte', mb_ok + mb_iconhand);
+         //exit;
+    //end;
 
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;

@@ -109,11 +109,13 @@ type
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
+    procedure desabComponentes;
   public
     { Public declarations }
     procedure boxColecao;
     function versaoExe: String;
     procedure boxEstilista;
+    procedure habComponentes;
   end;
 
 var
@@ -159,9 +161,9 @@ begin
     begin
         Close;
         SQL.Clear;
-        SQL.Add('select es_id, es_nome');
-        SQL.Add('from cadastro_estilista');
-        SQL.Add('order by es_nome');
+        SQL.Add('SELECT es_id, es_nome');
+        SQL.Add('FROM cadastro_estilista');
+        SQL.Add('ORDER BY es_nome');
         Open;
     end;
 end;
@@ -171,10 +173,10 @@ begin
     begin
         Close;
         SQl.Clear;
-        SQl.add('Select co_id,');
-        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
-        SQl.add('from colecao');
-        SQl.add('order by co_anocolecao desc limit 7');
+        SQl.add('SELECT co_id,');
+        SQl.add('CAST(CONCAT(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))AS nome');
+        SQl.add('FROM colecao');
+        SQl.add('ORDER BY co_anocolecao DESC LIMIT 7');
         Open;
     end;
 end;
@@ -222,7 +224,6 @@ begin
             Close;
             SQL.Clear;
             SQL.Add('SELECT oc.oc_id,');
-            //SQL.Add('Cast(concat(lpad(cast(oc.oc_id As varchar), 7, ''0''), ''-'', lpad(cast(oc.oc_ordem As varchar), 3, ''0'') )as character varying(15))as NumerodoCorte,');
             SQL.Add('cc.co_descricao, (ocs.os_nome)as situacao,');
             SQL.Add('(ce.es_nome)as estilista,');
             SQL.Add('oc.oc_idfichatecnica,');
@@ -359,6 +360,40 @@ begin
     acaoBotaoCorteRealExecute(Sender);
 end;
 
+procedure TformPrincipal.desabComponentes;
+begin
+    butVerCorte.Enabled := false;
+    butCortePrevisto.Enabled := false;
+    butHistoricOrdem.Enabled := false;
+    comboFiltro.Enabled := false;
+    comboSituacao.Enabled := false;
+    editSearch.Enabled := false;
+    comboIniOrd.Enabled := false;
+    comboTipo.Enabled := false;
+    dbLkComboEstilo.Enabled := false;
+    comboFiltroData.Enabled := false;
+    comboSetor.Enabled := false;
+    dateTimePicker1.Enabled := false;
+    dateTimePicker2.Enabled := false;
+    butOrdemPesquisar.Enabled := false;
+    dbLColecao.Enabled := false;
+    butClearTipo.Enabled := false;
+    butClearEstilo.Enabled := false;
+    butClearSetor.Enabled := false;
+    butClearSituacao.Enabled := false;
+    butLimpaIniOrdem.Enabled := false;
+    butClearColecao.Enabled := false;
+    labMostrAnos.Enabled := false;
+    btnOrdemCorte.Enabled := false;
+    btnEmpAlmoxarifado.Enabled := false;
+    btnEmpFase.Enabled := false;
+    btnEstoqueFase.Enabled := false;
+    btnEstAproveitamento.Enabled := false;
+    btnEntregaPecas.Enabled := false;
+    btnObservacoes.Enabled := false;
+    btnProcRestrito.Enabled := false;
+end;
+
 procedure TformPrincipal.FormCreate(Sender: TObject);
 begin
     dateTimePicker1.Date := now;
@@ -432,6 +467,40 @@ begin
     comboTipo.Text:='';
 end;
 
+procedure TformPrincipal.habComponentes;
+begin
+    butVerCorte.Enabled := true;
+    butCortePrevisto.Enabled := true;
+    butHistoricOrdem.Enabled := true;
+    comboFiltro.Enabled := true;
+    comboSituacao.Enabled := true;
+    editSearch.Enabled := true;
+    comboIniOrd.Enabled := true;
+    comboTipo.Enabled := true;
+    dbLkComboEstilo.Enabled := true;
+    comboFiltroData.Enabled := true;
+    comboSetor.Enabled := true;
+    dateTimePicker1.Enabled := true;
+    dateTimePicker2.Enabled := true;
+    butOrdemPesquisar.Enabled := true;
+    dbLColecao.Enabled := true;
+    butClearTipo.Enabled := true;
+    butClearEstilo.Enabled := true;
+    butClearSetor.Enabled := true;
+    butClearSituacao.Enabled := true;
+    butLimpaIniOrdem.Enabled := true;
+    butClearColecao.Enabled := true;
+    labMostrAnos.Enabled := true;
+    btnOrdemCorte.Enabled := true;
+    btnEmpAlmoxarifado.Enabled := true;
+    btnEmpFase.Enabled := true;
+    btnEstoqueFase.Enabled := true;
+    btnEstAproveitamento.Enabled := true;
+    btnEntregaPecas.Enabled := true;
+    btnObservacoes.Enabled := true;
+    btnProcRestrito.Enabled := true;
+end;
+
 function TformPrincipal.versaoExe: string;
 type
    PFFI = ^vs_FixedFileInfo;
@@ -475,28 +544,7 @@ begin
     formIniciarCorte.Align:=alClient;
     formIniciarCorte.BorderStyle:=bsNone;
     formIniciarCorte.Show;
-    butVerCorte.Enabled := false;
-    butCortePrevisto.Enabled := false;
-    butHistoricOrdem.Enabled := false;
-    comboFiltro.Enabled := false;
-    comboSituacao.Enabled := false;
-    editSearch.Enabled := false;
-    comboIniOrd.Enabled := false;
-    comboTipo.Enabled := false;
-    dbLkComboEstilo.Enabled := false;
-    comboFiltroData.Enabled := false;
-    comboSetor.Enabled := false;
-    dateTimePicker1.Enabled := false;
-    dateTimePicker2.Enabled := false;
-    butOrdemPesquisar.Enabled := false;
-    dbLColecao.Enabled := false;
-    butClearTipo.Enabled := false;
-    butClearEstilo.Enabled := false;
-    butClearSetor.Enabled := false;
-    butClearSituacao.Enabled := false;
-    butLimpaIniOrdem.Enabled := false;
-    butClearColecao.Enabled := false;
-    labMostrAnos.Enabled := false;
+    desabComponentes;
 end;
 
 procedure TformPrincipal.labMostrAnosClick(Sender: TObject);

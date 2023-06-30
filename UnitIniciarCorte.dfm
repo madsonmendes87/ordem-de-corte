@@ -964,6 +964,7 @@ object formIniciarCorte: TformIniciarCorte
     Height = 21
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
+    Enabled = False
     TabOrder = 11
   end
   object horaSolicitacao: TDateTimePicker
@@ -973,6 +974,7 @@ object formIniciarCorte: TformIniciarCorte
     Height = 21
     Date = 44942.000000000000000000
     Time = 0.308124120369029700
+    Enabled = False
     Kind = dtkTime
     TabOrder = 12
   end

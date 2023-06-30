@@ -2027,8 +2027,8 @@ object formPrincipal: TformPrincipal
         TabOrder = 7
       end
       object dateTimePicker2: TDateTimePicker
-        Left = 941
-        Top = 81
+        Left = 942
+        Top = 80
         Width = 110
         Height = 24
         Date = 44910.000000000000000000

@@ -41,6 +41,18 @@ type
     tbProdutoAcabado: TFDTable;
     tbOrdemdeCorte: TFDTable;
     qyFichaTecnica: TFDQuery;
+    qyOrdemIniciarCorte: TFDQuery;
+    qyOrdemDeCorte: TFDQuery;
+    qyGradeModificada: TFDQuery;
+    qyLinha120: TFDQuery;
+    qyFaseInformada: TFDQuery;
+    qyFichaPrototipo: TFDQuery;
+    qyCorGradeProt: TFDQuery;
+    qyTecidoPrincipal: TFDQuery;
+    qyGradeFicha: TFDQuery;
+    qyFichaId: TFDQuery;
+    qyFichaSemGrade: TFDQuery;
+    qyRefArtigoCor: TFDQuery;
   private
     { Private declarations }
   public
@@ -54,7 +66,11 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
+uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
+  UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado;
+
 {$R *.dfm}
+
 
 
 end.
