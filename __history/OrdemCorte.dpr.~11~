@@ -22,7 +22,7 @@ var
 
 begin
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
+  Application.MainFormOnTaskbar := False;
   Application.CreateForm(TdmOrdemCorte, dmOrdemCorte);
   Application.CreateForm(TFormPrincipal, FormPrincipal);
   Application.CreateForm(TformHistoricOrdem, formHistoricOrdem);
@@ -32,10 +32,10 @@ begin
   if EncontrouIni then
   begin
 
-    ini:=TIniFile.Create(GetCaminhoIniFile);
+    ini       :=TIniFile.Create(GetCaminhoIniFile);
 
-    exeLocal:=ini.ReadString('ARQUIVOS', 'exeLocal', '');
-    exeRemoto:=ini.ReadString('ARQUIVOS', 'exeRemoto', '');
+    exeLocal  :=ini.ReadString('ARQUIVOS', 'exeLocal', '');
+    exeRemoto :=ini.ReadString('ARQUIVOS', 'exeRemoto', '');
 
     if ValidaArquivos(exeLocal, exeRemoto) then
     begin

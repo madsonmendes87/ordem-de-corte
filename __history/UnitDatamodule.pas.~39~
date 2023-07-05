@@ -55,6 +55,7 @@ type
     qyRefArtigoCor: TFDQuery;
     qyAviamentosPorFicha: TFDQuery;
     qyEstoqueSemReservaProt: TFDQuery;
+    procedure dsOrdemCorteDataChange(Sender: TObject; Field: TField);
   private
     { Private declarations }
   public

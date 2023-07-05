@@ -227,7 +227,6 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    OnKeyPress = editSearchPAKeyPress
   end
   object gridProdutoAcabado: TDBGrid
     AlignWithMargins = True

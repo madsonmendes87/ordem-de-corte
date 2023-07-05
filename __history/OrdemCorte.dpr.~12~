@@ -22,13 +22,13 @@ var
 
 begin
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
+  Application.MainFormOnTaskbar := False;
   Application.CreateForm(TdmOrdemCorte, dmOrdemCorte);
   Application.CreateForm(TFormPrincipal, FormPrincipal);
   Application.CreateForm(TformHistoricOrdem, formHistoricOrdem);
   Application.CreateForm(TdmHistoricOrdem, dmHistoricOrdem);
   Application.CreateForm(TformOrdemCorteCores, formOrdemCorteCores);
-  Application.Run;
+  //Application.Run;
   if EncontrouIni then
   begin
 
@@ -46,5 +46,5 @@ begin
     end;
     ini.Free;
   end;
-  Application.Terminate;
+  //Application.Terminate;
 end.

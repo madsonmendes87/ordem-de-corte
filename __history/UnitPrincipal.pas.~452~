@@ -108,7 +108,6 @@ type
     procedure gridOrdemCellClick(Column: TColumn);
     procedure gridOrdemDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure editSearchKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -367,7 +366,6 @@ procedure TformPrincipal.desabComponentes;
 begin
     butVerCorte.Enabled := false;
     butCortePrevisto.Enabled := false;
-    butRealCortado.Enabled := false;
     butHistoricOrdem.Enabled := false;
     comboFiltro.Enabled := false;
     comboSituacao.Enabled := false;
@@ -396,13 +394,6 @@ begin
     btnEntregaPecas.Enabled := false;
     btnObservacoes.Enabled := false;
     btnProcRestrito.Enabled := false;
-end;
-
-procedure TformPrincipal.editSearchKeyPress(Sender: TObject;
-  var Key: Char);
-begin
-    if key = #13 then
-      butOrdemPesquisarClick(Sender);
 end;
 
 procedure TformPrincipal.FormCreate(Sender: TObject);
@@ -437,7 +428,7 @@ procedure TformPrincipal.gridOrdemDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
 begin
-    ShowScrollBar(gridOrdem.Handle, SB_VERT, False);
+    SetScrollRange(gridOrdem.Handle, SB_VERT, 0, 0, false);
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -562,8 +553,9 @@ begin
     formIniciarCorte.BorderStyle:=bsNone;
     formIniciarCorte.Show;
     desabComponentes;
+    //ShowScrollBar(gridOrdem.Handle, SB_HORZ, False);
     initializeflatsb(gridOrdem.Handle);
-    FlatSB_ShowScrollBar(gridOrdem.Handle,sb_vert,false);
+    //FlatSB_ShowScrollBar(gridOrdem.Handle,sb_vert,false);
     FlatSB_ShowScrollBar(gridOrdem.Handle,sb_horz,false);
 end;
 

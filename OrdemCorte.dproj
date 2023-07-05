@@ -90,10 +90,10 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <DCC_ExeOutput>C:\Sistema DiaERP\DiaAplicativo</DCC_ExeOutput>
-        <VerInfo_Build>18</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.18;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Debug>true</VerInfo_Debug>
+        <VerInfo_Build>15</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.15;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -114,34 +114,28 @@
         </DelphiCompile>
         <DCCReference Include="UnitPrincipal.pas">
             <Form>formPrincipal</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitDatamodule.pas">
             <Form>dmOrdemCorte</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="UnitIniciarCorte.pas">
             <Form>formIniciarCorte</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitProdutoAcabado.pas">
             <Form>formProdutoAcabado</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitHistoricOrdem.pas">
             <Form>formHistoricOrdem</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitDMHistoricOrdem.pas">
             <Form>dmHistoricOrdem</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="UnitOrdemCorteCores.pas">
             <Form>formOrdemCorteCores</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UnitVerificaVersao.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

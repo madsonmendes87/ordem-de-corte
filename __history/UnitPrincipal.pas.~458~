@@ -108,7 +108,6 @@ type
     procedure gridOrdemCellClick(Column: TColumn);
     procedure gridOrdemDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure editSearchKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -396,13 +395,6 @@ begin
     btnEntregaPecas.Enabled := false;
     btnObservacoes.Enabled := false;
     btnProcRestrito.Enabled := false;
-end;
-
-procedure TformPrincipal.editSearchKeyPress(Sender: TObject;
-  var Key: Char);
-begin
-    if key = #13 then
-      butOrdemPesquisarClick(Sender);
 end;
 
 procedure TformPrincipal.FormCreate(Sender: TObject);

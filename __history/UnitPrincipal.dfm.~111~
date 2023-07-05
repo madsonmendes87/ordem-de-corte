@@ -1602,7 +1602,7 @@ object formPrincipal: TformPrincipal
       Color = clWhite
       DataSource = dmOrdemCorte.dsOrdemCorte
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clGray
+      Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -1958,7 +1958,6 @@ object formPrincipal: TformPrincipal
         Font.Style = []
         ParentFont = False
         TabOrder = 1
-        OnKeyPress = editSearchKeyPress
       end
       object comboSituacao: TComboBox
         Left = 18

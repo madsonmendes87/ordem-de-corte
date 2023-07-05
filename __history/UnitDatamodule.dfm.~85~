@@ -160,7 +160,7 @@ object dmOrdemCorte: TdmOrdemCorte
       'ocs.os_id = oc.oc_situacao WHERE oc.oc_situacao <> '#39'2'#39
       'AND not EXISTS (SELECT * FROM ordem_producao AS op'
       '  WHERE op.op_idordemcorte=oc.oc_id and op.op_idstatus <> 4)'
-      'ORDER BY oc.oc_id desc limit 25'
+      'ORDER BY oc.oc_id desc limit 30'
       '')
     Left = 368
     Top = 16

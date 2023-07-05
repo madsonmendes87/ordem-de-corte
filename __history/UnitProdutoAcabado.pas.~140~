@@ -28,7 +28,6 @@ type
     procedure butLimpaColecaoClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure labMosColPacabadoClick(Sender: TObject);
-    procedure editSearchPAKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
 
@@ -96,13 +95,6 @@ begin
             Open;
         end;
     end;
-end;
-
-procedure TformProdutoAcabado.editSearchPAKeyPress(Sender: TObject;
-  var Key: Char);
-begin
-    if key = #13 then
-      butProdutoPesquisarClick(Sender);
 end;
 
 procedure TformProdutoAcabado.FormCloseQuery(Sender: TObject;
