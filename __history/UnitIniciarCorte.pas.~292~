@@ -201,6 +201,7 @@ procedure TformIniciarCorte.butSairInicioCorteClick(Sender: TObject);
 begin
     formIniciarCorte.Close;
     formPrincipal.habComponentes;
+    ShowScrollBar(formPrincipal.gridOrdem.Handle, SB_HORZ, True);
 end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
@@ -623,7 +624,7 @@ begin
 
     if horaOrdemFinalizacao.Time < horaSolicitacao.Time then
     begin
-        Application.MessageBox('Hora de finalização do corte não pode ser anterior a atual!','Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de finalização do corte não pode ser anterior a atual!','Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
@@ -635,7 +636,7 @@ begin
 
     if horaCortePrevisto.Time < horaSolicitacao.Time then
     begin
-        Application.MessageBox('Hora de inicio do corte previsto não pode ser anterior ao horário de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de inicio do corte previsto não pode ser anterior ao horário de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
@@ -647,7 +648,7 @@ begin
 
     if horaFinalCortePrevisto.Time < horaCortePrevisto.Time then
     begin
-        Application.MessageBox('Hora de finalização do corte previsto não pode ser anterior ao horário de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de finalização do corte previsto não pode ser anterior ao horário de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
@@ -659,7 +660,7 @@ begin
 
     if horaRealCortado.Time < horaFinalCortePrevisto.Time then
     begin
-        Application.MessageBox('Hora de inicio do real cortado não pode ser anterior ao horário de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de inicio do real cortado não pode ser anterior ao horário de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
@@ -671,15 +672,9 @@ begin
 
     if horaFinalRealCortado.Time < horaRealCortado.Time then
     begin
-        Application.MessageBox('Hora de finalização do corte real não pode ser anterior ao horário de inicio do corte real', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de finalização do corte real não pode ser anterior ao horário de inicio do corte real', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
-
-
-
-
-
-
 
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
@@ -693,7 +688,10 @@ begin
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idcodprodutoacabado').Value := strtoint(editCodigo.Text);
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_observacao').Value := editObservacao.Text;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idfichatecnica').Value := strtoint(editFicha.Text);
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := true;
+    if labTipoCorte.Caption = 'Prototipo' then
+        dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := true
+    else
+        dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := false;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idsetor').Value := 7;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 1;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciocorteprevisto').Value := dataCortePrevisto.Date;

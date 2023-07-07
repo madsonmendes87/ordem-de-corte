@@ -676,6 +676,43 @@ begin
         exit;
     end;
 
+    {-----------VERIFICA SE DATAS E HORARIOS ESTÃO CORRETOS-----------}
+    with dmOrdemCorte.qyCortePorTipoFichaId do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT *');
+        SQL.Add('   FROM ordem_corte AS oc JOIN ficha_tecnica AS ft ON ft.fi_id = oc.oc_idfichatecnica');
+        SQL.Add('   JOIN cadastro_empresa AS fab ON fab.em_id = ft.fi_idempresa');
+        SQL.Add('   WHERE');
+        SQL.Add('   oc.oc_idfichatecnica = :fichatecnica');
+        SQL.Add('   AND oc.oc_prototipo = :eprototipo');
+        SQL.Add('   AND oc.oc_situacao<> ''2''');
+        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+        if labTipoCorte.Caption = 'Prototipo' then
+            ParamByName('eprototipo').AsBoolean := true
+        else
+            ParamByName('eprototipo').AsBoolean := false;
+        Open;
+        if dmOrdemCorte.qyCortePorTipoFichaId.RecordCount > 0 then
+            if dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
+            begin
+                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', mb_ok + mb_iconhand);
+                exit;
+            end
+            else
+                with application do
+                begin
+                     if MessageBox('Já existe uma ordem de corte grande escala para essa referencia'+#13+
+                                    'Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
+                     exit
+                     else
+                          dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value + 1;
+                end
+        else
+            dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 1;
+    end;
+
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
@@ -693,7 +730,7 @@ begin
     else
         dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := false;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idsetor').Value := 7;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 1;
+    //dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 1;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciocorteprevisto').Value := dataCortePrevisto.Date;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciocorteprevisto').Value := horaCortePrevisto.Time;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimcorteprevisto').Value := dataFinalCortePrevisto.Date;

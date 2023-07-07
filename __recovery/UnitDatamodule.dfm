@@ -502,4 +502,9 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 64
     Top = 184
   end
+  object qyCortePorTipoFichaId: TFDQuery
+    Connection = Conexao
+    Left = 192
+    Top = 184
+  end
 end
