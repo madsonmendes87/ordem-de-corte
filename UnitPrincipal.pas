@@ -406,9 +406,13 @@ begin
 end;
 
 procedure TformPrincipal.FormCreate(Sender: TObject);
+var
+  arquivo : String;
 begin
     dateTimePicker1.Date := now;
     dateTimePicker2.Date := now;
+    arquivo := 'C:\Sistema DiaERP_\DiaAplicativo\OrdemCorte.exe_old';
+    DeleteFile(arquivo);
 end;
 
 procedure TformPrincipal.FormResize(Sender: TObject);

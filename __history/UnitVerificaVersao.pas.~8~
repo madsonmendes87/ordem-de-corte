@@ -100,12 +100,14 @@ var
     s: string;
 
 begin
-  Application.MessageBox(pchar('Nova versão disponível no servidor!'+#13+
+  Application.MessageBox(pchar('Nova versão da Ordem de Corte disponível!'+#13+
                                'Versão Atual : '+GetVersion(exeLocal)+#13+
                                'Nova Versão  : '+GetVersion(exeRemoto)), 'Atenção', MB_OK+MB_ICONEXCLAMATION);
 
 
- if RenameFile(exeLocal,(exeLocal+'_old')) then
+ if RenameFile(exeLocal,(exeLocal+FormatDateTime('dd_mm_yyyy', date))) then
+    s:= GetCurrentDir+'C:\Sistema DiaERP_\DiaAplicativo\'+(exeLocal+FormatDateTime('dd_mm_yyyy', date));
+    DeleteFile(GetCurrentDir+'C:\Sistema DiaERP_\DiaAplicativo\'+(exeLocal+FormatDateTime('dd_mm_yyyy', date)));
     if not  CopyData(exeRemoto, exeLocal) then
       Application.MessageBox('Ocorreu um erro ao copiar nova versão do servidor.',
                                    'Atenção', MB_OK+MB_ICONERROR);
