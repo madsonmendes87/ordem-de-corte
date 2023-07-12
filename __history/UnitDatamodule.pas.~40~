@@ -43,6 +43,18 @@ type
     qyFichaTecnica: TFDQuery;
     qyOrdemIniciarCorte: TFDQuery;
     qyOrdemDeCorte: TFDQuery;
+    qyGradeModificada: TFDQuery;
+    qyLinha120: TFDQuery;
+    qyFaseInformada: TFDQuery;
+    qyFichaPrototipo: TFDQuery;
+    qyCorGradeProt: TFDQuery;
+    qyTecidoPrincipal: TFDQuery;
+    qyGradeFicha: TFDQuery;
+    qyFichaId: TFDQuery;
+    qyFichaSemGrade: TFDQuery;
+    qyRefArtigoCor: TFDQuery;
+    qyAviamentosPorFicha: TFDQuery;
+    qyEstoqueSemReservaProt: TFDQuery;
   private
     { Private declarations }
   public
@@ -60,7 +72,5 @@ uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
   UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado;
 
 {$R *.dfm}
-
-
 
 end.

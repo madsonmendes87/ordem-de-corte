@@ -55,6 +55,8 @@ type
     qyRefArtigoCor: TFDQuery;
     qyAviamentosPorFicha: TFDQuery;
     qyEstoqueSemReservaProt: TFDQuery;
+    qyCortePorTipoFichaId: TFDQuery;
+    qyGEComOuSemProt: TFDQuery;
   private
     { Private declarations }
   public

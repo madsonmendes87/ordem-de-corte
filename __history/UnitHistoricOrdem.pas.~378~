@@ -37,63 +37,62 @@ var
     treeHistoricOrdem: TTreeView;
     no, noPai, noPrev, noTroca, noEmpenho, noRealCortado: TTreeNode;
 begin
-    Application.MessageBox('Teste de caixa', 'Ordem de Corte', mb_iconquestion + mb_ok + mb_applmodal);
     treeHistoricOrdem := TTreeView.Create(Self);
     treeHistoricOrdem.Parent := formHistoricOrdem;
     treeHistoricOrdem.Align := alClient;
     with dmOrdemCorte.qyOrdemHistorico do
     begin
           Close;
-          SQL.Text := 'select oc_dtgerada, oc_hrgerada, us_nome from ordem_corte, usuario';
-          SQL.Add('where oc_usugerou = us_id and oc_id = :ordemcorte');
+          SQL.Text := 'SELECT oc_dtgerada, oc_hrgerada, us_nome FROM ordem_corte, usuario';
+          SQL.Add('WHERE oc_usugerou = us_id and oc_id = :ordemcorte');
           ParamByName('ordemcorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
     with dmOrdemCorte.qyPrevisto do
     begin
           Close;
-          SQL.Text := 'select oci_dtlanc, oci_hrlanc, oci_codusulanc, oci_dtfinalizada, us_nome, oci_situacao_id, descricao from ordem_corte_itens_previsto, usuario, ordem_corte_itens_situacao';
-          SQL.Add('where oci_codusulanc = us_id and oci_situacao_id = id and oci_idocorte = :ocorte');
+          SQL.Text := 'SELECT oci_dtlanc, oci_hrlanc, oci_codusulanc, oci_dtfinalizada, us_nome, oci_situacao_id, descricao FROM ordem_corte_itens_previsto, usuario, ordem_corte_itens_situacao';
+          SQL.Add('WHERE oci_codusulanc = us_id AND oci_situacao_id = id AND oci_idocorte = :ocorte');
           ParamByName('ocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
     with dmOrdemCorte.qyTroca do
     begin
           Close;
-          SQL.Text := 'select pti_idusuariosolicitacao, pti_dtsolicitacao, pti_idusuarioconfirmacao, us_nome from producao_troca_item, usuario';
-          SQL.Add('where pti_idusuariosolicitacao = us_id and pti_idusuarioconfirmacao = us_id and pti_idfichatecnica = :ficha');
+          SQL.Text := 'SELECT pti_idusuariosolicitacao, pti_dtsolicitacao, pti_idusuarioconfirmacao, us_nome FROM producao_troca_item, usuario';
+          SQL.Add('WHERE pti_idusuariosolicitacao = us_id AND pti_idusuarioconfirmacao = us_id AND pti_idfichatecnica = :ficha');
           ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
           Open;
     end;
     with dmOrdemCorte.qyEmpenho do
     begin
           Close;
-          SQL.Text := 'select emp_dtlanc, emp_hrlanc, emp_dtsaidaent, us_nome from controle_empenho, usuario';
-          SQL.Add('where emp_idusulanc = us_id and emp_hrlanc <> ''00:00:00-03:00'' and emp_idordemcorte = :ordem');
+          SQL.Text := 'SELECT emp_dtlanc, emp_hrlanc, emp_dtsaidaent, us_nome FROM controle_empenho, usuario';
+          SQL.Add('WHERE emp_idusulanc = us_id AND emp_hrlanc <> ''00:00:00-03:00'' AND emp_idordemcorte = :ordem');
           ParamByName('ordem').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
     with dmOrdemCorte.qyRealCortado do
     begin
           Close;
-          SQL.Text := 'select oci_dtlanc, oci_hrlanc, oci_codusulanc, us_nome, oci_situacao_id, descricao from ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
-          SQL.Add('where oci_codusulanc = us_id and oci_situacao_id = id and oci_idocorte = :ocorte');
+          SQL.Text := 'SELECT oci_dtlanc, oci_hrlanc, oci_codusulanc, us_nome, oci_situacao_id, descricao FROM ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
+          SQL.Add('WHERE oci_codusulanc = us_id AND oci_situacao_id = id AND oci_idocorte = :ocorte');
           ParamByName('ocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
     with dmOrdemCorte.qyEmpenhoReal do
     begin
           Close;
-          SQL.Text := 'select emp_dtsaidaent, emp_hrsaidaent, emp_idususaidaent, us_nome from controle_empenho, usuario';
-          SQL.Add('where emp_idususaidaent = us_id and emp_idordemcorte = :ordem');
+          SQL.Text := 'SELECT emp_dtsaidaent, emp_hrsaidaent, emp_idususaidaent, us_nome FROM controle_empenho, usuario';
+          SQL.Add('WHERE emp_idususaidaent = us_id AND emp_idordemcorte = :ordem');
           ParamByName('ordem').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
     with dmOrdemCorte.qyRealFinal do
     begin
           Close;
-          SQL.Text := 'select oci_dtfinalizada, oci_hrfinalizada, oci_idusualterou, oci_idusualterou, oci_idusualterou, oci_idusufinalizou, oci_dtultalteracao, us_nome, oci_situacao_id, descricao from ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
-          SQL.Add('where oci_idusufinalizou = us_id and oci_situacao_id = id and oci_idocorte = :ocorte');
+          SQL.Text := 'SELECT oci_dtfinalizada, oci_hrfinalizada, oci_idusualterou, oci_idusualterou, oci_idusualterou, oci_idusufinalizou, oci_dtultalteracao, us_nome, oci_situacao_id, descricao from ordem_corte_itens_real, usuario, ordem_corte_itens_situacao';
+          SQL.Add('WHERE oci_idusufinalizou = us_id AND oci_situacao_id = id AND oci_idocorte = :ocorte');
           ParamByName('ocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
@@ -101,8 +100,8 @@ begin
     begin
       noPai.Selected := false;
     end;
-    no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[3].Value + '        REFERÊNCIA: '
-    + formPrincipal.gridOrdem.Fields[8].Value);
+    no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[4].Value + '        REFERÊNCIA: '
+    + formPrincipal.gridOrdem.Fields[9].Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value)
     + '  ' + timetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUÁRIO INICIOU: ' +
     dmOrdemCorte.qyOrdemHistorico.FieldByName('us_nome').Value);

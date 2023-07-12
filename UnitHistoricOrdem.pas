@@ -61,7 +61,7 @@ begin
           Close;
           SQL.Text := 'SELECT pti_idusuariosolicitacao, pti_dtsolicitacao, pti_idusuarioconfirmacao, us_nome FROM producao_troca_item, usuario';
           SQL.Add('WHERE pti_idusuariosolicitacao = us_id AND pti_idusuarioconfirmacao = us_id AND pti_idfichatecnica = :ficha');
-          ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[4].Value);
+          ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[5].Value);
           Open;
     end;
     with dmOrdemCorte.qyEmpenho do
@@ -100,8 +100,8 @@ begin
     begin
       noPai.Selected := false;
     end;
-    no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[3].Value + '        REFERÊNCIA: '
-    + formPrincipal.gridOrdem.Fields[8].Value);
+    no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[4].Value + '        REFERÊNCIA: '
+    + formPrincipal.gridOrdem.Fields[9].Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value)
     + '  ' + timetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUÁRIO INICIOU: ' +
     dmOrdemCorte.qyOrdemHistorico.FieldByName('us_nome').Value);

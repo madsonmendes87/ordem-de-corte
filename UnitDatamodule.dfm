@@ -73,6 +73,9 @@ object dmOrdemCorte: TdmOrdemCorte
       'SELECT'
       '    oc.oc_id as NumerodoCorte,'
       
+        '    Cast(lpad(cast(oc.oc_ordem As varchar), 3, '#39'0'#39') as character' +
+        ' varying(5))as numeroseq,'
+      
         '    cc.co_descricao, (ocs.os_nome)as situacao, (ce.es_nome)as es' +
         'tilista,'
       
@@ -200,7 +203,7 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object dsProdutoAcabado: TDataSource
     DataSet = qyProdutoAcabado
-    Left = 616
+    Left = 624
     Top = 16
   end
   object qyBoxColecao: TFDQuery
@@ -329,7 +332,7 @@ object dmOrdemCorte: TdmOrdemCorte
     IndexFieldNames = 'cad_id'
     Connection = Conexao
     TableName = 'produto_acabado'
-    Left = 712
+    Left = 720
     Top = 16
   end
   object tbOrdemdeCorte: TFDTable
@@ -497,6 +500,16 @@ object dmOrdemCorte: TdmOrdemCorte
   object qyEstoqueSemReservaProt: TFDQuery
     Connection = Conexao
     Left = 64
+    Top = 184
+  end
+  object qyCortePorTipoFichaId: TFDQuery
+    Connection = Conexao
+    Left = 192
+    Top = 184
+  end
+  object qyGEComOuSemProt: TFDQuery
+    Connection = Conexao
+    Left = 312
     Top = 184
   end
 end
