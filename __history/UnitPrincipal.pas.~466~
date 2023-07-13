@@ -106,6 +106,8 @@ type
     procedure acaoRealCortadoExecute(Sender: TObject);
     procedure butRealCortadoClick(Sender: TObject);
     procedure gridOrdemCellClick(Column: TColumn);
+    procedure gridOrdemDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure editSearchKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
@@ -340,7 +342,7 @@ begin
                     ParamByName('data2').AsDate := dateTimePicker2.Date;
               end;
            end;
-            SQL.Add('ORDER BY oc.oc_id desc limit 23');
+            SQL.Add('ORDER BY oc.oc_id desc limit 25');
             Open;
       end;
       gridViewOrdemCorte;
@@ -430,10 +432,17 @@ end;
 
 procedure TformPrincipal.gridOrdemCellClick(Column: TColumn);
 begin
-   if gridOrdem.Fields[3].Value = 'FINALIZADA' then
+   if gridOrdem.Fields[2].Value = 'FINALIZADA' then
       butRealCortado.Enabled := true
    else
       butRealCortado.Enabled := false;
+end;
+
+procedure TformPrincipal.gridOrdemDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+    ShowScrollBar(gridOrdem.Handle, SB_VERT, False);
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -554,13 +563,20 @@ begin
 end;
 procedure TformPrincipal.IniciarCorte1Click(Sender: TObject);
 begin
-    gridOrdem.Visible:=false;
+    Panel2.Create(Self);
+    Panel2.Parent:=gridOrdem;
+    Panel2.Align:=alClient;
+    Panel2.BorderStyle:=bsNone;
+    Panel2.Show;
     formIniciarCorte:=TformIniciarCorte.Create(Self);
-    formIniciarCorte.Parent:=Panel1;
+    formIniciarCorte.Parent:=Panel2;
     formIniciarCorte.Align:=alClient;
     formIniciarCorte.BorderStyle:=bsNone;
     formIniciarCorte.Show;
     desabComponentes;
+    initializeflatsb(gridOrdem.Handle);
+    FlatSB_ShowScrollBar(gridOrdem.Handle,sb_vert,false);
+    FlatSB_ShowScrollBar(gridOrdem.Handle,sb_horz,false);
 end;
 
 procedure TformPrincipal.labMostrAnosClick(Sender: TObject);

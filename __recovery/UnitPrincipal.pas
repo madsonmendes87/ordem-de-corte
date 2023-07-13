@@ -106,8 +106,7 @@ type
     procedure acaoRealCortadoExecute(Sender: TObject);
     procedure butRealCortadoClick(Sender: TObject);
     procedure gridOrdemCellClick(Column: TColumn);
-    procedure gridOrdemDrawColumnCell(Sender: TObject; const Rect: TRect;
-      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure editSearchKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -226,6 +225,7 @@ begin
             Close;
             SQL.Clear;
             SQL.Add('SELECT oc.oc_id,');
+            SQL.Add('Cast(lpad(cast(oc.oc_ordem As varchar), 3, ''0'') as character varying(5))as NumerodoCorte,');
             SQL.Add('cc.co_descricao, (ocs.os_nome)as situacao,');
             SQL.Add('(ce.es_nome)as estilista,');
             SQL.Add('oc.oc_idfichatecnica,');
@@ -244,14 +244,14 @@ begin
             SQL.Add('     WHERE oci.oc_id=oc.oc_id');
             SQL.Add('     LIMIT 1');
             SQL.Add(') AS diasemprocesso,');
-            SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''Protótipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
+            SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''ProtÃ³tipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
             SQL.Add('(pa.cad_idreferencia)as referencia,');
             SQL.Add('(pa.cad_descricao)as produtoacabado,');
             SQL.Add('(oc.oc_dtgerada)as datagerada,');
             SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_previsto WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradeprevisto,');
             SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_real WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradereal,');
             SQL.Add('  Cast(CASE');
-            SQL.Add('      WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idordemcorte= oc.oc_id And emp_situacao <>''C'' LIMIT 1) IS NULL THEN ''NÃO EMPENHADO''');
+            SQL.Add('      WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idordemcorte= oc.oc_id And emp_situacao <>''C'' LIMIT 1) IS NULL THEN ''NÃƒO EMPENHADO''');
             SQL.Add('      ELSE');
             SQL.Add('          (CASE');
             SQL.Add('              WHEN (SELECT emp_tipo FROM controle_empenho');
@@ -340,7 +340,7 @@ begin
                     ParamByName('data2').AsDate := dateTimePicker2.Date;
               end;
            end;
-            SQL.Add('ORDER BY oc.oc_id desc limit 25');
+            SQL.Add('ORDER BY oc.oc_id desc limit 23');
             Open;
       end;
       gridViewOrdemCorte;
@@ -366,6 +366,7 @@ procedure TformPrincipal.desabComponentes;
 begin
     butVerCorte.Enabled := false;
     butCortePrevisto.Enabled := false;
+    butRealCortado.Enabled := false;
     butHistoricOrdem.Enabled := false;
     comboFiltro.Enabled := false;
     comboSituacao.Enabled := false;
@@ -396,10 +397,21 @@ begin
     btnProcRestrito.Enabled := false;
 end;
 
+procedure TformPrincipal.editSearchKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    if key = #13 then
+      butOrdemPesquisarClick(Sender);
+end;
+
 procedure TformPrincipal.FormCreate(Sender: TObject);
+var
+  arquivo : String;
 begin
     dateTimePicker1.Date := now;
     dateTimePicker2.Date := now;
+    arquivo := 'C:\Sistema DiaERP_\DiaAplicativo\OrdemCorte.exe_old';
+    DeleteFile(arquivo);
 end;
 
 procedure TformPrincipal.FormResize(Sender: TObject);
@@ -412,58 +424,52 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
-    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ versaoExe;
+    footerPrincipal.Panels.Items[0].Text := 'VERSÃƒO: '+ versaoExe;
     boxColecao;
 end;
 
 procedure TformPrincipal.gridOrdemCellClick(Column: TColumn);
 begin
-   if gridOrdem.Fields[2].Value = 'FINALIZADA' then
+   if gridOrdem.Fields[3].Value = 'FINALIZADA' then
       butRealCortado.Enabled := true
    else
       butRealCortado.Enabled := false;
 end;
 
-procedure TformPrincipal.gridOrdemDrawColumnCell(Sender: TObject;
-  const Rect: TRect; DataCol: Integer; Column: TColumn;
-  State: TGridDrawState);
-begin
-    SetScrollRange(gridOrdem.Handle, SB_VERT, 0, 0, false);
-    SetScrollRange(gridOrdem.Handle, SB_HORZ, 0, 0, false);
-end;
-
 procedure TformPrincipal.gridViewOrdemCorte;
 begin
     gridOrdem.Columns[0].Title.Alignment:=taCenter;
-    gridOrdem.Columns[0].Title.Caption:='Nº Corte';
+    gridOrdem.Columns[0].Title.Caption:='NÂº Corte';
     gridOrdem.Columns[1].Title.Alignment:=taCenter;
-    gridOrdem.Columns[1].Title.Caption:='Coleção';
+    gridOrdem.Columns[1].Title.Caption:='Ordem';
     gridOrdem.Columns[2].Title.Alignment:=taCenter;
-    gridOrdem.Columns[2].Title.Caption:='Situação';
+    gridOrdem.Columns[2].Title.Caption:='ColeÃ§Ã£o';
     gridOrdem.Columns[3].Title.Alignment:=taCenter;
-    gridOrdem.Columns[3].Title.Caption:='Estilista';
+    gridOrdem.Columns[3].Title.Caption:='SituaÃ§Ã£o';
     gridOrdem.Columns[4].Title.Alignment:=taCenter;
-    gridOrdem.Columns[4].Title.Caption:='Ficha Técnica';
+    gridOrdem.Columns[4].Title.Caption:='Estilista';
     gridOrdem.Columns[5].Title.Alignment:=taCenter;
-    gridOrdem.Columns[5].Title.Caption:='Ordem de Produção';
+    gridOrdem.Columns[5].Title.Caption:='Ficha TÃ©cnica';
     gridOrdem.Columns[6].Title.Alignment:=taCenter;
-    gridOrdem.Columns[6].Title.Caption:='Dias em Processo';
+    gridOrdem.Columns[6].Title.Caption:='Ordem de ProduÃ§Ã£o';
     gridOrdem.Columns[7].Title.Alignment:=taCenter;
-    gridOrdem.Columns[7].Title.Caption:='Tipo';
+    gridOrdem.Columns[7].Title.Caption:='Dias em Processo';
     gridOrdem.Columns[8].Title.Alignment:=taCenter;
-    gridOrdem.Columns[8].Title.Caption:='Referência';
+    gridOrdem.Columns[8].Title.Caption:='Tipo';
     gridOrdem.Columns[9].Title.Alignment:=taCenter;
-    gridOrdem.Columns[9].Title.Caption:='Produto Acabado';
+    gridOrdem.Columns[9].Title.Caption:='ReferÃªncia';
     gridOrdem.Columns[10].Title.Alignment:=taCenter;
-    gridOrdem.Columns[10].Title.Caption:='Inicio Ordem de Corte';
+    gridOrdem.Columns[10].Title.Caption:='Produto Acabado';
     gridOrdem.Columns[11].Title.Alignment:=taCenter;
-    gridOrdem.Columns[11].Title.Caption:='Corte Previsto';
+    gridOrdem.Columns[11].Title.Caption:='Inicio Ordem de Corte';
     gridOrdem.Columns[12].Title.Alignment:=taCenter;
-    gridOrdem.Columns[12].Title.Caption:='Real Cortado';
+    gridOrdem.Columns[12].Title.Caption:='Corte Previsto';
     gridOrdem.Columns[13].Title.Alignment:=taCenter;
-    gridOrdem.Columns[13].Title.Caption:='Localização Empenho';
+    gridOrdem.Columns[13].Title.Caption:='Real Cortado';
     gridOrdem.Columns[14].Title.Alignment:=taCenter;
-    gridOrdem.Columns[14].Title.Caption:='Observação';
+    gridOrdem.Columns[14].Title.Caption:='LocalizaÃ§Ã£o Empenho';
+    gridOrdem.Columns[15].Title.Alignment:=taCenter;
+    gridOrdem.Columns[15].Title.Caption:='ObservaÃ§Ã£o';
     butVerCorte.Font.Color:=clMenuHighlight;
     butVerCorte.Font.Style:=[fsBold];
     butCortePrevisto.Font.Color:=clMenuHighlight;
@@ -548,16 +554,13 @@ begin
 end;
 procedure TformPrincipal.IniciarCorte1Click(Sender: TObject);
 begin
+    gridOrdem.Visible:=false;
     formIniciarCorte:=TformIniciarCorte.Create(Self);
-    formIniciarCorte.Parent:=gridOrdem;
+    formIniciarCorte.Parent:=Panel1;
     formIniciarCorte.Align:=alClient;
     formIniciarCorte.BorderStyle:=bsNone;
     formIniciarCorte.Show;
     desabComponentes;
-    //ShowScrollBar(gridOrdem.Handle, SB_HORZ, False);
-    //initializeflatsb(gridOrdem.Handle);
-    //FlatSB_ShowScrollBar(gridOrdem.Handle,sb_vert,false);
-    //FlatSB_ShowScrollBar(gridOrdem.Handle,sb_horz,false);
 end;
 
 procedure TformPrincipal.labMostrAnosClick(Sender: TObject);

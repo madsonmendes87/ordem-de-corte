@@ -141,13 +141,13 @@ begin
     end;
     if labTipoCorte.Caption = 'Prototipo' then
     begin
-        Application.MessageBox('Este corte È prototipo e a cor de corte j· foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada',
+        Application.MessageBox('Este corte √© prototipo e a cor de corte j√° foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada',
         'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
         exit;
     end;
     if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
     begin
-        Application.MessageBox('Ordem de corte finalizada, por esse motivo È vedado qualquer modificaÁ„o na ordem de corte', 'Ordem de Corte', mb_iconexclamation +
+        Application.MessageBox('Ordem de corte finalizada, por esse motivo √© vedado qualquer modifica√ß√£o na ordem de corte', 'Ordem de Corte', mb_iconexclamation +
         mb_ok + mb_taskmodal);
         exit;
     end;
@@ -165,7 +165,7 @@ begin
     begin
         if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
         begin
-            Application.MessageBox('Corte sob empenho, por este motivo n„o È possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia',
+            Application.MessageBox('Corte sob empenho, por este motivo n√£o √© possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia',
             'Ordem de Corte', mb_iconexclamation + mb_ok + mb_taskmodal);
             exit;
         end;
@@ -220,13 +220,13 @@ begin
     end;
     if dmOrdemCorte.qyOrdemDeCorte.FieldByName('oc_situacao').Value = 4 then
     begin
-        Application.MessageBox('Houve um cancelamento de ordem de corte anterior para essa referÍncia com empenhos devolvidos para almoxarifado!',
+        Application.MessageBox('Houve um cancelamento de ordem de corte anterior para essa refer√™ncia com empenhos devolvidos para almoxarifado!',
         'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
-        Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devoluÁ„o dos empenhos!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+        Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devolu√ß√£o dos empenhos!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
         exit;
     end;
 
-    {-----------VERIFICA SE A GRADE EST¡ INCORRETA-----------}
+    {-----------VERIFICA SE A GRADE EST√Å INCORRETA-----------}
     with dmOrdemCorte.qyGradeModificada do
     begin
         Close;
@@ -348,7 +348,7 @@ begin
         exit;
     end;
 
-    {-----------VERIFICA SE A LINHA 120 EST¡ INFORMA EM REFERENCIA DE SARJA OU JEANS (N√O PODE LINHA 120 NESSA SITUA«√O)-----------}
+    {-----------VERIFICA SE A LINHA 120 EST√Å INFORMA EM REFERENCIA DE SARJA OU JEANS (N√ÉO PODE LINHA 120 NESSA SITUA√á√ÉO)-----------}
     with dmOrdemCorte.qyLinha120 do
     begin
         Close;
@@ -373,8 +373,8 @@ begin
         Open;
         if dmOrdemCorte.qyLinha120.FieldByName('existe').Value = true then
         begin
-            Application.MessageBox('Ordem de corte n„o pode ser criada porque existe linha 120 lanÁada na costura!','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
-            Application.MessageBox('Linha TÌtulo 120 n„o È comum ser usado na fase de costura quando o segmento do tecido for JEANS ou SARJA.','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            Application.MessageBox('Ordem de corte n√£o pode ser criada porque existe linha 120 lan√ßada na costura!','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            Application.MessageBox('Linha T√≠tulo 120 n√£o √© comum ser usado na fase de costura quando o segmento do tecido for JEANS ou SARJA.','Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
             with application do
             begin
                 if MessageBox('Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
@@ -413,7 +413,7 @@ begin
         if labTipoCorte.Caption = 'Prototipo' then
             if dmOrdemCorte.qyFichaPrototipo.RecordCount = 0 then
             begin
-                Application.MessageBox('O protÛtipo n„o foi informado na ficha tecnica, por favor re-abra a ficha tecnica e informe o tamanho e cor do protÛtipo',
+                Application.MessageBox('O prot√≥tipo n√£o foi informado na ficha tecnica, por favor re-abra a ficha tecnica e informe o tamanho e cor do prot√≥tipo',
                 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
                 exit;
             end;
@@ -441,7 +441,7 @@ begin
         if labTipoCorte.Caption = 'Prototipo' then
             if dmOrdemCorte.qyCorGradeProt.RecordCount = 0 then
             begin
-                Application.MessageBox('O tamanho do prototipo est· fora da grade e/ou a cor diferente da programada, por favor ajuste a informaÁ„o do prototipo na ficha tecnica',
+                Application.MessageBox('O tamanho do prototipo est√° fora da grade e/ou a cor diferente da programada, por favor ajuste a informa√ß√£o do prototipo na ficha tecnica',
                 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
                 exit;
             end;
@@ -461,12 +461,12 @@ begin
         Open;
         if dmOrdemCorte.qyTecidoPrincipal.FieldByName('qtdPrincipal').Value > 1 then
         begin
-            Application.MessageBox('H· mais de um tecido principal na ficha tecnica, por favor realize o ajuste!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
+            Application.MessageBox('H√° mais de um tecido principal na ficha tecnica, por favor realize o ajuste!', 'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
             exit;
         end;
     end;
 
-    {-----------VERIFICA SE A COR DE REFERENCIA EST¡ DIFERENTE DA COR DO ARTIGO-----------}
+    {-----------VERIFICA SE A COR DE REFERENCIA EST√Å DIFERENTE DA COR DO ARTIGO-----------}
     with dmOrdemCorte.qyRefArtigoCor do
     begin
         Close;
@@ -483,12 +483,12 @@ begin
         Open;
         if dmOrdemCorte.qyRefArtigoCor.RecordCount = 0 then
         begin
-            Application.MessageBox('Cor de referÍncia diferente da cor do tecido principal!', 'Ordem de Corte', mb_ok + mb_iconhand);
+            Application.MessageBox('Cor de refer√™ncia diferente da cor do tecido principal!', 'Ordem de Corte', mb_ok + mb_iconhand);
             exit;
         end;
      end;
 
-     {-----------VERIFICA SE EXISTE ALGUM ITEM COM ESTOQUE INFERIOR (PRODU«√O)-----------}
+     {-----------VERIFICA SE EXISTE ALGUM ITEM COM ESTOQUE INFERIOR (PRODU√á√ÉO)-----------}
      with dmOrdemCorte.qyAviamentosPorFicha do
      begin
         Close;
@@ -608,74 +608,74 @@ begin
                         'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
                         'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
                         'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value);
-               Application.MessageBox('Por este motivo(s) o corte n„o pode ser inciado', 'Ordem de Corte', mb_ok + mb_iconhand);
+               Application.MessageBox('Por este motivo(s) o corte n√£o pode ser inciado', 'Ordem de Corte', mb_ok + mb_iconhand);
                with Application do
                begin
-                  if MessageBox('Clique em SIM se deseja permitir o avanÁo da produÁ„o sem material, caso contr·rio clique em N√O', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
+                  if MessageBox('Clique em SIM se deseja permitir o avan√ßo da produ√ß√£o sem material, caso contr√°rio clique em N√ÉO', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
                   exit;
                end;
             end;
          end;
      end;
 
-     {-----------VERIFICA SE DATAS E HORARIOS EST√O CORRETOS-----------}
+     {-----------VERIFICA SE DATAS E HORARIOS EST√ÉO CORRETOS-----------}
     if dataOrdemFinalizacao.Date < dataSolicitacao.Date then
     begin
-        Application.MessageBox('Data de finalizaÁ„o do corte n„o pode ser anterior a atual!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Data de finaliza√ß√£o do corte n√£o pode ser anterior a atual!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
     if horaOrdemFinalizacao.Time < horaSolicitacao.Time then
     begin
-        Application.MessageBox('Hor·rio de finalizaÁ„o do corte n„o pode ser anterior a atual!','Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Hor√°rio de finaliza√ß√£o do corte n√£o pode ser anterior a atual!','Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
     if dataCortePrevisto.Date < dataSolicitacao.Date then
     begin
-         Application.MessageBox('Data de inicio do corte previsto n„o pode ser anterior a data de solicitaÁ„o do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
+         Application.MessageBox('Data de inicio do corte previsto n√£o pode ser anterior a data de solicita√ß√£o do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
          exit;
     end;
 
     if horaCortePrevisto.Time < horaSolicitacao.Time then
     begin
-        Application.MessageBox('Hor·rio de inicio do corte previsto n„o pode ser anterior ao hor·rio de solicitaÁ„o do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Hor√°rio de inicio do corte previsto n√£o pode ser anterior ao hor√°rio de solicita√ß√£o do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
     if dataFinalCortePrevisto.Date < dataCortePrevisto.Date then
     begin
-        Application.MessageBox('Data de finalizaÁ„o do corte previsto n„o pode ser anterior a data de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Data de finaliza√ß√£o do corte previsto n√£o pode ser anterior a data de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
     if horaFinalCortePrevisto.Time < horaCortePrevisto.Time then
     begin
-        Application.MessageBox('Hor·rio de finalizaÁ„o do corte previsto n„o pode ser anterior ao hor·rio de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Hor√°rio de finaliza√ß√£o do corte previsto n√£o pode ser anterior ao hor√°rio de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
     if dataRealCortado.Date < dataFinalCortePrevisto.Date then
     begin
-        Application.MessageBox('Data de inicio do real cortado n„o pode ser anterior a data de finalizaÁ„o do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Data de inicio do real cortado n√£o pode ser anterior a data de finaliza√ß√£o do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
     if horaRealCortado.Time < horaFinalCortePrevisto.Time then
     begin
-        Application.MessageBox('Hor·rio de inicio do real cortado n„o pode ser anterior ao hor·rio de finalizaÁ„o do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Hor√°rio de inicio do real cortado n√£o pode ser anterior ao hor√°rio de finaliza√ß√£o do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
     if dataFinalRealCortado.Date < dataRealCortado.Date then
     begin
-        Application.MessageBox('Data de finalizaÁ„o do real cortado n„o pode ser anterior a data de inicio do real cortado!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Data de finaliza√ß√£o do real cortado n√£o pode ser anterior a data de inicio do real cortado!', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
     if horaFinalRealCortado.Time < horaRealCortado.Time then
     begin
-        Application.MessageBox('Hor·rio de finalizaÁ„o do corte real n„o pode ser anterior ao hor·rio de inicio do corte real', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Hor√°rio de finaliza√ß√£o do corte real n√£o pode ser anterior ao hor√°rio de inicio do corte real', 'Ordem de Corte', mb_ok + mb_iconhand);
         exit;
     end;
 
@@ -701,13 +701,13 @@ begin
         begin
             if dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
             begin
-                Application.MessageBox('J· existe uma ordem de corte protÛtipo para essa referencia!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
+                Application.MessageBox('J√° existe uma ordem de corte prot√≥tipo para essa referencia!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
                 exit;
             end
             else
                 with application do
                 begin
-                     if MessageBox('J· existe uma ordem de corte grande escala para essa referencia'+#13+
+                     if MessageBox('J√° existe uma ordem de corte grande escala para essa referencia'+#13+
                                     'Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDYES then
                           dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 2
                      else
@@ -718,7 +718,7 @@ begin
             dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 1;
     end;
 
-    {-----------VERIFICA SE TEM DOIS PROT”TIPOS-----------}
+    {-----------VERIFICA SE TEM DOIS PROT√ìTIPOS-----------}
     with dmOrdemCorte.qyFichaPrototipo do
     begin
         Close;
@@ -755,12 +755,12 @@ begin
             begin
                 if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'N' then
                 begin
-                    Application.MessageBox('Prototipo em espera por aprovaÁ„o!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
+                    Application.MessageBox('Prototipo em espera por aprova√ß√£o!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
                     exit;
                 end;
                 if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'R' then
                 begin
-                    Application.MessageBox('ProtÛtipo reprovado, por esse motivo produÁ„o n„o pode ser realizada', 'Ordem de Corte', mb_ok + mb_iconhand);
+                    Application.MessageBox('Prot√≥tipo reprovado, por esse motivo produ√ß√£o n√£o pode ser realizada', 'Ordem de Corte', mb_ok + mb_iconhand);
                     exit;
                 end;
             end
@@ -768,7 +768,7 @@ begin
             begin
                 with application do
                 begin
-                    if MessageBox('ReferÍncia sem protÛtipo!'+#13+
+                    if MessageBox('Refer√™ncia sem prot√≥tipo!'+#13+
                     'Deseja mesmo assim abrir ordem de corte?', 'Ordem de Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
                     exit;
                 end;
@@ -806,7 +806,7 @@ begin
     butDesistir.Enabled := false;
     butSalvar.Enabled := false;
     butNovo.Enabled := true;
-    Application.MessageBox('OperaÁ„o realizada com sucesso!', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
+    Application.MessageBox('Opera√ß√£o realizada com sucesso!', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

@@ -16,7 +16,6 @@ object formPrincipal: TformPrincipal
   ShowHint = True
   WindowState = wsMaximized
   OnCreate = FormCreate
-  OnMouseWheel = FormMouseWheel
   OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
@@ -1603,7 +1602,7 @@ object formPrincipal: TformPrincipal
       Color = clWhite
       DataSource = dmOrdemCorte.dsOrdemCorte
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clGrayText
+      Font.Color = clGray
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
@@ -1611,13 +1610,12 @@ object formPrincipal: TformPrincipal
       ParentFont = False
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clGrayText
-      TitleFont.Height = -13
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
       OnCellClick = gridOrdemCellClick
-      OnMouseWheel = gridOrdemMouseWheel
-      OnMouseWheelDown = gridOrdemMouseWheelDown
+      OnDrawColumnCell = gridOrdemDrawColumnCell
     end
     object Panel2: TPanel
       Left = 6
@@ -1960,6 +1958,7 @@ object formPrincipal: TformPrincipal
         Font.Style = []
         ParentFont = False
         TabOrder = 1
+        OnKeyPress = editSearchKeyPress
       end
       object comboSituacao: TComboBox
         Left = 18

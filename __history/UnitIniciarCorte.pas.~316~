@@ -594,7 +594,7 @@ begin
          Open;
          if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
          begin
-            ShowMessage('PRODUTO VIRTUAL' +
+            ShowMessage('PRODUTO VIRTUAL'+#13+#13+
                         'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
                         'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
                         'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value);
@@ -603,7 +603,7 @@ begin
          begin
             if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
             begin
-               ShowMessage('PRODUTO SEM ESTOQUE' +
+               ShowMessage('PRODUTO SEM ESTOQUE'+#13+#13+
                         'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
                         'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
                         'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value);
@@ -678,7 +678,7 @@ begin
         exit;
     end;
 
-    {-----------VERIFICA SE DATAS E HORARIOS ESTÃO CORRETOS-----------}
+    {-----------VERIFICA SE EXISTE ORDEM JA ABERTA PARA REFERENCIA-----------}
     with dmOrdemCorte.qyCortePorTipoFichaId do
     begin
         Close;
@@ -700,7 +700,7 @@ begin
         begin
             if dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
             begin
-                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', mb_ok + mb_iconhand);
+                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
                 exit;
             end
             else
@@ -745,30 +745,33 @@ begin
         SQL.Add('     AND EXISTS(');
         SQL.Add('         SELECT * FROM ordem_corte');
         SQL.Add('         WHERE oc_idfichatecnica=fp_idfichatec AND oc_prototipo = true');
+        SQL.Add('      )');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         Open;
-        if dmOrdemCorte.qyGEComOuSemProt.RecordCount > 0 then
-            if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'N' then
-            begin
-                Application.MessageBox('Prototipo em espera por aprovação!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
-                exit;
-            end;
-            if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'R' then
-            begin
-                Application.MessageBox('Protótipo reprovado, por esse motivo produção não pode ser realizada', 'Ordem de Corte', mb_ok + mb_iconhand);
-                exit;
-            end
-        else
-            with application do
-            begin
-                if MessageBox('Referência sem protótipo!'+#13+
-                'Ainda assim deseja abrir ordem de corte?', 'Ordem de Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
-                exit;
-            end;
-        if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fi_situacao').Value <> 'Z' then
+        if labTipoCorte.Caption = 'Grande Escala' then
         begin
-            Application.MessageBox('Ficha técnica não liberada para produção', 'Ordem de Corte', mb_ok + mb_iconhand);
-            exit;
+            if dmOrdemCorte.qyGEComOuSemProt.RecordCount > 0 then
+            begin
+                if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'N' then
+                begin
+                    Application.MessageBox('Prototipo em espera por aprovação!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
+                    exit;
+                end;
+                if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'R' then
+                begin
+                    Application.MessageBox('Protótipo reprovado, por esse motivo produção não pode ser realizada', 'Ordem de Corte', mb_ok + mb_iconhand);
+                    exit;
+                end;
+            end
+            else
+            begin
+                with application do
+                begin
+                    if MessageBox('Referência sem protótipo!'+#13+
+                    'Deseja mesmo assim abrir ordem de corte?', 'Ordem de Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
+                    exit;
+                end;
+            end;
         end;
     end;
 
