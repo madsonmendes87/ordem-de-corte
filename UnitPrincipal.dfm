@@ -1,9 +1,10 @@
 object formPrincipal: TformPrincipal
   Left = 293
   Top = 0
+  BorderStyle = bsSingle
   Caption = 'Corte'
-  ClientHeight = 705
-  ClientWidth = 1369
+  ClientHeight = 715
+  ClientWidth = 1379
   Color = clCream
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,7 +15,6 @@ object formPrincipal: TformPrincipal
   OldCreateOrder = False
   Position = poDesigned
   ShowHint = True
-  WindowState = wsMaximized
   OnCreate = FormCreate
   OnResize = FormResize
   OnShow = FormShow
@@ -23,7 +23,7 @@ object formPrincipal: TformPrincipal
   object panelFormPrincipal: TPanel
     Left = 0
     Top = 0
-    Width = 1369
+    Width = 1379
     Height = 25
     Align = alTop
     BiDiMode = bdRightToLeftNoAlign
@@ -38,6 +38,7 @@ object formPrincipal: TformPrincipal
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
+    ExplicitWidth = 1369
     object LbUsuario: TLabel
       AlignWithMargins = True
       Left = 4
@@ -107,13 +108,14 @@ object formPrincipal: TformPrincipal
     Left = 0
     Top = 25
     Width = 196
-    Height = 663
+    Height = 673
     Align = alLeft
     AutoSize = True
     BorderStyle = bsSingle
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 1
+    ExplicitHeight = 663
     object btnOrdemCorte: TSpeedButton
       Left = 4
       Top = -2
@@ -1571,8 +1573,8 @@ object formPrincipal: TformPrincipal
   end
   object footerPrincipal: TStatusBar
     Left = 0
-    Top = 688
-    Width = 1369
+    Top = 698
+    Width = 1379
     Height = 17
     Color = clCream
     Panels = <
@@ -1583,6 +1585,8 @@ object formPrincipal: TformPrincipal
       item
         Width = 50
       end>
+    ExplicitTop = 688
+    ExplicitWidth = 1369
   end
   object Panel1: TPanel
     Left = 196
@@ -1619,7 +1623,7 @@ object formPrincipal: TformPrincipal
       Left = 18
       Top = 463
       Width = 145
-      Height = 33
+      Height = 34
       Caption = 'Ver Corte (F4)'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1671,33 +1675,17 @@ object formPrincipal: TformPrincipal
       OnClick = butRealCortadoClick
     end
   end
-  object butClearEstilo: TButton
-    Left = 1047
-    Top = 606
-    Width = 16
-    Height = 22
-    Hint = 'Limpar Estilista'
-    Caption = 'X'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 4
-    OnClick = butClearEstiloClick
-  end
   object Panel2: TPanel
     Left = 196
-    Top = 527
-    Width = 1173
+    Top = 546
+    Width = 1181
     Height = 146
     BevelOuter = bvNone
     BiDiMode = bdLeftToRight
     Color = clInactiveBorder
     ParentBiDiMode = False
     ParentBackground = False
-    TabOrder = 5
+    TabOrder = 4
     object labFiltro: TLabel
       Left = 553
       Top = 1
@@ -1726,7 +1714,7 @@ object formPrincipal: TformPrincipal
     end
     object butOrdemPesquisar: TSpeedButton
       Left = 1057
-      Top = 89
+      Top = 105
       Width = 97
       Height = 33
       Caption = 'Consultar'
@@ -1886,7 +1874,7 @@ object formPrincipal: TformPrincipal
     end
     object labSituacao: TLabel
       Left = 18
-      Top = 79
+      Top = 95
       Width = 49
       Height = 13
       Caption = 'Situacao'
@@ -1899,7 +1887,7 @@ object formPrincipal: TformPrincipal
     end
     object labIniOrdem: TLabel
       Left = 186
-      Top = 79
+      Top = 95
       Width = 124
       Height = 13
       Caption = 'Iniciada Ord Produ'#231#227'o'
@@ -1912,7 +1900,7 @@ object formPrincipal: TformPrincipal
     end
     object labColecao: TLabel
       Left = 413
-      Top = 79
+      Top = 95
       Width = 44
       Height = 13
       Caption = 'Cole'#231#227'o'
@@ -1925,7 +1913,7 @@ object formPrincipal: TformPrincipal
     end
     object labData: TLabel
       Left = 651
-      Top = 79
+      Top = 95
       Width = 85
       Height = 13
       Caption = 'Filtrar por data'
@@ -1938,7 +1926,7 @@ object formPrincipal: TformPrincipal
     end
     object labA: TLabel
       Left = 928
-      Top = 99
+      Top = 115
       Width = 8
       Height = 16
       Caption = 'a'
@@ -1951,7 +1939,7 @@ object formPrincipal: TformPrincipal
     end
     object labMostrAnos: TLabel
       Left = 463
-      Top = 79
+      Top = 95
       Width = 115
       Height = 13
       Caption = '(Mostrar todos os anos)'
@@ -1982,8 +1970,8 @@ object formPrincipal: TformPrincipal
     end
     object comboSetor: TComboBox
       Left = 881
-      Top = 49
-      Width = 248
+      Top = 51
+      Width = 240
       Height = 22
       Style = csOwnerDrawFixed
       Font.Charset = DEFAULT_CHARSET
@@ -2022,7 +2010,7 @@ object formPrincipal: TformPrincipal
       Left = 186
       Top = 52
       Width = 201
-      Height = 24
+      Height = 21
       CharCase = ecUpperCase
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -2035,7 +2023,7 @@ object formPrincipal: TformPrincipal
     end
     object comboSituacao: TComboBox
       Left = 18
-      Top = 98
+      Top = 114
       Width = 145
       Height = 22
       Style = csOwnerDrawFixed
@@ -2052,7 +2040,7 @@ object formPrincipal: TformPrincipal
     end
     object comboIniOrd: TComboBox
       Left = 186
-      Top = 98
+      Top = 114
       Width = 201
       Height = 22
       Style = csOwnerDrawFixed
@@ -2068,9 +2056,9 @@ object formPrincipal: TformPrincipal
         'NAO')
     end
     object comboFiltroData: TComboBox
-      Left = 651
-      Top = 98
-      Width = 145
+      Left = 647
+      Top = 114
+      Width = 149
       Height = 22
       Style = csOwnerDrawFixed
       Font.Charset = DEFAULT_CHARSET
@@ -2088,7 +2076,7 @@ object formPrincipal: TformPrincipal
     end
     object dateTimePicker1: TDateTimePicker
       Left = 812
-      Top = 97
+      Top = 113
       Width = 110
       Height = 24
       Date = 44910.000000000000000000
@@ -2103,7 +2091,7 @@ object formPrincipal: TformPrincipal
     end
     object dateTimePicker2: TDateTimePicker
       Left = 942
-      Top = 96
+      Top = 112
       Width = 110
       Height = 24
       Date = 44910.000000000000000000
@@ -2133,7 +2121,7 @@ object formPrincipal: TformPrincipal
       OnClick = butClearTipoClick
     end
     object butClearSetor: TButton
-      Left = 1128
+      Left = 1120
       Top = 48
       Width = 16
       Height = 25
@@ -2150,7 +2138,7 @@ object formPrincipal: TformPrincipal
     end
     object butClearSituacao: TButton
       Left = 164
-      Top = 98
+      Top = 114
       Width = 16
       Height = 25
       Hint = 'Limpar Situa'#231#227'o'
@@ -2166,7 +2154,7 @@ object formPrincipal: TformPrincipal
     end
     object butLimpaIniOrdem: TButton
       Left = 384
-      Top = 96
+      Top = 112
       Width = 16
       Height = 25
       Hint = 'Limpar Iniciada Ord Produ'#231#227'o'
@@ -2182,7 +2170,7 @@ object formPrincipal: TformPrincipal
     end
     object butClearColecao: TButton
       Left = 608
-      Top = 96
+      Top = 112
       Width = 16
       Height = 24
       Hint = 'Limpar Cole'#231#227'o'
@@ -2199,7 +2187,7 @@ object formPrincipal: TformPrincipal
     object dbLkComboEstilo: TDBLookupComboBox
       Left = 647
       Top = 52
-      Width = 210
+      Width = 218
       Height = 21
       KeyField = 'es_id'
       ListField = 'es_nome'
@@ -2208,13 +2196,29 @@ object formPrincipal: TformPrincipal
     end
     object dbLColecao: TDBLookupComboBox
       Left = 413
-      Top = 98
+      Top = 114
       Width = 195
       Height = 21
       KeyField = 'co_id'
       ListField = 'nome'
       ListSource = dmOrdemCorte.dsBoxColecao
       TabOrder = 15
+    end
+    object butClearEstilo: TButton
+      Left = 859
+      Top = 53
+      Width = 16
+      Height = 22
+      Hint = 'Limpar Estilista'
+      Caption = 'X'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 16
+      OnClick = butClearEstiloClick
     end
   end
   object popupMenuOrdem: TPopupMenu

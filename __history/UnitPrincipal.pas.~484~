@@ -106,8 +106,6 @@ type
     procedure acaoRealCortadoExecute(Sender: TObject);
     procedure butRealCortadoClick(Sender: TObject);
     procedure gridOrdemCellClick(Column: TColumn);
-    procedure gridOrdemDrawColumnCell(Sender: TObject; const Rect: TRect;
-      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure editSearchKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
@@ -342,7 +340,7 @@ begin
                     ParamByName('data2').AsDate := dateTimePicker2.Date;
               end;
            end;
-            SQL.Add('ORDER BY oc.oc_id desc limit 25');
+            SQL.Add('ORDER BY oc.oc_id desc limit 23');
             Open;
       end;
       gridViewOrdemCorte;
@@ -410,6 +408,13 @@ procedure TformPrincipal.FormCreate(Sender: TObject);
 var
   arquivo : String;
 begin
+    BorderStyle := bsSingle;
+    BorderIcons := BorderIcons - [biMaximize];
+    WindowState := wsNormal;
+    Top := 0;
+    Left := 0;
+    Height := Screen.Height;
+    Width := Screen.Width;
     dateTimePicker1.Date := now;
     dateTimePicker2.Date := now;
     arquivo := 'C:\Sistema DiaERP_\DiaAplicativo\OrdemCorte.exe_old';
@@ -428,21 +433,30 @@ begin
     gridViewOrdemCorte;
     footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ versaoExe;
     boxColecao;
+    with dmOrdemCorte.qyVerCorteReal do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ordem_corte_itens_real');
+        SQL.Add('WHERE oci_idocorte = :numerocorte');
+        ParamByName('numerocorte').AsInteger := strtoint(gridOrdem.Fields[0].Value);
+        Open;
+        if gridOrdem.SelectedRows.CurrentRowSelected then
+        begin
+            if dmOrdemCorte.qyVerCorteReal.RecordCount > 0 then
+              butRealCortado.Enabled := true
+        else
+              butRealCortado.Enabled := false;
+        end;
+    end;
+
 end;
 
 procedure TformPrincipal.gridOrdemCellClick(Column: TColumn);
 begin
-   if gridOrdem.Fields[2].Value = 'FINALIZADA' then
-      butRealCortado.Enabled := true
-   else
-      butRealCortado.Enabled := false;
-end;
+    if gridOrdem.Fields[3].Value = 'FINALIZADA' then
+        butRealCortado.Enabled := true;
 
-procedure TformPrincipal.gridOrdemDrawColumnCell(Sender: TObject;
-  const Rect: TRect; DataCol: Integer; Column: TColumn;
-  State: TGridDrawState);
-begin
-    ShowScrollBar(gridOrdem.Handle, SB_VERT, False);
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
@@ -563,20 +577,13 @@ begin
 end;
 procedure TformPrincipal.IniciarCorte1Click(Sender: TObject);
 begin
-    Panel2.Create(Self);
-    Panel2.Parent:=gridOrdem;
-    Panel2.Align:=alClient;
-    Panel2.BorderStyle:=bsNone;
-    Panel2.Show;
+    gridOrdem.Visible:=false;
     formIniciarCorte:=TformIniciarCorte.Create(Self);
-    formIniciarCorte.Parent:=Panel2;
+    formIniciarCorte.Parent:=Panel1;
     formIniciarCorte.Align:=alClient;
     formIniciarCorte.BorderStyle:=bsNone;
     formIniciarCorte.Show;
     desabComponentes;
-    initializeflatsb(gridOrdem.Handle);
-    FlatSB_ShowScrollBar(gridOrdem.Handle,sb_vert,false);
-    FlatSB_ShowScrollBar(gridOrdem.Handle,sb_horz,false);
 end;
 
 procedure TformPrincipal.labMostrAnosClick(Sender: TObject);
@@ -585,10 +592,10 @@ begin
     begin
         Close;
         SQl.Clear;
-        SQl.add('Select co_id,');
-        SQl.add('Cast(concat(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))as nome');
-        SQl.add('from colecao');
-        SQl.add('order by co_anocolecao');
+        SQl.add('SELECT co_id,');
+        SQl.add('CAST(CONCAT(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))AS character varying(25))AS nome');
+        SQl.add('FROM colecao');
+        SQl.add('ORDER BY co_anocolecao');
         Open;
     end;
 end;

@@ -57,6 +57,7 @@ type
     qyEstoqueSemReservaProt: TFDQuery;
     qyCortePorTipoFichaId: TFDQuery;
     qyGEComOuSemProt: TFDQuery;
+    qyVerCorteReal: TFDQuery;
   private
     { Private declarations }
   public

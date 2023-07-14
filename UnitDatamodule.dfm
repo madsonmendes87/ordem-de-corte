@@ -1,7 +1,7 @@
 object dmOrdemCorte: TdmOrdemCorte
   OldCreateOrder = False
   Height = 577
-  Width = 1047
+  Width = 1271
   object Conexao: TFDConnection
     Params.Strings = (
       'Server=localhost'
@@ -163,7 +163,7 @@ object dmOrdemCorte: TdmOrdemCorte
       'ocs.os_id = oc.oc_situacao WHERE oc.oc_situacao <> '#39'2'#39
       'AND not EXISTS (SELECT * FROM ordem_producao AS op'
       '  WHERE op.op_idordemcorte=oc.oc_id and op.op_idstatus <> 4)'
-      'ORDER BY oc.oc_id desc limit 25'
+      'ORDER BY oc.oc_id desc limit 23'
       '')
     Left = 368
     Top = 16
@@ -510,6 +510,11 @@ object dmOrdemCorte: TdmOrdemCorte
   object qyGEComOuSemProt: TFDQuery
     Connection = Conexao
     Left = 312
+    Top = 184
+  end
+  object qyVerCorteReal: TFDQuery
+    Connection = Conexao
+    Left = 408
     Top = 184
   end
 end
