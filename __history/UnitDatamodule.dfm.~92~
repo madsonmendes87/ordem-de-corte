@@ -1,7 +1,7 @@
 object dmOrdemCorte: TdmOrdemCorte
   OldCreateOrder = False
   Height = 577
-  Width = 1047
+  Width = 1271
   object Conexao: TFDConnection
     Params.Strings = (
       'Server=localhost'
@@ -72,6 +72,9 @@ object dmOrdemCorte: TdmOrdemCorte
     SQL.Strings = (
       'SELECT'
       '    oc.oc_id as NumerodoCorte,'
+      
+        '    Cast(lpad(cast(oc.oc_ordem As varchar), 3, '#39'0'#39') as character' +
+        ' varying(5))as numeroseq,'
       
         '    cc.co_descricao, (ocs.os_nome)as situacao, (ce.es_nome)as es' +
         'tilista,'
@@ -160,7 +163,7 @@ object dmOrdemCorte: TdmOrdemCorte
       'ocs.os_id = oc.oc_situacao WHERE oc.oc_situacao <> '#39'2'#39
       'AND not EXISTS (SELECT * FROM ordem_producao AS op'
       '  WHERE op.op_idordemcorte=oc.oc_id and op.op_idstatus <> 4)'
-      'ORDER BY oc.oc_id desc limit 30'
+      'ORDER BY oc.oc_id desc limit 23'
       '')
     Left = 368
     Top = 16
@@ -200,7 +203,7 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object dsProdutoAcabado: TDataSource
     DataSet = qyProdutoAcabado
-    Left = 616
+    Left = 624
     Top = 16
   end
   object qyBoxColecao: TFDQuery
@@ -329,7 +332,7 @@ object dmOrdemCorte: TdmOrdemCorte
     IndexFieldNames = 'cad_id'
     Connection = Conexao
     TableName = 'produto_acabado'
-    Left = 712
+    Left = 720
     Top = 16
   end
   object tbOrdemdeCorte: TFDTable
@@ -364,18 +367,21 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 904
     Top = 72
   end
-  object qyGradeFicha: TFDQuery
+  object qyGradeModificada: TFDQuery
     Connection = Conexao
     SQL.Strings = (
       'SELECT'
-      #9'COUNT(oftr.oftr_id) AS oftr_id'
-      #9'FROM ordem_fabricacao_tamanhoreal AS oftr'
-      #9'JOIN ordem_producao AS op ON op.op_id = oftr.oftr_idordproducao'
-      #9'JOIN ordem_corte AS oc ON oc.oc_id = op.op_idordemcorte'
-      #9'JOIN ficha_tecnica AS ft ON ft.fi_id = oc.oc_idfichatecnica'
+      #9'(fti.fti_id) AS itemId,'
+      #9'(ftq.fti_id) gradeId'
+      #9'FROM ficha_tecnica_itens AS fti'
       
-        #9'WHERE ft.fi_id='#39'5230'#39' AND ft.fi_situacao<>'#39'C'#39' AND oc.oc_prototi' +
-        'po = true')
+        #9'LEFT JOIN ficha_tecnica_qtdtamanho AS ftq ON fti.fti_cortecidoi' +
+        'dgrade = ftq.fti_cortecidoidgrade'
+      #9'AND ftq.fti_idfichatec = fti.fti_idfichatec'
+      #9'WHERE fti.fti_idfichatec='#39'5234'#39' '
+      '        AND fti.fti_tipo='#39'P'#39
+      '        AND fti.fti_tecido='#39'A'#39
+      '        AND fti.fti_status<>'#39'C'#39)
     Left = 32
     Top = 128
   end
@@ -465,5 +471,55 @@ object dmOrdemCorte: TdmOrdemCorte
       '      GROUP BY fti_cortecidoidgrade')
     Left = 472
     Top = 128
+  end
+  object qyGradeFicha: TFDQuery
+    Connection = Conexao
+    Left = 560
+    Top = 128
+  end
+  object qyFichaId: TFDQuery
+    Connection = Conexao
+    Left = 640
+    Top = 128
+  end
+  object qyFichaSemGrade: TFDQuery
+    Connection = Conexao
+    Left = 712
+    Top = 128
+  end
+  object qyRefArtigoCor: TFDQuery
+    Connection = Conexao
+    Left = 800
+    Top = 128
+  end
+  object qyAviamentosPorFicha: TFDQuery
+    Connection = Conexao
+    Left = 904
+    Top = 128
+  end
+  object qyEstoqueSemReservaProt: TFDQuery
+    Connection = Conexao
+    Left = 64
+    Top = 184
+  end
+  object qyCortePorTipoFichaId: TFDQuery
+    Connection = Conexao
+    Left = 192
+    Top = 184
+  end
+  object qyGEComOuSemProt: TFDQuery
+    Connection = Conexao
+    Left = 312
+    Top = 184
+  end
+  object qyVerCorteReal: TFDQuery
+    Connection = Conexao
+    Left = 408
+    Top = 184
+  end
+  object qyConsumoFaseGE: TFDQuery
+    Connection = Conexao
+    Left = 496
+    Top = 184
   end
 end

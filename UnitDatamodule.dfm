@@ -517,4 +517,14 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 408
     Top = 184
   end
+  object qyConsumoFaseGE: TFDQuery
+    Connection = Conexao
+    Left = 496
+    Top = 184
+  end
+  object qyFichaFaseGE: TFDQuery
+    Connection = Conexao
+    Left = 592
+    Top = 184
+  end
 end

@@ -776,6 +776,51 @@ begin
         end;
     end;
 
+    {-----------VERIFICA SE HÁ INFORMAÇÕES DE CONSUMO DE FASE LANÇADA GE-----------}
+     with dmOrdemCorte.qyConsumoFaseGE do
+     begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT cpi.cpi_idfase, cpi.cpi_nosequencial, fa.fa_nome FROM cadastro_processo_itens AS cpi');
+        SQL.Add('     JOIN cadastro_processo AS cp ON cp.pce_id = cpi.cpi_idprocesso');
+        SQL.Add('     JOIN produto_acabado AS pa ON pa.cad_idprocesso = cp.pce_id');
+        SQL.Add('     JOIN fase_producao AS fa ON fa.fa_id = cpi.cpi_idfase');
+        SQL.Add('     WHERE');
+        SQL.Add('     pa.cad_id = :produtoacabado');
+        SQL.Add('     AND cpi.cpi_idfase <> ''9''');
+        SQL.Add('     AND cpi.cpi_idfase <> ''16''');
+        SQL.Add('     ORDER BY cpi.cpi_nosequencial ASC');
+        ParamByName('produtoacabado').AsInteger := strtoint(editCodigo.Text);
+        Open;
+     end;
+
+    dmOrdemCorte.qyConsumoFaseGE.First;
+    while not dmOrdemCorte.qyConsumoFaseGE.Eof do
+    begin
+         with dmOrdemCorte.qyFichaFaseGE do
+         begin
+              Close;
+              SQL.Clear;
+              SQL.Add('SELECT *');
+              SQL.Add('   FROM ficha_tecnica_itensfase');
+              SQL.Add('   WHERE ftf_idfaseproducao = :idFase');
+              SQL.add('   AND ftf_idfichatecnica = :fichatecnica');
+              ParamByName('idFase').AsInteger := dmOrdemCorte.qyConsumoFaseGE.FieldByName('cpi_idfase').Value;
+              ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+              Open;
+              if labTipoCorte.Caption = 'Grande Escala' then
+              begin
+                  if dmOrdemCorte.qyFichaFaseGE.RecordCount = 0 then
+                  begin
+                      ShowMessage('SEM CONSUMO DE FASE LANÇADA!' +#13+#13+
+                                  'FASE: '+ dmOrdemCorte.qyConsumoFaseGE.FieldByName('fa_nome').Value);
+                      exit;
+                  end;
+              end;
+              dmOrdemCorte.qyConsumoFaseGE.Next;
+         end;
+    end;
+
 
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;

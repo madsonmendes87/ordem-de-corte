@@ -201,6 +201,7 @@ procedure TformIniciarCorte.butSairInicioCorteClick(Sender: TObject);
 begin
     formIniciarCorte.Close;
     formPrincipal.habComponentes;
+    formPrincipal.gridOrdem.Visible := true;
     ShowScrollBar(formPrincipal.gridOrdem.Handle, SB_HORZ, True);
 end;
 
@@ -594,7 +595,7 @@ begin
          Open;
          if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
          begin
-            ShowMessage('PRODUTO VIRTUAL' +
+            ShowMessage('PRODUTO VIRTUAL'+#13+#13+
                         'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
                         'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
                         'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value);
@@ -678,7 +679,7 @@ begin
         exit;
     end;
 
-    {-----------VERIFICA SE DATAS E HORARIOS ESTÃO CORRETOS-----------}
+    {-----------VERIFICA SE EXISTE ORDEM JA ABERTA PARA REFERENCIA-----------}
     with dmOrdemCorte.qyCortePorTipoFichaId do
     begin
         Close;
@@ -700,7 +701,7 @@ begin
         begin
             if dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
             begin
-                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', mb_ok + mb_iconhand);
+                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
                 exit;
             end
             else
@@ -748,35 +749,126 @@ begin
         SQL.Add('      )');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         Open;
-        if dmOrdemCorte.qyGEComOuSemProt.RecordCount > 0 then
+        if labTipoCorte.Caption = 'Grande Escala' then
         begin
-            if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'N' then
+            if dmOrdemCorte.qyGEComOuSemProt.RecordCount > 0 then
             begin
-                Application.MessageBox('Prototipo em espera por aprovação!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
-                exit;
-            end;
-            if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'R' then
+                if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'N' then
+                begin
+                    Application.MessageBox('Prototipo em espera por aprovação!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
+                    exit;
+                end;
+                if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'R' then
+                begin
+                    Application.MessageBox('Protótipo reprovado, por esse motivo produção não pode ser realizada', 'Ordem de Corte', mb_ok + mb_iconhand);
+                    exit;
+                end;
+            end
+            else
             begin
-                Application.MessageBox('Protótipo reprovado, por esse motivo produção não pode ser realizada', 'Ordem de Corte', mb_ok + mb_iconhand);
-                exit;
-            end;
-        end
-        else
-        begin
-            with application do
-            begin
-                if MessageBox('Referência sem protótipo!'+#13+
-                'Ainda assim deseja abrir ordem de corte?', 'Ordem de Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
-                exit;
+                with application do
+                begin
+                    if MessageBox('Referência sem protótipo!'+#13+
+                    'Deseja mesmo assim abrir ordem de corte?', 'Ordem de Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
+                    exit;
+                end;
             end;
         end;
-        //if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fi_situacao').Value <> 'Z' then
-        //begin
-        //    Application.MessageBox('Ficha técnica não liberada para produção', 'Ordem de Corte', mb_ok + mb_iconhand);
-        //    exit;
-        //end;
     end;
 
+    {-----------VERIFICA SE HÁ INFORMAÇÕES DE CONSUMO DE FASE LANÇADA GE-----------}
+     with dmOrdemCorte.qyConsumoFaseGE do
+     begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT cpi.cpi_idfase, cpi.cpi_nosequencial, fa.fa_nome FROM cadastro_processo_itens AS cpi');
+        SQL.Add('     JOIN cadastro_processo AS cp ON cp.pce_id = cpi.cpi_idprocesso');
+        SQL.Add('     JOIN produto_acabado AS pa ON pa.cad_idprocesso = cp.pce_id');
+        SQL.Add('     JOIN fase_producao AS fa ON fa.fa_id = cpi.cpi_idfase');
+        SQL.Add('     WHERE');
+        SQL.Add('     pa.cad_id = :produtoacabado');
+        SQL.Add('     AND cpi.cpi_idfase <> ''9''');
+        SQL.Add('     AND cpi.cpi_idfase <> ''16''');
+        SQL.Add('     ORDER BY cpi.cpi_nosequencial ASC');
+        ParamByName('produtoacabado').AsInteger := strtoint(editCodigo.Text);
+        Open;
+     end;
+
+    dmOrdemCorte.qyConsumoFaseGE.First;
+    while not dmOrdemCorte.qyConsumoFaseGE.Eof do
+    begin
+         with dmOrdemCorte.qyFichaFaseGE do
+         begin
+              Close;
+              SQL.Clear;
+              SQL.Add('SELECT *');
+              SQL.Add('   FROM ficha_tecnica_itensfase');
+              SQL.Add('   WHERE ftf_idfaseproducao = :idFase');
+              SQL.add('   AND ftf_idfichatecnica = :fichatecnica');
+              ParamByName('idFase').AsInteger := dmOrdemCorte.qyConsumoFaseGE.FieldByName('cpi_idfase').Value;
+              ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+              dmOrdemCorte.qyConsumoFaseGE.Next;
+              Open;
+              if labTipoCorte.Caption = 'Grande Escala' then
+              begin
+                  if dmOrdemCorte.qyFichaFaseGE.RecordCount = 0 then
+                                  Application.MessageBox('Erro teste fase GE', 'Ordem de Corte', mb_ok + mb_iconhand);
+              end;
+         end;
+    end;
+
+
+//     with dmOrdemCorte.qyFichaFaseGE do
+//     begin
+//        Close;
+//        SQL.Clear;
+//        SQL.Add('SELECT *');
+//        SQL.Add('   FROM ficha_tecnica_itensfase');
+//        SQL.Add('   WHERE ftf_idfaseproducao = :idFase');
+//        SQL.add('   AND ftf_idfichatecnica = :fichatecnica');
+//        ParamByName('idFase').AsInteger := dmOrdemCorte.qyConsumoFaseGE.FieldByName('cpi_idfase').Value;
+//        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+//        Open;
+//        if labTipoCorte.Caption = 'Grande Escala' then
+//        begin
+//            if dmOrdemCorte.qyFichaFaseGE.RecordCount = 0 then
+//                            Application.MessageBox('Erro teste fase GE', 'Ordem de Corte', mb_ok + mb_iconhand);
+//        end;
+//     end;
+
+
+////        First;
+////        while not Eof do
+////        begin
+////            SQL.Add('SELECT * ');
+////            SQL.Add('   WHERE ftf_idfichatecnica = :fichatecnica');
+////            SQL.Add('   AND ftf_idfaseproducao = :idFase');
+////            ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+////            ParamByName('idFase').AsInteger := dmOrdemCorte.qyConsumoFaseGE.FieldByName('cpi_idfase').Value;
+////            Next;
+////        end;
+////        if labTipoCorte.Caption = 'Grande Escala' then
+////        begin
+////            if dmOrdemCorte.qyConsumoFaseGE.RecordCount = 0 then
+////                Application.MessageBox('Erro teste fase GE', 'Ordem de Corte', mb_ok + mb_iconhand);
+////        end;
+//
+//
+//        dmOrdemCorte.qyConsumoFaseGE.First;
+//        while not dmOrdemCorte.qyConsumoFaseGE.Eof do
+//        begin
+//            dmOrdemCorte.qyConsumoFaseGE.SQL.Add('SELECT * ');
+//            dmOrdemCorte.qyConsumoFaseGE.SQL.Add('   WHERE ftf_idfichatecnica = :fichatecnica');
+//            dmOrdemCorte.qyConsumoFaseGE.SQL.Add('   AND ftf_idfaseproducao = :idFase');
+//            dmOrdemCorte.qyConsumoFaseGE.ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+//            dmOrdemCorte.qyConsumoFaseGE.ParamByName('idFase').AsInteger := dmOrdemCorte.qyConsumoFaseGE.FieldByName('cpi_idfase').Value;
+//            Next;
+//        end;
+//        if labTipoCorte.Caption = 'Grande Escala' then
+//        begin
+//            if dmOrdemCorte.qyConsumoFaseGE.RecordCount = 0 then
+//                Application.MessageBox('Erro teste fase GE', 'Ordem de Corte', mb_ok + mb_iconhand);
+//        end;
 
 
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
