@@ -65,7 +65,7 @@ type
     labTipoCorte: TLabel;
     butNovo: TBitBtn;
     butSalvar: TBitBtn;
-    butRemover: TBitBtn;
+    butCancelarOrdem: TBitBtn;
     butEditar: TBitBtn;
     butDesistir: TBitBtn;
     Label18: TLabel;
@@ -87,6 +87,9 @@ type
     acaoCores: TAction;
     butEscolherCores: TBitBtn;
     labTipoProducao: TLabel;
+    labHifen: TLabel;
+    labOrd: TLabel;
+    butAlterar: TBitBtn;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
@@ -97,8 +100,12 @@ type
     procedure butEscolherCoresClick(Sender: TObject);
     procedure acaoCoresExecute(Sender: TObject);
     procedure butSalvarClick(Sender: TObject);
+    procedure butCancelarOrdemClick(Sender: TObject);
+    procedure butEditarClick(Sender: TObject);
+    procedure butAlterarClick(Sender: TObject);
   private
     { Private declarations }
+    procedure tratarDataHora;
   public
     { Public declarations }
     procedure abrirProdutoAcabado;
@@ -174,12 +181,64 @@ begin
         abrirProdutoAcabado;
 end;
 
+procedure TformIniciarCorte.butAlterarClick(Sender: TObject);
+begin
+    with dmOrdemCorte.qyDadosCorteById do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('UPDATE ordem_corte SET oc_dtprevisaofinalizacao = :dtfinalizacaocorte, oc_hrprevisaofinalizacao = :hrfinalizacaocorte,');
+        SQL.Add('   oc_idcodprodutoacabado = :prodAcabado, oc_observacao = :observacao, oc_datapreviniciocorteprevisto = :dtinicioprevisto,');
+        SQL.Add('   oc_horapreviniciocorteprevisto = :hrinicioprevisto, oc_dataprevfimcorteprevisto = :dtfimprevisto, oc_horaprevfimcorteprevisto = :hrfimprevisto,');
+        SQL.Add('   oc_datapreviniciorealcortado = :dtinicioreal, oc_horapreviniciorealcortado = :hrinicioreal, oc_dataprevfimrealcortado = :dtfimreal,');
+        SQL.Add('   oc_horaprevfimrealcortado = :hrfimreal, oc_dtalterada = :dtalterada, oc_hralterada = :hralterada, oc_idusualterou = :usuario WHERE oc_id = :ordemcorte');
+        ParamByName('ordemcorte').AsInteger := strtoint(labNumeroOrd.Caption);
+        ParamByname('dtfinalizacaocorte').AsDate := dataOrdemFinalizacao.Date;
+        ParamByName('hrfinalizacaocorte').AsTime := horaOrdemFinalizacao.Time;
+        ParamByName('prodAcabado').Value := strtoint(editCodigo.Text);
+        ParamByName('observacao').Value := editObservacao.Text;
+        ParamByName('dtinicioprevisto').AsDate := dataCortePrevisto.Date;
+        ParamByName('hrinicioprevisto').AsTime := horaCortePrevisto.Time;
+        ParamByName('dtfimprevisto').AsDate := dataFinalCortePrevisto.Date;
+        ParamByName('hrfimprevisto').AsTime := horaFinalCortePrevisto.Time;
+        ParamByName('dtinicioreal').AsDate := dataRealCortado.Date;
+        ParamByName('hrinicioreal').AsTime := horaRealCortado.Time;
+        ParamByName('dtfimreal').AsDate := dataFinalRealCortado.Date;
+        ParamByName('hrfimreal').AsTime := horaFinalRealCortado.Time;
+        ParamByName('dtalterada').AsDate := now;
+        ParamByName('hralterada').AsTime := now;
+        ParamByName('usuario').Value := 16;
+        ExecSQL;
+        tratarDataHora;
+        Application.MessageBox('Ordem alterada com sucesso!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
+        butSairInicioCorteClick(Sender);
+    end;
+end;
+
 procedure TformIniciarCorte.butDesistirClick(Sender: TObject);
 begin
     dmOrdemCorte.tbOrdemdeCorte.Cancel;
     butDesistir.Enabled := false;
     butSalvar.Enabled := false;
+    butCancelarOrdem.Enabled := false;
     butNovo.Enabled := true;
+    butAlterar.Enabled := false;
+end;
+
+procedure TformIniciarCorte.butEditarClick(Sender: TObject);
+begin
+    if labNormal.Caption = 'FINALIZADA' then
+        Application.MessageBox('Não é permitido editar corte já finalizado!', 'Ordem de Corte', mb_ok + mb_iconhand)
+    else
+        dmOrdemCorte.tbOrdemdeCorte.Edit;
+        editCodigo.SetFocus;
+        butNovo.Enabled := false;
+        butDesistir.Enabled := true;
+        butSalvar.Enabled := false;
+        butAlterar.Visible := true;
+        butCancelarOrdem.Enabled := true;
+        butEditar.Enabled := false;
+        butEscolherCores.Enabled := true;
 end;
 
 procedure TformIniciarCorte.butEscolherCoresClick(Sender: TObject);
@@ -192,9 +251,44 @@ begin
     dmOrdemCorte.tbOrdemdeCorte.Open();
     dmOrdemCorte.tbOrdemdeCorte.Append;
     editCodigo.SetFocus;
+    dataSolicitacao.Date := now;
+    horaSolicitacao.Time := now;
+    dataOrdemFinalizacao.Date := now;
+    horaOrdemFinalizacao.Time := now;
+    dataCortePrevisto.Date := now;
+    horaCortePrevisto.Time := now;
+    dataFinalCortePrevisto.Date := now;
+    horaFinalCortePrevisto.Time := now;
+    dataRealCortado.Date := now;
+    horaRealCortado.Time := now;
+    dataFinalRealCortado.Date := now;
+    horaFinalRealCortado.Time := now;
     butNovo.Enabled := false;
     butSalvar.Enabled := true;
     butDesistir.Enabled := true;
+    butAlterar.Visible := false;
+end;
+
+procedure TformIniciarCorte.butCancelarOrdemClick(Sender: TObject);
+begin
+    with application do
+    begin
+        if MessageBox('Deseja cancelar esta ordem de corte?', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDYES then
+            with dmOrdemCorte.qyDadosCorteById do
+            begin
+                Close;
+                SQL.Clear;
+                SQL.Add('UPDATE ordem_corte SET oc_situacao = 2, oc_dtcancelada = :datacancel, oc_hrcancelada = :horacancel, oc_usuidcancelada = 16');
+                SQL.Add('WHERE oc_id = :ordemcorte');
+                ParamByName('ordemcorte').AsInteger := strtoint(labNumeroOrd.Caption);
+                ParamByName('datacancel').Value := now;
+                ParamByName('horacancel').Value := now;
+                ExecSQL;
+                Application.MessageBox('Ordem cancelada com sucesso!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
+                butSairInicioCorteClick(Sender);
+                //formPrincipal.butOrdemPesquisarClick(Sender);
+            end;
+    end;
 end;
 
 procedure TformIniciarCorte.butSairInicioCorteClick(Sender: TObject);
@@ -202,23 +296,29 @@ begin
     formIniciarCorte.Close;
     formPrincipal.habComponentes;
     formPrincipal.gridOrdem.Visible := true;
-    ShowScrollBar(formPrincipal.gridOrdem.Handle, SB_HORZ, True);
 end;
 
 procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 var
         totalConsumo : real;
+        processo : boolean;
+        produto, cor, tamanho : Array of String;
+        i : integer;
+
 begin
-    {-----------VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR-----------}
+    {-----------VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR SEM EMPENHO DEVOLVIDO-----------}
     with dmOrdemCorte.qyOrdemDeCorte do
     begin
         Close;
-        SQL.Text := 'SELECT oc_situacao FROM ordem_corte';
-        SQL.Add('WHERE oc_idcodprodutoacabado = :prodacabado');
-        ParamByName('prodacabado').AsInteger := strtoint(editCodigo.Text);
+        SQL.Text := 'SELECT * FROM controle_empenho';
+        SQL.Add('WHERE emp_codprocesso = :fichatec');
+        SQL.Add('AND emp_mod = ''0''');
+        SQL.Add('AND emp_tipo = ''E''');
+        SQL.Add('AND emp_situacao = ''N''');
+        ParamByName('fichatec').AsInteger := strtoint(editFicha.Text);
         Open;
     end;
-    if dmOrdemCorte.qyOrdemDeCorte.FieldByName('oc_situacao').Value = 4 then
+    if dmOrdemCorte.qyOrdemDeCorte.RecordCount > 0 then
     begin
         Application.MessageBox('Houve um cancelamento de ordem de corte anterior para essa referência com empenhos devolvidos para almoxarifado!',
         'Ordem de Corte', mb_iconhand + mb_ok + mb_applmodal);
@@ -489,195 +589,148 @@ begin
      end;
 
      {-----------VERIFICA SE EXISTE ALGUM ITEM COM ESTOQUE INFERIOR (PRODUÇÃO)-----------}
-     with dmOrdemCorte.qyAviamentosPorFicha do
-     begin
-        Close;
-        SQL.Clear;
-        SQL.Add('SELECT');
-        SQL.Add('    cp.cp_id,');
-        SQL.Add('    gc.grc_id,');
-        SQL.Add('    gt.grt_id,');
-        SQL.Add('    cp.cp_descricao,');
-        SQL.Add('    (COALESCE(gc.grc_codexterno, '''') ||'' - '' || TRIM(gc.grc_nome)) AS grc_nome,');
-        SQL.Add('    gt.grt_nome,');
-        SQL.Add('    fti.*');
-        SQL.Add('    FROM ficha_tecnica_itens AS fti');
-        SQL.Add('    JOIN cadastro_produto AS cp ON cp.cp_id = fti.fti_idproduto');
-        SQL.Add('    JOIN grade_cor AS gc on gc.grc_id = fti.fti_idgradecor');
-        SQL.Add('    JOIN grade_cor AS gc_pa on gc_pa.grc_id = fti.fti_cortecidoidgrade');
-        SQL.Add('    JOIN grade_tamanho AS gt on gt.grt_id = fti.fti_idgradetam');
-        SQL.Add('    WHERE');
-        SQL.Add('    fti.fti_idfichatec = :fichatecnica');
-        SQL.Add('    AND fti.fti_status = ''N''');
-        SQL.Add('    AND fti.fti_tecido = ''N''');
-        ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
-        Open;
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr2').Value));
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr3').Value));
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr4').Value));
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr5').Value));
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr6').Value));
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr7').Value));
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr8').Value));
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr9').Value));
-        if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value > 0 then
-            totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr10').Value));
-     end;
-
-     with dmOrdemCorte.qyEstoqueSemReservaProt do
-     begin
-         Close;
-         SQL.Clear;
-         SQL.Add('SELECT DISTINCT');
-         SQL.Add('    e.es_id,');
-         SQL.Add('    e.es_codloja,');
-         SQL.Add('    e.es_codproduto,');
-         SQL.Add('    e.es_idgradecor,');
-         SQL.Add('    e.es_idgradetam,');
-         SQL.Add('    cp.cp_descricao,');
-         SQL.Add('    gc.grc_nome,');
-         SQL.Add('    gt.grt_nome,');
-         SQL.Add('    e.es_metragemrolo,');
-         SQL.Add('    COALESCE(e.es_custoatual, 0) AS es_custoatual,');
-         SQL.Add('    e.es_numrolo,');
-         SQL.Add('        (');
-         SQL.Add('            (');
-         SQL.Add('                COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
-         SQL.Add('                COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
-         SQL.Add('            ) -');
-         SQL.Add('            (');
-         SQL.Add('                COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
-         SQL.Add('            ) -');
-         SQL.Add('            (');
-         SQL.Add('                COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
-         SQL.Add('            )');
-         SQL.Add('       ) AS disponivel,');
-         SQL.Add('       (');
-         SQL.Add('            (');
-         SQL.Add('                COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
-         SQL.Add('                COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
-         SQL.Add('            ) -');
-         SQL.Add('            (');
-         SQL.Add('                COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
-         SQL.Add('            )');
-         SQL.Add('       ) AS fisico');
-         SQL.Add('       FROM estoque AS e');
-         SQL.Add('       JOIN cadastro_produto As cp On e.es_codproduto = cp.cp_id');
-         SQL.Add('       JOIN grade_cor As gc On gc.grc_id = e.es_idgradecor');
-         SQL.Add('       JOIN grade_tamanho As gt On gt.grt_id = e.es_idgradetam');
-         SQL.Add('       WHERE gc.grc_id = :gradecor');
-         SQL.Add('       AND gt.grt_id = :gradetamanho');
-         SQL.Add('       AND cp.cp_id = :cadastroproduto');
-         SQL.Add('       AND');
-         SQL.Add('            (');
-         SQL.Add('                (');
-         SQL.Add('                    COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
-         SQL.Add('                    COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
-         SQL.Add('                ) -');
-         SQL.Add('                (');
-         SQL.Add('                    COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
-         SQL.Add('                )');
-         SQL.Add('            ) > 0');
-         SQL.Add('      ORDER BY disponivel ASC');
-         ParamByName('gradecor').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_id').Value;
-         ParamByName('gradetamanho').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_id').Value;
-         ParamByName('cadastroproduto').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_id').Value;
-         Open;
-         if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
+     if labTipoCorte.Caption = 'Grande Escala' then
+         with dmOrdemCorte.qyAviamentosPorFicha do
          begin
-            ShowMessage('PRODUTO VIRTUAL'+#13+#13+
-                        'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
-                        'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
-                        'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value);
-         end
-         else
-         begin
-            if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('    cp.cp_id,');
+            SQL.Add('    gc.grc_id,');
+            SQL.Add('    gt.grt_id,');
+            SQL.Add('    cp.cp_descricao,');
+            SQL.Add('    (COALESCE(gc.grc_codexterno, '''') ||'' - '' || TRIM(gc.grc_nome)) AS grc_nome,');
+            SQL.Add('    gt.grt_nome,');
+            SQL.Add('    fti.*');
+            SQL.Add('    FROM ficha_tecnica_itens AS fti');
+            SQL.Add('    JOIN cadastro_produto AS cp ON cp.cp_id = fti.fti_idproduto');
+            SQL.Add('    JOIN grade_cor AS gc on gc.grc_id = fti.fti_idgradecor');
+            SQL.Add('    JOIN grade_cor AS gc_pa on gc_pa.grc_id = fti.fti_cortecidoidgrade');
+            SQL.Add('    JOIN grade_tamanho AS gt on gt.grt_id = fti.fti_idgradetam');
+            SQL.Add('    WHERE');
+            SQL.Add('    fti.fti_idfichatec = :fichatecnica');
+            SQL.Add('    AND fti.fti_status = ''N''');
+            SQL.Add('    AND fti.fti_tecido = ''N''');
+            ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
+            Open;
+            dmOrdemCorte.qyAviamentosPorFicha.First;
+            while not dmOrdemCorte.qyAviamentosPorFicha.Eof do
             begin
-               ShowMessage('PRODUTO SEM ESTOQUE'+#13+#13+
-                        'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
-                        'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
-                        'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value);
-               Application.MessageBox('Por este motivo(s) o corte não pode ser inciado', 'Ordem de Corte', mb_ok + mb_iconhand);
-               with Application do
-               begin
-                  if MessageBox('Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
-                  exit;
-               end;
+                with dmOrdemCorte.qyEstoqueSemReservaProt do
+                 begin
+                     Close;
+                     SQL.Clear;
+                     SQL.Add('SELECT DISTINCT');
+                     SQL.Add('    e.es_id,');
+                     SQL.Add('    e.es_codloja,');
+                     SQL.Add('    e.es_codproduto,');
+                     SQL.Add('    e.es_idgradecor,');
+                     SQL.Add('    e.es_idgradetam,');
+                     SQL.Add('    cp.cp_descricao,');
+                     SQL.Add('    gc.grc_nome,');
+                     SQL.Add('    gt.grt_nome,');
+                     SQL.Add('    e.es_metragemrolo,');
+                     SQL.Add('    COALESCE(e.es_custoatual, 0) AS es_custoatual,');
+                     SQL.Add('    e.es_numrolo,');
+                     SQL.Add('        (');
+                     SQL.Add('            (');
+                     SQL.Add('                COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+                     SQL.Add('                COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+                     SQL.Add('            ) -');
+                     SQL.Add('            (');
+                     SQL.Add('                COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
+                     SQL.Add('            ) -');
+                     SQL.Add('            (');
+                     SQL.Add('                COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
+                     SQL.Add('            )');
+                     SQL.Add('       ) AS disponivel,');
+                     SQL.Add('       (');
+                     SQL.Add('            (');
+                     SQL.Add('                COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+                     SQL.Add('                COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+                     SQL.Add('            ) -');
+                     SQL.Add('            (');
+                     SQL.Add('                COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
+                     SQL.Add('            )');
+                     SQL.Add('       ) AS fisico');
+                     SQL.Add('       FROM estoque AS e');
+                     SQL.Add('       JOIN cadastro_produto As cp On e.es_codproduto = cp.cp_id');
+                     SQL.Add('       JOIN grade_cor As gc On gc.grc_id = e.es_idgradecor');
+                     SQL.Add('       JOIN grade_tamanho As gt On gt.grt_id = e.es_idgradetam');
+                     SQL.Add('       WHERE gc.grc_id = :gradecor');
+                     SQL.Add('       AND gt.grt_id = :gradetamanho');
+                     SQL.Add('       AND cp.cp_id = :cadastroproduto');
+                     SQL.Add('       AND');
+                     SQL.Add('            (');
+                     SQL.Add('                (');
+                     SQL.Add('                    COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+                     SQL.Add('                    COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+                     SQL.Add('                ) -');
+                     SQL.Add('                (');
+                     SQL.Add('                    COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
+                     SQL.Add('                )');
+                     SQL.Add('            ) > 0');
+                     SQL.Add('      ORDER BY disponivel ASC');
+                     ParamByName('gradecor').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_id').Value;
+                     ParamByName('gradetamanho').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_id').Value;
+                     ParamByName('cadastroproduto').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_id').Value;
+                     Open;
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr2').Value));
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr3').Value));
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr4').Value));
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr5').Value));
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr6').Value));
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr7').Value));
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr8').Value));
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr9').Value));
+                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr10').Value));
+
+                     if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
+                     begin
+                        ShowMessage('PRODUTO VIRTUAL'+#13+#13+
+                                    'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
+                                    'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
+                                    'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
+                                     '');
+                        processo := false;
+                     end
+                     else
+                        if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
+                        begin
+                           ShowMessage('PRODUTO SEM ESTOQUE'+#13+#13+
+                                      'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
+                                      'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
+                                      'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
+                                      '');
+                           processo := false;
+                        end;
+                 end;
+            dmOrdemCorte.qyAviamentosPorFicha.Next;
             end;
+            if processo = false then
+               begin
+                    Application.MessageBox('Por este motivo(s) o corte não pode ser iniciado', 'Ordem de Corte', mb_ok + mb_iconhand);
+                    with Application do
+                    begin
+                        if MessageBox('Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
+                        exit;
+                    end;
+               end;
          end;
-     end;
 
      {-----------VERIFICA SE DATAS E HORARIOS ESTÃO CORRETOS-----------}
-    if dataOrdemFinalizacao.Date < dataSolicitacao.Date then
-    begin
-        Application.MessageBox('Data de finalização do corte não pode ser anterior a atual!', 'Ordem de Corte', mb_ok + mb_iconhand);
-        exit;
-    end;
-
-    if horaOrdemFinalizacao.Time < horaSolicitacao.Time then
-    begin
-        Application.MessageBox('Horário de finalização do corte não pode ser anterior a atual!','Ordem de Corte', mb_ok + mb_iconhand);
-        exit;
-    end;
-
-    if dataCortePrevisto.Date < dataSolicitacao.Date then
-    begin
-         Application.MessageBox('Data de inicio do corte previsto não pode ser anterior a data de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
-         exit;
-    end;
-
-    if horaCortePrevisto.Time < horaSolicitacao.Time then
-    begin
-        Application.MessageBox('Horário de inicio do corte previsto não pode ser anterior ao horário de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
-        exit;
-    end;
-
-    if dataFinalCortePrevisto.Date < dataCortePrevisto.Date then
-    begin
-        Application.MessageBox('Data de finalização do corte previsto não pode ser anterior a data de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
-        exit;
-    end;
-
-    if horaFinalCortePrevisto.Time < horaCortePrevisto.Time then
-    begin
-        Application.MessageBox('Horário de finalização do corte previsto não pode ser anterior ao horário de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
-        exit;
-    end;
-
-    if dataRealCortado.Date < dataFinalCortePrevisto.Date then
-    begin
-        Application.MessageBox('Data de inicio do real cortado não pode ser anterior a data de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
-        exit;
-    end;
-
-    if horaRealCortado.Time < horaFinalCortePrevisto.Time then
-    begin
-        Application.MessageBox('Horário de inicio do real cortado não pode ser anterior ao horário de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
-        exit;
-    end;
-
-    if dataFinalRealCortado.Date < dataRealCortado.Date then
-    begin
-        Application.MessageBox('Data de finalização do real cortado não pode ser anterior a data de inicio do real cortado!', 'Ordem de Corte', mb_ok + mb_iconhand);
-        exit;
-    end;
-
-    if horaFinalRealCortado.Time < horaRealCortado.Time then
-    begin
-        Application.MessageBox('Horário de finalização do corte real não pode ser anterior ao horário de inicio do corte real', 'Ordem de Corte', mb_ok + mb_iconhand);
-        exit;
-    end;
+     tratarDataHora;
 
     {-----------VERIFICA SE EXISTE ORDEM JA ABERTA PARA REFERENCIA-----------}
     with dmOrdemCorte.qyCortePorTipoFichaId do
@@ -822,7 +875,6 @@ begin
     end;
 
 
-
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;
@@ -839,6 +891,7 @@ begin
     else
         dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := false;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idsetor').Value := 7;
+    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idsetorresponsavel').Value := 1;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciocorteprevisto').Value := dataCortePrevisto.Date;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciocorteprevisto').Value := horaCortePrevisto.Time;
     dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimcorteprevisto').Value := dataFinalCortePrevisto.Date;
@@ -851,6 +904,8 @@ begin
     butDesistir.Enabled := false;
     butSalvar.Enabled := false;
     butNovo.Enabled := true;
+    butEscolherCores.Enabled := true;
+    formPrincipal.butOrdemPesquisarClick(Sender);
     Application.MessageBox('Operação realizada com sucesso!', 'Ordem de Corte', mb_iconexclamation + mb_ok + mb_applmodal);
 end;
 
@@ -862,22 +917,12 @@ end;
 
 procedure TformIniciarCorte.FormCreate(Sender: TObject);
 begin
-    dataSolicitacao.Date := now;
-    horaSolicitacao.Time := now;
-    dataOrdemFinalizacao.Date := now;
-    horaOrdemFinalizacao.Time := now;
-    dataCortePrevisto.Date := now;
-    horaCortePrevisto.Time := now;
-    dataFinalCortePrevisto.Date := now;
-    horaFinalCortePrevisto.Time := now;
-    dataRealCortado.Date := now;
-    horaRealCortado.Time := now;
-    dataFinalRealCortado.Date := now;
-    horaFinalRealCortado.Time := now;
     butSalvar.Enabled := false;
-    butRemover.Enabled := false;
+    butCancelarOrdem.Enabled := false;
     butEditar.Enabled := false;
     butDesistir.Enabled := false;
+    butAlterar.Visible := false;
+    butEscolherCores.Enabled := false;
 end;
 
 procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;
@@ -892,6 +937,69 @@ begin
              FreeAndNil(formProdutoAcabado);
           end;
      end;
+end;
+
+procedure TformIniciarCorte.tratarDataHora;
+begin
+    if dataOrdemFinalizacao.Date < dataSolicitacao.Date then
+    begin
+        Application.MessageBox('Data de finalização do corte não pode ser anterior a atual!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        abort;
+    end;
+
+    if horaOrdemFinalizacao.Time < horaSolicitacao.Time then
+    begin
+        Application.MessageBox('Horário de finalização do corte não pode ser anterior a atual!','Ordem de Corte', mb_ok + mb_iconhand);
+        abort;
+    end;
+
+    if dataCortePrevisto.Date < dataSolicitacao.Date then
+    begin
+         Application.MessageBox('Data de inicio do corte previsto não pode ser anterior a data de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
+         abort;
+    end;
+
+    if horaCortePrevisto.Time < horaSolicitacao.Time then
+    begin
+        Application.MessageBox('Horário de inicio do corte previsto não pode ser anterior ao horário de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        abort;
+    end;
+
+    if dataFinalCortePrevisto.Date < dataCortePrevisto.Date then
+    begin
+        Application.MessageBox('Data de finalização do corte previsto não pode ser anterior a data de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        abort;
+    end;
+
+    if horaFinalCortePrevisto.Time < horaCortePrevisto.Time then
+    begin
+        Application.MessageBox('Horário de finalização do corte previsto não pode ser anterior ao horário de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        abort;
+    end;
+
+    if dataRealCortado.Date < dataFinalCortePrevisto.Date then
+    begin
+        Application.MessageBox('Data de inicio do real cortado não pode ser anterior a data de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        abort;
+    end;
+
+    if horaRealCortado.Time < horaFinalCortePrevisto.Time then
+    begin
+        Application.MessageBox('Horário de inicio do real cortado não pode ser anterior ao horário de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        abort;
+    end;
+
+    if dataFinalRealCortado.Date < dataRealCortado.Date then
+    begin
+        Application.MessageBox('Data de finalização do real cortado não pode ser anterior a data de inicio do real cortado!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        abort;
+    end;
+
+    if horaFinalRealCortado.Time < horaRealCortado.Time then
+    begin
+        Application.MessageBox('Horário de finalização do corte real não pode ser anterior ao horário de inicio do corte real', 'Ordem de Corte', mb_ok + mb_iconhand);
+        abort;
+    end;
 end;
 
 end.

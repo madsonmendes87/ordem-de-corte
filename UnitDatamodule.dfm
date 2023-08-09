@@ -527,4 +527,19 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 592
     Top = 184
   end
+  object qyDadosCorteById: TFDQuery
+    Connection = Conexao
+    Left = 688
+    Top = 184
+  end
+  object qyCoresNoCorte: TFDQuery
+    Connection = Conexao
+    Left = 984
+    Top = 16
+  end
+  object dsCoresNoCorte: TDataSource
+    DataSet = qyCoresNoCorte
+    Left = 1072
+    Top = 16
+  end
 end

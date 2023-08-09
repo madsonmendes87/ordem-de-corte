@@ -38,7 +38,6 @@ object formPrincipal: TformPrincipal
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 1369
     object LbUsuario: TLabel
       AlignWithMargins = True
       Left = 4
@@ -115,7 +114,6 @@ object formPrincipal: TformPrincipal
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 1
-    ExplicitHeight = 663
     object btnOrdemCorte: TSpeedButton
       Left = 4
       Top = -2
@@ -1585,8 +1583,6 @@ object formPrincipal: TformPrincipal
       item
         Width = 50
       end>
-    ExplicitTop = 688
-    ExplicitWidth = 1369
   end
   object Panel1: TPanel
     Left = 196
@@ -2010,7 +2006,7 @@ object formPrincipal: TformPrincipal
       Left = 186
       Top = 52
       Width = 201
-      Height = 21
+      Height = 24
       CharCase = ecUpperCase
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -2281,7 +2277,6 @@ object formPrincipal: TformPrincipal
       Category = 'verCorte'
       Caption = 'Ver Corte Real (F4)'
       ShortCut = 115
-      OnExecute = acaoBotaoCorteRealExecute
     end
     object acaoBotaoCortePrevisto: TAction
       Category = 'verCorte'
