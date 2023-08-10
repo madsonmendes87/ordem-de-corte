@@ -138,7 +138,6 @@ end;
 procedure TformPrincipal.acaoBotaoVerCorteExecute(Sender: TObject);
 begin
       if butVerCorte.Enabled = true then
-          //ShowMessage('Mensagem de teste: Ver Corte');
           gridOrdem.Visible:=false;
           formIniciarCorte:=TformIniciarCorte.Create(Self);
           formIniciarCorte.Parent:=Panel1;
@@ -188,7 +187,7 @@ begin
           formIniciarCorte.horaRealCortado.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horapreviniciorealcortado').Value;
           formIniciarCorte.dataFinalRealCortado.Date := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dataprevfimrealcortado').Value;
           formIniciarCorte.horaFinalRealCortado.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horaprevfimrealcortado').Value;
-          formIniciarCorte.editObservacao.Text := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_observcao').Value;
+          formIniciarCorte.editObservacao.Text := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_observacao').Value;
           desabComponentes;
 
 end;

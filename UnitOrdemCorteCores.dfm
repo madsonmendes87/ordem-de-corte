@@ -5,7 +5,7 @@ object formOrdemCorteCores: TformOrdemCorteCores
   BorderStyle = bsSingle
   Caption = 'Ordem Corte Cores'
   ClientHeight = 496
-  ClientWidth = 703
+  ClientWidth = 609
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,6 +14,7 @@ object formOrdemCorteCores: TformOrdemCorteCores
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -48,9 +49,10 @@ object formOrdemCorteCores: TformOrdemCorteCores
   object gridCoresReferencia: TDBGrid
     Left = 8
     Top = 24
-    Width = 684
+    Width = 593
     Height = 185
     DataSource = dmOrdemCorte.dsOrdemCorteCores
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -61,9 +63,10 @@ object formOrdemCorteCores: TformOrdemCorteCores
   object gridCoresCorte: TDBGrid
     Left = 8
     Top = 264
-    Width = 685
+    Width = 593
     Height = 193
     DataSource = dmOrdemCorte.dsCoresNoCorte
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 3
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText

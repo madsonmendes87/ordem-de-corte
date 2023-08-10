@@ -57,6 +57,12 @@ type
     qyEstoqueSemReservaProt: TFDQuery;
     qyCortePorTipoFichaId: TFDQuery;
     qyGEComOuSemProt: TFDQuery;
+    qyVerCorteReal: TFDQuery;
+    qyConsumoFaseGE: TFDQuery;
+    qyFichaFaseGE: TFDQuery;
+    qyDadosCorteById: TFDQuery;
+    qyCoresNoCorte: TFDQuery;
+    dsCoresNoCorte: TDataSource;
   private
     { Private declarations }
   public

@@ -22,6 +22,7 @@ type
     procedure butAddTodasClick(Sender: TObject);
     procedure butRetirarClick(Sender: TObject);
     procedure butRetirarTodasClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   private
     { Private declarations }
   public
@@ -40,7 +41,7 @@ uses UnitIniciarCorte, UnitDatamodule, UnitDMHistoricOrdem,
 
 procedure TformOrdemCorteCores.butAddClick(Sender: TObject);
 begin
-      Application.MessageBox('Bot√£o Adicionar clicado', 'Cores no Corte', mb_ok + mb_iconexclamation);
+      Application.MessageBox('Bot„o Adicionar clicado', 'Cores no Corte', mb_ok + mb_iconexclamation);
 end;
 
 procedure TformOrdemCorteCores.butAddTodasClick(Sender: TObject);
@@ -58,15 +59,19 @@ begin
       Application.MessageBox('Retirar todas', 'Cores no Corte', mb_ok + mb_iconexclamation);
 end;
 
+procedure TformOrdemCorteCores.FormResize(Sender: TObject);
+begin
+      formPrincipal.dimensionarGrid(gridCoresReferencia);
+      formPrincipal.dimensionarGrid(gridCoresCorte);
+end;
+
 procedure TformOrdemCorteCores.FormShow(Sender: TObject);
 begin
       With dmOrdemCorte.qyCores do
       begin
             Close;
             SQL.Clear;
-            SQL.Add('SELECT (cast(''Cod Uso: '' || (gc.grc_codexterno) ||''    '' ||');
-				    SQL.Add('   TRIM(gc.grc_nome) || '' ('' ||');
-				    SQL.Add('   TRIM(gc.grc_sigla) || '')'' as character varying(120))) AS grc_nome');
+            SQL.Add('SELECT gc.grc_id, gc.grc_codexterno, gc.grc_nome, gc.grc_sigla');
 				    SQL.Add('   FROM ficha_tecnica_itens AS fti');
 				    SQL.Add('   JOIN grade_cor AS gc ON gc.grc_id = fti.fti_cortecidoidgrade');
 				    SQL.Add('WHERE fti.fti_idfichatec = :ficha');
@@ -85,24 +90,34 @@ begin
             ParamByName('ordemCorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
             Open;
       end;
-      gridCoresReferencia.Columns[0].Title.Caption := 'COR';
+      gridCoresReferencia.Columns[0].Title.Caption := 'Codigo';
       gridCoresReferencia.Columns[0].Title.Font.Style := [fsBold];
+      gridCoresReferencia.Columns[1].Title.Caption := 'Cod Uso';
+      gridCoresReferencia.Columns[1].Title.Font.Style := [fsBold];
+      gridCoresReferencia.Columns[2].Title.Caption := 'COR';
+      gridCoresReferencia.Columns[2].Title.Font.Style := [fsBold];
+      gridCoresReferencia.Columns[3].Title.Caption := 'Sigla';
+      gridCoresReferencia.Columns[3].Title.Font.Style := [fsBold];
 
       With dmOrdemCorte.qyCoresNoCorte do
       begin
             Close;
             SQL.Clear;
-            SQL.Add('SELECT (cast(''Cod Uso: '' || (gc.grc_codexterno) ||''    '' ||');
-				    SQL.Add('   TRIM(gc.grc_nome) || '' ('' ||');
-				    SQL.Add('   TRIM(gc.grc_sigla) || '')'' as character varying(120))) AS grc_nome');
+            SQL.Add('SELECT gc.grc_id, gc.grc_codexterno, gc.grc_nome, gc.grc_sigla');
             SQL.Add('   FROM ordem_corte_cores AS occ');
             SQL.Add('   JOIN grade_cor AS gc ON gc.grc_id = occ.occ_idcor');
             SQL.Add('   WHERE occ_idordemcorte = :ordemCorte');
             ParamByName('ordemCorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
             Open;
       end;
-      gridCoresCorte.Columns[0].Title.Caption := 'COR';
+      gridCoresCorte.Columns[0].Title.Caption := 'Codigo';
       gridCoresCorte.Columns[0].Title.Font.Style := [fsBold];
+      gridCoresCorte.Columns[1].Title.Caption := 'Cod Uso';
+      gridCoresCorte.Columns[1].Title.Font.Style := [fsBold];
+      gridCoresCorte.Columns[2].Title.Caption := 'COR';
+      gridCoresCorte.Columns[2].Title.Font.Style := [fsBold];
+      gridCoresCorte.Columns[3].Title.Caption := 'Sigla';
+      gridCoresCorte.Columns[3].Title.Font.Style := [fsBold];
 end;
 
 end.

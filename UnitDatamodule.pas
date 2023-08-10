@@ -63,6 +63,8 @@ type
     qyDadosCorteById: TFDQuery;
     qyCoresNoCorte: TFDQuery;
     dsCoresNoCorte: TDataSource;
+    tbCorteCores: TFDTable;
+    dsCorteCores: TDataSource;
   private
     { Private declarations }
   public

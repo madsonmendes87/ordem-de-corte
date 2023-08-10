@@ -117,6 +117,7 @@ type
     function versaoExe: String;
     procedure boxEstilista;
     procedure habComponentes;
+    procedure dimensionarGrid;
   end;
 
 var
@@ -138,7 +139,6 @@ end;
 procedure TformPrincipal.acaoBotaoVerCorteExecute(Sender: TObject);
 begin
       if butVerCorte.Enabled = true then
-          //ShowMessage('Mensagem de teste: Ver Corte');
           gridOrdem.Visible:=false;
           formIniciarCorte:=TformIniciarCorte.Create(Self);
           formIniciarCorte.Parent:=Panel1;
@@ -188,6 +188,7 @@ begin
           formIniciarCorte.horaRealCortado.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horapreviniciorealcortado').Value;
           formIniciarCorte.dataFinalRealCortado.Date := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dataprevfimrealcortado').Value;
           formIniciarCorte.horaFinalRealCortado.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horaprevfimrealcortado').Value;
+          formIniciarCorte.editObservacao.Text := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_observacao').Value;
           desabComponentes;
 
 end;
@@ -446,6 +447,62 @@ begin
     btnEntregaPecas.Enabled := false;
     btnObservacoes.Enabled := false;
     btnProcRestrito.Enabled := false;
+end;
+
+procedure TformPrincipal.dimensionarGrid;
+  type
+  TArray = Array of Integer;
+  procedure AjustarColumns(Swidth, TSize: Integer; Asize: TArray);
+  var
+    idx: Integer;
+  begin
+    if TSize = 0 then
+    begin
+      TSize := dbg.Columns.count;
+      for idx := 0 to dbg.Columns.count - 1 do
+        dbg.Columns[idx].Width := (dbg.Width - dbg.Canvas.TextWidth('AAAAAA')
+          ) div TSize
+    end
+    else
+      for idx := 0 to dbg.Columns.count - 1 do
+        dbg.Columns[idx].Width := dbg.Columns[idx].Width +
+          (Swidth * Asize[idx] div TSize);
+  end;
+
+var
+  idx, Twidth, TSize, Swidth: Integer;
+  AWidth: TArray;
+  Asize: TArray;
+  NomeColuna: String;
+begin
+  SetLength(AWidth, dbg.Columns.count);
+  SetLength(Asize, dbg.Columns.count);
+  Twidth := 0;
+  TSize := 0;
+  for idx := 0 to dbg.Columns.count - 1 do
+  begin
+    NomeColuna := dbg.Columns[idx].Title.Caption;
+    dbg.Columns[idx].Width := dbg.Canvas.TextWidth
+      (dbg.Columns[idx].Title.Caption + 'A');
+    AWidth[idx] := dbg.Columns[idx].Width;
+    Twidth := Twidth + AWidth[idx];
+
+    if Assigned(dbg.Columns[idx].Field) then
+      Asize[idx] := dbg.Columns[idx].Field.Size
+    else
+      Asize[idx] := 1;
+
+    TSize := TSize + Asize[idx];
+  end;
+  if TDBGridOption.dgColLines in dbg.Options then
+    Twidth := Twidth + dbg.Columns.count;
+
+  // adiciona a largura da coluna indicada do cursor
+  if TDBGridOption.dgIndicator in dbg.Options then
+    Twidth := Twidth + IndicatorWidth;
+
+  Swidth := dbg.ClientWidth - Twidth;
+  AjustarColumns(Swidth, TSize, Asize);
 end;
 
 procedure TformPrincipal.editSearchKeyPress(Sender: TObject;

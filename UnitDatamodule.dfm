@@ -542,4 +542,17 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 1072
     Top = 16
   end
+  object tbCorteCores: TFDTable
+    Active = True
+    IndexFieldNames = 'occ_id'
+    MasterSource = dsCorteCores
+    Connection = Conexao
+    TableName = 'ordem_corte_cores'
+    Left = 984
+    Top = 72
+  end
+  object dsCorteCores: TDataSource
+    Left = 1056
+    Top = 72
+  end
 end

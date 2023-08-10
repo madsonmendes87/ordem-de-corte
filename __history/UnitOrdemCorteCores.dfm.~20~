@@ -6,7 +6,7 @@ object formOrdemCorteCores: TformOrdemCorteCores
   Caption = 'Ordem Corte Cores'
   ClientHeight = 496
   ClientWidth = 703
-  Color = clBtnFace
+  Color = clGradientInactiveCaption
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -63,6 +63,8 @@ object formOrdemCorteCores: TformOrdemCorteCores
     Top = 264
     Width = 685
     Height = 193
+    DataSource = dmOrdemCorte.dsCoresNoCorte
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 3
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -86,6 +88,7 @@ object formOrdemCorteCores: TformOrdemCorteCores
     Height = 25
     Caption = 'Adicionar Todas'
     TabOrder = 5
+    OnClick = butAddTodasClick
   end
   object butRetirar: TBitBtn
     Left = 8
@@ -94,6 +97,7 @@ object formOrdemCorteCores: TformOrdemCorteCores
     Height = 25
     Caption = 'Retirar'
     TabOrder = 6
+    OnClick = butRetirarClick
   end
   object butRetirarTodas: TBitBtn
     Left = 89
@@ -102,5 +106,6 @@ object formOrdemCorteCores: TformOrdemCorteCores
     Height = 25
     Caption = 'Retirar Todas'
     TabOrder = 7
+    OnClick = butRetirarTodasClick
   end
 end

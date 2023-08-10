@@ -1,7 +1,7 @@
 object dmOrdemCorte: TdmOrdemCorte
   OldCreateOrder = False
   Height = 577
-  Width = 1047
+  Width = 1271
   object Conexao: TFDConnection
     Params.Strings = (
       'Server=localhost'
@@ -511,5 +511,35 @@ object dmOrdemCorte: TdmOrdemCorte
     Connection = Conexao
     Left = 312
     Top = 184
+  end
+  object qyVerCorteReal: TFDQuery
+    Connection = Conexao
+    Left = 408
+    Top = 184
+  end
+  object qyConsumoFaseGE: TFDQuery
+    Connection = Conexao
+    Left = 496
+    Top = 184
+  end
+  object qyFichaFaseGE: TFDQuery
+    Connection = Conexao
+    Left = 592
+    Top = 184
+  end
+  object qyDadosCorteById: TFDQuery
+    Connection = Conexao
+    Left = 688
+    Top = 184
+  end
+  object qyCoresNoCorte: TFDQuery
+    Connection = Conexao
+    Left = 984
+    Top = 16
+  end
+  object dsCoresNoCorte: TDataSource
+    DataSet = qyCoresNoCorte
+    Left = 1072
+    Top = 16
   end
 end

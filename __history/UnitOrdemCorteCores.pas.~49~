@@ -53,7 +53,6 @@ begin
            dmOrdemCorte.tbCorteCores.FieldByName('occ_fezreserva').Value := true;
            Application.MessageBox('Cor adicionada com sucesso!', 'Cores no Corte', mb_iconexclamation + mb_ok + mb_applmodal);
            FormShow(Sender);
-           FormResize(Sender);
       end
       else
           Application.MessageBox('Não há cores para adicionar!', 'Cores no Corte', mb_ok + mb_iconexclamation);
