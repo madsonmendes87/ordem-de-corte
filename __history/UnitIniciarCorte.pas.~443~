@@ -286,6 +286,7 @@ begin
                 ExecSQL;
                 Application.MessageBox('Ordem cancelada com sucesso!', 'Ordem de Corte', mb_ok + mb_iconexclamation);
                 butSairInicioCorteClick(Sender);
+                //formPrincipal.butOrdemPesquisarClick(Sender);
             end;
     end;
 end;
@@ -695,47 +696,27 @@ begin
                      if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value > 0 then
                           totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr10').Value));
 
-//                     if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
-//                     begin
-//                        ShowMessage('PRODUTO VIRTUAL'+#13+#13+
-//                                    'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
-//                                    'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
-//                                    'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
-//                                     '');
-//                        processo := false;
-//                        exit;
-//                     end
-//                     else
-//                        if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
-//                        begin
-//                           ShowMessage('PRODUTO SEM ESTOQUE'+#13+#13+
-//                                      'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
-//                                      'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
-//                                      'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
-//                                      '');
-//                           processo := false;
-//                        end;
+                     if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
+                     begin
+                        ShowMessage('PRODUTO VIRTUAL'+#13+#13+
+                                    'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
+                                    'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
+                                    'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
+                                     '');
+                        processo := false;
+                     end
+                     else
+                        if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
+                        begin
+                           ShowMessage('PRODUTO SEM ESTOQUE'+#13+#13+
+                                      'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
+                                      'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
+                                      'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
+                                      '');
+                           processo := false;
+                        end;
                  end;
             dmOrdemCorte.qyAviamentosPorFicha.Next;
-              if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
-              begin
-                  ShowMessage('PRODUTO VIRTUAL'+#13+#13+
-                              'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
-                              'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
-                              'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
-                              '');
-                  processo := false;
-              end
-              else
-                  if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
-                  begin
-                      ShowMessage('PRODUTO SEM ESTOQUE'+#13+#13+
-                      'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
-                      'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
-                      'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
-                      '');
-                      processo := false;
-                  end;
             end;
             if processo = false then
                begin

@@ -63,17 +63,78 @@ end;
 
 procedure TformOrdemCorteCores.butAddTodasClick(Sender: TObject);
 begin
-      Application.MessageBox('Adicionar todas ativado!', 'Cores no Corte', mb_ok + mb_iconexclamation);
+      if dmOrdemCorte.qyCores.IsEmpty then
+      begin
+         Application.MessageBox('Não há cores para adicionar!', 'Cores no Corte', mb_ok + mb_iconexclamation);
+         exit;
+      end
+      else
+          while not dmOrdemCorte.qyCores.IsEmpty do
+          begin
+               dmOrdemCorte.tbCorteCores.Open();
+               dmOrdemCorte.tbCorteCores.Append;
+               dmOrdemCorte.tbCorteCores.FieldByName('occ_idordemcorte').Value := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+               dmOrdemCorte.tbCorteCores.FieldByName('occ_idcor').Value := strtoint(gridCoresReferencia.Fields[0].Value);
+               dmOrdemCorte.tbCorteCores.FieldByName('occ_data').Value := now;
+               dmOrdemCorte.tbCorteCores.FieldByName('occ_idusuario').Value := 16;
+               dmOrdemCorte.tbCorteCores.FieldByName('occ_status').Value := true;
+               dmOrdemCorte.tbCorteCores.FieldByName('occ_fezreserva').Value := true;
+               dmOrdemCorte.tbCorteCores.Post;
+               dmOrdemCorte.qyCores.Refresh;
+               dmOrdemCorte.qyCoresNoCorte.Refresh;
+          end;
+          Application.MessageBox('Cores adicionada com sucesso!', 'Cores no Corte', mb_ok + mb_iconexclamation);
 end;
 
 procedure TformOrdemCorteCores.butRetirarClick(Sender: TObject);
 begin
-      Application.MessageBox('Retirar clicado', 'Cores no Corte', mb_ok + mb_iconexclamation);
+    if not dmOrdemCorte.qyCoresNoCorte.IsEmpty then
+    begin
+        with application do
+        begin
+            if MessageBox('Caso haja um corte previsto para esta cor, será removido também. Deseja realmente concluir o procedimento?', 'Ordem Corte', mb_iconquestion + mb_yesno) = IDYES then
+            with dmOrdemCorte.tbCorteCores do
+            begin
+                Close;
+                SQL.Clear;
+                SQL.Add('DELETE FROM ordem_corte_cores');
+                SQL.Add(' WHERE occ_idordemcorte = :corte AND occ_idcor = :cor');
+                ParamByName('corte').AsInteger := strtoint(formIniciarCorte.labNumeroOrd.Caption);
+                ParamByName('cor').AsInteger := strtoint(gridCoresCorte.Fields[0].Value);
+                ExecSQL;
+                dmOrdemCorte.qyCores.Refresh;
+                dmOrdemCorte.qyCoresNoCorte.Refresh;
+                Application.MessageBox('Cor removida com sucesso!', 'Cores no Corte', mb_ok + mb_iconexclamation);
+            end;
+        end;
+    end
+    else
+        Application.MessageBox('Não há cores para retirar!', 'Cores no Corte', mb_ok + mb_iconexclamation);
 end;
 
 procedure TformOrdemCorteCores.butRetirarTodasClick(Sender: TObject);
 begin
-      Application.MessageBox('Retirar todas', 'Cores no Corte', mb_ok + mb_iconexclamation);
+       if dmOrdemCorte.qyCoresNoCorte.IsEmpty then
+      begin
+         Application.MessageBox('Não há cores para retirar!', 'Cores no Corte', mb_ok + mb_iconexclamation);
+         exit;
+      end;
+      while not dmOrdemCorte.qyCoresNoCorte.IsEmpty do
+      begin
+          with dmOrdemCorte.tbCorteCores do
+          begin
+              Close;
+              SQL.Clear;
+              SQL.Add('DELETE FROM ordem_corte_cores');
+              SQL.Add(' WHERE occ_idordemcorte = :corte AND occ_idcor = :cor');
+              ParamByName('corte').AsInteger := strtoint(formIniciarCorte.labNumeroOrd.Caption);
+              ParamByName('cor').AsInteger := strtoint(gridCoresCorte.Fields[0].Value);
+              ExecSQL;
+              dmOrdemCorte.qyCores.Refresh;
+              dmOrdemCorte.qyCoresNoCorte.Refresh;
+          end;
+      end;
+      Application.MessageBox('Cores removida com sucesso!', 'Cores no Corte', mb_ok + mb_iconexclamation);
 end;
 
 procedure TformOrdemCorteCores.FormResize(Sender: TObject);
