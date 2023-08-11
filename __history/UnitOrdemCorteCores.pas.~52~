@@ -41,7 +41,25 @@ uses UnitIniciarCorte, UnitDatamodule, UnitDMHistoricOrdem,
 
 procedure TformOrdemCorteCores.butAddClick(Sender: TObject);
 begin
-      Application.MessageBox('Botão Adicionar clicado', 'Cores no Corte', mb_ok + mb_iconexclamation);
+      if not dmOrdemCorte.qyCores.IsEmpty then
+      begin
+           dmOrdemCorte.tbCorteCores.Open();
+           dmOrdemCorte.tbCorteCores.Append;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_idordemcorte').Value := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_idcor').Value := strtoint(gridCoresReferencia.Fields[0].Value);
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_data').Value := now;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_idusuario').Value := 16;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_status').Value := true;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_fezreserva').Value := true;
+           Application.MessageBox('Cor adicionada com sucesso!', 'Cores no Corte', mb_iconexclamation + mb_ok + mb_applmodal);
+//           FormShow(Sender);
+//           FormResize(Sender);
+           dmOrdemCorte.qyCores.Refresh;
+           dmOrdemCorte.qyCoresNoCorte.Refresh;
+      end
+      else
+          Application.MessageBox('Não há cores para adicionar!', 'Cores no Corte', mb_ok + mb_iconexclamation);
+
 end;
 
 procedure TformOrdemCorteCores.butAddTodasClick(Sender: TObject);
@@ -110,7 +128,7 @@ begin
             ParamByName('ordemCorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
             Open;
       end;
-      gridCoresCorte.Columns[0].Title.Caption := 'Cod';
+      gridCoresCorte.Columns[0].Title.Caption := 'Codigo';
       gridCoresCorte.Columns[0].Title.Font.Style := [fsBold];
       gridCoresCorte.Columns[1].Title.Caption := 'Cod Uso';
       gridCoresCorte.Columns[1].Title.Font.Style := [fsBold];
