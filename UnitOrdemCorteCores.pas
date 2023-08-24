@@ -83,7 +83,7 @@ begin
                dmOrdemCorte.qyCores.Refresh;
                dmOrdemCorte.qyCoresNoCorte.Refresh;
           end;
-          Application.MessageBox('Cores adicionada com sucesso!', 'Cores no Corte', mb_ok + mb_iconexclamation);
+          Application.MessageBox('Cores adicionadas com sucesso!', 'Cores no Corte', mb_ok + mb_iconexclamation);
 end;
 
 procedure TformOrdemCorteCores.butRetirarClick(Sender: TObject);
@@ -134,7 +134,7 @@ begin
               dmOrdemCorte.qyCoresNoCorte.Refresh;
           end;
       end;
-      Application.MessageBox('Cores removida com sucesso!', 'Cores no Corte', mb_ok + mb_iconexclamation);
+      Application.MessageBox('Cores removidas com sucesso!', 'Cores no Corte', mb_ok + mb_iconexclamation);
 end;
 
 procedure TformOrdemCorteCores.FormResize(Sender: TObject);

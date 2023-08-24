@@ -119,7 +119,7 @@ implementation
 {$R *.dfm}
 
 uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
-  UnitOrdemCorteCores;
+  UnitOrdemCorteCores, UnitConfirmacaoAvancoProducao;
 
 
 
@@ -301,8 +301,6 @@ procedure TformIniciarCorte.butSalvarClick(Sender: TObject);
 var
         totalConsumo : real;
         processo : boolean;
-        produto, cor, tamanho : Array of String;
-        i : integer;
 
 begin
     {-----------VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR SEM EMPENHO DEVOLVIDO-----------}
@@ -674,6 +672,7 @@ begin
                      ParamByName('gradetamanho').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_id').Value;
                      ParamByName('cadastroproduto').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_id').Value;
                      Open;
+                     totalConsumo := 0;
                      if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value > 0 then
                           totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
                      if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value > 0 then
@@ -695,54 +694,56 @@ begin
                      if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value > 0 then
                           totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr10').Value));
 
-//                     if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
-//                     begin
+                     if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
+                     begin
+                          dmOrdemCorte.cdsProdSemEstoque.Append;
+                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('idProduto').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_id').AsInteger;
+                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Produto').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').AsString;
+                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Cor').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').AsString;
+                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Tamanho').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').AsString;
+                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Tipo').AsString := 'PRODUTO VIRTUAL';
+                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Consumo').AsFloat := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlrtotal').Value;
+                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Disponivel').AsFloat := 0;
+                          dmOrdemCorte.cdsProdSemEstoque.Post;
 //                        ShowMessage('PRODUTO VIRTUAL'+#13+#13+
 //                                    'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
 //                                    'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
 //                                    'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
 //                                     '');
-//                        processo := false;
-//                        exit;
-//                     end
-//                     else
-//                        if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
-//                        begin
+                          processo := false;
+                     end
+                     else
+                        if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
+                        begin
+                            dmOrdemCorte.cdsProdSemEstoque.Append;
+                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('idProduto').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_id').AsInteger;
+                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Produto').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').AsString;
+                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Cor').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').AsString;
+                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Tamanho').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').AsString;
+                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Tipo').AsString := 'SEM ESTOQUE';
+                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Consumo').AsFloat := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlrtotal').Value;
+                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Disponivel').AsFloat := dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value;
+                            dmOrdemCorte.cdsProdSemEstoque.Post;
 //                           ShowMessage('PRODUTO SEM ESTOQUE'+#13+#13+
 //                                      'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
 //                                      'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
 //                                      'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
 //                                      '');
-//                           processo := false;
-//                        end;
+                            processo := false;
+                        end;
                  end;
             dmOrdemCorte.qyAviamentosPorFicha.Next;
-              if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
-              begin
-                  ShowMessage('PRODUTO VIRTUAL'+#13+#13+
-                              'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
-                              'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
-                              'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
-                              '');
-                  processo := false;
-              end
-              else
-                  if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
-                  begin
-                      ShowMessage('PRODUTO SEM ESTOQUE'+#13+#13+
-                      'PRODUTO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').Value+#13+
-                      'COR: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').Value+#13+
-                      'TAMANHO: ' + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').Value+#13+
-                      '');
-                      processo := false;
-                  end;
             end;
             if processo = false then
                begin
                     Application.MessageBox('Por este motivo(s) o corte não pode ser iniciado', 'Ordem de Corte', mb_ok + mb_iconhand);
                     with Application do
                     begin
-                        if MessageBox('Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDNO then
+                        if MessageBox('Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO', 'Ordem Corte', mb_iconquestion + mb_yesno + mb_applmodal) = IDYES then
+                        begin
+                            application.CreateForm(TformConfirmacaoAvancoProducao, formConfirmacaoAvancoProducao);
+                            formConfirmacaoAvancoProducao.ShowModal;
+                        end;
                         exit;
                     end;
                end;

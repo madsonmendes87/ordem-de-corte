@@ -522,4 +522,83 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 496
     Top = 184
   end
+  object qyFichaFaseGE: TFDQuery
+    Connection = Conexao
+    Left = 592
+    Top = 184
+  end
+  object qyDadosCorteById: TFDQuery
+    Connection = Conexao
+    Left = 688
+    Top = 184
+  end
+  object qyCoresNoCorte: TFDQuery
+    Connection = Conexao
+    Left = 984
+    Top = 16
+  end
+  object dsCoresNoCorte: TDataSource
+    DataSet = qyCoresNoCorte
+    Left = 1072
+    Top = 16
+  end
+  object tbCorteCores: TFDTable
+    Active = True
+    IndexFieldNames = 'occ_id'
+    MasterSource = dsCorteCores
+    Connection = Conexao
+    TableName = 'ordem_corte_cores'
+    Left = 984
+    Top = 72
+  end
+  object dsCorteCores: TDataSource
+    Left = 1056
+    Top = 72
+  end
+  object dsProdutoAvancoProd: TDataSource
+    DataSet = cdsProdSemEstoque
+    Left = 1024
+    Top = 128
+  end
+  object cdsProdSemEstoque: TClientDataSet
+    PersistDataPacket.Data = {
+      B80000009619E0BD010000001800000007000000000003000000B80009696450
+      726F6475746F04000100000000000750726F6475746F01004900000001000557
+      4944544802000200320003436F72010049000000010005574944544802000200
+      19000754616D616E686F01004900000001000557494454480200020019000454
+      69706F0100490000000100055749445448020002001E0007436F6E73756D6F08
+      000400000000000A446973706F6E6976656C08000400000000000000}
+    Active = True
+    Aggregates = <>
+    Params = <>
+    Left = 1128
+    Top = 128
+    object cdsProdSemEstoqueidProduto: TIntegerField
+      FieldName = 'idProduto'
+    end
+    object cdsProdSemEstoqueProduto: TStringField
+      FieldName = 'Produto'
+      Size = 50
+    end
+    object cdsProdSemEstoqueCor: TStringField
+      FieldName = 'Cor'
+      Size = 25
+    end
+    object cdsProdSemEstoqueTamanho: TStringField
+      FieldName = 'Tamanho'
+      Size = 25
+    end
+    object cdsProdSemEstoqueTipo: TStringField
+      FieldName = 'Tipo'
+      Size = 30
+    end
+    object cdsProdSemEstoqueConsumo: TFloatField
+      FieldName = 'Consumo'
+      DisplayFormat = '#,0000'
+    end
+    object cdsProdSemEstoqueDisponivel: TFloatField
+      FieldName = 'Disponivel'
+      DisplayFormat = '#,0000'
+    end
+  end
 end

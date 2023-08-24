@@ -65,6 +65,15 @@ type
     dsCoresNoCorte: TDataSource;
     tbCorteCores: TFDTable;
     dsCorteCores: TDataSource;
+    dsProdutoAvancoProd: TDataSource;
+    cdsProdSemEstoque: TClientDataSet;
+    cdsProdSemEstoqueidProduto: TIntegerField;
+    cdsProdSemEstoqueProduto: TStringField;
+    cdsProdSemEstoqueCor: TStringField;
+    cdsProdSemEstoqueTamanho: TStringField;
+    cdsProdSemEstoqueTipo: TStringField;
+    cdsProdSemEstoqueConsumo: TFloatField;
+    cdsProdSemEstoqueDisponivel: TFloatField;
   private
     { Private declarations }
   public

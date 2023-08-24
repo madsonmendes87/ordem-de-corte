@@ -58,6 +58,13 @@ type
     qyCortePorTipoFichaId: TFDQuery;
     qyGEComOuSemProt: TFDQuery;
     qyVerCorteReal: TFDQuery;
+    qyConsumoFaseGE: TFDQuery;
+    qyFichaFaseGE: TFDQuery;
+    qyDadosCorteById: TFDQuery;
+    qyCoresNoCorte: TFDQuery;
+    dsCoresNoCorte: TDataSource;
+    tbCorteCores: TFDTable;
+    dsCorteCores: TDataSource;
   private
     { Private declarations }
   public
