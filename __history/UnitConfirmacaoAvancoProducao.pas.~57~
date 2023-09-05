@@ -36,7 +36,7 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
+uses UnitDatamodule, UnitPrincipal;
 
 
 procedure TformConfirmacaoAvancoProducao.butDownClick(Sender: TObject);
@@ -63,26 +63,6 @@ begin
        exit;
     end
     else
-      dmOrdemCorte.tbConfAvancoProducao.Open();
-      dmOrdemCorte.tbConfAvancoProducao.Append;
-      dmOrdemCorte.tbConfAvancoProducao.FieldByName('capr_idusuario').Value := 16;
-      dmOrdemCorte.tbConfAvancoProducao.FieldByName('capr_idfichatecnica').Value := formIniciarCorte.editFicha.Text;
-      dmOrdemCorte.tbConfAvancoProducao.FieldByName('capr_idfaseconfirmacao').Value := 1;
-      dmOrdemCorte.tbConfAvancoProducao.FieldByName('capr_dthrcadastro').Value := now;
-      dmOrdemCorte.tbConfAvancoProducao.Post;
-      dmOrdemCorte.cdsProdReposicao.First;
-      while not dmOrdemCorte.cdsProdReposicao.eof do
-      begin
-          dmOrdemCorte.tbAvancoProducaoItens.Open();
-          dmOrdemCorte.tbAvancoProducaoItens.Append;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').Value := dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').OldValue + 1;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idproduto').Value := gridProdutoReposicao.Fields[0].Value;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idgradecor').Value := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_id').Value;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idgradetamanho').Value := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_id').Value;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_datareposicao').Value := now;
-          dmOrdemCorte.tbAvancoProducaoItens.Post;
-          dmOrdemCorte.cdsProdReposicao.Next;
-      end;
       ShowMessage('Salvo com sucesso!');
       Close;
       exit;

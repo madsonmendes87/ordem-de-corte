@@ -81,7 +81,6 @@ begin
           dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idgradetamanho').Value := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_id').Value;
           dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_datareposicao').Value := now;
           dmOrdemCorte.tbAvancoProducaoItens.Post;
-          dmOrdemCorte.cdsProdReposicao.Next;
       end;
       ShowMessage('Salvo com sucesso!');
       Close;

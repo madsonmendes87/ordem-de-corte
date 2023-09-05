@@ -74,18 +74,12 @@ type
     cdsProdSemEstoqueTipo: TStringField;
     cdsProdSemEstoqueConsumo: TFloatField;
     cdsProdSemEstoqueDisponivel: TFloatField;
-    dsProdReposicao: TDataSource;
+    dsProdutoAvancoReposicao: TDataSource;
     cdsProdReposicao: TClientDataSet;
     cdsProdReposicaoidProduto: TIntegerField;
     cdsProdReposicaoProduto: TStringField;
     cdsProdReposicaoCor: TStringField;
     cdsProdReposicaoTamanho: TStringField;
-    cdsProdReposicaoDataReposicao: TDateField;
-    qyUserOrdem2: TFDQuery;
-    tbConfAvancoProducao: TFDTable;
-    dsConfAvancoProducao: TDataSource;
-    tbAvancoProducaoItens: TFDTable;
-    dsAvancoProducaoItens: TDataSource;
   private
     { Private declarations }
   public

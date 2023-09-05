@@ -75,13 +75,12 @@ begin
       begin
           dmOrdemCorte.tbAvancoProducaoItens.Open();
           dmOrdemCorte.tbAvancoProducaoItens.Append;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').Value := dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').OldValue + 1;
+          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').Value := dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').Value + 1;
           dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idproduto').Value := gridProdutoReposicao.Fields[0].Value;
           dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idgradecor').Value := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_id').Value;
           dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idgradetamanho').Value := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_id').Value;
           dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_datareposicao').Value := now;
           dmOrdemCorte.tbAvancoProducaoItens.Post;
-          dmOrdemCorte.cdsProdReposicao.Next;
       end;
       ShowMessage('Salvo com sucesso!');
       Close;

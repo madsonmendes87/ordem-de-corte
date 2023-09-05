@@ -642,30 +642,4 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 984
     Top = 184
   end
-  object tbConfAvancoProducao: TFDTable
-    Active = True
-    IndexFieldNames = 'capr_id'
-    MasterSource = dsConfAvancoProducao
-    Connection = Conexao
-    TableName = 'confimacao_avanco_producao_referencia'
-    Left = 1088
-    Top = 184
-  end
-  object dsConfAvancoProducao: TDataSource
-    Left = 1208
-    Top = 184
-  end
-  object tbAvancoProducaoItens: TFDTable
-    Active = True
-    IndexFieldNames = 'capri_id'
-    MasterSource = dsAvancoProducaoItens
-    Connection = Conexao
-    TableName = 'confimacao_avanco_producao_referencia_itens'
-    Left = 1176
-    Top = 16
-  end
-  object dsAvancoProducaoItens: TDataSource
-    Left = 1176
-    Top = 80
-  end
 end

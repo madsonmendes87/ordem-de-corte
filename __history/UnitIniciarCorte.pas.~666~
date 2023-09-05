@@ -731,12 +731,14 @@ begin
                                   'Por este motivo(s) o corte não pode ser iniciado!'+#13+#13+
                                   'Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO'+#13;
                             processo := false;
+                            //break;
                         end;
                      end;
                      if totalConsumo < dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
                        processo := true;
                 end;
             dmOrdemCorte.qyAviamentosPorFicha.Next;
+            //break;
             end;
             if processo = false then
             begin
@@ -749,6 +751,8 @@ begin
                     end;
                 end;
             end;
+//            if processo <> false then
+//                Application.MessageBox('Testado e testado', 'Atenção', mb_ok + mb_iconexclamation);
          end;
 
      {-----------VERIFICA SE DATAS E HORARIOS ESTÃO CORRETOS-----------}

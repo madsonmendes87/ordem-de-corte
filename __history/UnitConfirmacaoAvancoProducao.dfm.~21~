@@ -295,14 +295,13 @@ object formConfirmacaoAvancoProducao: TformConfirmacaoAvancoProducao
       FFFFFFFFFEFDFDF3CE84F3CB7DFDFCFBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     TabOrder = 4
-    OnClick = butUPClick
   end
   object butSalvarFinalPrev: TBitBtn
     Left = 712
     Top = 391
     Width = 162
     Height = 45
-    Caption = 'Salvar e Iniciar Corte Previsto'
+    Caption = 'Salvar e finalizar corte previsto'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clTeal
     Font.Height = -11
@@ -310,6 +309,5 @@ object formConfirmacaoAvancoProducao: TformConfirmacaoAvancoProducao
     Font.Style = []
     ParentFont = False
     TabOrder = 5
-    OnClick = butSalvarFinalPrevClick
   end
 end
