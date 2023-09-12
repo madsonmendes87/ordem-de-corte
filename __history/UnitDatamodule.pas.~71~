@@ -91,6 +91,7 @@ type
     cdsProdReposicaoDataReposicao: TDateField;
     cdsProdReposicaocodCor: TIntegerField;
     cdsProdReposicaocodTamanho: TIntegerField;
+    procedure dsProdReposicaoDataChange(Sender: TObject; Field: TField);
   private
     { Private declarations }
   public

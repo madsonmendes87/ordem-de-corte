@@ -635,11 +635,9 @@ object dmOrdemCorte: TdmOrdemCorte
     end
     object cdsProdSemEstoqueConsumo: TFloatField
       FieldName = 'Consumo'
-      DisplayFormat = ',#0.0000'
     end
     object cdsProdSemEstoqueDisponivel: TFloatField
       FieldName = 'Disponivel'
-      DisplayFormat = ',#0.0000'
     end
     object cdsProdSemEstoquecodCor: TIntegerField
       FieldName = 'codCor'

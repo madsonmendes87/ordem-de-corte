@@ -287,7 +287,6 @@ begin
                 ExecSQL;
                 Application.MessageBox('Ordem cancelada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
                 butSairInicioCorteClick(Sender);
-                dmOrdemCorte.qyOrdemCorte.Refresh;
             end;
     end;
 end;
@@ -905,8 +904,7 @@ begin
          end;
     end;
     salvarCorte;
-    //formPrincipal.butOrdemPesquisarClick(Sender);
-    dmOrdemCorte.qyOrdemCorte.Refresh;
+    formPrincipal.butOrdemPesquisarClick(Sender);
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;

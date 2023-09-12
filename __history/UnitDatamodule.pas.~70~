@@ -67,6 +67,12 @@ type
     dsCorteCores: TDataSource;
     dsProdutoAvancoProd: TDataSource;
     dsProdReposicao: TDataSource;
+    cdsProdReposicao: TClientDataSet;
+    cdsProdReposicaoidProduto: TIntegerField;
+    cdsProdReposicaoProduto: TStringField;
+    cdsProdReposicaoCor: TStringField;
+    cdsProdReposicaoTamanho: TStringField;
+    cdsProdReposicaoDataReposicao: TDateField;
     qyUserOrdem2: TFDQuery;
     tbConfAvancoProducao: TFDTable;
     dsConfAvancoProducao: TDataSource;
@@ -83,14 +89,6 @@ type
     cdsProdSemEstoqueDisponivel: TFloatField;
     cdsProdSemEstoquecodCor: TIntegerField;
     cdsProdSemEstoquecodTamanho: TIntegerField;
-    cdsProdReposicao: TClientDataSet;
-    cdsProdReposicaoidProduto: TIntegerField;
-    cdsProdReposicaoProduto: TStringField;
-    cdsProdReposicaoCor: TStringField;
-    cdsProdReposicaoTamanho: TStringField;
-    cdsProdReposicaoDataReposicao: TDateField;
-    cdsProdReposicaocodCor: TIntegerField;
-    cdsProdReposicaocodTamanho: TIntegerField;
   private
     { Private declarations }
   public

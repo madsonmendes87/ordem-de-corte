@@ -61,7 +61,7 @@ procedure TformConfirmacaoAvancoProducao.butSalvarFinalPrevClick(
 begin
     if not dmOrdemCorte.cdsProdSemEstoque.IsEmpty then
     begin
-       Application.MessageBox('Complete o processo de informação da reposição do estoque!','Atenção',MB_OK + MB_ICONWARNING);
+       Application.MessageBox('Complete o processo de informação da reposição do estoque!','Atenção',mb_ok + mb_iconexclamation);
        exit;
     end
     else
@@ -93,7 +93,8 @@ begin
           dmOrdemCorte.tbAvancoProducaoItens.Post;
           dmOrdemCorte.cdsProdReposicao.Next;
       end;
-      Application.Messagebox('Salvo com sucesso','Ordem de Corte',MB_OK + MB_ICONWARNING);
+      //ShowMessage('Salvo com sucesso!');
+      Application.Messagebox('Salvo com sucesso','Ordem de Corte',MB_OK + MB_ICONEXCLAMATION);
       Close;
       exit;
 end;

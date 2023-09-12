@@ -287,7 +287,6 @@ begin
                 ExecSQL;
                 Application.MessageBox('Ordem cancelada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
                 butSairInicioCorteClick(Sender);
-                dmOrdemCorte.qyOrdemCorte.Refresh;
             end;
     end;
 end;
@@ -770,7 +769,6 @@ begin
         SQL.Add('   oc.oc_idfichatecnica = :fichatecnica');
         SQL.Add('   AND oc.oc_prototipo = :eprototipo');
         SQL.Add('   AND oc.oc_situacao <> ''2''');
-        SQL.Add('   ORDER BY oc_id DESC');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         if labTipoCorte.Caption = 'Prototipo' then
             ParamByName('eprototipo').AsBoolean := true
@@ -905,8 +903,7 @@ begin
          end;
     end;
     salvarCorte;
-    //formPrincipal.butOrdemPesquisarClick(Sender);
-    dmOrdemCorte.qyOrdemCorte.Refresh;
+    formPrincipal.butOrdemPesquisarClick(Sender);
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;
@@ -1057,8 +1054,7 @@ begin
             abort;
         end
         else
-            if dmOrdemCorte.qyCortePorTipoFichaId.RecordCount > 0 then
-                dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_ordem').OldValue + 1;
+            dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 2;
 
     end;
 end;

@@ -190,6 +190,7 @@ begin
           formIniciarCorte.horaFinalRealCortado.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horaprevfimrealcortado').Value;
           formIniciarCorte.editObservacao.Text := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_observacao').Value;
           desabComponentes;
+
 end;
 
 procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
