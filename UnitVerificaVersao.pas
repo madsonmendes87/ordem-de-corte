@@ -42,7 +42,8 @@ begin
        Application.MessageBox(Pchar('O arquivo local não foi encontrado.'+#13+
                                 exeLocal), 'Atenção', MB_OK + MB_ICONWARNING);
        result:=False;
-   end else
+   end
+   else
    //Verifica se o arquivo remoto existe
    if not FileExists(exeRemoto) then
    begin

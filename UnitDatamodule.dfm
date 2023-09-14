@@ -113,7 +113,7 @@ object dmOrdemCorte: TdmOrdemCorte
         '((ocri.oci_idocorte = oci.oc_id) and (ocpi.oci_situacao_id NOT I' +
         'N (2, 4)))'
       'WHERE oci.oc_id=oc.oc_id LIMIT 1 ) AS diasemprocesso,'
-      'Cast(Case When oc.oc_prototipo = True Then '#39'Prot'#243'tipo'#39
+      'Cast(Case When oc.oc_prototipo = True Then '#39'Prototipo'#39
       'ELSE '#39'Grande Escala'#39' END as character varying(15)) AS tipo,'
       
         '(pa.cad_idreferencia)as referencia,(pa.cad_descricao)as produtoa' +

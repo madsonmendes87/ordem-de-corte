@@ -1,0 +1,31 @@
+unit UnitPrevisto;
+
+interface
+
+uses
+  System.RegularExpressions, Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls,
+  Vcl.StdCtrls, System.Actions, Vcl.ActnList, Data.DB, Vcl.Mask,
+  Vcl.DBCtrls, Vcl.ComCtrls;
+
+type
+  TformPrevisto = class(TForm)
+    Panel1: TPanel;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  formPrevisto: TformPrevisto;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
+  UnitOrdemCorteCores, UnitConfirmacaoAvancoProducao, UnitVerificaVersao;
+
+end.

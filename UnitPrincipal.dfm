@@ -2230,6 +2230,7 @@ object formPrincipal: TformPrincipal
     end
     object CortePrevisto1: TMenuItem
       Caption = 'Corte Previsto'
+      OnClick = CortePrevisto1Click
     end
     object CortePrevisto2: TMenuItem
       Caption = '-'

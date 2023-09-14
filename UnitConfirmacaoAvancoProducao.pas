@@ -123,7 +123,7 @@ end;
 
 procedure TformConfirmacaoAvancoProducao.FormCreate(Sender: TObject);
 begin
-    dtReposicao.Date := now;
+    dtReposicao.Date:=now;
 end;
 
 procedure TformConfirmacaoAvancoProducao.FormResize(Sender: TObject);

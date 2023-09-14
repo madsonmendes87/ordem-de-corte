@@ -6,7 +6,7 @@ uses
   Windows,
   UnitPrincipal in 'UnitPrincipal.pas' {formPrincipal},
   UnitDatamodule in 'UnitDatamodule.pas' {dmOrdemCorte: TDataModule},
-  UnitPrevisto in 'UnitPrevisto.pas' {formPrevisto},
+  UnitIniciarCorte in 'UnitIniciarCorte.pas' {formIniciarCorte},
   UnitProdutoAcabado in 'UnitProdutoAcabado.pas' {formProdutoAcabado},
   UnitHistoricOrdem in 'UnitHistoricOrdem.pas' {formHistoricOrdem},
   UnitDMHistoricOrdem in 'UnitDMHistoricOrdem.pas' {dmHistoricOrdem: TDataModule},
