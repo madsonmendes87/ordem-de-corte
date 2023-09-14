@@ -229,10 +229,7 @@ end;
 procedure TformIniciarCorte.butEditarClick(Sender: TObject);
 begin
     if labNormal.Caption = 'FINALIZADA' then
-    begin
-        Application.MessageBox('Não é permitido editar corte já finalizado!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
-        exit;
-    end
+        Application.MessageBox('Não é permitido editar corte já finalizado!', 'Ordem de Corte', MB_OK + MB_ICONWARNING)
     else
         dmOrdemCorte.tbOrdemdeCorte.Edit;
         editCodigo.SetFocus;
