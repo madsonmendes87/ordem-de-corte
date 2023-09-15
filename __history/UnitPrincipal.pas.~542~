@@ -296,7 +296,7 @@ begin
             SQL.Add('     WHERE oci.oc_id=oc.oc_id');
             SQL.Add('     LIMIT 1');
             SQL.Add(') AS diasemprocesso,');
-            SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''Protótipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
+            SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''Prototipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
             SQL.Add('(pa.cad_idreferencia)as referencia,');
             SQL.Add('(pa.cad_descricao)as produtoacabado,');
             SQL.Add('(oc.oc_dtgerada)as datagerada,');
@@ -422,8 +422,9 @@ begin
     formPrevisto.Align:=alClient;
     formPrevisto.BorderStyle:=bsNone;
     formPrevisto.Show;
-    //formIniciarCorte.labNumeroOrd.Caption := gridOrdem.Fields[0].Value;
-    //formIniciarCorte.labOrd.Caption := gridOrdem.Fields[1].Value;
+//    formPrevisto.labNumCorte.Caption := gridOrdem.Fields[0].Value;
+    formPrevisto.labNumCorte.Caption := '16261';
+    formPrevisto.labOrdem.Caption := gridOrdem.Fields[1].Value;
     desabComponentes;
 end;
 

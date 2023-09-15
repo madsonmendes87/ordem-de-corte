@@ -107,6 +107,7 @@ type
     procedure butRealCortadoClick(Sender: TObject);
     procedure gridOrdemCellClick(Column: TColumn);
     procedure editSearchKeyPress(Sender: TObject; var Key: Char);
+    procedure CortePrevisto1Click(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -117,6 +118,7 @@ type
     function versaoExe: String;
     procedure boxEstilista;
     procedure habComponentes;
+    procedure dimensionarGrid(dbg: TDBGrid);
   end;
 
 var
@@ -127,7 +129,7 @@ implementation
 {$R *.dfm}
 
 uses UnitDatamodule, UnitIniciarCorte, UnitHistoricOrdem,
-  UnitProdutoAcabado;
+  UnitProdutoAcabado, UnitPrevisto;
 
 procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
@@ -139,7 +141,7 @@ procedure TformPrincipal.acaoBotaoVerCorteExecute(Sender: TObject);
 begin
       if butVerCorte.Enabled = true then
           gridOrdem.Visible:=false;
-          //formIniciarCorte:=TformIniciarCorte.Create(Self);
+          formIniciarCorte:=TformIniciarCorte.Create(Self);
           formIniciarCorte.Parent:=Panel1;
           formIniciarCorte.Align:=alClient;
           formIniciarCorte.BorderStyle:=bsNone;
@@ -189,7 +191,6 @@ begin
           formIniciarCorte.horaFinalRealCortado.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horaprevfimrealcortado').Value;
           formIniciarCorte.editObservacao.Text := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_observacao').Value;
           desabComponentes;
-
 end;
 
 procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
@@ -295,7 +296,7 @@ begin
             SQL.Add('     WHERE oci.oc_id=oc.oc_id');
             SQL.Add('     LIMIT 1');
             SQL.Add(') AS diasemprocesso,');
-            SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''Protótipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
+            SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''Prototipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
             SQL.Add('(pa.cad_idreferencia)as referencia,');
             SQL.Add('(pa.cad_descricao)as produtoacabado,');
             SQL.Add('(oc.oc_dtgerada)as datagerada,');
@@ -413,6 +414,32 @@ begin
     acaoBotaoVerCorteExecute(Sender);
 end;
 
+procedure TformPrincipal.CortePrevisto1Click(Sender: TObject);
+begin
+    gridOrdem.Visible:=false;
+    formPrevisto:=TformPrevisto.Create(Self);
+    formPrevisto.Parent:=Panel1;
+    formPrevisto.Align:=alClient;
+    formPrevisto.BorderStyle:=bsNone;
+    formPrevisto.Show;
+    formPrevisto.labNumCorte.Caption := gridOrdem.Fields[0].Value;
+//    formPrevisto.labNumCorte.Caption := '16261';      //Testar Casas
+    formPrevisto.labOrdem.Caption := gridOrdem.Fields[1].Value;
+    formPrevisto.labNumReferencia.Caption := gridOrdem.Fields[9].Value;
+    formPrevisto.labNomeDescricao.Caption := gridOrdem.Fields[10].Value;
+    with dmOrdemCorte.qyCodProdAcabadoFicha do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT pa.cad_id FROM produto_acabado AS pa JOIN ficha_tecnica AS ft');
+        SQL.Add(' ON ft.fi_idprodutoacabado = pa.cad_id WHERE ft.fi_id = :fichatecnica');
+        ParamByname('fichatecnica').AsInteger := strtoint(gridOrdem.Fields[5].Value);
+        Open;
+    end;
+    formPrevisto.labCodProdAcabado.Caption := intToStr(dmOrdemCorte.qyCodProdAcabadoFicha.FieldByName('cad_id').Value);
+    desabComponentes;
+end;
+
 procedure TformPrincipal.desabComponentes;
 begin
     butVerCorte.Enabled := false;
@@ -446,6 +473,62 @@ begin
     btnEntregaPecas.Enabled := false;
     btnObservacoes.Enabled := false;
     btnProcRestrito.Enabled := false;
+end;
+
+procedure TformPrincipal.dimensionarGrid(dbg: TDBGrid);
+  type
+  TArray = Array of Integer;
+  procedure AjustarColumns(Swidth, TSize: Integer; Asize: TArray);
+  var
+    idx: Integer;
+  begin
+    if TSize = 0 then
+    begin
+      TSize := dbg.Columns.count;
+      for idx := 0 to dbg.Columns.count - 1 do
+        dbg.Columns[idx].Width := (dbg.Width - dbg.Canvas.TextWidth('AAAAAA')
+          ) div TSize
+    end
+    else
+      for idx := 0 to dbg.Columns.count - 1 do
+        dbg.Columns[idx].Width := dbg.Columns[idx].Width +
+          (Swidth * Asize[idx] div TSize);
+  end;
+
+var
+  idx, Twidth, TSize, Swidth: Integer;
+  AWidth: TArray;
+  Asize: TArray;
+  NomeColuna: String;
+begin
+  SetLength(AWidth, dbg.Columns.count);
+  SetLength(Asize, dbg.Columns.count);
+  Twidth := 0;
+  TSize := 0;
+  for idx := 0 to dbg.Columns.count - 1 do
+  begin
+    NomeColuna := dbg.Columns[idx].Title.Caption;
+    dbg.Columns[idx].Width := dbg.Canvas.TextWidth
+      (dbg.Columns[idx].Title.Caption + 'A');
+    AWidth[idx] := dbg.Columns[idx].Width;
+    Twidth := Twidth + AWidth[idx];
+
+    if Assigned(dbg.Columns[idx].Field) then
+      Asize[idx] := dbg.Columns[idx].Field.Size
+    else
+      Asize[idx] := 1;
+
+    TSize := TSize + Asize[idx];
+  end;
+  if TDBGridOption.dgColLines in dbg.Options then
+    Twidth := Twidth + dbg.Columns.count;
+
+  // adiciona a largura da coluna indicada do cursor
+  if TDBGridOption.dgIndicator in dbg.Options then
+    Twidth := Twidth + IndicatorWidth;
+
+  Swidth := dbg.ClientWidth - Twidth;
+  AjustarColumns(Swidth, TSize, Asize);
 end;
 
 procedure TformPrincipal.editSearchKeyPress(Sender: TObject;

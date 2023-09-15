@@ -46,41 +46,41 @@ object formPrevisto: TformPrevisto
   end
   object labNumCorte: TLabel
     Left = 24
-    Top = 67
+    Top = 64
     Width = 17
-    Height = 20
+    Height = 21
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clMaroon
     Font.Height = -16
-    Font.Name = 'Segoe UI Semilight'
-    Font.Style = []
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object labHifen: TLabel
-    Left = 67
-    Top = 67
-    Width = 6
+    Left = 71
+    Top = 64
+    Width = 9
     Height = 21
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clMaroon
     Font.Height = -16
-    Font.Name = 'Segoe UI Semilight'
-    Font.Style = []
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object labOrdem: TLabel
-    Left = 79
-    Top = 67
-    Width = 6
+    Left = 80
+    Top = 64
+    Width = 11
     Height = 21
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clMaroon
     Font.Height = -16
-    Font.Name = 'Segoe UI Semilight'
-    Font.Style = []
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object labControleProdAcabado: TLabel
@@ -131,60 +131,34 @@ object formPrevisto: TformPrevisto
     Font.Charset = ANSI_CHARSET
     Font.Color = clMaroon
     Font.Height = -16
-    Font.Name = 'Segoe UI Semilight'
-    Font.Style = []
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object labNumReferencia: TLabel
     Left = 336
     Top = 67
-    Width = 6
+    Width = 17
     Height = 21
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clMaroon
     Font.Height = -16
-    Font.Name = 'Segoe UI Semilight'
-    Font.Style = []
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object labNomeDescricao: TLabel
     Left = 472
     Top = 67
-    Width = 6
+    Width = 17
     Height = 21
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clMaroon
     Font.Height = -16
-    Font.Name = 'Segoe UI Semilight'
-    Font.Style = []
-    ParentFont = False
-  end
-  object labSituacao: TLabel
-    Left = 976
-    Top = 48
-    Width = 53
-    Height = 14
-    Caption = 'Situa'#231#227'o'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Tahoma'
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labStatuSituacao: TLabel
-    Left = 976
-    Top = 67
-    Width = 14
-    Height = 21
-    Caption = '-'
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Segoe UI Semilight'
-    Font.Style = []
     ParentFont = False
   end
   object Panel1: TPanel
@@ -213,15 +187,15 @@ object formPrevisto: TformPrevisto
   object radioProdAcabado: TRadioGroup
     Left = 200
     Top = 31
-    Width = 729
+    Width = 705
     Height = 66
     Caption = 'Produto Acabado'
     TabOrder = 2
   end
   object radioEstadoGuia: TRadioGroup
-    Left = 943
+    Left = 920
     Top = 31
-    Width = 154
+    Width = 185
     Height = 66
     Caption = 'Estado da Guia'
     TabOrder = 3

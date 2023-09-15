@@ -422,8 +422,21 @@ begin
     formPrevisto.Align:=alClient;
     formPrevisto.BorderStyle:=bsNone;
     formPrevisto.Show;
-    //formIniciarCorte.labNumeroOrd.Caption := gridOrdem.Fields[0].Value;
-    //formIniciarCorte.labOrd.Caption := gridOrdem.Fields[1].Value;
+    //formPrevisto.labNumCorte.Caption := gridOrdem.Fields[0].Value;
+    formPrevisto.labNumCorte.Caption := '16261';      //Testar Casas
+    formPrevisto.labOrdem.Caption := gridOrdem.Fields[1].Value;
+    formPrevisto.labNumReferencia.Caption := gridOrdem.Fields[9].Value;
+    formPrevisto.labNomeDescricao.Caption := gridOrdem.Fields[10].Value;
+    with dmOrdemCorte.qyCodProdAcabadoFicha do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT pa.cad_id FROM produto_acabado AS pa JOIN ficha_tecnica AS ft');
+        SQL.Add(' ON ft.fi_idprodutoacabado = pa.cad_id WHERE ft.fi_id = :fichatecnica');
+        ParamByname('fichatecnica').AsInteger := strtoint(gridOrdem.Fields[5].Value);
+        Open;
+    end;
+    formPrevisto.labCodProdAcabado.Caption := intToStr(dmOrdemCorte.qyCodProdAcabadoFicha.FieldByName('cad_id').Value);
     desabComponentes;
 end;
 

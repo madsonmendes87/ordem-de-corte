@@ -91,6 +91,7 @@ type
     cdsProdReposicaoDataReposicao: TDateField;
     cdsProdReposicaocodCor: TIntegerField;
     cdsProdReposicaocodTamanho: TIntegerField;
+    qyCodProdAcabadoFicha: TFDQuery;
   private
     { Private declarations }
   public

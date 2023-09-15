@@ -162,7 +162,7 @@ object formPrevisto: TformPrevisto
     ParentFont = False
   end
   object labSituacao: TLabel
-    Left = 976
+    Left = 984
     Top = 48
     Width = 53
     Height = 14
@@ -175,7 +175,7 @@ object formPrevisto: TformPrevisto
     ParentFont = False
   end
   object labStatuSituacao: TLabel
-    Left = 976
+    Left = 984
     Top = 67
     Width = 14
     Height = 21
@@ -213,15 +213,15 @@ object formPrevisto: TformPrevisto
   object radioProdAcabado: TRadioGroup
     Left = 200
     Top = 31
-    Width = 729
+    Width = 705
     Height = 66
     Caption = 'Produto Acabado'
     TabOrder = 2
   end
   object radioEstadoGuia: TRadioGroup
-    Left = 943
+    Left = 911
     Top = 31
-    Width = 154
+    Width = 185
     Height = 66
     Caption = 'Estado da Guia'
     TabOrder = 3

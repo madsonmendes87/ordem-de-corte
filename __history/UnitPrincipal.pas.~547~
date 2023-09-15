@@ -107,6 +107,7 @@ type
     procedure butRealCortadoClick(Sender: TObject);
     procedure gridOrdemCellClick(Column: TColumn);
     procedure editSearchKeyPress(Sender: TObject; var Key: Char);
+    procedure CortePrevisto1Click(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -128,7 +129,7 @@ implementation
 {$R *.dfm}
 
 uses UnitDatamodule, UnitIniciarCorte, UnitHistoricOrdem,
-  UnitProdutoAcabado;
+  UnitProdutoAcabado, UnitPrevisto;
 
 procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
@@ -190,7 +191,6 @@ begin
           formIniciarCorte.horaFinalRealCortado.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horaprevfimrealcortado').Value;
           formIniciarCorte.editObservacao.Text := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_observacao').Value;
           desabComponentes;
-
 end;
 
 procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
@@ -296,7 +296,7 @@ begin
             SQL.Add('     WHERE oci.oc_id=oc.oc_id');
             SQL.Add('     LIMIT 1');
             SQL.Add(') AS diasemprocesso,');
-            SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''Protótipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
+            SQL.Add('Cast(Case When oc.oc_prototipo = True Then ''Prototipo'' ELSE ''Grande Escala'' END as character varying(15)) AS tipo,');
             SQL.Add('(pa.cad_idreferencia)as referencia,');
             SQL.Add('(pa.cad_descricao)as produtoacabado,');
             SQL.Add('(oc.oc_dtgerada)as datagerada,');
@@ -412,6 +412,32 @@ end;
 procedure TformPrincipal.butVerCorteClick(Sender: TObject);
 begin
     acaoBotaoVerCorteExecute(Sender);
+end;
+
+procedure TformPrincipal.CortePrevisto1Click(Sender: TObject);
+begin
+    gridOrdem.Visible:=false;
+    formPrevisto:=TformPrevisto.Create(Self);
+    formPrevisto.Parent:=Panel1;
+    formPrevisto.Align:=alClient;
+    formPrevisto.BorderStyle:=bsNone;
+    formPrevisto.Show;
+    formPrevisto.labNumCorte.Caption := gridOrdem.Fields[0].Value;
+//    formPrevisto.labNumCorte.Caption := '16261';      //Testar Casas
+    formPrevisto.labOrdem.Caption := gridOrdem.Fields[1].Value;
+//    formPrevisto.labCodProdAcabado := Daniella;
+    formPrevisto.labNumReferencia.Caption := gridOrdem.Fields[9].Value;
+    formPrevisto.labNomeDescricao.Caption := gridOrdem.Fields[10].Value;
+    with dmOrdemCorte.qyCodProdAcabadoFicha do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT pa.cad_id FROM produto_acabado AS pa JOIN ficha_tecnica AS ft');
+        SQL.Add(' ON ft.fi_idprodutoacabado = pa.cad_id WHERE ft.fi_id = :fichatecnica');
+        ParamByname('fichatecnica').AsInteger := strtoint(gridOrdem.Fields[5].Value);
+    end;
+    formPrevisto.labCodProdAcabado.Caption := intToStr(dmOrdemCorte.qyCodProdAcabadoFicha.FieldByName('cad_id').Value);
+    desabComponentes;
 end;
 
 procedure TformPrincipal.desabComponentes;

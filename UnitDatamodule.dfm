@@ -686,4 +686,9 @@ object dmOrdemCorte: TdmOrdemCorte
       FieldName = 'codTamanho'
     end
   end
+  object qyCodProdAcabadoFicha: TFDQuery
+    Connection = Conexao
+    Left = 64
+    Top = 232
+  end
 end

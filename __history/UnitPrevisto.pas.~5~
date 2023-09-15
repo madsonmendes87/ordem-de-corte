@@ -11,23 +11,8 @@ uses
 type
   TformPrevisto = class(TForm)
     Panel1: TPanel;
-    butSairPrevisto: TSpeedButton;
-    radioCorte: TRadioGroup;
-    labControleCorte: TLabel;
-    labNumCorte: TLabel;
-    labHifen: TLabel;
-    labOrdem: TLabel;
-    radioProdAcabado: TRadioGroup;
-    radioEstadoGuia: TRadioGroup;
-    labControleProdAcabado: TLabel;
-    labReferencia: TLabel;
-    labDescricao: TLabel;
-    labCodProdAcabado: TLabel;
-    labNumReferencia: TLabel;
-    labNomeDescricao: TLabel;
-    labSituacao: TLabel;
-    labStatuSituacao: TLabel;
-    procedure butSairPrevistoClick(Sender: TObject);
+    SpeedButton1: TSpeedButton;
+    procedure SpeedButton1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -45,7 +30,7 @@ implementation
 uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
   UnitOrdemCorteCores, UnitConfirmacaoAvancoProducao, UnitVerificaVersao;
 
-procedure TformPrevisto.butSairPrevistoClick(Sender: TObject);
+procedure TformPrevisto.SpeedButton1Click(Sender: TObject);
 begin
     formPrevisto.Close;
     formPrincipal.habComponentes;
