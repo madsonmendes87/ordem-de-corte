@@ -108,9 +108,6 @@ type
     procedure gridOrdemCellClick(Column: TColumn);
     procedure editSearchKeyPress(Sender: TObject; var Key: Char);
     procedure CortePrevisto1Click(Sender: TObject);
-    procedure btnOrdemCorteClick(Sender: TObject);
-    procedure btnObservacoesClick(Sender: TObject);
-    procedure btnProcRestritoClick(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -223,21 +220,6 @@ begin
         Open;
     end;
 end;
-procedure TformPrincipal.btnObservacoesClick(Sender: TObject);
-begin
-    btnObservacoes.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
-procedure TformPrincipal.btnOrdemCorteClick(Sender: TObject);
-begin
-    btnOrdemCorte.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
-procedure TformPrincipal.btnProcRestritoClick(Sender: TObject);
-begin
-    btnProcRestrito.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
 procedure TformPrincipal.boxColecao;
 begin
     With dmOrdemCorte.qyBoxColecao do
@@ -477,12 +459,8 @@ begin
     if dmOrdemCorte.qyStatusPrevisto.FieldByName('oci_situacao_id').Value = 4 then
     begin
         formPrevisto.labStatuSituacao.Caption := dmOrdemCorte.qyStatusPrevisto.FieldByName('descricao').Value;
-        formPrevisto.labStatuSituacao.Font.Color := clNavy;
+        formPrevisto.labStatuSituacao.Font.Color := clBlue;
     end;
-    if gridOrdem.Fields[8].Value = 'Prototipo' then
-       formPrevisto.panelCabecalho.Caption := 'Corte Previsto - Protótipo'
-    else
-        formPrevisto.panelCabecalho.Caption := 'Corte Previsto - Grande Escala';
     desabComponentes;
 end;
 

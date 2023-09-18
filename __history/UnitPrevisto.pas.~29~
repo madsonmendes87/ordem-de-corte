@@ -6,7 +6,7 @@ uses
   System.RegularExpressions, Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls,
   Vcl.StdCtrls, System.Actions, Vcl.ActnList, Data.DB, Vcl.Mask,
-  Vcl.DBCtrls, Vcl.ComCtrls, Vcl.Menus;
+  Vcl.DBCtrls, Vcl.ComCtrls;
 
 type
   TformPrevisto = class(TForm)
@@ -31,24 +31,6 @@ type
     butArtigos: TSpeedButton;
     butEmpenho: TSpeedButton;
     butAcao: TSpeedButton;
-    popupArtigos: TPopupMenu;
-    rocar1: TMenuItem;
-    Liberar1: TMenuItem;
-    Retirar1: TMenuItem;
-    N1: TMenuItem;
-    Verartigoscancelados1: TMenuItem;
-    popupEmpenho: TPopupMenu;
-    Empenhar1: TMenuItem;
-    Informao1: TMenuItem;
-    N2: TMenuItem;
-    RetirarEmpenho1: TMenuItem;
-    N3: TMenuItem;
-    Verartigoscancelados2: TMenuItem;
-    RetirarEmpenho2: TMenuItem;
-    popupAcao: TPopupMenu;
-    Finalizar1: TMenuItem;
-    N4: TMenuItem;
-    Reabrir1: TMenuItem;
     procedure butSairPrevistoClick(Sender: TObject);
     procedure butEditGradeMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
@@ -58,10 +40,6 @@ type
       Y: Integer);
     procedure butEmpenhoMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
-    procedure butAcaoMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
-    procedure butArtigosClick(Sender: TObject);
-    procedure butEmpenhoClick(Sender: TObject);
     procedure butAcaoClick(Sender: TObject);
 
 
@@ -99,18 +77,7 @@ end;
 
 procedure TformPrevisto.butAcaoClick(Sender: TObject);
 begin
-    butAcao.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
-procedure TformPrevisto.butAcaoMouseMove(Sender: TObject;
-  Shift: TShiftState; X, Y: Integer);
-begin
     butAcao.Font.Color:=clPurple;
-end;
-
-procedure TformPrevisto.butArtigosClick(Sender: TObject);
-begin
-    butArtigos.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
 end;
 
 procedure TformPrevisto.butArtigosMouseMove(Sender: TObject;
@@ -123,11 +90,6 @@ procedure TformPrevisto.butEditGradeMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
     butEditGrade.Font.Color:=clGreen;
-end;
-
-procedure TformPrevisto.butEmpenhoClick(Sender: TObject);
-begin
-    butEmpenho.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
 end;
 
 procedure TformPrevisto.butEmpenhoMouseMove(Sender: TObject;

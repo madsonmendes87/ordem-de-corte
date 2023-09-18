@@ -394,7 +394,6 @@ object formPrevisto: TformPrevisto
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     PopupMenu = popupEmpenho
-    OnClick = butEmpenhoClick
     OnMouseMove = butEmpenhoMouseMove
   end
   object butAcao: TSpeedButton
@@ -462,7 +461,6 @@ object formPrevisto: TformPrevisto
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     PopupMenu = popupAcao
-    OnClick = butAcaoClick
     OnMouseMove = butAcaoMouseMove
   end
   object panelCabecalho: TPanel

@@ -99,7 +99,7 @@ end;
 
 procedure TformPrevisto.butAcaoClick(Sender: TObject);
 begin
-    butAcao.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
+    butAcao .PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
 end;
 
 procedure TformPrevisto.butAcaoMouseMove(Sender: TObject;

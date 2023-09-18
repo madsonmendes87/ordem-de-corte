@@ -92,7 +92,6 @@ type
     cdsProdReposicaocodCor: TIntegerField;
     cdsProdReposicaocodTamanho: TIntegerField;
     qyCodProdAcabadoFicha: TFDQuery;
-    qyStatusPrevisto: TFDQuery;
   private
     { Private declarations }
   public

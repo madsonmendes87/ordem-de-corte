@@ -108,9 +108,8 @@ type
     procedure gridOrdemCellClick(Column: TColumn);
     procedure editSearchKeyPress(Sender: TObject; var Key: Char);
     procedure CortePrevisto1Click(Sender: TObject);
-    procedure btnOrdemCorteClick(Sender: TObject);
-    procedure btnObservacoesClick(Sender: TObject);
-    procedure btnProcRestritoClick(Sender: TObject);
+    procedure btnOrdemCorteMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -223,19 +222,12 @@ begin
         Open;
     end;
 end;
-procedure TformPrincipal.btnObservacoesClick(Sender: TObject);
+procedure TformPrincipal.btnOrdemCorteMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-    btnObservacoes.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
-procedure TformPrincipal.btnOrdemCorteClick(Sender: TObject);
-begin
-    btnOrdemCorte.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
-procedure TformPrincipal.btnProcRestritoClick(Sender: TObject);
-begin
-    btnProcRestrito.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
+    if Button = mbLeft then
+       //btnOrdemCorte.PopupMenu.Popup(X + btnOrdemCorte.Left, Y + btnOrdemCorte.Top);
+       btnOrdemCorte.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
 end;
 
 procedure TformPrincipal.boxColecao;

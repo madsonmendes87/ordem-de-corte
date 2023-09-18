@@ -119,6 +119,7 @@ object formPrincipal: TformPrincipal
       Top = -2
       Width = 187
       Height = 35
+      Hint = 'Clique com botao direito para op'#231#245'es'
       Caption = 'Ordem Corte'
       Flat = True
       Font.Charset = ANSI_CHARSET
@@ -295,7 +296,6 @@ object formPrincipal: TformPrincipal
       Margin = 1
       ParentFont = False
       PopupMenu = popupMenuOrdem
-      OnClick = btnOrdemCorteClick
     end
     object btnEmpAlmoxarifado: TSpeedButton
       Left = 4
@@ -1207,6 +1207,7 @@ object formPrincipal: TformPrincipal
       Top = 244
       Width = 187
       Height = 35
+      Hint = 'Clique com bot'#227'o direito para op'#231#245'es'
       Caption = 'Observa'#231#245'es'
       Flat = True
       Font.Charset = ANSI_CHARSET
@@ -1383,13 +1384,13 @@ object formPrincipal: TformPrincipal
       Margin = 1
       ParentFont = False
       PopupMenu = popupMenuObs
-      OnClick = btnObservacoesClick
     end
     object btnProcRestrito: TSpeedButton
       Left = 4
       Top = 285
       Width = 187
       Height = 35
+      Hint = 'Clique com bot'#227'o direito para op'#231#245'es'
       Caption = 'Procedimento Restrito'
       Flat = True
       Font.Charset = ANSI_CHARSET
@@ -1566,7 +1567,6 @@ object formPrincipal: TformPrincipal
       Margin = 1
       ParentFont = False
       PopupMenu = popupMenuProcRes
-      OnClick = btnProcRestritoClick
     end
   end
   object footerPrincipal: TStatusBar

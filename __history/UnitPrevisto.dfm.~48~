@@ -325,8 +325,6 @@ object formPrevisto: TformPrevisto
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    PopupMenu = popupArtigos
-    OnClick = butArtigosClick
     OnMouseMove = butArtigosMouseMove
   end
   object butEmpenho: TSpeedButton
@@ -393,8 +391,6 @@ object formPrevisto: TformPrevisto
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    PopupMenu = popupEmpenho
-    OnClick = butEmpenhoClick
     OnMouseMove = butEmpenhoMouseMove
   end
   object butAcao: TSpeedButton
@@ -461,9 +457,6 @@ object formPrevisto: TformPrevisto
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-    PopupMenu = popupAcao
-    OnClick = butAcaoClick
-    OnMouseMove = butAcaoMouseMove
   end
   object panelCabecalho: TPanel
     Left = 0
@@ -502,62 +495,5 @@ object formPrevisto: TformPrevisto
     Height = 66
     Caption = 'Estado da Guia'
     TabOrder = 3
-  end
-  object popupArtigos: TPopupMenu
-    Left = 840
-    Top = 104
-    object rocar1: TMenuItem
-      Caption = 'Trocar(somente na ordem de corte)'
-    end
-    object Liberar1: TMenuItem
-      Caption = '-'
-    end
-    object Retirar1: TMenuItem
-      Caption = 'Liberar'
-    end
-    object N1: TMenuItem
-      Caption = '-'
-    end
-    object Verartigoscancelados1: TMenuItem
-      Caption = 'Retirar'
-    end
-    object N3: TMenuItem
-      Caption = '-'
-    end
-    object Verartigoscancelados2: TMenuItem
-      Caption = 'Ver artigos cancelados'
-    end
-  end
-  object popupEmpenho: TPopupMenu
-    Left = 840
-    Top = 160
-    object Empenhar1: TMenuItem
-      Caption = 'Empenhar'
-    end
-    object Informao1: TMenuItem
-      Caption = '-'
-    end
-    object N2: TMenuItem
-      Caption = 'Informa'#231#227'o'
-    end
-    object RetirarEmpenho1: TMenuItem
-      Caption = '-'
-    end
-    object RetirarEmpenho2: TMenuItem
-      Caption = 'Retirar Empenho'
-    end
-  end
-  object popupAcao: TPopupMenu
-    Left = 840
-    Top = 224
-    object Finalizar1: TMenuItem
-      Caption = 'Finalizar'
-    end
-    object N4: TMenuItem
-      Caption = '-'
-    end
-    object Reabrir1: TMenuItem
-      Caption = 'Reabrir'
-    end
   end
 end

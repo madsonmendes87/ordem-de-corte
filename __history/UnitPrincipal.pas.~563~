@@ -108,9 +108,6 @@ type
     procedure gridOrdemCellClick(Column: TColumn);
     procedure editSearchKeyPress(Sender: TObject; var Key: Char);
     procedure CortePrevisto1Click(Sender: TObject);
-    procedure btnOrdemCorteClick(Sender: TObject);
-    procedure btnObservacoesClick(Sender: TObject);
-    procedure btnProcRestritoClick(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -223,21 +220,6 @@ begin
         Open;
     end;
 end;
-procedure TformPrincipal.btnObservacoesClick(Sender: TObject);
-begin
-    btnObservacoes.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
-procedure TformPrincipal.btnOrdemCorteClick(Sender: TObject);
-begin
-    btnOrdemCorte.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
-procedure TformPrincipal.btnProcRestritoClick(Sender: TObject);
-begin
-    btnProcRestrito.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
 procedure TformPrincipal.boxColecao;
 begin
     With dmOrdemCorte.qyBoxColecao do

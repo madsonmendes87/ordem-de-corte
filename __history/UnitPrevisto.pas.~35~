@@ -61,8 +61,6 @@ type
     procedure butAcaoMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure butArtigosClick(Sender: TObject);
-    procedure butEmpenhoClick(Sender: TObject);
-    procedure butAcaoClick(Sender: TObject);
 
 
   private
@@ -97,11 +95,6 @@ begin
     butAcao.Font.Color:=clWindowText;
 end;
 
-procedure TformPrevisto.butAcaoClick(Sender: TObject);
-begin
-    butAcao.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
-end;
-
 procedure TformPrevisto.butAcaoMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
@@ -123,11 +116,6 @@ procedure TformPrevisto.butEditGradeMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
     butEditGrade.Font.Color:=clGreen;
-end;
-
-procedure TformPrevisto.butEmpenhoClick(Sender: TObject);
-begin
-    butEmpenho.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
 end;
 
 procedure TformPrevisto.butEmpenhoMouseMove(Sender: TObject;
