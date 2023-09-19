@@ -470,141 +470,156 @@ begin
     end;
     if dmOrdemCorte.qyPrevistoIdCorte.RecordCount > 0 then
     begin
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam1').Value = '' then
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam1').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam1').Value = null then
         begin
             formPrevisto.labTam1.Visible:=false;
             formPrevisto.spinTamanho1.Visible:=false;
         end
         else
-        begin
+//        begin
             formPrevisto.labTam1.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam1').Value;
-        end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam2').Value = '' then
+//            formPrevisto.spinTamanho1.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade1').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam2').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam2').Value = null then
         begin
             formPrevisto.labTam2.Visible:=false;
             formPrevisto.spinTamanho2.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam2.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam2').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam3').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam2.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam2').Value;
+//            formPrevisto.spinTamanho2.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade2').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam3').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam3').Value = null then
         begin
             formPrevisto.labTam3.Visible:=false;
             formPrevisto.spinTamanho3.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam3.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam3').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam4').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam3.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam3').Value;
+//            formPrevisto.spinTamanho3.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade3').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam4').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam4').Value = null then
         begin
             formPrevisto.labTam4.Visible:=false;
             formPrevisto.spinTamanho4.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam4.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam4').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam5').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam4.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam4').Value;
+//            formPrevisto.spinTamanho4.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade4').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam5').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam5').Value = null then
         begin
             formPrevisto.labTam5.Visible:=false;
             formPrevisto.spinTamanho5.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam5.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam5').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam6').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam5.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam5').Value;
+//            formPrevisto.spinTamanho5.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade5').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam6').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam6').Value = null then
         begin
             formPrevisto.labTam6.Visible:=false;
             formPrevisto.spinTamanho6.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam6.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam6').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam7').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam6.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam6').Value;
+//            formPrevisto.spinTamanho6.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade6').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam7').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam7').Value = null then
         begin
             formPrevisto.labTam7.Visible:=false;
             formPrevisto.spinTamanho7.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam7.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam7').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam8').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam7.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam7').Value;
+//            formPrevisto.spinTamanho7.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade7').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam8').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam8').Value = null then
         begin
             formPrevisto.labTam8.Visible:=false;
             formPrevisto.spinTamanho8.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam8.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam8').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam9').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam8.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam8').Value;
+//            formPrevisto.spinTamanho8.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade8').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam9').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam9').Value = null then
         begin
             formPrevisto.labTam9.Visible:=false;
             formPrevisto.spinTamanho9.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam9.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam9').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam10').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam9.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam9').Value;
+//            formPrevisto.spinTamanho9.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade9').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam10').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam10').Value = null then
         begin
             formPrevisto.labTam10.Visible:=false;
             formPrevisto.spinTamanho10.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam10.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam10').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam11').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam10.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam10').Value;
+//            formPrevisto.spinTamanho10.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade10').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam11').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam11').Value = null then
         begin
             formPrevisto.labTam11.Visible:=false;
             formPrevisto.spinTamanho11.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam11.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam11').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam12').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam11.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam11').Value;
+//            formPrevisto.spinTamanho11.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade11').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam12').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam12').Value = null then
         begin
             formPrevisto.labTam12.Visible:=false;
             formPrevisto.spinTamanho12.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam12.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam12').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam13').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam12.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam12').Value;
+//            formPrevisto.spinTamanho12.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade12').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam13').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam13').Value = null then
         begin
             formPrevisto.labTam13.Visible:=false;
             formPrevisto.spinTamanho13.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam13.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam13').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam14').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam13.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam13').Value;
+//            formPrevisto.spinTamanho13.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade13').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam14').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam14').Value = null then
         begin
             formPrevisto.labTam14.Visible:=false;
             formPrevisto.spinTamanho14.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam14.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam14').Value;
         end;
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam15').Value = '' then
+//        else
+//        begin
+//            formPrevisto.labTam14.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam14').Value;
+//            formPrevisto.spinTamanho14.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade14').Value;
+//        end;
+        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam15').Value = '' or dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam15').Value = null then
         begin
             formPrevisto.labTam15.Visible:=false;
             formPrevisto.spinTamanho15.Visible:=false;
-        end
-        else
-        begin
-            formPrevisto.labTam15.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam15').Value;
         end;
+//        else
+//        begin
+//            formPrevisto.labTam15.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam15').Value;
+//            formPrevisto.spinTamanho15.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade15').Value;
+//        end;
     end;
     formPrevisto.labCodProdAcabado.Caption := intToStr(dmOrdemCorte.qyCodProdAcabadoFicha.FieldByName('cad_id').Value);
     if dmOrdemCorte.qyStatusPrevisto.FieldByName('oci_situacao_id').Value = 1 then

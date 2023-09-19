@@ -465,201 +465,6 @@ object formPrevisto: TformPrevisto
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object labTam1: TLabel
-    Left = 103
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM1'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam2: TLabel
-    Left = 160
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM2'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam3: TLabel
-    Left = 217
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM3'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam4: TLabel
-    Left = 274
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM4'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam5: TLabel
-    Left = 331
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM5'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam6: TLabel
-    Left = 388
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM6'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam7: TLabel
-    Left = 446
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM7'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam8: TLabel
-    Left = 502
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM8'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam9: TLabel
-    Left = 559
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM9'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam10: TLabel
-    Left = 616
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM10'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam11: TLabel
-    Left = 673
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM11'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam12: TLabel
-    Left = 730
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM12'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam13: TLabel
-    Left = 787
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM13'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam14: TLabel
-    Left = 844
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM14'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam15: TLabel
-    Left = 901
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM15'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
   object panelCabecalho: TPanel
     Left = 0
     Top = 0
@@ -706,7 +511,7 @@ object formPrevisto: TformPrevisto
     Caption = 'Artigos'
     TabOrder = 4
   end
-  object spinTamanho1: TSpinEdit
+  object SpinEdit1: TSpinEdit
     Left = 103
     Top = 197
     Width = 42
@@ -716,7 +521,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 5
     Value = 0
   end
-  object spinTamanho2: TSpinEdit
+  object SpinEdit2: TSpinEdit
     Left = 160
     Top = 197
     Width = 42
@@ -726,7 +531,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 6
     Value = 0
   end
-  object spinTamanho3: TSpinEdit
+  object SpinEdit3: TSpinEdit
     Left = 217
     Top = 197
     Width = 42
@@ -736,7 +541,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 7
     Value = 0
   end
-  object spinTamanho4: TSpinEdit
+  object SpinEdit4: TSpinEdit
     Left = 274
     Top = 197
     Width = 42
@@ -746,7 +551,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 8
     Value = 0
   end
-  object spinTamanho5: TSpinEdit
+  object SpinEdit5: TSpinEdit
     Left = 331
     Top = 197
     Width = 42
@@ -756,7 +561,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 9
     Value = 0
   end
-  object spinTamanho6: TSpinEdit
+  object SpinEdit6: TSpinEdit
     Left = 388
     Top = 197
     Width = 42
@@ -766,7 +571,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 10
     Value = 0
   end
-  object spinTamanho7: TSpinEdit
+  object SpinEdit7: TSpinEdit
     Left = 445
     Top = 197
     Width = 42
@@ -776,7 +581,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 11
     Value = 0
   end
-  object spinTamanho8: TSpinEdit
+  object SpinEdit8: TSpinEdit
     Left = 502
     Top = 197
     Width = 42
@@ -786,7 +591,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 12
     Value = 0
   end
-  object spinTamanho9: TSpinEdit
+  object SpinEdit9: TSpinEdit
     Left = 559
     Top = 197
     Width = 42
@@ -796,7 +601,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 13
     Value = 0
   end
-  object spinTamanho10: TSpinEdit
+  object SpinEdit10: TSpinEdit
     Left = 616
     Top = 197
     Width = 42
@@ -806,7 +611,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 14
     Value = 0
   end
-  object spinTamanho11: TSpinEdit
+  object SpinEdit11: TSpinEdit
     Left = 673
     Top = 197
     Width = 42
@@ -816,7 +621,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 15
     Value = 0
   end
-  object spinTamanho12: TSpinEdit
+  object SpinEdit12: TSpinEdit
     Left = 730
     Top = 197
     Width = 42
@@ -826,7 +631,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 16
     Value = 0
   end
-  object spinTamanho13: TSpinEdit
+  object SpinEdit13: TSpinEdit
     Left = 787
     Top = 197
     Width = 42
@@ -836,7 +641,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 17
     Value = 0
   end
-  object spinTamanho14: TSpinEdit
+  object SpinEdit14: TSpinEdit
     Left = 844
     Top = 197
     Width = 42
@@ -846,7 +651,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 18
     Value = 0
   end
-  object spinTamanho15: TSpinEdit
+  object SpinEdit15: TSpinEdit
     Left = 901
     Top = 197
     Width = 42

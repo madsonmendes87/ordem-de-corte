@@ -34,8 +34,8 @@ object formPrevisto: TformPrevisto
     OnClick = butSairPrevistoClick
   end
   object labControleCorte: TLabel
-    Left = 24
-    Top = 47
+    Left = 8
+    Top = 48
     Width = 53
     Height = 14
     Caption = 'Controle'
@@ -48,6 +48,32 @@ object formPrevisto: TformPrevisto
   end
   object labNumCorte: TLabel
     Left = 24
+    Top = 67
+    Width = 6
+    Height = 21
+    Caption = '-'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -16
+    Font.Name = 'Segoe UI Semilight'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labHifen: TLabel
+    Left = 67
+    Top = 67
+    Width = 6
+    Height = 21
+    Caption = '-'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -16
+    Font.Name = 'Segoe UI Semilight'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labOrdem: TLabel
+    Left = 79
     Top = 67
     Width = 6
     Height = 21
@@ -164,7 +190,7 @@ object formPrevisto: TformPrevisto
     ParentFont = False
   end
   object butEditGrade: TSpeedButton
-    Left = 16
+    Left = -1
     Top = 103
     Width = 186
     Height = 26
@@ -236,7 +262,7 @@ object formPrevisto: TformPrevisto
     OnMouseMove = butEditGradeMouseMove
   end
   object butArtigos: TSpeedButton
-    Left = 217
+    Left = 200
     Top = 103
     Width = 97
     Height = 26
@@ -304,7 +330,7 @@ object formPrevisto: TformPrevisto
     OnMouseMove = butArtigosMouseMove
   end
   object butEmpenho: TSpeedButton
-    Left = 337
+    Left = 320
     Top = 103
     Width = 121
     Height = 26
@@ -372,7 +398,7 @@ object formPrevisto: TformPrevisto
     OnMouseMove = butEmpenhoMouseMove
   end
   object butAcao: TSpeedButton
-    Left = 472
+    Left = 455
     Top = 103
     Width = 98
     Height = 26
@@ -440,224 +466,16 @@ object formPrevisto: TformPrevisto
     OnMouseMove = butAcaoMouseMove
   end
   object labItem: TLabel
-    Left = 25
+    Left = 8
     Top = 143
-    Width = 106
-    Height = 17
+    Width = 126
+    Height = 21
     Caption = 'FORRO UNIMISTO'
     Font.Charset = ANSI_CHARSET
     Font.Color = clMaroon
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
+    Font.Height = -16
+    Font.Name = 'Segoe UI Semilight'
     Font.Style = []
-    ParentFont = False
-  end
-  object labQuantidade: TLabel
-    Left = 32
-    Top = 200
-    Width = 65
-    Height = 13
-    Caption = 'Quantidade'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam1: TLabel
-    Left = 103
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM1'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam2: TLabel
-    Left = 160
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM2'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam3: TLabel
-    Left = 217
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM3'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam4: TLabel
-    Left = 274
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM4'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam5: TLabel
-    Left = 331
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM5'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam6: TLabel
-    Left = 388
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM6'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam7: TLabel
-    Left = 446
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM7'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam8: TLabel
-    Left = 502
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM8'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam9: TLabel
-    Left = 559
-    Top = 181
-    Width = 32
-    Height = 13
-    Caption = 'TAM9'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam10: TLabel
-    Left = 616
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM10'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam11: TLabel
-    Left = 673
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM11'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam12: TLabel
-    Left = 730
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM12'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam13: TLabel
-    Left = 787
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM13'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam14: TLabel
-    Left = 844
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM14'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object labTam15: TLabel
-    Left = 901
-    Top = 181
-    Width = 39
-    Height = 13
-    Caption = 'TAM15'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
     ParentFont = False
   end
   object panelCabecalho: TPanel
@@ -675,7 +493,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 0
   end
   object radioCorte: TRadioGroup
-    Left = 17
+    Left = 0
     Top = 31
     Width = 185
     Height = 66
@@ -683,7 +501,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 1
   end
   object radioProdAcabado: TRadioGroup
-    Left = 217
+    Left = 200
     Top = 31
     Width = 729
     Height = 66
@@ -691,7 +509,7 @@ object formPrevisto: TformPrevisto
     TabOrder = 2
   end
   object radioEstadoGuia: TRadioGroup
-    Left = 960
+    Left = 943
     Top = 31
     Width = 162
     Height = 66
@@ -699,162 +517,12 @@ object formPrevisto: TformPrevisto
     TabOrder = 3
   end
   object radioArtigos: TRadioGroup
-    Left = 17
+    Left = 0
     Top = 128
     Width = 1105
-    Height = 17
+    Height = 49
     Caption = 'Artigos'
     TabOrder = 4
-  end
-  object spinTamanho1: TSpinEdit
-    Left = 103
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 5
-    Value = 0
-  end
-  object spinTamanho2: TSpinEdit
-    Left = 160
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 6
-    Value = 0
-  end
-  object spinTamanho3: TSpinEdit
-    Left = 217
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 7
-    Value = 0
-  end
-  object spinTamanho4: TSpinEdit
-    Left = 274
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 8
-    Value = 0
-  end
-  object spinTamanho5: TSpinEdit
-    Left = 331
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 9
-    Value = 0
-  end
-  object spinTamanho6: TSpinEdit
-    Left = 388
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 10
-    Value = 0
-  end
-  object spinTamanho7: TSpinEdit
-    Left = 445
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 11
-    Value = 0
-  end
-  object spinTamanho8: TSpinEdit
-    Left = 502
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 12
-    Value = 0
-  end
-  object spinTamanho9: TSpinEdit
-    Left = 559
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 13
-    Value = 0
-  end
-  object spinTamanho10: TSpinEdit
-    Left = 616
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 14
-    Value = 0
-  end
-  object spinTamanho11: TSpinEdit
-    Left = 673
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 15
-    Value = 0
-  end
-  object spinTamanho12: TSpinEdit
-    Left = 730
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 16
-    Value = 0
-  end
-  object spinTamanho13: TSpinEdit
-    Left = 787
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 17
-    Value = 0
-  end
-  object spinTamanho14: TSpinEdit
-    Left = 844
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 18
-    Value = 0
-  end
-  object spinTamanho15: TSpinEdit
-    Left = 901
-    Top = 197
-    Width = 42
-    Height = 22
-    MaxValue = 0
-    MinValue = 0
-    TabOrder = 19
-    Value = 0
   end
   object popupArtigos: TPopupMenu
     Left = 840

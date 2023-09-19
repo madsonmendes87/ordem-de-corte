@@ -87,6 +87,8 @@ type
     acaoCores: TAction;
     butEscolherCores: TBitBtn;
     labTipoProducao: TLabel;
+    labHifen: TLabel;
+    labOrd: TLabel;
     butAlterar: TBitBtn;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

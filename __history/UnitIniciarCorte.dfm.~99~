@@ -50,7 +50,7 @@ object formIniciarCorte: TformIniciarCorte
   object labNumeroOrd: TLabel
     Left = 210
     Top = 31
-    Width = 18
+    Width = 35
     Height = 21
     Caption = '-'
     Font.Charset = ANSI_CHARSET
@@ -356,6 +356,32 @@ object formIniciarCorte: TformIniciarCorte
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labHifen: TLabel
+    Left = 256
+    Top = 31
+    Width = 6
+    Height = 21
+    Caption = '-'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labOrd: TLabel
+    Left = 262
+    Top = 31
+    Width = 6
+    Height = 21
+    Caption = '-'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end

@@ -6,7 +6,7 @@ uses
   System.RegularExpressions, Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls,
   Vcl.StdCtrls, System.Actions, Vcl.ActnList, Data.DB, Vcl.Mask,
-  Vcl.DBCtrls, Vcl.ComCtrls, Vcl.Menus, Vcl.Samples.Spin;
+  Vcl.DBCtrls, Vcl.ComCtrls, Vcl.Menus;
 
 type
   TformPrevisto = class(TForm)
@@ -49,37 +49,6 @@ type
     Reabrir1: TMenuItem;
     radioArtigos: TRadioGroup;
     labItem: TLabel;
-    labQuantidade: TLabel;
-    spinTamanho1: TSpinEdit;
-    spinTamanho2: TSpinEdit;
-    spinTamanho3: TSpinEdit;
-    spinTamanho4: TSpinEdit;
-    spinTamanho5: TSpinEdit;
-    spinTamanho6: TSpinEdit;
-    spinTamanho7: TSpinEdit;
-    spinTamanho8: TSpinEdit;
-    spinTamanho9: TSpinEdit;
-    spinTamanho10: TSpinEdit;
-    spinTamanho11: TSpinEdit;
-    spinTamanho12: TSpinEdit;
-    spinTamanho13: TSpinEdit;
-    spinTamanho14: TSpinEdit;
-    spinTamanho15: TSpinEdit;
-    labTam1: TLabel;
-    labTam2: TLabel;
-    labTam3: TLabel;
-    labTam4: TLabel;
-    labTam5: TLabel;
-    labTam6: TLabel;
-    labTam7: TLabel;
-    labTam8: TLabel;
-    labTam9: TLabel;
-    labTam10: TLabel;
-    labTam11: TLabel;
-    labTam12: TLabel;
-    labTam13: TLabel;
-    labTam14: TLabel;
-    labTam15: TLabel;
     procedure butSairPrevistoClick(Sender: TObject);
     procedure butEditGradeMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);

@@ -478,6 +478,7 @@ begin
         else
         begin
             formPrevisto.labTam1.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam1').Value;
+            formPrevisto.spinTamanho1.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade1').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam2').Value = '' then
         begin
@@ -487,6 +488,7 @@ begin
         else
         begin
             formPrevisto.labTam2.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam2').Value;
+            formPrevisto.spinTamanho2.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade2').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam3').Value = '' then
         begin
@@ -496,6 +498,7 @@ begin
         else
         begin
             formPrevisto.labTam3.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam3').Value;
+            formPrevisto.spinTamanho3.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade3').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam4').Value = '' then
         begin
@@ -505,6 +508,7 @@ begin
         else
         begin
             formPrevisto.labTam4.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam4').Value;
+            formPrevisto.spinTamanho4.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade4').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam5').Value = '' then
         begin
@@ -514,6 +518,7 @@ begin
         else
         begin
             formPrevisto.labTam5.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam5').Value;
+            formPrevisto.spinTamanho5.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade5').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam6').Value = '' then
         begin
@@ -523,6 +528,7 @@ begin
         else
         begin
             formPrevisto.labTam6.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam6').Value;
+            formPrevisto.spinTamanho6.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade6').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam7').Value = '' then
         begin
@@ -532,6 +538,7 @@ begin
         else
         begin
             formPrevisto.labTam7.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam7').Value;
+            formPrevisto.spinTamanho7.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade7').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam8').Value = '' then
         begin
@@ -541,6 +548,7 @@ begin
         else
         begin
             formPrevisto.labTam8.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam8').Value;
+            formPrevisto.spinTamanho8.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade8').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam9').Value = '' then
         begin
@@ -550,6 +558,7 @@ begin
         else
         begin
             formPrevisto.labTam9.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam9').Value;
+            formPrevisto.spinTamanho9.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade9').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam10').Value = '' then
         begin
@@ -559,6 +568,7 @@ begin
         else
         begin
             formPrevisto.labTam10.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam10').Value;
+            formPrevisto.spinTamanho10.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade10').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam11').Value = '' then
         begin
@@ -568,6 +578,7 @@ begin
         else
         begin
             formPrevisto.labTam11.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam11').Value;
+            formPrevisto.spinTamanho11.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade11').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam12').Value = '' then
         begin
@@ -577,6 +588,7 @@ begin
         else
         begin
             formPrevisto.labTam12.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam12').Value;
+            formPrevisto.spinTamanho12.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade12').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam13').Value = '' then
         begin
@@ -586,6 +598,7 @@ begin
         else
         begin
             formPrevisto.labTam13.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam13').Value;
+            formPrevisto.spinTamanho13.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade13').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam14').Value = '' then
         begin
@@ -595,6 +608,7 @@ begin
         else
         begin
             formPrevisto.labTam14.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam14').Value;
+            formPrevisto.spinTamanho14.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade14').Value;
         end;
         if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam15').Value = '' then
         begin
@@ -604,6 +618,7 @@ begin
         else
         begin
             formPrevisto.labTam15.Caption:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam15').Value;
+            formPrevisto.spinTamanho15.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade15').Value;
         end;
     end;
     formPrevisto.labCodProdAcabado.Caption := intToStr(dmOrdemCorte.qyCodProdAcabadoFicha.FieldByName('cad_id').Value);
