@@ -66,20 +66,75 @@ type
     spinTamanho14: TSpinEdit;
     spinTamanho15: TSpinEdit;
     labTam1: TLabel;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
-    Label12: TLabel;
-    Label13: TLabel;
-    Label14: TLabel;
+    labTam2: TLabel;
+    labTam3: TLabel;
+    labTam4: TLabel;
+    labTam5: TLabel;
+    labTam6: TLabel;
+    labTam7: TLabel;
+    labTam8: TLabel;
+    labTam9: TLabel;
+    labTam10: TLabel;
+    labTam11: TLabel;
+    labTam12: TLabel;
+    labTam13: TLabel;
+    labTam14: TLabel;
+    labTam15: TLabel;
+    labConsumo: TLabel;
+    labIndividual: TLabel;
+    labTotal: TLabel;
+    labIndividual1: TLabel;
+    labIndividual2: TLabel;
+    labIndividual3: TLabel;
+    labIndividual4: TLabel;
+    labIndividual5: TLabel;
+    labIndividual6: TLabel;
+    labIndividual7: TLabel;
+    labIndividual8: TLabel;
+    labIndividual9: TLabel;
+    labindividual10: TLabel;
+    labIndividual11: TLabel;
+    labIndividual12: TLabel;
+    labIndividual13: TLabel;
+    labIndividual14: TLabel;
+    labIndividual15: TLabel;
+    labTotal1: TLabel;
+    labTotal2: TLabel;
+    labTotal3: TLabel;
+    labTotal4: TLabel;
+    labTotal5: TLabel;
+    labTotal6: TLabel;
+    labTotal7: TLabel;
+    labTotal8: TLabel;
+    labTotal9: TLabel;
+    labTotal10: TLabel;
+    labTotal11: TLabel;
+    labTotal12: TLabel;
+    labTotal13: TLabel;
+    labTotal14: TLabel;
+    labTotal15: TLabel;
+    panelInfo1: TPanel;
+    panelInfo2: TPanel;
+    labQtdCortes: TLabel;
+    labNumQtdCortes: TLabel;
+    labMedia: TLabel;
+    labNumMedia: TLabel;
+    labConsTotal: TLabel;
+    labNumConsTotal: TLabel;
+    labPlus: TLabel;
+    labConsRestante: TLabel;
+    labNumConsRestante: TLabel;
+    labNomeTotal: TLabel;
+    labIgual: TLabel;
+    labNumTotal: TLabel;
+    labUnidade: TLabel;
+    labNumUnidade: TLabel;
+    labTotalGeralPecas: TLabel;
+    labNumTotalGeral: TLabel;
+    labMediaGeralPecas: TLabel;
+    labNumMediaTotal: TLabel;
+    butInfoReferencia: TSpeedButton;
+    butImGradeCor: TSpeedButton;
     procedure butSairPrevistoClick(Sender: TObject);
     procedure butEditGradeMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
@@ -94,6 +149,10 @@ type
     procedure butArtigosClick(Sender: TObject);
     procedure butEmpenhoClick(Sender: TObject);
     procedure butAcaoClick(Sender: TObject);
+    procedure butInfoReferenciaMouseMove(Sender: TObject;
+      Shift: TShiftState; X, Y: Integer);
+    procedure butImGradeCorMouseMove(Sender: TObject; Shift: TShiftState;
+      X, Y: Integer);
 
 
   private
@@ -126,6 +185,8 @@ begin
     butArtigos.Font.Color:=clWindowText;
     butEmpenho.Font.Color:=clWindowText;
     butAcao.Font.Color:=clWindowText;
+    butInfoReferencia.Font.Color:=clNavy;
+    butImGradeCor.Font.Color:=clWindowText;
 end;
 
 procedure TformPrevisto.butAcaoClick(Sender: TObject);
@@ -165,6 +226,18 @@ procedure TformPrevisto.butEmpenhoMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
     butEmpenho.Font.Color:=clNavy;
+end;
+
+procedure TformPrevisto.butImGradeCorMouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+begin
+    butImGradeCor.Font.Color:=clLtGray;
+end;
+
+procedure TformPrevisto.butInfoReferenciaMouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+begin
+    butInfoReferencia.Font.Color:=clBlue;
 end;
 
 end.

@@ -1161,10 +1161,10 @@ object formPrevisto: TformPrevisto
     ParentFont = False
     OnMouseMove = butInfoReferenciaMouseMove
   end
-  object butImGradeCor: TSpeedButton
+  object butImgGradeCor: TSpeedButton
     Left = 946
     Top = 304
-    Width = 176
+    Width = 181
     Height = 50
     Caption = 'Imagem Grade de Cor'
     Flat = True
@@ -1273,7 +1273,7 @@ object formPrevisto: TformPrevisto
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     ParentFont = False
-    OnMouseMove = butImGradeCorMouseMove
+    OnMouseMove = butInfoReferenciaMouseMove
   end
   object panelCabecalho: TPanel
     Left = 0

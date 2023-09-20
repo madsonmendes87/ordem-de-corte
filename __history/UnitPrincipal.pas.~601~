@@ -459,26 +459,151 @@ begin
         ParamByName('idcorte').AsInteger:=strtoint(gridOrdem.Fields[0].Value);
         Open;
     end;
-    with dmOrdemCorte.qyPrevistoIdCorte do
+    with dmOrdemCorte.qyFichaIdCorte do
     begin
         Close;
         SQL.Clear;
-        SQL.Add('SELECT * FROM ordem_corte_itens_previsto');
-        SQL.Add(' WHERE oci_idocorte = :idcorte');
-        ParamByName('idcorte').AsInteger:=strtoint(gridOrdem.Fields[0].Value);
+        SQL.Add('SELECT * FROM ficha_tecnica_itens');
+        SQL.Add(' WHERE fti_idfichatec = :ficha');
+        ParamByName('ficha').AsInteger:=strtoint(gridOrdem.Fields[5].Value);
         Open;
     end;
-    if dmOrdemCorte.qyPrevistoIdCorte.RecordCount > 0 then
+    if dmOrdemCorte.qyFichaIdCorte.RecordCount > 0 then
     begin
-        if dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam1').Value = '' then
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam1').Value = '' then
         begin
             formPrevisto.labTam1.Visible:=false;
             formPrevisto.spinTamanho1.Visible:=false;
         end
         else
         begin
-            formPrevisto.labTam1.Caption:=intToStr(dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_tam1').Value);
-            formPrevisto.spinTamanho1.Value:=dmOrdemCorte.qyPrevistoIdCorte.FieldByName('oci_qtdade1').Value;
+            formPrevisto.labTam1.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam1').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam2').Value = '' then
+        begin
+            formPrevisto.labTam2.Visible:=false;
+            formPrevisto.spinTamanho2.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam2.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam2').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam3').Value = '' then
+        begin
+            formPrevisto.labTam3.Visible:=false;
+            formPrevisto.spinTamanho3.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam3.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam3').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam4').Value = '' then
+        begin
+            formPrevisto.labTam4.Visible:=false;
+            formPrevisto.spinTamanho4.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam4.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam4').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam5').Value = '' then
+        begin
+            formPrevisto.labTam5.Visible:=false;
+            formPrevisto.spinTamanho5.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam5.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam5').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam6').Value = '' then
+        begin
+            formPrevisto.labTam6.Visible:=false;
+            formPrevisto.spinTamanho6.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam6.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam6').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam7').Value = '' then
+        begin
+            formPrevisto.labTam7.Visible:=false;
+            formPrevisto.spinTamanho7.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam7.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam7').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam8').Value = '' then
+        begin
+            formPrevisto.labTam8.Visible:=false;
+            formPrevisto.spinTamanho8.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam8.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam8').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam9').Value = '' then
+        begin
+            formPrevisto.labTam9.Visible:=false;
+            formPrevisto.spinTamanho9.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam9.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam9').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam10').Value = '' then
+        begin
+            formPrevisto.labTam10.Visible:=false;
+            formPrevisto.spinTamanho10.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam10.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam10').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam11').Value = '' then
+        begin
+            formPrevisto.labTam11.Visible:=false;
+            formPrevisto.spinTamanho11.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam11.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam11').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam12').Value = '' then
+        begin
+            formPrevisto.labTam12.Visible:=false;
+            formPrevisto.spinTamanho12.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam12.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam12').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam13').Value = '' then
+        begin
+            formPrevisto.labTam13.Visible:=false;
+            formPrevisto.spinTamanho13.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam13.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam13').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam14').Value = '' then
+        begin
+            formPrevisto.labTam14.Visible:=false;
+            formPrevisto.spinTamanho14.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam14.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam14').Value;
+        end;
+        if dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam15').Value = '' then
+        begin
+            formPrevisto.labTam15.Visible:=false;
+            formPrevisto.spinTamanho15.Visible:=false;
+        end
+        else
+        begin
+            formPrevisto.labTam15.Caption:=dmOrdemCorte.qyFichaIdCorte.FieldByName('oci_tam15').Value;
         end;
     end;
     formPrevisto.labCodProdAcabado.Caption := intToStr(dmOrdemCorte.qyCodProdAcabadoFicha.FieldByName('cad_id').Value);

@@ -66,6 +66,13 @@ type
     tbCorteCores: TFDTable;
     dsCorteCores: TDataSource;
     dsProdutoAvancoProd: TDataSource;
+    dsProdReposicao: TDataSource;
+    qyUserOrdem2: TFDQuery;
+    tbConfAvancoProducao: TFDTable;
+    dsConfAvancoProducao: TDataSource;
+    tbAvancoProducaoItens: TFDTable;
+    dsAvancoProducaoItens: TDataSource;
+    qyOldValue: TFDQuery;
     cdsProdSemEstoque: TClientDataSet;
     cdsProdSemEstoqueidProduto: TIntegerField;
     cdsProdSemEstoqueProduto: TStringField;
@@ -74,16 +81,19 @@ type
     cdsProdSemEstoqueTipo: TStringField;
     cdsProdSemEstoqueConsumo: TFloatField;
     cdsProdSemEstoqueDisponivel: TFloatField;
-    dsProdReposicao: TDataSource;
+    cdsProdSemEstoquecodCor: TIntegerField;
+    cdsProdSemEstoquecodTamanho: TIntegerField;
     cdsProdReposicao: TClientDataSet;
     cdsProdReposicaoidProduto: TIntegerField;
     cdsProdReposicaoProduto: TStringField;
     cdsProdReposicaoCor: TStringField;
     cdsProdReposicaoTamanho: TStringField;
     cdsProdReposicaoDataReposicao: TDateField;
-    qyUserOrdem2: TFDQuery;
-    tbConfAvancoProducao: TFDTable;
-    dsConfAvancoProducao: TDataSource;
+    cdsProdReposicaocodCor: TIntegerField;
+    cdsProdReposicaocodTamanho: TIntegerField;
+    qyCodProdAcabadoFicha: TFDQuery;
+    qyStatusPrevisto: TFDQuery;
+    qyPrevistoIdCorte: TFDQuery;
   private
     { Private declarations }
   public
@@ -101,5 +111,6 @@ uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
   UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado;
 
 {$R *.dfm}
+
 
 end.

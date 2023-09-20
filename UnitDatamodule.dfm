@@ -696,9 +696,9 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 176
     Top = 232
   end
-  object qyPrevistoIdCorte: TFDQuery
+  object qyFichaIdCorte: TFDQuery
     Connection = Conexao
-    Left = 264
+    Left = 280
     Top = 232
   end
 end

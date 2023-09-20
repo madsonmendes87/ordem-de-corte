@@ -442,9 +442,9 @@ object formPrevisto: TformPrevisto
   object labItem: TLabel
     Left = 25
     Top = 143
-    Width = 106
+    Width = 5
     Height = 17
-    Caption = 'FORRO UNIMISTO'
+    Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clMaroon
     Font.Height = -13
@@ -467,16 +467,707 @@ object formPrevisto: TformPrevisto
   end
   object labTam1: TLabel
     Left = 103
-    Top = 184
-    Width = 8
+    Top = 181
+    Width = 32
     Height = 13
-    Caption = 'G'
+    Caption = 'TAM1'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
+  end
+  object labTam2: TLabel
+    Left = 160
+    Top = 181
+    Width = 32
+    Height = 13
+    Caption = 'TAM2'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam3: TLabel
+    Left = 217
+    Top = 181
+    Width = 32
+    Height = 13
+    Caption = 'TAM3'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam4: TLabel
+    Left = 274
+    Top = 181
+    Width = 32
+    Height = 13
+    Caption = 'TAM4'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam5: TLabel
+    Left = 331
+    Top = 181
+    Width = 32
+    Height = 13
+    Caption = 'TAM5'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam6: TLabel
+    Left = 388
+    Top = 181
+    Width = 32
+    Height = 13
+    Caption = 'TAM6'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam7: TLabel
+    Left = 446
+    Top = 181
+    Width = 32
+    Height = 13
+    Caption = 'TAM7'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam8: TLabel
+    Left = 502
+    Top = 181
+    Width = 32
+    Height = 13
+    Caption = 'TAM8'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam9: TLabel
+    Left = 559
+    Top = 181
+    Width = 32
+    Height = 13
+    Caption = 'TAM9'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam10: TLabel
+    Left = 616
+    Top = 181
+    Width = 39
+    Height = 13
+    Caption = 'TAM10'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam11: TLabel
+    Left = 673
+    Top = 181
+    Width = 39
+    Height = 13
+    Caption = 'TAM11'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam12: TLabel
+    Left = 730
+    Top = 181
+    Width = 39
+    Height = 13
+    Caption = 'TAM12'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam13: TLabel
+    Left = 787
+    Top = 181
+    Width = 39
+    Height = 13
+    Caption = 'TAM13'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam14: TLabel
+    Left = 844
+    Top = 181
+    Width = 39
+    Height = 13
+    Caption = 'TAM14'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTam15: TLabel
+    Left = 901
+    Top = 181
+    Width = 39
+    Height = 13
+    Caption = 'TAM15'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labConsumo: TLabel
+    Left = 480
+    Top = 225
+    Width = 52
+    Height = 13
+    Caption = 'Consumo'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labIndividual: TLabel
+    Left = 32
+    Top = 248
+    Width = 56
+    Height = 13
+    Caption = 'Individual'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labTotal: TLabel
+    Left = 32
+    Top = 275
+    Width = 29
+    Height = 13
+    Caption = 'Total'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object labIndividual1: TLabel
+    Left = 104
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual2: TLabel
+    Left = 160
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual3: TLabel
+    Left = 217
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual4: TLabel
+    Left = 274
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual5: TLabel
+    Left = 331
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual6: TLabel
+    Left = 388
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual7: TLabel
+    Left = 445
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual8: TLabel
+    Left = 502
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual9: TLabel
+    Left = 559
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labindividual10: TLabel
+    Left = 616
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual11: TLabel
+    Left = 673
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual12: TLabel
+    Left = 730
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual13: TLabel
+    Left = 787
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual14: TLabel
+    Left = 844
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labIndividual15: TLabel
+    Left = 901
+    Top = 248
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal1: TLabel
+    Left = 104
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal2: TLabel
+    Left = 160
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal3: TLabel
+    Left = 217
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal4: TLabel
+    Left = 274
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal5: TLabel
+    Left = 331
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal6: TLabel
+    Left = 388
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal7: TLabel
+    Left = 445
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal8: TLabel
+    Left = 502
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal9: TLabel
+    Left = 559
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal10: TLabel
+    Left = 616
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal11: TLabel
+    Left = 673
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal12: TLabel
+    Left = 730
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal13: TLabel
+    Left = 787
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal14: TLabel
+    Left = 844
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object labTotal15: TLabel
+    Left = 901
+    Top = 275
+    Width = 4
+    Height = 13
+    Caption = '-'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object butInfoReferencia: TSpeedButton
+    Left = 759
+    Top = 304
+    Width = 181
+    Height = 50
+    Caption = 'Informa'#231#245'es da Refer'#234'ncia'
+    Flat = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clNavy
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    Glyph.Data = {
+      F6060000424DF606000000000000360000002800000018000000180000000100
+      180000000000C0060000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFDFDECECECECECECECECEC
+      ECECECECECECECECECECECECECECECECECECF0F0F0FFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEFA
+      FAFAFAFAFAFAFAFAF0F0F0EFEFEFEFEFEFF4F4F4FAFAFAFAFAFAFBFBFBFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD6D6D6D0D0D0D0D0D0E5E5E5FFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFF2F2F2EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE6E6E6E5E5E5E5E5
+      E5E9E9E9EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEF2F2F2FFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFF9F9F9E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6
+      E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6E6
+      E6F9F9F9FFFFFFFFFFFFFFFFFFFFFFFFF3ECEAE1D6D1E1D6D1E1D6D1E1D6D1E1
+      D6D1E1D6D1E1D6D1E1D6D1E1D6D1E1D6D1E1D6D1E1D6D1E1D6D1E1D6D1E1D6D1
+      E1D6D1E1D6D1E1D6D1F3ECEAFFFFFFFFFFFFFFFFFFFFFFFFE9D5CDAD735CB69C
+      91BBA099BEA3A3C5ABA1C8AEA3C9ADADCBB0AFD1B8AED3B8B1D2B6B8D5BBB6DB
+      C1B6D9BEBBD8BCBEDDC2BADFC5BABF856EE9D5CDFFFFFFFFFFFFFFFFFFFFFFFF
+      E9D5CDB1826FC3C3C3C3B6D2C6A5AED8CB9EDBDBDBBF9EE3BF98C6E6E2E2DFD4
+      EEB68AE2D0B7D9F5F5F5CBAEF5B589E4EADFF0FBFBFBCA9B88E9D5CDFFFFFFFF
+      FFFFFFFFFFFFFFFFE9D5CDB48572CACACACDC4C6D9C374E5DF7EE0E0E0C9ABCE
+      C8A8A7E9E6E1E2D9ECBD96CBD6BFCCF6F6F6CEB3EBBA91D5ECE2EDFCFCFCCA9B
+      88E9D5CDFFFFFFFFFFFFFFFFFFFFFFFFE9D5CDB78875D1D1D1D6D4CAE2DD96E8
+      E8AAE5E5E5D1B8B8D2B889EDEBE0E8DFEBC4A1B5DAC7BEF8F8F8D3B9E3BF99C5
+      EEE5EAFCFCFCCA9B88E9D5CDFFFFFFFFFFFFFFFFFFFFFFFFE9D5CDB98A77D6D6
+      D6DBDBDBE0E0E0E5E5E5E9E9E9D8C5A1DCC86AF1F0E0EAE3E7CBAD9FE0CFB0F9
+      F9F9D6BED9C4A1B5EFE7E7FDFDFDCA9B88E9D5CDFFFFFFFFFFFFFFFFFFFFFFFF
+      E9D5CDBB8C79DBDBDBE0E0E0E5E5E5E9E9E9ECECECE1D28BE6D84BF4F3DEEDE6
+      E3D2B889E5D7A2FBFBFBDAC4D0C9A9A6F2EAE4FDFDFDCA9B88E9D5CDFFFFFFFF
+      FFFFFFFFFFFFFFFFE9D5CDBD8E7BE0E0E0E5E5E5E9E9E9ECECECEFEFEFE9DF74
+      F0E82DF6F6DCF0EBE1DAC473EADF94FCFCFCDDC9C7CEB196F3ECE0FDFDFDCB9C
+      89E9D5CDFFFFFFFFFFFFFFFFFFFFFFFFE9D5CDBF907DE5E5E5E9E9E9ECECECEF
+      EFEFF3F3F3F4F2C2F7F7A6F8F8EFF2EDDCE1CF5CEFE786FCFCFCE0CEBDD3B987
+      F4EEDCFEFEFECB9C89E9D5CDFFFFFFFFFFFFFFFFFFFFFFFFE9D5CDC1927FE9E9
+      E9ECECECEFEFEFF3F3F3F5F5F5F6F6F6F8F8F8F9F9F9F6F2D9E8DB46F4EE77FD
+      FDFDE3D3B4D8C177F5F1D8FEFEFECB9C89E9D5CDFFFFFFFFFFFFFFFFFFFFFFFF
+      E9D5CDC39481ECECECEFEFEFF3F3F3F5F5F5F6F6F6F8F8F8F9F9F9FBFBFBF8F5
+      D5EFE630F9F669FDFDFDE6D8AADDCA67F7F3D4FFFFFFCB9C89E9D5CDFFFFFFFF
+      FFFFFFFFFFFFFFFFF2E6E1BD8069BE836CBE836CC0836DC0836DC0836DC0836D
+      C0836DC0836DC48E67DCBB43D3AA4BC0836DD2AE68E2D258CA9963C0836DBD80
+      69F2E6E1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEDE398E8DA48
+      FAF8CDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFF1E88EEDE238FCFAC9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFF4ED84F2EA29FDFCC5FFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7F17BF7F219FEFEC2FFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDFCCCFEFDA6
+      FFFFE8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+    ParentFont = False
+    OnMouseMove = butInfoReferenciaMouseMove
+  end
+  object butImGradeCor: TSpeedButton
+    Left = 946
+    Top = 311
+    Width = 176
+    Height = 50
+    Flat = True
+    OnMouseMove = butImGradeCorMouseMove
   end
   object panelCabecalho: TPanel
     Left = 0
@@ -520,7 +1211,7 @@ object formPrevisto: TformPrevisto
     Left = 17
     Top = 128
     Width = 1105
-    Height = 17
+    Height = 177
     Caption = 'Artigos'
     TabOrder = 4
   end
@@ -673,6 +1364,260 @@ object formPrevisto: TformPrevisto
     MinValue = 0
     TabOrder = 19
     Value = 0
+  end
+  object panelInfo1: TPanel
+    Left = 17
+    Top = 304
+    Width = 536
+    Height = 50
+    BevelOuter = bvNone
+    Color = clInactiveBorder
+    ParentBackground = False
+    TabOrder = 20
+    object labQtdCortes: TLabel
+      Left = 15
+      Top = 7
+      Width = 63
+      Height = 13
+      Caption = 'QTD Cortes'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labNumQtdCortes: TLabel
+      Left = 35
+      Top = 26
+      Width = 5
+      Height = 13
+      Caption = '-'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labMedia: TLabel
+      Left = 113
+      Top = 7
+      Width = 34
+      Height = 13
+      Caption = 'Media'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labNumMedia: TLabel
+      Left = 113
+      Top = 26
+      Width = 5
+      Height = 13
+      Caption = '-'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labConsTotal: TLabel
+      Left = 185
+      Top = 7
+      Width = 59
+      Height = 13
+      Caption = 'Cons Total'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labNumConsTotal: TLabel
+      Left = 185
+      Top = 26
+      Width = 5
+      Height = 13
+      Caption = '-'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labPlus: TLabel
+      Left = 255
+      Top = 26
+      Width = 9
+      Height = 13
+      Caption = '+'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labConsRestante: TLabel
+      Left = 274
+      Top = 7
+      Width = 82
+      Height = 13
+      Caption = 'Cons Restante'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labNumConsRestante: TLabel
+      Left = 280
+      Top = 26
+      Width = 5
+      Height = 13
+      Caption = '-'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labNomeTotal: TLabel
+      Left = 403
+      Top = 7
+      Width = 29
+      Height = 13
+      Caption = 'Total'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labIgual: TLabel
+      Left = 374
+      Top = 26
+      Width = 9
+      Height = 13
+      Caption = '='
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labNumTotal: TLabel
+      Left = 398
+      Top = 26
+      Width = 5
+      Height = 13
+      Caption = '-'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labUnidade: TLabel
+      Left = 481
+      Top = 7
+      Width = 46
+      Height = 13
+      Caption = 'Unidade'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labNumUnidade: TLabel
+      Left = 496
+      Top = 26
+      Width = 5
+      Height = 13
+      Caption = '-'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+  end
+  object panelInfo2: TPanel
+    Left = 559
+    Top = 304
+    Width = 194
+    Height = 50
+    BevelOuter = bvNone
+    Color = clWindow
+    ParentBackground = False
+    TabOrder = 21
+    object labTotalGeralPecas: TLabel
+      Left = 8
+      Top = 7
+      Width = 101
+      Height = 13
+      Caption = 'Total Geral Pe'#231'as:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labNumTotalGeral: TLabel
+      Left = 120
+      Top = 7
+      Width = 5
+      Height = 13
+      Caption = '-'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labMediaGeralPecas: TLabel
+      Left = 8
+      Top = 26
+      Width = 106
+      Height = 13
+      Caption = 'Media Geral Pe'#231'as:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object labNumMediaTotal: TLabel
+      Left = 120
+      Top = 26
+      Width = 5
+      Height = 13
+      Caption = '-'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
   end
   object popupArtigos: TPopupMenu
     Left = 840
