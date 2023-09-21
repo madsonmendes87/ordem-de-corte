@@ -701,4 +701,9 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 280
     Top = 232
   end
+  object qyOrdemPrototipo: TFDQuery
+    Connection = Conexao
+    Left = 376
+    Top = 232
+  end
 end

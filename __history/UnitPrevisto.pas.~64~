@@ -133,7 +133,9 @@ type
     labNumTotalGeral: TLabel;
     labMediaGeralPecas: TLabel;
     labNumMediaTotal: TLabel;
-    SpeedButton1: TSpeedButton;
+    butInfoReferencia: TSpeedButton;
+    butImGradeCor: TSpeedButton;
+    butPrototipo: TSpeedButton;
     procedure butSairPrevistoClick(Sender: TObject);
     procedure butEditGradeMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
@@ -148,6 +150,10 @@ type
     procedure butArtigosClick(Sender: TObject);
     procedure butEmpenhoClick(Sender: TObject);
     procedure butAcaoClick(Sender: TObject);
+    procedure butInfoReferenciaMouseMove(Sender: TObject;
+      Shift: TShiftState; X, Y: Integer);
+    procedure butImGradeCorMouseMove(Sender: TObject; Shift: TShiftState;
+      X, Y: Integer);
 
 
   private
@@ -180,6 +186,8 @@ begin
     butArtigos.Font.Color:=clWindowText;
     butEmpenho.Font.Color:=clWindowText;
     butAcao.Font.Color:=clWindowText;
+    butInfoReferencia.Font.Color:=clNavy;
+    butImGradeCor.Font.Color:=clWindowText;
 end;
 
 procedure TformPrevisto.butAcaoClick(Sender: TObject);
@@ -219,6 +227,18 @@ procedure TformPrevisto.butEmpenhoMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
     butEmpenho.Font.Color:=clNavy;
+end;
+
+procedure TformPrevisto.butImGradeCorMouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+begin
+    butImGradeCor.Font.Color:=clDkGray;
+end;
+
+procedure TformPrevisto.butInfoReferenciaMouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+begin
+    butInfoReferencia.Font.Color:=clBlue;
 end;
 
 end.

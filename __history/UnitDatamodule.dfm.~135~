@@ -113,7 +113,7 @@ object dmOrdemCorte: TdmOrdemCorte
         '((ocri.oci_idocorte = oci.oc_id) and (ocpi.oci_situacao_id NOT I' +
         'N (2, 4)))'
       'WHERE oci.oc_id=oc.oc_id LIMIT 1 ) AS diasemprocesso,'
-      'Cast(Case When oc.oc_prototipo = True Then '#39'Prot'#243'tipo'#39
+      'Cast(Case When oc.oc_prototipo = True Then '#39'Prototipo'#39
       'ELSE '#39'Grande Escala'#39' END as character varying(15)) AS tipo,'
       
         '(pa.cad_idreferencia)as referencia,(pa.cad_descricao)as produtoa' +
@@ -556,6 +556,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object dsProdutoAvancoProd: TDataSource
+    DataSet = cdsProdSemEstoque
     Left = 1024
     Top = 128
   end
@@ -563,37 +564,6 @@ object dmOrdemCorte: TdmOrdemCorte
     DataSet = cdsProdReposicao
     Left = 888
     Top = 184
-  end
-  object cdsProdReposicao: TClientDataSet
-    PersistDataPacket.Data = {
-      930000009619E0BD010000001800000005000000000003000000930009696450
-      726F6475746F04000100000000000750726F6475746F01004900000001000557
-      4944544802000200320003436F72010049000000010005574944544802000200
-      19000754616D616E686F01004900000001000557494454480200020019000E44
-      617461205265706F736963616F04000600000000000000}
-    Active = True
-    Aggregates = <>
-    Params = <>
-    Left = 800
-    Top = 184
-    object cdsProdReposicaoidProduto: TIntegerField
-      FieldName = 'idProduto'
-    end
-    object cdsProdReposicaoProduto: TStringField
-      FieldName = 'Produto'
-      Size = 50
-    end
-    object cdsProdReposicaoCor: TStringField
-      FieldName = 'Cor'
-      Size = 25
-    end
-    object cdsProdReposicaoTamanho: TStringField
-      FieldName = 'Tamanho'
-      Size = 25
-    end
-    object cdsProdReposicaoDataReposicao: TDateField
-      FieldName = 'Data Reposicao'
-    end
   end
   object qyUserOrdem2: TFDQuery
     Connection = Conexao
@@ -665,9 +635,11 @@ object dmOrdemCorte: TdmOrdemCorte
     end
     object cdsProdSemEstoqueConsumo: TFloatField
       FieldName = 'Consumo'
+      DisplayFormat = ',#0.0000'
     end
     object cdsProdSemEstoqueDisponivel: TFloatField
       FieldName = 'Disponivel'
+      DisplayFormat = ',#0.0000'
     end
     object cdsProdSemEstoquecodCor: TIntegerField
       FieldName = 'codCor'
@@ -675,5 +647,58 @@ object dmOrdemCorte: TdmOrdemCorte
     object cdsProdSemEstoquecodTamanho: TIntegerField
       FieldName = 'codTamanho'
     end
+  end
+  object cdsProdReposicao: TClientDataSet
+    PersistDataPacket.Data = {
+      B50000009619E0BD010000001800000007000000000003000000B50009696450
+      726F6475746F04000100000000000750726F6475746F01004900000001000557
+      4944544802000200280003436F72010049000000010005574944544802000200
+      1E000754616D616E686F01004900000001000557494454480200020019000E44
+      617461205265706F736963616F040006000000000006636F64436F7204000100
+      000000000A636F6454616D616E686F04000100000000000000}
+    Active = True
+    Aggregates = <>
+    Params = <>
+    Left = 792
+    Top = 184
+    object cdsProdReposicaoidProduto: TIntegerField
+      FieldName = 'idProduto'
+    end
+    object cdsProdReposicaoProduto: TStringField
+      FieldName = 'Produto'
+      Size = 40
+    end
+    object cdsProdReposicaoCor: TStringField
+      FieldName = 'Cor'
+      Size = 30
+    end
+    object cdsProdReposicaoTamanho: TStringField
+      FieldName = 'Tamanho'
+      Size = 25
+    end
+    object cdsProdReposicaoDataReposicao: TDateField
+      FieldName = 'Data Reposicao'
+    end
+    object cdsProdReposicaocodCor: TIntegerField
+      FieldName = 'codCor'
+    end
+    object cdsProdReposicaocodTamanho: TIntegerField
+      FieldName = 'codTamanho'
+    end
+  end
+  object qyCodProdAcabadoFicha: TFDQuery
+    Connection = Conexao
+    Left = 64
+    Top = 232
+  end
+  object qyStatusPrevisto: TFDQuery
+    Connection = Conexao
+    Left = 176
+    Top = 232
+  end
+  object qyFichaIdCorte: TFDQuery
+    Connection = Conexao
+    Left = 280
+    Top = 232
   end
 end

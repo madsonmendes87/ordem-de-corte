@@ -6,7 +6,8 @@ uses
   System.RegularExpressions, Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ExtCtrls,
   Vcl.StdCtrls, System.Actions, Vcl.ActnList, Data.DB, Vcl.Mask,
-  Vcl.DBCtrls, Vcl.ComCtrls, Vcl.Menus, Vcl.Samples.Spin;
+  Vcl.DBCtrls, Vcl.ComCtrls, Vcl.Menus, Vcl.Samples.Spin, Vcl.Grids,
+  Vcl.DBGrids;
 
 type
   TformPrevisto = class(TForm)
@@ -135,6 +136,9 @@ type
     labNumMediaTotal: TLabel;
     butInfoReferencia: TSpeedButton;
     butImGradeCor: TSpeedButton;
+    butPrototipo: TSpeedButton;
+    labPrototipo: TLabel;
+    DBGrid1: TDBGrid;
     procedure butSairPrevistoClick(Sender: TObject);
     procedure butEditGradeMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);

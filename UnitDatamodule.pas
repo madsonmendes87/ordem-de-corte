@@ -94,6 +94,7 @@ type
     qyCodProdAcabadoFicha: TFDQuery;
     qyStatusPrevisto: TFDQuery;
     qyFichaIdCorte: TFDQuery;
+    qyOrdemPrototipo: TFDQuery;
   private
     { Private declarations }
   public
