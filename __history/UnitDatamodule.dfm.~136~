@@ -706,19 +706,4 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 376
     Top = 232
   end
-  object qyGridPrevisto: TFDQuery
-    Connection = Conexao
-    Left = 464
-    Top = 232
-  end
-  object dsGridPrevisto: TDataSource
-    DataSet = qyGridPrevisto
-    Left = 544
-    Top = 232
-  end
-  object qyPrevistoNumOrdem: TFDQuery
-    Connection = Conexao
-    Left = 640
-    Top = 232
-  end
 end

@@ -664,9 +664,14 @@ procedure TformPrevisto.gridPrevistoDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
 begin
-    if dmOrdemCorte.qyGridPrevisto.FieldByName('oci_id').Value = '73789' then
-      gridPrevisto.Canvas.Font.Color := clBlue;
-      gridPrevisto.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+    dmOrdemCorte.qyGridPrevisto.Close;
+    dmOrdemCorte.qyGridPrevisto.Open;
+    if dmOrdemCorte.qyGridPrevisto.Locate('oci_id', gridPrevisto.Fields[0].Value, []) then
+    begin
+        if dmOrdemCorte.qyGridPrevisto.FieldByName('oci_tipo').Value = 'P' then
+           gridPrevisto.Canvas.Font.Color:=clRed;
+    end;
+
 end;
 
 procedure TformPrevisto.butAcaoClick(Sender: TObject);

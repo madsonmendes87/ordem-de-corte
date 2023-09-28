@@ -16,7 +16,6 @@ object formPrevisto: TformPrevisto
   OldCreateOrder = False
   Visible = True
   OnMouseMove = FormMouseMove
-  OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -1812,16 +1811,12 @@ object formPrevisto: TformPrevisto
     Top = 356
     Width = 1112
     Height = 140
-    Color = clGradientActiveCaption
-    DataSource = dmOrdemCorte.dsGridPrevisto
-    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 22
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
-    OnDrawColumnCell = gridPrevistoDrawColumnCell
   end
   object popupArtigos: TPopupMenu
     Left = 1000

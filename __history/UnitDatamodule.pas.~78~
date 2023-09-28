@@ -97,7 +97,6 @@ type
     qyOrdemPrototipo: TFDQuery;
     qyGridPrevisto: TFDQuery;
     dsGridPrevisto: TDataSource;
-    qyPrevistoNumOrdem: TFDQuery;
   private
     { Private declarations }
   public

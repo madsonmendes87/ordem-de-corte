@@ -906,6 +906,7 @@ begin
          end;
     end;
     salvarCorte;
+    //formPrincipal.butOrdemPesquisarClick(Sender);
     dmOrdemCorte.qyOrdemCorte.Refresh;
 end;
 

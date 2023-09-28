@@ -664,8 +664,8 @@ procedure TformPrevisto.gridPrevistoDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
 begin
-    if dmOrdemCorte.qyGridPrevisto.FieldByName('oci_id').Value = '73789' then
-      gridPrevisto.Canvas.Font.Color := clBlue;
+    if dmOrdemCorte.qyGridPrevisto.FieldByName('oci_tipo').Value = 'P' then
+      gridPrevisto.Canvas.Font.Color := clNavy;
       gridPrevisto.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 

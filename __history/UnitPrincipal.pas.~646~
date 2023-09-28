@@ -704,13 +704,17 @@ begin
 end;
 procedure TformPrincipal.IniciarCorte1Click(Sender: TObject);
 begin
-    gridOrdem.Visible:=false;
-    formIniciarCorte:=TformIniciarCorte.Create(Self);
-    formIniciarCorte.Parent:=Panel1;
-    formIniciarCorte.Align:=alClient;
-    formIniciarCorte.BorderStyle:=bsNone;
-    formIniciarCorte.Show;
-    desabComponentes;
+    try
+      gridOrdem.Visible:=false;
+      formIniciarCorte:=TformIniciarCorte.Create(Self);
+      formIniciarCorte.Parent:=Panel1;
+      formIniciarCorte.Align:=alClient;
+      formIniciarCorte.BorderStyle:=bsNone;
+      formIniciarCorte.Show;
+      desabComponentes;
+    finally
+      formIniciarCorte.Free;
+    end;
 end;
 
 procedure TformPrincipal.labMostrAnosClick(Sender: TObject);

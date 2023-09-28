@@ -665,8 +665,12 @@ procedure TformPrevisto.gridPrevistoDrawColumnCell(Sender: TObject;
   State: TGridDrawState);
 begin
     if dmOrdemCorte.qyGridPrevisto.FieldByName('oci_id').Value = '73789' then
-      gridPrevisto.Canvas.Font.Color := clBlue;
-      gridPrevisto.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+      gridPrevisto.Canvas.Font.Color := clNavy;
+//    with Canvas do
+//    begin
+//        if dmOrdemCorte.qyGridPrevisto.FieldByName('oci_tecido').Value = 'true' then
+//           gridPrevisto.Font.Color := clRed;
+//    end;
 end;
 
 procedure TformPrevisto.butAcaoClick(Sender: TObject);

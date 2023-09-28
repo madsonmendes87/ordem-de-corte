@@ -28,7 +28,7 @@ object formIniciarCorte: TformIniciarCorte
     Flat = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
-    Font.Height = -11
+    Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
@@ -50,7 +50,7 @@ object formIniciarCorte: TformIniciarCorte
   object labNumeroOrd: TLabel
     Left = 210
     Top = 31
-    Width = 6
+    Width = 18
     Height = 21
     Caption = '-'
     Font.Charset = ANSI_CHARSET
