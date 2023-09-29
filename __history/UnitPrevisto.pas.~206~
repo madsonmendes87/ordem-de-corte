@@ -477,7 +477,7 @@ begin
         SQL.Add('   oci_vlrtotal,');
         SQL.Add('   oci_qtdade1, oci_qtdade2, oci_qtdade3, oci_qtdade4, oci_qtdade5, oci_qtdade6, oci_qtdade7, oci_qtdade8,');
         SQL.Add('   oci_qtdade9, oci_qtdade10, oci_qtdade11, oci_qtdade12, oci_qtdade13, oci_qtdade14, oci_qtdade15,');
-        SQL.Add('   cp.cp_un');
+        SQL.Add('   cp.cp_un, oci_tipo, oci_tecido');
         SQL.Add('   FROM ordem_corte_itens_previsto AS oci');
         SQL.Add('   JOIN grade_cor AS gc ON oci.oci_idgradecor = gc.grc_id');
         SQL.Add('   JOIN grade_cor AS gc_pa ON oci.oci_idgradecorprodutoacabado = gc_pa.grc_id');
@@ -658,20 +658,17 @@ begin
     end;
     gridPrevisto.Columns[23].Title.Alignment:=taCenter;
     gridPrevisto.Columns[23].Title.Caption:='Unidade';
+    gridPrevisto.Columns[24].Visible:=false;
+    gridPrevisto.Columns[25].Visible:=false;
 end;
 
 procedure TformPrevisto.gridPrevistoDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
 begin
-    dmOrdemCorte.qyGridPrevisto.Close;
-    dmOrdemCorte.qyGridPrevisto.Open;
-    if dmOrdemCorte.qyGridPrevisto.Locate('oci_id', gridPrevisto.Fields[0].Value, []) then
-    begin
-        if dmOrdemCorte.qyGridPrevisto.FieldByName('oci_tipo').Value = 'P' then
-           gridPrevisto.Canvas.Font.Color:=clRed;
-    end;
-
+    if dmOrdemCorte.qyGridPrevisto.FieldByName('oci_tipo').Value = 'P' then
+      gridPrevisto.Canvas.Font.Color := clBlue;
+      gridPrevisto.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 procedure TformPrevisto.butAcaoClick(Sender: TObject);
