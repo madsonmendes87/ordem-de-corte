@@ -48,6 +48,7 @@ type
     Finalizar1: TMenuItem;
     N4: TMenuItem;
     Reabrir1: TMenuItem;
+    radioArtigos: TRadioGroup;
     labItem: TLabel;
     labQuantidade: TLabel;
     spinTamanho1: TSpinEdit;
@@ -672,25 +673,40 @@ end;
 
 procedure TformPrevisto.gridPrevistoCellClick(Column: TColumn);
 begin
-      //labIndividual1.Caption := gridPrevisto.Fields[2].Value;
+      with dmOrdemCorte.qyPrevistoOciId do
+      begin
+          Close;
+          SQL.Clear;
+          SQL.Add('SELECT * FROM ordem_corte_itens_previsto');
+          SQL.Add(' WHERE oci_id = :idPrevisto');
+          ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
+          Open;
+            if labIndividual1.Visible = true then
+            begin
+                labIndividual1.Caption := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr1').AsString;
+                //dmOrdemCorte.qyGridPrevisto.Refresh;
+            end;
+      end;
 end;
 
 procedure TformPrevisto.gridPrevistoClick(Sender: TObject);
 begin
-    labItem.Caption:=gridPrevisto.Fields[4].Value+'  Cor: '+gridPrevisto.Fields[5].Value+'  Tamanho: '+gridPrevisto.Fields[6].Value;
     with dmOrdemCorte.qyPrevistoOciId do
     begin
-        Close;
-        SQL.Clear;
-        SQL.Add('SELECT * FROM ordem_corte_itens_previsto');
-        SQL.Add(' WHERE oci_id = :idPrevisto');
-        ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
-        Open;
-        if labIndividual1.Visible = true then
-        begin
-            labIndividual1.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr1').AsFloat);
-        end;
+//        Close;
+//        SQL.Clear;
+//        SQL.Add('SELECT * FROM ordem_corte_itens_previsto');
+//        SQL.Add(' WHERE oci_id = :idPrevisto');
+//        ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
+//        Open;
+//        if labIndividual1.Visible = true then
+//        begin
+//            labIndividual1.Caption := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr1').AsString;
+//            //dmOrdemCorte.qyGridPrevisto.Refresh;
+//        end;
     end;
+
+    //ShowMessage('Clicou no DBGrid.');
 end;
 
 procedure TformPrevisto.gridPrevistoDrawColumnCell(Sender: TObject;

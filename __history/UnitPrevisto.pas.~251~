@@ -677,7 +677,6 @@ end;
 
 procedure TformPrevisto.gridPrevistoClick(Sender: TObject);
 begin
-    labItem.Caption:=gridPrevisto.Fields[4].Value+'  Cor: '+gridPrevisto.Fields[5].Value+'  Tamanho: '+gridPrevisto.Fields[6].Value;
     with dmOrdemCorte.qyPrevistoOciId do
     begin
         Close;
@@ -689,8 +688,11 @@ begin
         if labIndividual1.Visible = true then
         begin
             labIndividual1.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr1').AsFloat);
+            //dmOrdemCorte.qyGridPrevisto.Refresh;
         end;
     end;
+
+    //ShowMessage('Clicou no DBGrid.');
 end;
 
 procedure TformPrevisto.gridPrevistoDrawColumnCell(Sender: TObject;

@@ -48,6 +48,7 @@ type
     Finalizar1: TMenuItem;
     N4: TMenuItem;
     Reabrir1: TMenuItem;
+    radioArtigos: TRadioGroup;
     labItem: TLabel;
     labQuantidade: TLabel;
     spinTamanho1: TSpinEdit;
@@ -672,25 +673,28 @@ end;
 
 procedure TformPrevisto.gridPrevistoCellClick(Column: TColumn);
 begin
-      //labIndividual1.Caption := gridPrevisto.Fields[2].Value;
+//      if labIndividual1.Visible = true then
+//          ShowMessage('Clicou');
+//          labIndividual1.Caption := 'Teste';
+//    with dmOrdemCorte.qyPrevistoOciId do
+//    begin
+//        Close;
+//        SQL.Clear;
+//        SQL.Add('SELECT * FROM ordem_corte_itens_previsto');
+//        SQL.Add(' WHERE oci_id = :idPrevisto');
+//        ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
+//        Open;
+//        //if labIndividual1.Visible <> false then
+//           labIndividual1.Caption := '1.488';
+//           //intToStr(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr1').Value);
+//    end;
 end;
 
 procedure TformPrevisto.gridPrevistoClick(Sender: TObject);
 begin
-    labItem.Caption:=gridPrevisto.Fields[4].Value+'  Cor: '+gridPrevisto.Fields[5].Value+'  Tamanho: '+gridPrevisto.Fields[6].Value;
-    with dmOrdemCorte.qyPrevistoOciId do
-    begin
-        Close;
-        SQL.Clear;
-        SQL.Add('SELECT * FROM ordem_corte_itens_previsto');
-        SQL.Add(' WHERE oci_id = :idPrevisto');
-        ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
-        Open;
-        if labIndividual1.Visible = true then
-        begin
-            labIndividual1.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr1').AsFloat);
-        end;
-    end;
+    //if labIndividual1.Visible = true then
+      // labIndividual1.Caption := 'Sonne';
+    //ShowMessage('Clicou no DBGrid.');
 end;
 
 procedure TformPrevisto.gridPrevistoDrawColumnCell(Sender: TObject;

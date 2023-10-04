@@ -677,7 +677,7 @@ end;
 
 procedure TformPrevisto.gridPrevistoClick(Sender: TObject);
 begin
-    labItem.Caption:=gridPrevisto.Fields[4].Value+'  Cor: '+gridPrevisto.Fields[5].Value+'  Tamanho: '+gridPrevisto.Fields[6].Value;
+    labItem.Caption:=gridPrevisto.Fields[4].Value+' Cor: '+gridPrevisto.Fields[5].Value+' Tamanho: '+gridPrevisto.Fields[6].Value;
     with dmOrdemCorte.qyPrevistoOciId do
     begin
         Close;

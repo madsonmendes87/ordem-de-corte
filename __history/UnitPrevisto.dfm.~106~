@@ -165,7 +165,7 @@ object formPrevisto: TformPrevisto
     ParentFont = False
   end
   object butEditGrade: TSpeedButton
-    Left = 17
+    Left = 16
     Top = 103
     Width = 186
     Height = 26
@@ -1395,6 +1395,14 @@ object formPrevisto: TformPrevisto
     Caption = 'Estado da Guia'
     TabOrder = 3
   end
+  object radioArtigos: TRadioGroup
+    Left = 17
+    Top = 128
+    Width = 1112
+    Height = 177
+    Caption = 'Artigos'
+    TabOrder = 4
+  end
   object spinTamanho1: TSpinEdit
     Left = 103
     Top = 197
@@ -1402,7 +1410,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 4
+    TabOrder = 5
     Value = 0
   end
   object spinTamanho2: TSpinEdit
@@ -1412,7 +1420,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 5
+    TabOrder = 6
     Value = 0
   end
   object spinTamanho3: TSpinEdit
@@ -1422,7 +1430,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 6
+    TabOrder = 7
     Value = 0
   end
   object spinTamanho4: TSpinEdit
@@ -1432,7 +1440,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 7
+    TabOrder = 8
     Value = 0
   end
   object spinTamanho5: TSpinEdit
@@ -1442,7 +1450,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 8
+    TabOrder = 9
     Value = 0
   end
   object spinTamanho6: TSpinEdit
@@ -1452,7 +1460,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 9
+    TabOrder = 10
     Value = 0
   end
   object spinTamanho7: TSpinEdit
@@ -1462,7 +1470,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 10
+    TabOrder = 11
     Value = 0
   end
   object spinTamanho8: TSpinEdit
@@ -1472,7 +1480,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 11
+    TabOrder = 12
     Value = 0
   end
   object spinTamanho9: TSpinEdit
@@ -1482,7 +1490,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 12
+    TabOrder = 13
     Value = 0
   end
   object spinTamanho10: TSpinEdit
@@ -1492,7 +1500,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 13
+    TabOrder = 14
     Value = 0
   end
   object spinTamanho11: TSpinEdit
@@ -1502,7 +1510,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 14
+    TabOrder = 15
     Value = 0
   end
   object spinTamanho12: TSpinEdit
@@ -1512,7 +1520,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 15
+    TabOrder = 16
     Value = 0
   end
   object spinTamanho13: TSpinEdit
@@ -1522,7 +1530,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 16
+    TabOrder = 17
     Value = 0
   end
   object spinTamanho14: TSpinEdit
@@ -1532,7 +1540,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 17
+    TabOrder = 18
     Value = 0
   end
   object spinTamanho15: TSpinEdit
@@ -1542,7 +1550,7 @@ object formPrevisto: TformPrevisto
     Height = 22
     MaxValue = 0
     MinValue = 0
-    TabOrder = 18
+    TabOrder = 19
     Value = 0
   end
   object panelInfo1: TPanel
@@ -1553,7 +1561,7 @@ object formPrevisto: TformPrevisto
     BevelOuter = bvNone
     Color = clInactiveBorder
     ParentBackground = False
-    TabOrder = 19
+    TabOrder = 20
     object labQtdCortes: TLabel
       Left = 15
       Top = 7
@@ -1745,7 +1753,7 @@ object formPrevisto: TformPrevisto
     BevelOuter = bvNone
     Color = clWindow
     ParentBackground = False
-    TabOrder = 20
+    TabOrder = 21
     object labTotalGeralPecas: TLabel
       Left = 8
       Top = 7
@@ -1807,7 +1815,7 @@ object formPrevisto: TformPrevisto
     Color = clGradientActiveCaption
     DataSource = dmOrdemCorte.dsGridPrevisto
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-    TabOrder = 21
+    TabOrder = 22
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
@@ -1815,6 +1823,8 @@ object formPrevisto: TformPrevisto
     TitleFont.Style = []
     OnCellClick = gridPrevistoCellClick
     OnDrawColumnCell = gridPrevistoDrawColumnCell
+    OnDblClick = gridPrevistoDblClick
+    OnMouseDown = gridPrevistoMouseDown
   end
   object popupArtigos: TPopupMenu
     Left = 1000

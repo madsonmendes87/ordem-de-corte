@@ -913,6 +913,7 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object dsGridPrevisto: TDataSource
     DataSet = qyGridPrevisto
+    OnDataChange = dsGridPrevistoDataChange
     Left = 648
     Top = 240
   end

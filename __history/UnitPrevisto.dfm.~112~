@@ -165,7 +165,7 @@ object formPrevisto: TformPrevisto
     ParentFont = False
   end
   object butEditGrade: TSpeedButton
-    Left = 17
+    Left = 16
     Top = 103
     Width = 186
     Height = 26

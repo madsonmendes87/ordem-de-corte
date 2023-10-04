@@ -124,6 +124,7 @@ type
     qyGridPrevistooci_tipo: TWideStringField;
     qyGridPrevistooci_tecido: TBooleanField;
     qyPrevistoOciId: TFDQuery;
+    procedure dsGridPrevistoDataChange(Sender: TObject; Field: TField);
   private
     { Private declarations }
   public
@@ -143,5 +144,21 @@ uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
 {$R *.dfm}
 
 
+
+procedure TdmOrdemCorte.dsGridPrevistoDataChange(Sender: TObject;
+  Field: TField);
+begin
+    with dmOrdemCorte.qyPrevistoOciId do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ordem_corte_itens_previsto');
+        SQL.Add(' WHERE oci_id = :idPrevisto');
+        ParamByName('idPrevisto').AsInteger:=strtoint(formPrevisto.gridPrevisto.Fields[0].Value);
+        Open;
+        if formPrevisto.labIndividual1.Visible = true then
+          formPrevisto.labIndividual1.Caption := dmOrdemCorte.qyGridPrevisto.FieldByName('oci_vlr1').Value;
+    end;
+end;
 
 end.

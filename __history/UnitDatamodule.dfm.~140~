@@ -800,7 +800,7 @@ object dmOrdemCorte: TdmOrdemCorte
     object qyGridPrevistooci_vlrtotal: TBCDField
       FieldName = 'oci_vlrtotal'
       Origin = 'oci_vlrtotal'
-      DisplayFormat = ',#0.0000'
+      DisplayFormat = '#0,0000'
       Precision = 12
     end
     object qyGridPrevistooci_qtdade1: TBCDField
@@ -916,7 +916,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 648
     Top = 240
   end
-  object qyPrevistoOciId: TFDQuery
+  object qyPrevistoNumOrdem: TFDQuery
     Connection = Conexao
     Left = 768
     Top = 240

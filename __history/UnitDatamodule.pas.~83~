@@ -138,7 +138,7 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
-  UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado, UnitPrevisto;
+  UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado;
 
 {$R *.dfm}
 
