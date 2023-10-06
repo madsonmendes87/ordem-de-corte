@@ -48,7 +48,6 @@ type
     Finalizar1: TMenuItem;
     N4: TMenuItem;
     Reabrir1: TMenuItem;
-    radioArtigos: TRadioGroup;
     labItem: TLabel;
     labQuantidade: TLabel;
     spinTamanho1: TSpinEdit;
@@ -167,7 +166,7 @@ type
 
   private
     { Private declarations }
-    procedure gridPrevistoClick;//(Sender: TObject);
+    procedure gridPrevistoClick(Sender: TObject);
   public
     { Public declarations }
   end;
@@ -193,8 +192,7 @@ end;
 procedure TformPrevisto.FormCreate(Sender: TObject);
 begin
     gridPrevisto.ControlStyle := gridPrevisto.ControlStyle + [csClickEvents];
-    //TForm(gridPrevisto).OnClick := gridPrevistoClick;
-    gridPrevistoClick;
+    TForm(gridPrevisto).OnClick := gridPrevistoClick;
 
 end;
 
@@ -674,28 +672,126 @@ end;
 
 procedure TformPrevisto.gridPrevistoCellClick(Column: TColumn);
 begin
-//      if labIndividual1.Visible = true then
-//          ShowMessage('Clicou');
-//          labIndividual1.Caption := 'Teste';
-//    with dmOrdemCorte.qyPrevistoOciId do
-//    begin
-//        Close;
-//        SQL.Clear;
-//        SQL.Add('SELECT * FROM ordem_corte_itens_previsto');
-//        SQL.Add(' WHERE oci_id = :idPrevisto');
-//        ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
-//        Open;
-//        //if labIndividual1.Visible <> false then
-//           labIndividual1.Caption := '1.488';
-//           //intToStr(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr1').Value);
-//    end;
+      //labIndividual1.Caption := gridPrevisto.Fields[2].Value;
 end;
 
-procedure TformPrevisto.gridPrevistoClick;//(Sender: TObject);
+procedure TformPrevisto.gridPrevistoClick(Sender: TObject);
 begin
-    if labIndividual1.Visible = true then
-       labIndividual1.Caption := 'Sonne';
-    ShowMessage('Clicou no DBGrid.');
+    labItem.Caption:=gridPrevisto.Fields[4].Value+'  Cor:'+gridPrevisto.Fields[5].Value+'  Tamanho:'+gridPrevisto.Fields[6].Value;
+    with dmOrdemCorte.qyPrevistoOciId do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ordem_corte_itens_previsto');
+        SQL.Add(' WHERE oci_id = :idPrevisto');
+        ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
+        Open;
+        if labIndividual1.Visible = true then
+        begin
+            labIndividual1.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr1').AsFloat);
+            spinTamanho1.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade1').Value;
+            labTotal1.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade1').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr1').Value));
+        end;
+        if labIndividual2.Visible = true then
+        begin
+            labIndividual2.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr2').AsFloat);
+            spinTamanho2.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade2').Value;
+            labTotal2.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade2').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr2').Value));
+        end;
+        if labIndividual3.Visible = true then
+        begin
+            labIndividual3.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr3').AsFloat);
+            spinTamanho3.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade3').Value;
+            labTotal3.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade3').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr3').Value));
+        end;
+        if labIndividual4.Visible = true then
+        begin
+            labIndividual4.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr4').AsFloat);
+            spinTamanho4.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade4').Value;
+            labTotal4.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade4').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr4').Value));
+        end;
+        if labIndividual5.Visible = true then
+        begin
+            labIndividual5.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr5').AsFloat);
+            spinTamanho5.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade5').Value;
+            labTotal5.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade5').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr5').Value));
+        end;
+        if labIndividual6.Visible = true then
+        begin
+            labIndividual6.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr6').AsFloat);
+            spinTamanho6.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade6').Value;
+            labTotal6.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade6').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr6').Value));
+        end;
+        if labIndividual7.Visible = true then
+        begin
+            labIndividual7.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr7').AsFloat);
+            spinTamanho7.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade7').Value;
+            labTotal7.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade7').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr7').Value));
+        end;
+        if labIndividual8.Visible = true then
+        begin
+            labIndividual8.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr8').AsFloat);
+            spinTamanho8.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade8').Value;
+            labTotal8.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade8').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr8').Value));
+        end;
+        if labIndividual9.Visible = true then
+        begin
+            labIndividual9.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr9').AsFloat);
+            spinTamanho9.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade9').Value;
+            labTotal9.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade9').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr9').Value));
+        end;
+        if labIndividual10.Visible = true then
+        begin
+            labIndividual10.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr10').AsFloat);
+            spinTamanho10.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade10').Value;
+            labTotal10.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade10').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr10').Value));
+        end;
+        if labIndividual11.Visible = true then
+        begin
+            labIndividual11.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr11').AsFloat);
+            spinTamanho11.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade11').Value;
+            labTotal11.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade11').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr11').Value));
+        end;
+        if labIndividual12.Visible = true then
+        begin
+            labIndividual12.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr12').AsFloat);
+            spinTamanho12.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade12').Value;
+            labTotal12.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade12').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr12').Value));
+        end;
+        if labIndividual13.Visible = true then
+        begin
+            labIndividual13.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr13').AsFloat);
+            spinTamanho13.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade13').Value;
+            labTotal13.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade13').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr13').Value));
+        end;
+        if labIndividual14.Visible = true then
+        begin
+            labIndividual14.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr14').AsFloat);
+            spinTamanho14.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade14').Value;
+            labTotal14.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade14').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr14').Value));
+        end;
+        if labIndividual15.Visible = true then
+        begin
+            labIndividual15.Caption := formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr15').AsFloat);
+            spinTamanho15.Text := dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade15').Value;
+            labTotal15.Caption:=formatfloat('0.0000',(dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_qtdade15').Value * dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlr15').Value));
+        end;
+        labNumConsTotal.Caption:=formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrtotal').AsFloat);
+        labNumConsRestante.Caption:=formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrrestante').AsFloat);
+    end;
+
+    with dmOrdemCorte.qyPrevistoQtdCortes do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT SUM(oci_qtdade1 + oci_qtdade2 + oci_qtdade3 + oci_qtdade4 + oci_qtdade5 + oci_qtdade6 +');
+        SQL.Add(' oci_qtdade7 + oci_qtdade8 + oci_qtdade9 + oci_qtdade10 + oci_qtdade11 + oci_qtdade12');
+        SQL.Add(' + oci_qtdade13 + oci_qtdade14 + oci_qtdade15)');
+        SQL.Add('  AS total FROM ordem_corte_itens_previsto WHERE oci_id = :idPrevisto');
+        ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
+        Open;
+        labNumQtdCortes.Caption:=dmOrdemCorte.qyPrevistoQtdCortes.FieldByName('total').Value;
+    end;
 end;
 
 procedure TformPrevisto.gridPrevistoDrawColumnCell(Sender: TObject;

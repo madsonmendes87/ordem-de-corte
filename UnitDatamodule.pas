@@ -124,6 +124,7 @@ type
     qyGridPrevistooci_tipo: TWideStringField;
     qyGridPrevistooci_tecido: TBooleanField;
     qyPrevistoOciId: TFDQuery;
+    qyPrevistoQtdCortes: TFDQuery;
   private
     { Private declarations }
   public
