@@ -12,12 +12,10 @@ object formIniciarCorte: TformIniciarCorte
   Font.Name = 'Tahoma'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = False
   Visible = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
   TextHeight = 13
   object butSairInicioCorte: TSpeedButton
     Left = 1128
@@ -373,6 +371,7 @@ object formIniciarCorte: TformIniciarCorte
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
+    ExplicitWidth = 1186
     object Label2: TLabel
       Left = 280
       Top = 64

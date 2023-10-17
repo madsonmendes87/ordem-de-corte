@@ -1813,7 +1813,6 @@ object formPrevisto: TformPrevisto
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
-    OnCellClick = gridPrevistoCellClick
     OnDrawColumnCell = gridPrevistoDrawColumnCell
   end
   object popupArtigos: TPopupMenu

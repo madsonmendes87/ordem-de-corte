@@ -54,10 +54,10 @@ begin
            dmOrdemCorte.tbCorteCores.Post;
            dmOrdemCorte.qyCores.Refresh;
            dmOrdemCorte.qyCoresNoCorte.Refresh;
-           Application.MessageBox('Cor adicionada com sucesso!', 'Cores no Corte', MB_OK + MB_ICONWARNING + MB_APPLMODAL);
+           Application.MessageBox('Cor adicionada com sucesso!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION + MB_APPLMODAL);
       end
       else
-          Application.MessageBox('Não há cores para adicionar!', 'Cores no Corte', MB_OK + MB_ICONWARNING);
+          Application.MessageBox('Não há cores para adicionar!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
 
 end;
 
@@ -65,7 +65,7 @@ procedure TformOrdemCorteCores.butAddTodasClick(Sender: TObject);
 begin
       if dmOrdemCorte.qyCores.IsEmpty then
       begin
-         Application.MessageBox('Não há cores para adicionar!', 'Cores no Corte', MB_OK + MB_ICONWARNING);
+         Application.MessageBox('Não há cores para adicionar!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
          exit;
       end
       else
@@ -83,7 +83,7 @@ begin
                dmOrdemCorte.qyCores.Refresh;
                dmOrdemCorte.qyCoresNoCorte.Refresh;
           end;
-          Application.MessageBox('Cores adicionadas com sucesso!', 'Cores no Corte', MB_OK + MB_ICONWARNING);
+          Application.MessageBox('Cores adicionadas com sucesso!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
 end;
 
 procedure TformOrdemCorteCores.butRetirarClick(Sender: TObject);
@@ -104,19 +104,19 @@ begin
                 ExecSQL;
                 dmOrdemCorte.qyCores.Refresh;
                 dmOrdemCorte.qyCoresNoCorte.Refresh;
-                Application.MessageBox('Cor removida com sucesso!', 'Cores no Corte', MB_OK + MB_ICONWARNING);
+                Application.MessageBox('Cor removida com sucesso!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
             end;
         end;
     end
     else
-        Application.MessageBox('Não há cores para retirar!', 'Cores no Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Não há cores para retirar!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
 end;
 
 procedure TformOrdemCorteCores.butRetirarTodasClick(Sender: TObject);
 begin
        if dmOrdemCorte.qyCoresNoCorte.IsEmpty then
       begin
-         Application.MessageBox('Não há cores para retirar!', 'Cores no Corte', MB_OK + MB_ICONWARNING);
+         Application.MessageBox('Não há cores para retirar!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
          exit;
       end;
       while not dmOrdemCorte.qyCoresNoCorte.IsEmpty do
@@ -134,7 +134,7 @@ begin
               dmOrdemCorte.qyCoresNoCorte.Refresh;
           end;
       end;
-      Application.MessageBox('Cores removidas com sucesso!', 'Cores no Corte', MB_OK + MB_ICONWARNING);
+      Application.MessageBox('Cores removidas com sucesso!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
 end;
 
 procedure TformOrdemCorteCores.FormResize(Sender: TObject);

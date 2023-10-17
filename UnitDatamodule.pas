@@ -125,6 +125,7 @@ type
     qyGridPrevistooci_tecido: TBooleanField;
     qyPrevistoOciId: TFDQuery;
     qyPrevistoQtdCortes: TFDQuery;
+    qyGerMediaPecas: TFDQuery;
   private
     { Private declarations }
   public

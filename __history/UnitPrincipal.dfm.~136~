@@ -38,7 +38,6 @@ object formPrincipal: TformPrincipal
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 1369
     object LbUsuario: TLabel
       AlignWithMargins = True
       Left = 4
@@ -115,13 +114,11 @@ object formPrincipal: TformPrincipal
     Color = clMenuHighlight
     ParentBackground = False
     TabOrder = 1
-    ExplicitHeight = 663
     object btnOrdemCorte: TSpeedButton
       Left = 4
       Top = -2
       Width = 187
       Height = 35
-      Hint = 'Clique com botao direito para op'#231#245'es'
       Caption = 'Ordem Corte'
       Flat = True
       Font.Charset = ANSI_CHARSET
@@ -298,6 +295,7 @@ object formPrincipal: TformPrincipal
       Margin = 1
       ParentFont = False
       PopupMenu = popupMenuOrdem
+      OnClick = btnOrdemCorteClick
     end
     object btnEmpAlmoxarifado: TSpeedButton
       Left = 4
@@ -1209,7 +1207,6 @@ object formPrincipal: TformPrincipal
       Top = 244
       Width = 187
       Height = 35
-      Hint = 'Clique com bot'#227'o direito para op'#231#245'es'
       Caption = 'Observa'#231#245'es'
       Flat = True
       Font.Charset = ANSI_CHARSET
@@ -1386,13 +1383,13 @@ object formPrincipal: TformPrincipal
       Margin = 1
       ParentFont = False
       PopupMenu = popupMenuObs
+      OnClick = btnObservacoesClick
     end
     object btnProcRestrito: TSpeedButton
       Left = 4
       Top = 285
       Width = 187
       Height = 35
-      Hint = 'Clique com bot'#227'o direito para op'#231#245'es'
       Caption = 'Procedimento Restrito'
       Flat = True
       Font.Charset = ANSI_CHARSET
@@ -1569,6 +1566,7 @@ object formPrincipal: TformPrincipal
       Margin = 1
       ParentFont = False
       PopupMenu = popupMenuProcRes
+      OnClick = btnProcRestritoClick
     end
   end
   object footerPrincipal: TStatusBar
@@ -1585,8 +1583,6 @@ object formPrincipal: TformPrincipal
       item
         Width = 50
       end>
-    ExplicitTop = 688
-    ExplicitWidth = 1369
   end
   object Panel1: TPanel
     Left = 196
@@ -2010,7 +2006,7 @@ object formPrincipal: TformPrincipal
       Left = 186
       Top = 52
       Width = 201
-      Height = 21
+      Height = 24
       CharCase = ecUpperCase
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -2234,6 +2230,7 @@ object formPrincipal: TformPrincipal
     end
     object CortePrevisto1: TMenuItem
       Caption = 'Corte Previsto'
+      OnClick = CortePrevisto1Click
     end
     object CortePrevisto2: TMenuItem
       Caption = '-'
@@ -2281,7 +2278,6 @@ object formPrincipal: TformPrincipal
       Category = 'verCorte'
       Caption = 'Ver Corte Real (F4)'
       ShortCut = 115
-      OnExecute = acaoBotaoCorteRealExecute
     end
     object acaoBotaoCortePrevisto: TAction
       Category = 'verCorte'

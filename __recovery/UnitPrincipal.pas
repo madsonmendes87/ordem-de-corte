@@ -166,15 +166,15 @@ begin
               SQL.Add('oc_hrprevisaofinalizacao, oc_datapreviniciocorteprevisto, oc_horapreviniciocorteprevisto, oc_dataprevfimcorteprevisto,');
               SQL.Add('oc_horaprevfimcorteprevisto, oc_datapreviniciorealcortado, oc_horapreviniciorealcortado, oc_dataprevfimrealcortado, oc_horaprevfimrealcortado,');
               SQL.Add('oc_observacao FROM ordem_corte');
-              SQL.ADD('  WHERE oc_id = :idCorte');
+              SQL.Add('  WHERE oc_id = :idCorte');
               ParamByName('idCorte').AsInteger := strtoint(gridOrdem.Fields[0].Value);
               Open;
               if dmOrdemCorte.qyDadosCorteById.FieldByName('oc_complementar').Value = false then
-                  formIniciarCorte.labNaoComp.Caption := 'NÃO';
+                  formIniciarCorte.labNaoComp.Caption := 'NÃƒO';
               if dmOrdemCorte.qyDadosCorteById.FieldByName('oc_complementar').Value = true then
                   formIniciarCorte.labNaoComp.Caption := 'SIM';
               if dmOrdemCorte.qyDadosCorteById.FieldByName('oc_corte_aproveitamento').Value = false then
-                  formIniciarCorte.labNaoAprov.Caption := 'NÃO';
+                  formIniciarCorte.labNaoAprov.Caption := 'NÃƒO';
               if dmOrdemCorte.qyDadosCorteById.FieldByName('oc_corte_aproveitamento').Value = true then
                   formIniciarCorte.labNaoAprov.Caption := 'SIM';
           end;
@@ -325,7 +325,7 @@ begin
             SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_previsto WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradeprevisto,');
             SQL.Add('(SELECT oci_dtlanc FROM ordem_corte_itens_real WHERE oci_idocorte=oc.oc_id AND oci_situacao_id <> 2 LIMIT 1) as datagradereal,');
             SQL.Add('  Cast(CASE');
-            SQL.Add('      WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idordemcorte= oc.oc_id AND emp_situacao <>''C'' LIMIT 1) IS NULL THEN ''NÃO EMPENHADO''');
+            SQL.Add('      WHEN (SELECT emp_tipo FROM controle_empenho WHERE emp_idordemcorte= oc.oc_id AND emp_situacao <>''C'' LIMIT 1) IS NULL THEN ''NÃƒO EMPENHADO''');
             SQL.Add('      ELSE');
             SQL.Add('          (CASE');
             SQL.Add('              WHEN (SELECT emp_tipo FROM controle_empenho');
@@ -572,7 +572,7 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
-    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ versaoExe;
+    footerPrincipal.Panels.Items[0].Text := 'VERSÃƒO: '+ versaoExe;
     boxColecao;
 end;
 
@@ -595,25 +595,25 @@ end;
 procedure TformPrincipal.gridViewOrdemCorte;
 begin
     gridOrdem.Columns[0].Title.Alignment:=taCenter;
-    gridOrdem.Columns[0].Title.Caption:='Nº Corte';
+    gridOrdem.Columns[0].Title.Caption:='NÂº Corte';
     gridOrdem.Columns[1].Title.Alignment:=taCenter;
     gridOrdem.Columns[1].Title.Caption:='Ordem';
     gridOrdem.Columns[2].Title.Alignment:=taCenter;
-    gridOrdem.Columns[2].Title.Caption:='Coleção';
+    gridOrdem.Columns[2].Title.Caption:='ColeÃ§Ã£o';
     gridOrdem.Columns[3].Title.Alignment:=taCenter;
-    gridOrdem.Columns[3].Title.Caption:='Situação';
+    gridOrdem.Columns[3].Title.Caption:='SituaÃ§Ã£o';
     gridOrdem.Columns[4].Title.Alignment:=taCenter;
     gridOrdem.Columns[4].Title.Caption:='Estilista';
     gridOrdem.Columns[5].Title.Alignment:=taCenter;
-    gridOrdem.Columns[5].Title.Caption:='Ficha Técnica';
+    gridOrdem.Columns[5].Title.Caption:='Ficha TÃ©cnica';
     gridOrdem.Columns[6].Title.Alignment:=taCenter;
-    gridOrdem.Columns[6].Title.Caption:='Ordem de Produção';
+    gridOrdem.Columns[6].Title.Caption:='Ordem de ProduÃ§Ã£o';
     gridOrdem.Columns[7].Title.Alignment:=taCenter;
     gridOrdem.Columns[7].Title.Caption:='Dias em Processo';
     gridOrdem.Columns[8].Title.Alignment:=taCenter;
     gridOrdem.Columns[8].Title.Caption:='Tipo';
     gridOrdem.Columns[9].Title.Alignment:=taCenter;
-    gridOrdem.Columns[9].Title.Caption:='Referência';
+    gridOrdem.Columns[9].Title.Caption:='ReferÃªncia';
     gridOrdem.Columns[10].Title.Alignment:=taCenter;
     gridOrdem.Columns[10].Title.Caption:='Produto Acabado';
     gridOrdem.Columns[11].Title.Alignment:=taCenter;
@@ -623,9 +623,9 @@ begin
     gridOrdem.Columns[13].Title.Alignment:=taCenter;
     gridOrdem.Columns[13].Title.Caption:='Real Cortado';
     gridOrdem.Columns[14].Title.Alignment:=taCenter;
-    gridOrdem.Columns[14].Title.Caption:='Localização Empenho';
+    gridOrdem.Columns[14].Title.Caption:='LocalizaÃ§Ã£o Empenho';
     gridOrdem.Columns[15].Title.Alignment:=taCenter;
-    gridOrdem.Columns[15].Title.Caption:='Observação';
+    gridOrdem.Columns[15].Title.Caption:='ObservaÃ§Ã£o';
     butVerCorte.Font.Color:=clMenuHighlight;
     butVerCorte.Font.Style:=[fsBold];
     butCortePrevisto.Font.Color:=clMenuHighlight;

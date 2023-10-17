@@ -87,8 +87,6 @@ type
     acaoCores: TAction;
     butEscolherCores: TBitBtn;
     labTipoProducao: TLabel;
-    labHifen: TLabel;
-    labOrd: TLabel;
     butAlterar: TBitBtn;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -229,7 +227,10 @@ end;
 procedure TformIniciarCorte.butEditarClick(Sender: TObject);
 begin
     if labNormal.Caption = 'FINALIZADA' then
-        Application.MessageBox('Não é permitido editar corte já finalizado!', 'Ordem de Corte', MB_OK + MB_ICONWARNING)
+    begin
+        Application.MessageBox('Não é permitido editar corte já finalizado!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+        exit;
+    end
     else
         dmOrdemCorte.tbOrdemdeCorte.Edit;
         editCodigo.SetFocus;
@@ -287,6 +288,7 @@ begin
                 ExecSQL;
                 Application.MessageBox('Ordem cancelada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
                 butSairInicioCorteClick(Sender);
+                dmOrdemCorte.qyOrdemCorte.Refresh;
             end;
     end;
 end;
@@ -769,6 +771,7 @@ begin
         SQL.Add('   oc.oc_idfichatecnica = :fichatecnica');
         SQL.Add('   AND oc.oc_prototipo = :eprototipo');
         SQL.Add('   AND oc.oc_situacao <> ''2''');
+        SQL.Add('   ORDER BY oc_id DESC');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         if labTipoCorte.Caption = 'Prototipo' then
             ParamByName('eprototipo').AsBoolean := true
@@ -903,7 +906,7 @@ begin
          end;
     end;
     salvarCorte;
-    formPrincipal.butOrdemPesquisarClick(Sender);
+    dmOrdemCorte.qyOrdemCorte.Refresh;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;
@@ -975,61 +978,61 @@ procedure TformIniciarCorte.tratarDataHora;
 begin
     if dataOrdemFinalizacao.Date < dataSolicitacao.Date then
     begin
-        Application.MessageBox('Data de finalização do corte não pode ser anterior a atual!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Data de finalização do corte não pode ser anterior a atual!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
         abort;
     end;
 
     if horaOrdemFinalizacao.Time < horaSolicitacao.Time then
     begin
-        Application.MessageBox('Horário de finalização do corte não pode ser anterior a atual!','Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de finalização do corte não pode ser anterior a atual!','Ordem de Corte', MB_OK + MB_ICONWARNING);
         abort;
     end;
 
     if dataCortePrevisto.Date < dataSolicitacao.Date then
     begin
-         Application.MessageBox('Data de inicio do corte previsto não pode ser anterior a data de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
+         Application.MessageBox('Data de inicio do corte previsto não pode ser anterior a data de solicitação do corte!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
          abort;
     end;
 
     if horaCortePrevisto.Time < horaSolicitacao.Time then
     begin
-        Application.MessageBox('Horário de inicio do corte previsto não pode ser anterior ao horário de solicitação do corte!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de inicio do corte previsto não pode ser anterior ao horário de solicitação do corte!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
         abort;
     end;
 
     if dataFinalCortePrevisto.Date < dataCortePrevisto.Date then
     begin
-        Application.MessageBox('Data de finalização do corte previsto não pode ser anterior a data de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Data de finalização do corte previsto não pode ser anterior a data de inicio do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
         abort;
     end;
 
     if horaFinalCortePrevisto.Time < horaCortePrevisto.Time then
     begin
-        Application.MessageBox('Horário de finalização do corte previsto não pode ser anterior ao horário de inicio do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de finalização do corte previsto não pode ser anterior ao horário de inicio do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
         abort;
     end;
 
     if dataRealCortado.Date < dataFinalCortePrevisto.Date then
     begin
-        Application.MessageBox('Data de inicio do real cortado não pode ser anterior a data de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Data de inicio do real cortado não pode ser anterior a data de finalização do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
         abort;
     end;
 
     if horaRealCortado.Time < horaFinalCortePrevisto.Time then
     begin
-        Application.MessageBox('Horário de inicio do real cortado não pode ser anterior ao horário de finalização do corte previsto!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de inicio do real cortado não pode ser anterior ao horário de finalização do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
         abort;
     end;
 
     if dataFinalRealCortado.Date < dataRealCortado.Date then
     begin
-        Application.MessageBox('Data de finalização do real cortado não pode ser anterior a data de inicio do real cortado!', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Data de finalização do real cortado não pode ser anterior a data de inicio do real cortado!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
         abort;
     end;
 
     if horaFinalRealCortado.Time < horaRealCortado.Time then
     begin
-        Application.MessageBox('Horário de finalização do corte real não pode ser anterior ao horário de inicio do corte real', 'Ordem de Corte', mb_ok + mb_iconhand);
+        Application.MessageBox('Horário de finalização do corte real não pode ser anterior ao horário de inicio do corte real', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
         abort;
     end;
 end;
@@ -1039,7 +1042,7 @@ var
   parametro : integer;
 
 begin
-    parametro := 5;
+    parametro := 18;
     with dmOrdemCorte.qyUserOrdem2 do
     begin
         Close;
@@ -1053,8 +1056,9 @@ begin
             Application.MessageBox('Você não tem permissão para executar este procedimento','Atenção',mb_ok + mb_iconexclamation);
             abort;
         end
-//        else
-//            dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 2;
+        else
+            if dmOrdemCorte.qyCortePorTipoFichaId.RecordCount > 0 then
+                dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_ordem').OldValue + 1;
 
     end;
 end;

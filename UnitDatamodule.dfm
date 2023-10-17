@@ -926,4 +926,9 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 864
     Top = 240
   end
+  object qyGerMediaPecas: TFDQuery
+    Connection = Conexao
+    Left = 976
+    Top = 240
+  end
 end

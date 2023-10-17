@@ -213,6 +213,10 @@ begin
 end;
 
 procedure TformPrevisto.FormShow(Sender: TObject);
+
+var
+    mediaTotal : double;
+
 begin
     labNumCorte.Caption := intToStr(formPrincipal.gridOrdem.Fields[0].Value) +'-00'+ intToStr(formPrincipal.gridOrdem.Fields[1].Value);
     labNumReferencia.Caption := formPrincipal.gridOrdem.Fields[9].Value;
@@ -668,6 +672,41 @@ begin
     gridPrevisto.Columns[23].Title.Caption:='Unidade';
     gridPrevisto.Columns[24].Visible:=false;
     gridPrevisto.Columns[25].Visible:=false;
+
+    with dmOrdemCorte.qyGerMediaPecas do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add(' (');
+        SQL.Add('   SUM(oci_qtdade1 +');
+        SQL.Add('   oci_qtdade2 +');
+        SQL.Add('   oci_qtdade3 +');
+        SQL.Add('   oci_qtdade4 +');
+        SQL.Add('   oci_qtdade5 +');
+        SQL.Add('   oci_qtdade6 +');
+        SQL.Add('   oci_qtdade7 +');
+        SQL.Add('   oci_qtdade8 +');
+        SQL.Add('   oci_qtdade9 +');
+        SQL.Add('   oci_qtdade10 +');
+        SQL.Add('   oci_qtdade11 +');
+        SQL.Add('   oci_qtdade12 +');
+        SQL.Add('   oci_qtdade13 +');
+        SQL.Add('   oci_qtdade14 +');
+        SQL.Add('   oci_qtdade15)');
+        SQL.Add(' )AS qtd,');
+        SQL.Add(' (SUM(oci_vlrtotal) + SUM(oci_vlrrestante)) AS cons');
+        SQL.Add(' FROM ordem_corte_itens_previsto');
+        SQL.Add(' WHERE oci_idocorte=:ordemcorte');
+        SQL.Add(' AND oci_tecido=TRUE');
+        SQL.Add(' AND oci_tipo=''P''');
+        SQL.Add(' AND oci_situacao_id<>''2''');
+        ParamByName('ordemcorte').AsInteger:=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+        Open;
+        labNumTotalGeral.Caption:=intToStr(dmOrdemCorte.qyGerMediaPecas.FieldByName('qtd').Value);
+        mediaTotal:=strtofloat(dmOrdemCorte.qyGerMediaPecas.FieldByName('cons').Value)/strtofloat(dmOrdemCorte.qyGerMediaPecas.FieldByName('qtd').Value);
+        labNumMediaTotal.Caption:=formatfloat('0.0000',mediaTotal);
+    end;
 end;
 
 procedure TformPrevisto.gridPrevistoCellClick(Column: TColumn);
@@ -678,10 +717,9 @@ end;
 procedure TformPrevisto.gridPrevistoClick(Sender: TObject);
 
 var
-    numTotal : real;
-    numQtdCortes : integer;
+    valor : double;
 begin
-    labItem.Caption:=gridPrevisto.Fields[4].Value+'  Cor:'+gridPrevisto.Fields[5].Value+'  Tamanho:'+gridPrevisto.Fields[6].Value;
+    labItem.Caption:=gridPrevisto.Fields[4].Value+'  Cor: '+gridPrevisto.Fields[5].Value+'  Tamanho: '+gridPrevisto.Fields[6].Value;
     with dmOrdemCorte.qyPrevistoOciId do
     begin
         Close;
@@ -783,10 +821,7 @@ begin
         labNumConsTotal.Caption:=formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrtotal').AsFloat);
         labNumConsRestante.Caption:=formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrrestante').AsFloat);
         labNumTotal.Caption:=formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrtotal').AsFloat + dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrrestante').AsFloat);
-        //numTotal:=strtofloat(labNumTotal.Caption);
-        numTotal:=dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrtotal').Value + dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrrestante').Value;
-        //numQtdCortes:=dmOrdemCorte.qyPrevistoQtdCortes.FieldByName('qtd_cortes').Value;
-        labNumMedia.Caption:=formatfloat('0.0000',numTotal/numQtdCortes);
+        labNumUnidade.Caption:=gridPrevisto.Fields[23].Value;
     end;
 
     with dmOrdemCorte.qyPrevistoQtdCortes do
@@ -800,7 +835,8 @@ begin
         ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
         Open;
         labNumQtdCortes.Caption:=dmOrdemCorte.qyPrevistoQtdCortes.FieldByName('qtd_cortes').Value;
-        numQtdCortes:=dmOrdemCorte.qyPrevistoQtdCortes.FieldByName('qtd_cortes').Value;
+        valor:=strtofloat(labNumTotal.Caption)/strtofloat(dmOrdemCorte.qyPrevistoQtdCortes.FieldByName('qtd_cortes').Value);
+        labNumMedia.Caption:=formatfloat('0.0000',valor);
     end;
 end;
 

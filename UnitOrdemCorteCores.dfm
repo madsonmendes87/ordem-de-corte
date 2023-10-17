@@ -12,11 +12,9 @@ object formOrdemCorteCores: TformOrdemCorteCores
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnResize = FormResize
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object RadioGroup1: TRadioGroup
     Left = 0

@@ -678,6 +678,7 @@ end;
 procedure TformPrevisto.gridPrevistoClick(Sender: TObject);
 
 var
+    valor : real;
     numTotal : real;
     numQtdCortes : integer;
 begin
@@ -783,9 +784,7 @@ begin
         labNumConsTotal.Caption:=formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrtotal').AsFloat);
         labNumConsRestante.Caption:=formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrrestante').AsFloat);
         labNumTotal.Caption:=formatfloat('0.0000',dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrtotal').AsFloat + dmOrdemCorte.qyPrevistoOciId.FieldByName('oci_vlrrestante').AsFloat);
-        numTotal:=strtofloat(labNumTotal.Caption);
-        numQtdCortes:=strtoint(labNumQtdCortes.Caption);
-        labNumMedia.Caption:=formatfloat('0.0000',numTotal/numQtdCortes);
+        //valor:=strtofloat(labNumConsTotal.Caption) + strtofloat(labNumQtdCortes.Caption);
     end;
 
     with dmOrdemCorte.qyPrevistoQtdCortes do
@@ -799,6 +798,7 @@ begin
         ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
         Open;
         labNumQtdCortes.Caption:=dmOrdemCorte.qyPrevistoQtdCortes.FieldByName('qtd_cortes').Value;
+        valor:=floattostr(strtofloat(labNumConsTotal.Caption)/strtofloat(dmOrdemCorte.qyPrevistoQtdCortes.FieldByName('qtd_cortes').Value));
     end;
 end;
 

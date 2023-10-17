@@ -28,7 +28,7 @@ begin
   if not FileExists(GetCaminhoIniFile) then
   begin
      Application.MessageBox(Pchar('O arquivo de configurações não foi encontrado.'+#13+
-                               GetCaminhoIniFile), 'Atenção', MB_OK + MB_ICONWARNING);
+                               GetCaminhoIniFile), 'Atenção', MB_OK + MB_ICONINFORMATION);
      result:=False;
   end;
 end;
@@ -40,7 +40,7 @@ begin
    if not FileExists(exeLocal) then
    begin
        Application.MessageBox(Pchar('O arquivo local não foi encontrado.'+#13+
-                                exeLocal), 'Atenção', MB_OK + MB_ICONWARNING);
+                                exeLocal), 'Atenção', MB_OK + MB_ICONINFORMATION);
        result:=False;
    end
    else
@@ -48,7 +48,7 @@ begin
    if not FileExists(exeRemoto) then
    begin
        Application.MessageBox(Pchar('O arquivo Remoto não foi encontrado.'+#13+
-                                exeRemoto), 'Atenção', MB_OK + MB_ICONWARNING);
+                                exeRemoto), 'Atenção', MB_OK + MB_ICONINFORMATION);
        result:=False;
    end;
 end;
@@ -103,7 +103,7 @@ var
 begin
   Application.MessageBox(pchar('Nova versão disponível no servidor!'+#13+
                                'Versão Atual : '+GetVersion(exeLocal)+#13+
-                               'Nova Versão  : '+GetVersion(exeRemoto)), 'Atenção', MB_OK + MB_ICONWARNING);
+                               'Nova Versão  : '+GetVersion(exeRemoto)), 'Atenção', MB_OK + MB_ICONINFORMATION);
 
 
  if RenameFile(exeLocal,(exeLocal+'_old')) then

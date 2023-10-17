@@ -4,21 +4,19 @@ object formConfirmacaoAvancoProducao: TformConfirmacaoAvancoProducao
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Confirma'#231#227'o de Avan'#231'o da Produ'#231#227'o'
-  ClientHeight = 444
-  ClientWidth = 882
+  ClientHeight = 443
+  ClientWidth = 878
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnResize = FormResize
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object labDataReposicao: TLabel
     Left = 8
