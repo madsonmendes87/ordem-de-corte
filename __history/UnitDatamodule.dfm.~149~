@@ -916,9 +916,24 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 648
     Top = 240
   end
-  object qyPrevistoNumOrdem: TFDQuery
+  object qyPrevistoOciId: TFDQuery
     Connection = Conexao
-    Left = 768
+    Left = 752
+    Top = 240
+  end
+  object qyPrevistoQtdCortes: TFDQuery
+    Connection = Conexao
+    Left = 864
+    Top = 240
+  end
+  object qyGerMediaPecas: TFDQuery
+    Connection = Conexao
+    Left = 976
+    Top = 240
+  end
+  object qyItensFichaPrevisto: TFDQuery
+    Connection = Conexao
+    Left = 1096
     Top = 240
   end
 end

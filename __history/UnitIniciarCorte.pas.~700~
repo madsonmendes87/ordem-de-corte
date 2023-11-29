@@ -87,8 +87,6 @@ type
     acaoCores: TAction;
     butEscolherCores: TBitBtn;
     labTipoProducao: TLabel;
-    labHifen: TLabel;
-    labOrd: TLabel;
     butAlterar: TBitBtn;
     procedure butSairInicioCorteClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -111,6 +109,7 @@ type
     procedure abrirCores;
     procedure salvarCorte;
     procedure usuarioOutraOrdem;
+    procedure iniciarPrevisto;
   end;
 
 var
@@ -145,18 +144,18 @@ begin
     end;
     if editCodigo.Text = ''  then
     begin
-        Application.MessageBox('Selecione o produto', 'Ordem de Corte',MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Selecione o produto', 'Ordem de Corte',MB_OK + MB_ICONINFORMATION);
         exit;
     end;
     if labTipoCorte.Caption = 'Prototipo' then
     begin
         Application.MessageBox('Este corte é prototipo e a cor de corte já foi definida na ficha tecnica, por este motivo a funcionalidade requerida foi vedada',
-        'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
     if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
     begin
-        Application.MessageBox('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
     With dmOrdemCorte.qyPrevisto do
@@ -174,7 +173,7 @@ begin
         if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
         begin
             Application.MessageBox('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia',
-            'Ordem de Corte', MB_OK + MB_ICONWARNING);
+            'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             exit;
         end;
         dmOrdemCorte.qyPrevisto.Next;
@@ -211,7 +210,7 @@ begin
         ParamByName('usuario').Value := 16;
         ExecSQL;
         tratarDataHora;
-        Application.MessageBox('Ordem alterada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Ordem alterada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         butSairInicioCorteClick(Sender);
     end;
 end;
@@ -229,7 +228,10 @@ end;
 procedure TformIniciarCorte.butEditarClick(Sender: TObject);
 begin
     if labNormal.Caption = 'FINALIZADA' then
-        Application.MessageBox('Não é permitido editar corte já finalizado!', 'Ordem de Corte', MB_OK + MB_ICONWARNING)
+    begin
+        Application.MessageBox('Não é permitido editar corte já finalizado!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+        exit;
+    end
     else
         dmOrdemCorte.tbOrdemdeCorte.Edit;
         editCodigo.SetFocus;
@@ -285,8 +287,9 @@ begin
                 ParamByName('datacancel').Value := now;
                 ParamByName('horacancel').Value := now;
                 ExecSQL;
-                Application.MessageBox('Ordem cancelada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+                Application.MessageBox('Ordem cancelada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
                 butSairInicioCorteClick(Sender);
+                dmOrdemCorte.qyOrdemCorte.Refresh;
             end;
     end;
 end;
@@ -320,8 +323,8 @@ begin
     if dmOrdemCorte.qyOrdemDeCorte.RecordCount > 0 then
     begin
         Application.MessageBox('Houve um cancelamento de ordem de corte anterior para essa referência com empenhos devolvidos para almoxarifado!',
-        'Ordem de Corte', MB_OK + MB_ICONWARNING);
-        Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devolução dos empenhos!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+        Application.MessageBox('Solicite ao almoxarifado que processe o recebimento da devolução dos empenhos!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
 
@@ -419,7 +422,7 @@ begin
     end;
     if dmOrdemCorte.qyGradeFicha.RecordCount > 1 then
     begin
-        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: '+ intTostr(dmOrdemCorte.qyFichaId.FieldByName('fi_id').Value)), 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: '+ intTostr(dmOrdemCorte.qyFichaId.FieldByName('fi_id').Value)), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
 
@@ -443,7 +446,7 @@ begin
     end;
     if dmOrdemCorte.qyFichaSemGrade.FieldByName('gradeId').Value = null then
     begin
-        Application.MessageBox('Ficha tecnica sem grade informada!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Ficha tecnica sem grade informada!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
 
@@ -472,8 +475,8 @@ begin
         Open;
         if dmOrdemCorte.qyLinha120.FieldByName('existe').Value = true then
         begin
-            Application.MessageBox('Ordem de corte não pode ser criada porque existe linha 120 lançada na costura!','Ordem de Corte', MB_OK + MB_ICONWARNING);
-            Application.MessageBox('Linha Título 120 não é comum ser usado na fase de costura quando o segmento do tecido for JEANS ou SARJA.','Ordem de Corte', MB_OK + MB_ICONWARNING);
+            Application.MessageBox('Ordem de corte não pode ser criada porque existe linha 120 lançada na costura!','Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+            Application.MessageBox('Linha Título 120 não é comum ser usado na fase de costura quando o segmento do tecido for JEANS ou SARJA.','Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             with application do
             begin
                 if MessageBox('Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDNO then
@@ -495,7 +498,7 @@ begin
         Open;
         if dmOrdemCorte.qyFaseInformada.RecordCount > 0 then
         begin
-            Application.MessageBox('Existe artigo na ficha tecnica sem fase informada!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+            Application.MessageBox('Existe artigo na ficha tecnica sem fase informada!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             exit;
         end;
     end;
@@ -513,7 +516,7 @@ begin
             if dmOrdemCorte.qyFichaPrototipo.RecordCount = 0 then
             begin
                 Application.MessageBox('O protótipo não foi informado na ficha tecnica, por favor re-abra a ficha tecnica e informe o tamanho e cor do protótipo',
-                'Ordem de Corte', MB_OK + MB_ICONWARNING);
+                'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
                 exit;
             end;
     end;
@@ -541,7 +544,7 @@ begin
             if dmOrdemCorte.qyCorGradeProt.RecordCount = 0 then
             begin
                 Application.MessageBox('O tamanho do prototipo está fora da grade e/ou a cor diferente da programada, por favor ajuste a informação do prototipo na ficha tecnica',
-                'Ordem de Corte', MB_OK + MB_ICONWARNING);
+                'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
                 exit;
             end;
     end;
@@ -560,7 +563,7 @@ begin
         Open;
         if dmOrdemCorte.qyTecidoPrincipal.FieldByName('qtdPrincipal').Value > 1 then
         begin
-            Application.MessageBox('Há mais de um tecido principal na ficha tecnica, por favor realize o ajuste!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+            Application.MessageBox('Há mais de um tecido principal na ficha tecnica, por favor realize o ajuste!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             exit;
         end;
     end;
@@ -582,7 +585,7 @@ begin
         Open;
         if dmOrdemCorte.qyRefArtigoCor.RecordCount = 0 then
         begin
-            Application.MessageBox('Cor de referência diferente da cor do tecido principal!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+            Application.MessageBox('Cor de referência diferente da cor do tecido principal!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             exit;
         end;
      end;
@@ -769,6 +772,7 @@ begin
         SQL.Add('   oc.oc_idfichatecnica = :fichatecnica');
         SQL.Add('   AND oc.oc_prototipo = :eprototipo');
         SQL.Add('   AND oc.oc_situacao <> ''2''');
+        SQL.Add('   ORDER BY oc_id DESC');
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         if labTipoCorte.Caption = 'Prototipo' then
             ParamByName('eprototipo').AsBoolean := true
@@ -777,12 +781,12 @@ begin
         Open;
         if dmOrdemCorte.qyCortePorTipoFichaId.RecordCount > 0 then
         begin
-            if dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
-            begin
-                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
-                exit;
-            end
-            else
+//            if dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
+//            begin
+//                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+//                exit;
+//            end
+//            else
                 with application do
                 begin
                      if MessageBox('Já existe uma ordem de corte grande escala para essa referencia'+#13+
@@ -790,7 +794,6 @@ begin
                       begin
                           usuarioOutraOrdem;
                       end
-                          //dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 2
                      else
                           exit;
                 end;
@@ -836,12 +839,12 @@ begin
             begin
                 if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'N' then
                 begin
-                    Application.MessageBox('Prototipo em espera por aprovação!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+                    Application.MessageBox('Prototipo em espera por aprovação!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
                     exit;
                 end;
                 if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'R' then
                 begin
-                    Application.MessageBox('Protótipo reprovado, por esse motivo produção não pode ser realizada', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+                    Application.MessageBox('Protótipo reprovado, por esse motivo produção não pode ser realizada', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
                     exit;
                 end;
             end
@@ -895,7 +898,7 @@ begin
               begin
                   if dmOrdemCorte.qyFichaFaseGE.RecordCount = 0 then
                   begin
-                      Application.MessageBox(PChar(msg), 'Ordem de Corte',MB_OK + MB_ICONWARNING);
+                      Application.MessageBox(PChar(msg), 'Ordem de Corte',MB_OK + MB_ICONINFORMATION);
                       exit;
                   end;
               end;
@@ -903,7 +906,8 @@ begin
          end;
     end;
     salvarCorte;
-    formPrincipal.butOrdemPesquisarClick(Sender);
+    iniciarPrevisto;
+    dmOrdemCorte.qyOrdemCorte.Refresh;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;
@@ -934,6 +938,105 @@ begin
              FreeAndNil(formProdutoAcabado);
           end;
      end;
+end;
+
+procedure TformIniciarCorte.iniciarPrevisto;
+begin
+    with dmOrdemCorte.qyItensFichaPrevisto do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ficha_tecnica_itens INNER JOIN ficha_tecnica_prototipo');
+        SQL.Add(' ON fti_idfichatec=fp_idfichatec WHERE fti_idfichatec=:ficha AND fti_status<>''C''');
+        ParamByName('ficha').AsInteger := strtoint(editFicha.Text);
+        Open;
+        if labTipoCorte.Caption = 'Prototipo' then
+        begin
+            ShowMessage('É protótipo');
+            dmOrdemCorte.qyItensFichaPrevisto.First;
+            while not dmOrdemCorte.qyItensFichaPrevisto.Eof do
+            begin
+                with dmOrdemCorte.qyIdCorte do
+                begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add('SELECT oc_id FROM ordem_corte ORDER BY oc_id DESC LIMIT 1');
+                    Open;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.Open();
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.Append;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_idocorte').Value:=dmOrdemCorte.qyIdCorte.FieldByName('oc_id').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_idproduto').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_idproduto').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_idcortecido').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_cortecido').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_dtlanc').Value:=now;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_hrlanc').Value:=now;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_codusulanc').Value:=16;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_idgradetam').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_idgradetam').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_un').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_un').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_situacao_id').Value:=1;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tipo').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tipo').Value;
+                    if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tecido').Value = 'A' then
+                        dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tecido').Value:=true
+                    else
+                        dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tecido').Value:=false;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_idgradecor').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_idgradecor').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_idgradecorprodutoacabado').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_cortecidoidgrade').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam1').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam2').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam3').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam4').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam5').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam6').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam7').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam8').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam9').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam10').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam11').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam12').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam13').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam14').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam15').Value:=null;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr1').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr2').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr3').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr4').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr5').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr6').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr7').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr8').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr9').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr10').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr11').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr12').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr13').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr14').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr15').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade1').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade2').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade3').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade4').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade5').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade6').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade7').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade8').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade9').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade10').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade11').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade12').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade13').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade14').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade15').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlrreserva').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlrrestante').Value:=0;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.Post;
+                    //dmOrdemCorte.tbOrdemCorteItensPrevisto.Refresh;
+                    dmOrdemCorte.qyItensFichaPrevisto.Next;
+                    //dmOrdemCorte.tbOrdemCorteItensPrevisto.Next;
+                end;
+            end;
+        end
+        else
+          ShowMessage('É Grande Escala');
+    end;
 end;
 
 procedure TformIniciarCorte.salvarCorte;
@@ -968,68 +1071,68 @@ begin
     butSalvar.Enabled := false;
     butNovo.Enabled := true;
     butEscolherCores.Enabled := true;
-    Application.MessageBox('Operação realizada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+    Application.MessageBox('Operação realizada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
 end;
 
 procedure TformIniciarCorte.tratarDataHora;
 begin
     if dataOrdemFinalizacao.Date < dataSolicitacao.Date then
     begin
-        Application.MessageBox('Data de finalização do corte não pode ser anterior a atual!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Data de finalização do corte não pode ser anterior a atual!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 
     if horaOrdemFinalizacao.Time < horaSolicitacao.Time then
     begin
-        Application.MessageBox('Horário de finalização do corte não pode ser anterior a atual!','Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Horário de finalização do corte não pode ser anterior a atual!','Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 
     if dataCortePrevisto.Date < dataSolicitacao.Date then
     begin
-         Application.MessageBox('Data de inicio do corte previsto não pode ser anterior a data de solicitação do corte!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+         Application.MessageBox('Data de inicio do corte previsto não pode ser anterior a data de solicitação do corte!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
          abort;
     end;
 
     if horaCortePrevisto.Time < horaSolicitacao.Time then
     begin
-        Application.MessageBox('Horário de inicio do corte previsto não pode ser anterior ao horário de solicitação do corte!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Horário de inicio do corte previsto não pode ser anterior ao horário de solicitação do corte!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 
     if dataFinalCortePrevisto.Date < dataCortePrevisto.Date then
     begin
-        Application.MessageBox('Data de finalização do corte previsto não pode ser anterior a data de inicio do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Data de finalização do corte previsto não pode ser anterior a data de inicio do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 
     if horaFinalCortePrevisto.Time < horaCortePrevisto.Time then
     begin
-        Application.MessageBox('Horário de finalização do corte previsto não pode ser anterior ao horário de inicio do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Horário de finalização do corte previsto não pode ser anterior ao horário de inicio do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 
     if dataRealCortado.Date < dataFinalCortePrevisto.Date then
     begin
-        Application.MessageBox('Data de inicio do real cortado não pode ser anterior a data de finalização do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Data de inicio do real cortado não pode ser anterior a data de finalização do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 
     if horaRealCortado.Time < horaFinalCortePrevisto.Time then
     begin
-        Application.MessageBox('Horário de inicio do real cortado não pode ser anterior ao horário de finalização do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Horário de inicio do real cortado não pode ser anterior ao horário de finalização do corte previsto!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 
     if dataFinalRealCortado.Date < dataRealCortado.Date then
     begin
-        Application.MessageBox('Data de finalização do real cortado não pode ser anterior a data de inicio do real cortado!', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Data de finalização do real cortado não pode ser anterior a data de inicio do real cortado!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 
     if horaFinalRealCortado.Time < horaRealCortado.Time then
     begin
-        Application.MessageBox('Horário de finalização do corte real não pode ser anterior ao horário de inicio do corte real', 'Ordem de Corte', MB_OK + MB_ICONWARNING);
+        Application.MessageBox('Horário de finalização do corte real não pode ser anterior ao horário de inicio do corte real', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 end;
@@ -1050,12 +1153,12 @@ begin
         Open;
         if dmOrdemCorte.qyUserOrdem2.FieldByName('us_libera_outra_ordemcorte').Value = false then
         begin
-            Application.MessageBox('Você não tem permissão para executar este procedimento','Atenção',mb_ok + mb_iconexclamation);
+            Application.MessageBox('Você não tem permissão para executar este procedimento','Atenção',MB_OK + MB_ICONINFORMATION);
             abort;
         end
         else
-            dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 2;
-
+            if dmOrdemCorte.qyCortePorTipoFichaId.RecordCount > 0 then
+                dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_ordem').OldValue + 1;
     end;
 end;
 

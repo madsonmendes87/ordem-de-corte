@@ -17,8 +17,6 @@ type
     dsOrdemCorte: TDataSource;
     dsOrdemCorteCores: TDataSource;
     dsOrdemdeCorte: TDataSource;
-    tbOrdemCorteSobraSituacao: TFDTable;
-    dsOrdemCorteSobraSituacao: TDataSource;
     tbOrdemCorteTrocaItem: TFDTable;
     dsOrdemCorteTrocaItem: TDataSource;
     qyOrdemCorte: TFDQuery;
@@ -126,6 +124,10 @@ type
     qyPrevistoOciId: TFDQuery;
     qyPrevistoQtdCortes: TFDQuery;
     qyGerMediaPecas: TFDQuery;
+    qyItensFichaPrevisto: TFDQuery;
+    tbOrdemCorteItensPrevisto: TFDTable;
+    dsOrdemCorteItensPrevisto: TDataSource;
+    qyIdCorte: TFDQuery;
   private
     { Private declarations }
   public

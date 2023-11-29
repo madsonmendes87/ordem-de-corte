@@ -166,7 +166,7 @@ begin
               SQL.Add('oc_hrprevisaofinalizacao, oc_datapreviniciocorteprevisto, oc_horapreviniciocorteprevisto, oc_dataprevfimcorteprevisto,');
               SQL.Add('oc_horaprevfimcorteprevisto, oc_datapreviniciorealcortado, oc_horapreviniciorealcortado, oc_dataprevfimrealcortado, oc_horaprevfimrealcortado,');
               SQL.Add('oc_observacao FROM ordem_corte');
-              SQL.ADD('  WHERE oc_id = :idCorte');
+              SQL.Add('  WHERE oc_id = :idCorte');
               ParamByName('idCorte').AsInteger := strtoint(gridOrdem.Fields[0].Value);
               Open;
               if dmOrdemCorte.qyDadosCorteById.FieldByName('oc_complementar').Value = false then

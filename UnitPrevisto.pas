@@ -161,7 +161,6 @@ type
     procedure gridPrevistoDrawColumnCell(Sender: TObject;
       const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
-    procedure gridPrevistoCellClick(Column: TColumn);
     procedure FormCreate(Sender: TObject);
 
   private
@@ -707,11 +706,6 @@ begin
         mediaTotal:=strtofloat(dmOrdemCorte.qyGerMediaPecas.FieldByName('cons').Value)/strtofloat(dmOrdemCorte.qyGerMediaPecas.FieldByName('qtd').Value);
         labNumMediaTotal.Caption:=formatfloat('0.0000',mediaTotal);
     end;
-end;
-
-procedure TformPrevisto.gridPrevistoCellClick(Column: TColumn);
-begin
-      //labIndividual1.Caption := gridPrevisto.Fields[2].Value;
 end;
 
 procedure TformPrevisto.gridPrevistoClick(Sender: TObject);
