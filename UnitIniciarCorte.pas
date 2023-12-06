@@ -779,14 +779,14 @@ begin
         else
             ParamByName('eprototipo').AsBoolean := false;
         Open;
-        if dmOrdemCorte.qyCortePorTipoFichaId.RecordCount > 0 then
+        if not dmOrdemCorte.qyCortePorTipoFichaId.RecordCount > 0 then
         begin
-//            if dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
-//            begin
-//                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
-//                exit;
-//            end
-//            else
+            if dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
+            begin
+                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                exit;
+            end
+            else
                 with application do
                 begin
                      if MessageBox('Já existe uma ordem de corte grande escala para essa referencia'+#13+
@@ -949,13 +949,12 @@ begin
     begin
         Close;
         SQL.Clear;
-        SQL.Add('SELECT * FROM ficha_tecnica_itens INNER JOIN ficha_tecnica_prototipo');
-        SQL.Add(' ON fti_idfichatec=fp_idfichatec WHERE fti_idfichatec=:ficha AND fti_status<>''C''');
+        SQL.Add('SELECT * FROM ficha_tecnica_itens JOIN ficha_tecnica_prototipo ON fti_idfichatec=fp_idfichatec');
+        SQL.Add(' JOIN cadastro_produto ON cp_id=fti_idproduto WHERE fti_idfichatec=:ficha AND fti_status<>''C''');
         ParamByName('ficha').AsInteger := strtoint(editFicha.Text);
         Open;
         if labTipoCorte.Caption = 'Prototipo' then
         begin
-            ShowMessage('É protótipo');
             dmOrdemCorte.qyItensFichaPrevisto.First;
             while not dmOrdemCorte.qyItensFichaPrevisto.Eof do
             begin
@@ -974,7 +973,8 @@ begin
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_hrlanc').Value:=now;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_codusulanc').Value:=16;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_idgradetam').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_idgradetam').Value;
-                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_un').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_un').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_un').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('cp_un').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_iditemficha').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_id').Value;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_situacao_id').Value:=1;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tipo').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tipo').Value;
                     if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tecido').Value = 'A' then
@@ -1282,9 +1282,7 @@ begin
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlrreserva').Value:=dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlrtotal').Value;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlrrestante').Value:=0;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.Post;
-                    //dmOrdemCorte.tbOrdemCorteItensPrevisto.Refresh;
                     dmOrdemCorte.qyItensFichaPrevisto.Next;
-                    //dmOrdemCorte.tbOrdemCorteItensPrevisto.Next;
                 end;
             end;
         end
