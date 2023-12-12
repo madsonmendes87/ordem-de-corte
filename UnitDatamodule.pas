@@ -128,6 +128,9 @@ type
     tbOrdemCorteItensPrevisto: TFDTable;
     dsOrdemCorteItensPrevisto: TDataSource;
     qyIdCorte: TFDQuery;
+    tbOrdemCorteProtFase: TFDTable;
+    dsOrdemCorteProtFase: TDataSource;
+    qyOrdemCorteProtFase: TFDQuery;
   private
     { Private declarations }
   public

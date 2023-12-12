@@ -949,13 +949,12 @@ begin
     begin
         Close;
         SQL.Clear;
-        SQL.Add('SELECT * FROM ficha_tecnica_itens INNER JOIN ficha_tecnica_prototipo');
-        SQL.Add(' ON fti_idfichatec=fp_idfichatec WHERE fti_idfichatec=:ficha AND fti_status<>''C''');
+        SQL.Add('SELECT * FROM ficha_tecnica_itens JOIN ficha_tecnica_prototipo ON fti_idfichatec=fp_idfichatec');
+        SQL.Add(' JOIN cadastro_produto ON cp_id=fti_idproduto WHERE fti_idfichatec=:ficha AND fti_status<>''C''');
         ParamByName('ficha').AsInteger := strtoint(editFicha.Text);
         Open;
         if labTipoCorte.Caption = 'Prototipo' then
         begin
-            ShowMessage('É protótipo');
             dmOrdemCorte.qyItensFichaPrevisto.First;
             while not dmOrdemCorte.qyItensFichaPrevisto.Eof do
             begin
@@ -974,7 +973,8 @@ begin
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_hrlanc').Value:=now;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_codusulanc').Value:=16;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_idgradetam').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_idgradetam').Value;
-                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_un').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_un').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_un').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('cp_un').Value;
+                    dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_iditemficha').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_id').Value;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_situacao_id').Value:=1;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tipo').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tipo').Value;
                     if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tecido').Value = 'A' then
@@ -1033,23 +1033,8 @@ begin
 
 
                     if dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tecido').Value = true then
-                    qtd:=0;
                     begin
-//                        qtd:=0;
-//                        while((dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').Value>0) or (dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').Value>0)
-//                        or(dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').Value>0) or (dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').Value>0)
-//                        or(dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').Value>0) or (dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').Value>0)
-//                        or(dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').Value>0) or (dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').Value>0)
-//                        or(dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').Value>0) or (dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').Value>0)
-//                        or(dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').Value>0) or (dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').Value>0)
-//                        or(dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').Value>0) or (dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').Value>0)
-//                        or(dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').Value>0)) do
-//                        begin
-//                            qtd:=qtd+1;
-//                            break;
-//                        end;
-
-
+                        qtd:=0;
                         if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').Value > 0 then
                             qtd:=qtd+1;
                         if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').Value > 0 then
@@ -1081,14 +1066,14 @@ begin
                         if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').Value > 0 then
                             qtd:=qtd+1;
 
-                        media:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').Value+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').Value+
+                        media:=(dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').Value+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').Value+
                               dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').Value+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').Value+
                               dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').Value+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').Value+
                               dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').Value+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').Value+
                               dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').Value+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').Value+
                               dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').Value+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').Value+
                               dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').Value+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').Value+
-                              dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').Value/qtd;
+                              dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').Value)/qtd;
 
                         if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
                         begin
@@ -1181,99 +1166,99 @@ begin
                             dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade15').Value:=1;
                         end;
                     end;
-//                    if dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tecido').Value = false then
-//                    begin
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam1').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr1').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade1').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam2').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr2').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade2').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam3').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr3').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade3').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam4').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr4').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade4').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam5').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr5').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade5').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam6').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr6').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade6').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam7').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr7').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade7').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam8').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr8').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade8').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam9').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr9').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade9').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam10').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr10').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade10').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam11').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr11').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade11').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam12').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr12').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade12').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam13').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr13').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade13').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam14').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr14').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade14').Value:=1;
-//                            end;
-//                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
-//                            begin
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam15').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').Value;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr15').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').Value;;
-//                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade15').Value:=1;
-//                            end;
-//                    end;
+                    if dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tecido').Value = false then
+                    begin
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam1').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr1').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade1').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam2').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr2').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade2').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam3').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr3').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade3').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam4').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr4').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade4').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam5').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr5').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade5').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam6').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr6').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade6').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam7').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr7').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade7').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam8').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr8').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade8').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam9').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr9').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade9').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam10').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr10').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade10').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam11').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr11').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade11').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam12').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr12').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade12').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam13').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr13').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade13').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam14').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr14').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade14').Value:=1;
+                            end;
+                            if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').Value=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').Value then
+                            begin
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_tam15').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').Value;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlr15').Value:=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').Value;;
+                                dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_qtdade15').Value:=1;
+                            end;
+                    end;
 
 
 
@@ -1297,9 +1282,47 @@ begin
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlrreserva').Value:=dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlrtotal').Value;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.FieldByName('oci_vlrrestante').Value:=0;
                     dmOrdemCorte.tbOrdemCorteItensPrevisto.Post;
-                    //dmOrdemCorte.tbOrdemCorteItensPrevisto.Refresh;
                     dmOrdemCorte.qyItensFichaPrevisto.Next;
-                    //dmOrdemCorte.tbOrdemCorteItensPrevisto.Next;
+                end;
+            end;
+            with dmOrdemCorte.qyOrdemCorteProtFase do
+            begin
+                Close;
+                SQL.Clear;
+                SQL.Add('SELECT * FROM ficha_tecnica_itensfase JOIN ordem_corte_itens_previsto ON ftf_iditemfichatecnica=oci_iditemficha');
+                SQL.Add('WHERE ftf_idfichatecnica=:ficha AND oci_situacao_id <> ''2''');
+                ParamByName('ficha').AsInteger := strtoint(editFicha.Text);
+                Open;
+                dmOrdemCorte.qyOrdemCorteProtFase.First;
+                while not dmOrdemCorte.qyOrdemCorteProtFase.Eof do
+                begin
+                    dmOrdemCorte.tbOrdemCorteProtFase.Open();
+                    dmOrdemCorte.tbOrdemCorteProtFase.Append;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idfichatecnica').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_idfichatecnica').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idordemcorte').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oc_id').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idfaseproducao').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_idfaseproducao').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr1').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr1').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr2').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr2').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr3').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr3').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr4').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr4').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr5').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr5').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr6').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr6').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr7').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr7').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr8').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr8').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr9').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr9').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr10').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr10').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr11').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr11').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr12').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr12').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr13').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr13').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr14').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr14').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr15').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr15').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_total').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlrtotal').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idusulanc').Value:=16;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idsituacao').Value:=3;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_iditemfichatecnica').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_iditemfichatecnica').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_atividade').Value:='P';
+                    dmOrdemCorte.tbOrdemCorteProtFase.Post;
+                    dmOrdemCorte.qyOrdemCorteProtFase.Next;
                 end;
             end;
         end

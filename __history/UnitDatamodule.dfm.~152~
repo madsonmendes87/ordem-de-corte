@@ -42,18 +42,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 616
     Top = 72
   end
-  object tbOrdemCorteSobraSituacao: TFDTable
-    IndexFieldNames = 'id'
-    Connection = Conexao
-    TableName = 'ordem_corte_sobra_situacao'
-    Left = 88
-    Top = 440
-  end
-  object dsOrdemCorteSobraSituacao: TDataSource
-    DataSet = tbOrdemCorteSobraSituacao
-    Left = 232
-    Top = 440
-  end
   object tbOrdemCorteTrocaItem: TFDTable
     IndexFieldNames = 'octi_id'
     Connection = Conexao
@@ -63,7 +51,7 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object dsOrdemCorteTrocaItem: TDataSource
     DataSet = tbOrdemCorteTrocaItem
-    Left = 504
+    Left = 512
     Top = 440
   end
   object qyOrdemCorte: TFDQuery
@@ -171,12 +159,12 @@ object dmOrdemCorte: TdmOrdemCorte
     IndexFieldNames = 'es_id'
     Connection = Conexao
     TableName = 'cadastro_estilista'
-    Left = 600
+    Left = 616
     Top = 440
   end
   object dsEstilista: TDataSource
     DataSet = tbEstilista
-    Left = 656
+    Left = 696
     Top = 440
   end
   object qyProdutoAcabado: TFDQuery
@@ -215,12 +203,12 @@ object dmOrdemCorte: TdmOrdemCorte
         'character varying(15))as nome'
       'from colecao'
       'order by co_descricao')
-    Left = 752
+    Left = 784
     Top = 440
   end
   object dsBoxColecao: TDataSource
     DataSet = qyBoxColecao
-    Left = 848
+    Left = 888
     Top = 440
   end
   object qyBoxEstilista: TFDQuery
@@ -228,7 +216,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Connection = Conexao
     SQL.Strings = (
       'select es_id, es_nome from cadastro_estilista order by es_nome;')
-    Left = 88
+    Left = 40
     Top = 488
   end
   object dsBoxEstilista: TDataSource
@@ -918,7 +906,41 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object qyPrevistoOciId: TFDQuery
     Connection = Conexao
-    Left = 768
+    Left = 752
+    Top = 240
+  end
+  object qyPrevistoQtdCortes: TFDQuery
+    Connection = Conexao
+    Left = 864
+    Top = 240
+  end
+  object qyGerMediaPecas: TFDQuery
+    Connection = Conexao
+    Left = 976
+    Top = 240
+  end
+  object qyItensFichaPrevisto: TFDQuery
+    Connection = Conexao
+    Left = 1096
+    Top = 240
+  end
+  object tbOrdemCorteItensPrevisto: TFDTable
+    Active = True
+    IndexFieldNames = 'oci_id'
+    Connection = Conexao
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'ordem_corte_itens_previsto'
+    Left = 64
+    Top = 304
+  end
+  object dsOrdemCorteItensPrevisto: TDataSource
+    DataSet = tbOrdemCorteItensPrevisto
+    Left = 232
+    Top = 304
+  end
+  object qyIdCorte: TFDQuery
+    Connection = Conexao
+    Left = 1208
     Top = 240
   end
 end

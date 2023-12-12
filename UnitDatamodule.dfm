@@ -943,4 +943,23 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 1208
     Top = 240
   end
+  object tbOrdemCorteProtFase: TFDTable
+    Active = True
+    IndexFieldNames = 'ocpf_id'
+    Connection = Conexao
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'ordem_corte_prototipo_fase'
+    Left = 384
+    Top = 304
+  end
+  object dsOrdemCorteProtFase: TDataSource
+    DataSet = tbOrdemCorteProtFase
+    Left = 536
+    Top = 304
+  end
+  object qyOrdemCorteProtFase: TFDQuery
+    Connection = Conexao
+    Left = 672
+    Top = 304
+  end
 end

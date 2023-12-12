@@ -17,8 +17,6 @@ type
     dsOrdemCorte: TDataSource;
     dsOrdemCorteCores: TDataSource;
     dsOrdemdeCorte: TDataSource;
-    tbOrdemCorteSobraSituacao: TFDTable;
-    dsOrdemCorteSobraSituacao: TDataSource;
     tbOrdemCorteTrocaItem: TFDTable;
     dsOrdemCorteTrocaItem: TDataSource;
     qyOrdemCorte: TFDQuery;
@@ -97,7 +95,6 @@ type
     qyOrdemPrototipo: TFDQuery;
     qyGridPrevisto: TFDQuery;
     dsGridPrevisto: TDataSource;
-    qyPrevistoOciId: TFDQuery;
     qyGridPrevistooci_id: TIntegerField;
     qyGridPrevistosituacao: TWideStringField;
     qyGridPrevistogrc_nome_pa: TWideStringField;
@@ -124,6 +121,13 @@ type
     qyGridPrevistocp_un: TWideStringField;
     qyGridPrevistooci_tipo: TWideStringField;
     qyGridPrevistooci_tecido: TBooleanField;
+    qyPrevistoOciId: TFDQuery;
+    qyPrevistoQtdCortes: TFDQuery;
+    qyGerMediaPecas: TFDQuery;
+    qyItensFichaPrevisto: TFDQuery;
+    tbOrdemCorteItensPrevisto: TFDTable;
+    dsOrdemCorteItensPrevisto: TDataSource;
+    qyIdCorte: TFDQuery;
   private
     { Private declarations }
   public
@@ -138,7 +142,7 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
-  UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado;
+  UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado, UnitPrevisto;
 
 {$R *.dfm}
 

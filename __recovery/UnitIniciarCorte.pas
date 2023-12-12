@@ -1285,6 +1285,46 @@ begin
                     dmOrdemCorte.qyItensFichaPrevisto.Next;
                 end;
             end;
+            with dmOrdemCorte.qyOrdemCorteProtFase do
+            begin
+                Close;
+                SQL.Clear;
+                SQL.Add('SELECT * FROM ficha_tecnica_itensfase JOIN ordem_corte_itens_previsto ON ftf_iditemfichatecnica=oci_iditemficha');
+                SQL.Add('WHERE ftf_idfichatecnica=:ficha AND oci_situacao_id <> ''2''');
+                ParamByName('ficha').AsInteger := strtoint(editFicha.Text);
+                Open;
+                dmOrdemCorte.qyOrdemCorteProtFase.First;
+                while not dmOrdemCorte.qyOrdemCorteProtFase.Eof do
+                begin
+                    dmOrdemCorte.tbOrdemCorteProtFase.Open();
+                    dmOrdemCorte.tbOrdemCorteProtFase.Append;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idfichatecnica').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_idfichatecnica').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idordemcorte').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_idocorte').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idfaseproducao').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_idfaseproducao').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr1').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr1').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr2').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr2').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr3').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr3').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr4').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr4').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr5').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr5').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr6').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr6').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr7').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr7').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr8').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr8').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr9').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr9').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr10').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr10').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr11').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr11').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr12').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr12').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr13').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr13').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr14').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr14').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_vlr15').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr15').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_total').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlrtotal').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idusulanc').Value:=16;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_idsituacao').Value:=3;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_iditemfichatecnica').Value:=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_iditemfichatecnica').Value;
+                    dmOrdemCorte.tbOrdemCorteProtFase.FieldByName('ocpf_atividade').Value:='P';
+                    dmOrdemCorte.tbOrdemCorteProtFase.Post;
+                    dmOrdemCorte.qyOrdemCorteProtFase.Next;
+                end;
+            end;
         end
         else
           ShowMessage('É Grande Escala');

@@ -17,8 +17,6 @@ type
     dsOrdemCorte: TDataSource;
     dsOrdemCorteCores: TDataSource;
     dsOrdemdeCorte: TDataSource;
-    tbOrdemCorteSobraSituacao: TFDTable;
-    dsOrdemCorteSobraSituacao: TDataSource;
     tbOrdemCorteTrocaItem: TFDTable;
     dsOrdemCorteTrocaItem: TDataSource;
     qyOrdemCorte: TFDQuery;
@@ -124,6 +122,14 @@ type
     qyGridPrevistooci_tipo: TWideStringField;
     qyGridPrevistooci_tecido: TBooleanField;
     qyPrevistoOciId: TFDQuery;
+    qyPrevistoQtdCortes: TFDQuery;
+    qyGerMediaPecas: TFDQuery;
+    qyItensFichaPrevisto: TFDQuery;
+    tbOrdemCorteItensPrevisto: TFDTable;
+    dsOrdemCorteItensPrevisto: TDataSource;
+    qyIdCorte: TFDQuery;
+    tbOrdemCorteProtFase: TFDTable;
+    dsOrdemCorteProtFase: TDataSource;
   private
     { Private declarations }
   public
@@ -138,7 +144,7 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
-  UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado;
+  UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado, UnitPrevisto;
 
 {$R *.dfm}
 
