@@ -1,10 +1,10 @@
 object formOrdemCorteCores: TformOrdemCorteCores
   Left = 0
   Top = 0
-  BorderIcons = []
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Ordem Corte Cores'
-  ClientHeight = 521
+  ClientHeight = 496
   ClientWidth = 609
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,29 +13,13 @@ object formOrdemCorteCores: TformOrdemCorteCores
   Font.Name = 'Tahoma'
   Font.Style = []
   Position = poScreenCenter
-  OnCreate = FormCreate
   OnResize = FormResize
   OnShow = FormShow
   TextHeight = 13
-  object butFecharCores: TSpeedButton
-    Left = 604
-    Top = 0
-    Width = 19
-    Height = 17
-    Caption = 'X'
-    Flat = True
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clRed
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-    OnClick = butFecharCoresClick
-  end
   object RadioGroup1: TRadioGroup
-    Left = 2
-    Top = 16
-    Width = 605
+    Left = 0
+    Top = 8
+    Width = 700
     Height = 209
     Caption = 'CORES REFER'#202'NCIA'
     Font.Charset = DEFAULT_CHARSET
@@ -47,10 +31,10 @@ object formOrdemCorteCores: TformOrdemCorteCores
     TabOrder = 0
   end
   object RadioGroup2: TRadioGroup
-    Left = 2
-    Top = 264
-    Width = 605
-    Height = 209
+    Left = 0
+    Top = 248
+    Width = 700
+    Height = 217
     Caption = 'CORES NO CORTE'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -62,9 +46,9 @@ object formOrdemCorteCores: TformOrdemCorteCores
   end
   object gridCoresReferencia: TDBGrid
     Left = 8
-    Top = 40
+    Top = 24
     Width = 593
-    Height = 177
+    Height = 185
     DataSource = dmOrdemCorte.dsOrdemCorteCores
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 2
@@ -76,9 +60,9 @@ object formOrdemCorteCores: TformOrdemCorteCores
   end
   object gridCoresCorte: TDBGrid
     Left = 8
-    Top = 288
+    Top = 264
     Width = 593
-    Height = 177
+    Height = 193
     DataSource = dmOrdemCorte.dsCoresNoCorte
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 3
@@ -89,8 +73,8 @@ object formOrdemCorteCores: TformOrdemCorteCores
     TitleFont.Style = []
   end
   object butAdd: TBitBtn
-    Left = 2
-    Top = 231
+    Left = 8
+    Top = 215
     Width = 75
     Height = 25
     Caption = 'Adicionar'
@@ -98,8 +82,8 @@ object formOrdemCorteCores: TformOrdemCorteCores
     OnClick = butAddClick
   end
   object butAddTodas: TBitBtn
-    Left = 83
-    Top = 231
+    Left = 89
+    Top = 215
     Width = 88
     Height = 25
     Caption = 'Adicionar Todas'
@@ -107,8 +91,8 @@ object formOrdemCorteCores: TformOrdemCorteCores
     OnClick = butAddTodasClick
   end
   object butRetirar: TBitBtn
-    Left = 2
-    Top = 487
+    Left = 8
+    Top = 463
     Width = 75
     Height = 25
     Caption = 'Retirar'
@@ -116,8 +100,8 @@ object formOrdemCorteCores: TformOrdemCorteCores
     OnClick = butRetirarClick
   end
   object butRetirarTodas: TBitBtn
-    Left = 83
-    Top = 487
+    Left = 89
+    Top = 463
     Width = 75
     Height = 25
     Caption = 'Retirar Todas'

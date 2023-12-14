@@ -962,9 +962,4 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 672
     Top = 304
   end
-  object qyDefinirPrevistoGE: TFDQuery
-    Connection = Conexao
-    Left = 800
-    Top = 304
-  end
 end

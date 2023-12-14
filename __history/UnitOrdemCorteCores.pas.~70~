@@ -3,7 +3,7 @@ unit UnitOrdemCorteCores;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.Math, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.Buttons;
 
@@ -17,7 +17,6 @@ type
     butAddTodas: TBitBtn;
     butRetirar: TBitBtn;
     butRetirarTodas: TBitBtn;
-    butFecharCores: TSpeedButton;
     procedure FormShow(Sender: TObject);
     procedure butAddClick(Sender: TObject);
     procedure butAddTodasClick(Sender: TObject);
@@ -25,7 +24,6 @@ type
     procedure butRetirarTodasClick(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure butFecharCoresClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -89,14 +87,6 @@ begin
           Application.MessageBox('Cores adicionadas com sucesso!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
 end;
 
-procedure TformOrdemCorteCores.butFecharCoresClick(Sender: TObject);
-begin
-      if dmOrdemCorte.qyCoresNoCorte.IsEmpty then
-         Application.MessageBox('Escolha no mínimo uma cor!','Cores no Corte', MB_OK + MB_ICONINFORMATION)
-      else
-          formOrdemCorteCores.Close;
-end;
-
 procedure TformOrdemCorteCores.butRetirarClick(Sender: TObject);
 begin
     if not dmOrdemCorte.qyCoresNoCorte.IsEmpty then
@@ -150,12 +140,10 @@ end;
 
 procedure TformOrdemCorteCores.FormCreate(Sender: TObject);
 begin
-//    while not dmOrdemCorte.qyCoresNoCorte.IsEmpty do
-//        //EnableMenuItem(GetSystemMenu(handle, False), SC_CLOSE, MF_BYCOMMAND or MF_GRAYED)
-//    //else
-//        EnableMenuItem(GetSystemMenu(handle, False), SC_CLOSE, MF_BYCOMMAND or MF_GRAYED);
-      SetWindowLong(formOrdemCorteCores.Handle, GWL_STYLE, GetWindowLong(Handle,GWL_STYLE) and not WS_CAPTION);
-      Height := ClientHeight;
+    while not dmOrdemCorte.qyCoresNoCorte.IsEmpty do
+        //EnableMenuItem(GetSystemMenu(handle, False), SC_CLOSE, MF_BYCOMMAND or MF_GRAYED)
+    //else
+        EnableMenuItem(GetSystemMenu(handle, True), SC_CLOSE, MF_BYCOMMAND or MF_GRAYED);
 end;
 
 procedure TformOrdemCorteCores.FormResize(Sender: TObject);

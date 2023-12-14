@@ -131,7 +131,7 @@ type
     tbOrdemCorteProtFase: TFDTable;
     dsOrdemCorteProtFase: TDataSource;
     qyOrdemCorteProtFase: TFDQuery;
-    qyDefinirPrevistoGE: TFDQuery;
+    qyDefinirCoresGE: TFDQuery;
   private
     { Private declarations }
   public
