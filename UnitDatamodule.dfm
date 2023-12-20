@@ -967,4 +967,14 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 800
     Top = 304
   end
+  object qyTemOrdPrototipo: TFDQuery
+    Connection = Conexao
+    Left = 928
+    Top = 304
+  end
+  object qyChecaReserva: TFDQuery
+    Connection = Conexao
+    Left = 1032
+    Top = 304
+  end
 end

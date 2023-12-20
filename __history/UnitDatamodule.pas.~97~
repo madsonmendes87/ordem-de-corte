@@ -17,8 +17,6 @@ type
     dsOrdemCorte: TDataSource;
     dsOrdemCorteCores: TDataSource;
     dsOrdemdeCorte: TDataSource;
-    tbOrdemCorteSobraSituacao: TFDTable;
-    dsOrdemCorteSobraSituacao: TDataSource;
     tbOrdemCorteTrocaItem: TFDTable;
     dsOrdemCorteTrocaItem: TDataSource;
     qyOrdemCorte: TFDQuery;
@@ -125,6 +123,16 @@ type
     qyGridPrevistooci_tecido: TBooleanField;
     qyPrevistoOciId: TFDQuery;
     qyPrevistoQtdCortes: TFDQuery;
+    qyGerMediaPecas: TFDQuery;
+    qyItensFichaPrevisto: TFDQuery;
+    tbOrdemCorteItensPrevisto: TFDTable;
+    dsOrdemCorteItensPrevisto: TDataSource;
+    qyIdCorte: TFDQuery;
+    tbOrdemCorteProtFase: TFDTable;
+    dsOrdemCorteProtFase: TDataSource;
+    qyOrdemCorteProtFase: TFDQuery;
+    qyDefinirPrevistoGE: TFDQuery;
+    qyTemOrdPrototipo: TFDQuery;
   private
     { Private declarations }
   public

@@ -132,6 +132,8 @@ type
     dsOrdemCorteProtFase: TDataSource;
     qyOrdemCorteProtFase: TFDQuery;
     qyDefinirPrevistoGE: TFDQuery;
+    qyTemOrdPrototipo: TFDQuery;
+    qyChecaReserva: TFDQuery;
   private
     { Private declarations }
   public
