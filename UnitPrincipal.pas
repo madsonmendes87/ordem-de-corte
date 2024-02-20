@@ -11,9 +11,9 @@ type
   TformPrincipal = class(TForm)
     panelFormPrincipal: TPanel;
     LbUsuario: TLabel;
-    LbCodigoUsuario: TLabel;
+    labCodUsuario: TLabel;
     LbSetor: TLabel;
-    LbDigitoSetor: TLabel;
+    labDigitoSetor: TLabel;
     panelMenuEsquerdo: TPanel;
     btnOrdemCorte: TSpeedButton;
     footerPrincipal: TStatusBar;
@@ -40,10 +40,10 @@ type
     AjustarGradedaFichaTcnica2: TMenuItem;
     N1: TMenuItem;
     VoltarFichaTcnicaparaFinalizada1: TMenuItem;
-    LbDigitoUsuario: TLabel;
+    labDigitoUsuario: TLabel;
     LbNomeUsuario: TLabel;
     Panel1: TPanel;
-    LbCodigoSetor: TLabel;
+    labCodSetor: TLabel;
     gridOrdem: TDBGrid;
     Panel2: TPanel;
     labFiltro: TLabel;
@@ -85,6 +85,8 @@ type
     butClearColecao: TButton;
     butRealCortado: TBitBtn;
     acaoRealCortado: TAction;
+    labNomeUsuario: TLabel;
+    labNomeSetor: TLabel;
     procedure FormResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -122,6 +124,9 @@ type
     procedure boxEstilista;
     procedure habComponentes;
     procedure dimensionarGrid(dbg: TDBGrid);
+    procedure IniciaTransacao;
+    procedure ComitaTransacao;
+    procedure DesfazTransacao;
   end;
 
 var
@@ -137,11 +142,11 @@ uses UnitDatamodule, UnitIniciarCorte, UnitHistoricOrdem,
 procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
       if butCortePrevisto.Enabled = true then
-        gridOrdem.Visible:=false;
-        formPrevisto:=TformPrevisto.Create(Self);
-        formPrevisto.Parent:=Panel1;
-        formPrevisto.Align:=alClient;
-        formPrevisto.BorderStyle:=bsNone;
+        gridOrdem.Visible             :=false;
+        formPrevisto                  :=TformPrevisto.Create(Self);
+        formPrevisto.Parent           :=Panel1;
+        formPrevisto.Align            :=alClient;
+        formPrevisto.BorderStyle      :=bsNone;
         formPrevisto.Show;
         desabComponentes;
 end;
@@ -149,15 +154,15 @@ end;
 procedure TformPrincipal.acaoBotaoVerCorteExecute(Sender: TObject);
 begin
       if butVerCorte.Enabled = true then
-          gridOrdem.Visible:=false;
-          formIniciarCorte:=TformIniciarCorte.Create(Self);
-          formIniciarCorte.Parent:=Panel1;
-          formIniciarCorte.Align:=alClient;
-          formIniciarCorte.BorderStyle:=bsNone;
+          gridOrdem.Visible                     :=false;
+          formIniciarCorte                      :=TformIniciarCorte.Create(Self);
+          formIniciarCorte.Parent               :=Panel1;
+          formIniciarCorte.Align                :=alClient;
+          formIniciarCorte.BorderStyle          :=bsNone;
           formIniciarCorte.Show;
-          formIniciarCorte.butNovo.Enabled := false;
-          formIniciarCorte.butEditar.Enabled := true;
-          formIniciarCorte.labNumeroOrd.Caption := intToStr(gridOrdem.Fields[0].Value) +'-00'+ intToStr(gridOrdem.Fields[1].Value);
+          formIniciarCorte.butNovo.Enabled      :=false;
+          formIniciarCorte.butEditar.Enabled    :=true;
+          formIniciarCorte.labNumeroOrd.Caption :=intToStr(gridOrdem.Fields[0].Value) +'-00'+ intToStr(gridOrdem.Fields[1].Value);
           with dmOrdemCorte.qyDadosCorteById do
           begin
               Close;
@@ -170,33 +175,33 @@ begin
               ParamByName('idCorte').AsInteger := strtoint(gridOrdem.Fields[0].Value);
               Open;
               if dmOrdemCorte.qyDadosCorteById.FieldByName('oc_complementar').Value = false then
-                  formIniciarCorte.labNaoComp.Caption := 'NÃO';
+                  formIniciarCorte.labNaoComp.Caption   :='NÃO';
               if dmOrdemCorte.qyDadosCorteById.FieldByName('oc_complementar').Value = true then
-                  formIniciarCorte.labNaoComp.Caption := 'SIM';
+                  formIniciarCorte.labNaoComp.Caption   :='SIM';
               if dmOrdemCorte.qyDadosCorteById.FieldByName('oc_corte_aproveitamento').Value = false then
-                  formIniciarCorte.labNaoAprov.Caption := 'NÃO';
+                  formIniciarCorte.labNaoAprov.Caption  :='NÃO';
               if dmOrdemCorte.qyDadosCorteById.FieldByName('oc_corte_aproveitamento').Value = true then
-                  formIniciarCorte.labNaoAprov.Caption := 'SIM';
+                  formIniciarCorte.labNaoAprov.Caption  :='SIM';
           end;
-          formIniciarCorte.editCodigo.Text := intToStr(dmOrdemCorte.qyDadosCorteById.FieldByName('oc_idcodprodutoacabado').Value);
-          formIniciarCorte.editReferencia.Text := gridOrdem.Fields[9].Value;
-          formIniciarCorte.editFicha.Text := intToStr(gridOrdem.Fields[5].Value);
-          formIniciarCorte.editDescReferencia.Text := gridOrdem.Fields[10].Value;
-          formIniciarCorte.labTipoCorte.Caption := gridOrdem.Fields[8].Value;
-          formIniciarCorte.labNormal.Caption := gridOrdem.Fields[3].Value;
-          formIniciarCorte.dataSolicitacao.Date := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dtsolicitacao').Value;
-          formIniciarCorte.horaSolicitacao.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horasolicitacao').Value;
-          formIniciarCorte.dataOrdemFinalizacao.Date := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dtprevisaofinalizacao').Value;
-          formIniciarCorte.horaOrdemFinalizacao.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_hrprevisaofinalizacao').Value;
-          formIniciarCorte.dataCortePrevisto.Date := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_datapreviniciocorteprevisto').Value;
-          formIniciarCorte.horaCortePrevisto.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horapreviniciocorteprevisto').Value;
-          formIniciarCorte.dataFinalCortePrevisto.Date := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dataprevfimcorteprevisto').Value;
-          formIniciarCorte.horaFinalCortePrevisto.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horaprevfimcorteprevisto').Value;
-          formIniciarCorte.dataRealCortado.Date := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_datapreviniciorealcortado').Value;
-          formIniciarCorte.horaRealCortado.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horapreviniciorealcortado').Value;
-          formIniciarCorte.dataFinalRealCortado.Date := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dataprevfimrealcortado').Value;
-          formIniciarCorte.horaFinalRealCortado.Time := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horaprevfimrealcortado').Value;
-          formIniciarCorte.editObservacao.Text := dmOrdemCorte.qyDadosCorteById.FieldByName('oc_observacao').Value;
+          formIniciarCorte.editCodigo.Text              :=intToStr(dmOrdemCorte.qyDadosCorteById.FieldByName('oc_idcodprodutoacabado').Value);
+          formIniciarCorte.editReferencia.Text          :=gridOrdem.Fields[9].Value;
+          formIniciarCorte.editFicha.Text               :=intToStr(gridOrdem.Fields[5].Value);
+          formIniciarCorte.editDescReferencia.Text      :=gridOrdem.Fields[10].Value;
+          formIniciarCorte.labTipoCorte.Caption         :=gridOrdem.Fields[8].Value;
+          formIniciarCorte.labNormal.Caption            :=gridOrdem.Fields[3].Value;
+          formIniciarCorte.dataSolicitacao.Date         :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dtsolicitacao').Value;
+          formIniciarCorte.horaSolicitacao.Time         :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horasolicitacao').Value;
+          formIniciarCorte.dataOrdemFinalizacao.Date    :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dtprevisaofinalizacao').Value;
+          formIniciarCorte.horaOrdemFinalizacao.Time    :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_hrprevisaofinalizacao').Value;
+          formIniciarCorte.dataCortePrevisto.Date       :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_datapreviniciocorteprevisto').Value;
+          formIniciarCorte.horaCortePrevisto.Time       :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horapreviniciocorteprevisto').Value;
+          formIniciarCorte.dataFinalCortePrevisto.Date  :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dataprevfimcorteprevisto').Value;
+          formIniciarCorte.horaFinalCortePrevisto.Time  :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horaprevfimcorteprevisto').Value;
+          formIniciarCorte.dataRealCortado.Date         :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_datapreviniciorealcortado').Value;
+          formIniciarCorte.horaRealCortado.Time         :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horapreviniciorealcortado').Value;
+          formIniciarCorte.dataFinalRealCortado.Date    :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_dataprevfimrealcortado').Value;
+          formIniciarCorte.horaFinalRealCortado.Time    :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_horaprevfimrealcortado').Value;
+          formIniciarCorte.editObservacao.Text          :=dmOrdemCorte.qyDadosCorteById.FieldByName('oc_observacao').Value;
           desabComponentes;
 end;
 
@@ -258,7 +263,7 @@ end;
 
 procedure TformPrincipal.butClearEstiloClick(Sender: TObject);
 begin
-    dbLkComboEstilo.KeyValue := Null;
+    dbLkComboEstilo.KeyValue :=Null;
 end;
 
 procedure TformPrincipal.butClearSetorClick(Sender: TObject);
@@ -351,22 +356,22 @@ begin
             if comboFiltro.Text = 'REFERENCIA' then
             begin
                 SQL.Add('AND pa.cad_idreferencia = :referencia');
-                ParamByName('referencia').AsString := editSearch.Text;
+                ParamByName('referencia').AsString:=editSearch.Text;
             end;
             if comboFiltro.Text = 'NUMERO DA FICHA' then
             begin
                 SQL.Add('AND oc.oc_idfichatecnica = :fichatecnica');
-                ParamByName('fichatecnica').AsInteger := strtointdef(editSearch.Text,0);
+                ParamByName('fichatecnica').AsInteger:=strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'ORDEM DE CORTE' then
             begin
                 SQL.Add('AND oc.oc_id = :ordemdecorte');
-                ParamByName('ordemdecorte').AsInteger := strtointdef(editSearch.Text,0);
+                ParamByName('ordemdecorte').AsInteger:=strtointdef(editSearch.Text,0);
             end;
             if comboFiltro.Text = 'DESCRICAO REFERENCIA' then
             begin
                 SQL.Add('AND pa.cad_descricao = :descricao');
-                ParamByName('descricao').AsString := editSearch.Text;
+                ParamByName('descricao').AsString:=editSearch.Text;
             end;
             if comboTipo.Text = 'Prototipo' then
                 SQL.Add('AND oc.oc_prototipo = true');
@@ -375,7 +380,7 @@ begin
             if dbLkComboEstilo.KeyValue <> Null then
             begin
                 SQL.Add('AND ce.es_id = :estilista');
-                ParamByName('estilista').AsInteger := dbLkComboEstilo.KeyValue;
+                ParamByName('estilista').AsInteger:=dbLkComboEstilo.KeyValue;
             end;
             if comboSetor.Text = 'ALMOXARIFADO' then
                 SQL.Add('AND oc.oc_dtempenho IS NOT NULL');
@@ -398,7 +403,7 @@ begin
             if dbLColecao.KeyValue <> Null then
             begin
                 SQL.Add('AND pa.cad_idcolecao = :colecao');
-                ParamByName('colecao').AsInteger := dbLColecao.KeyValue;
+                ParamByName('colecao').AsInteger:=dbLColecao.KeyValue;
             end;
            if comboFiltroData.ItemIndex <> -1 then
            begin
@@ -436,50 +441,60 @@ begin
     acaoBotaoVerCorteExecute(Sender);
 end;
 
+procedure TformPrincipal.ComitaTransacao;
+begin
+     dmOrdemCorte.Conexao.Commit;
+end;
+
 procedure TformPrincipal.CortePrevisto1Click(Sender: TObject);
 begin
-    gridOrdem.Visible:=false;
-    formPrevisto:=TformPrevisto.Create(Self);
-    formPrevisto.Parent:=Panel1;
-    formPrevisto.Align:=alClient;
-    formPrevisto.BorderStyle:=bsNone;
+    gridOrdem.Visible           :=false;
+    formPrevisto                :=TformPrevisto.Create(Self);
+    formPrevisto.Parent         :=Panel1;
+    formPrevisto.Align          :=alClient;
+    formPrevisto.BorderStyle    :=bsNone;
     formPrevisto.Show;
     desabComponentes;
 end;
 
 procedure TformPrincipal.desabComponentes;
 begin
-    butVerCorte.Enabled := false;
-    butCortePrevisto.Enabled := false;
-    butRealCortado.Enabled := false;
-    butHistoricOrdem.Enabled := false;
-    comboFiltro.Enabled := false;
-    comboSituacao.Enabled := false;
-    editSearch.Enabled := false;
-    comboIniOrd.Enabled := false;
-    comboTipo.Enabled := false;
-    dbLkComboEstilo.Enabled := false;
-    comboFiltroData.Enabled := false;
-    comboSetor.Enabled := false;
-    dateTimePicker1.Enabled := false;
-    dateTimePicker2.Enabled := false;
-    butOrdemPesquisar.Enabled := false;
-    dbLColecao.Enabled := false;
-    butClearTipo.Enabled := false;
-    butClearEstilo.Enabled := false;
-    butClearSetor.Enabled := false;
-    butClearSituacao.Enabled := false;
-    butLimpaIniOrdem.Enabled := false;
-    butClearColecao.Enabled := false;
-    labMostrAnos.Enabled := false;
-    btnOrdemCorte.Enabled := false;
-    btnEmpAlmoxarifado.Enabled := false;
-    btnEmpFase.Enabled := false;
-    btnEstoqueFase.Enabled := false;
-    btnEstAproveitamento.Enabled := false;
-    btnEntregaPecas.Enabled := false;
-    btnObservacoes.Enabled := false;
-    btnProcRestrito.Enabled := false;
+    butVerCorte.Enabled             :=false;
+    butCortePrevisto.Enabled        :=false;
+    butRealCortado.Enabled          :=false;
+    butHistoricOrdem.Enabled        :=false;
+    comboFiltro.Enabled             :=false;
+    comboSituacao.Enabled           :=false;
+    editSearch.Enabled              :=false;
+    comboIniOrd.Enabled             :=false;
+    comboTipo.Enabled               :=false;
+    dbLkComboEstilo.Enabled         :=false;
+    comboFiltroData.Enabled         :=false;
+    comboSetor.Enabled              :=false;
+    dateTimePicker1.Enabled         :=false;
+    dateTimePicker2.Enabled         :=false;
+    butOrdemPesquisar.Enabled       :=false;
+    dbLColecao.Enabled              :=false;
+    butClearTipo.Enabled            :=false;
+    butClearEstilo.Enabled          :=false;
+    butClearSetor.Enabled           :=false;
+    butClearSituacao.Enabled        :=false;
+    butLimpaIniOrdem.Enabled        :=false;
+    butClearColecao.Enabled         :=false;
+    labMostrAnos.Enabled            :=false;
+    btnOrdemCorte.Enabled           :=false;
+    btnEmpAlmoxarifado.Enabled      :=false;
+    btnEmpFase.Enabled              :=false;
+    btnEstoqueFase.Enabled          :=false;
+    btnEstAproveitamento.Enabled    :=false;
+    btnEntregaPecas.Enabled         :=false;
+    btnObservacoes.Enabled          :=false;
+    btnProcRestrito.Enabled         :=false;
+end;
+
+procedure TformPrincipal.DesfazTransacao;
+begin
+     dmOrdemCorte.Conexao.Rollback;
 end;
 
 procedure TformPrincipal.dimensionarGrid(dbg: TDBGrid);
@@ -493,12 +508,12 @@ procedure TformPrincipal.dimensionarGrid(dbg: TDBGrid);
     begin
       TSize := dbg.Columns.count;
       for idx := 0 to dbg.Columns.count - 1 do
-        dbg.Columns[idx].Width := (dbg.Width - dbg.Canvas.TextWidth('AAAAAA')
+        dbg.Columns[idx].Width:=(dbg.Width - dbg.Canvas.TextWidth('AAAAAA')
           ) div TSize
     end
     else
-      for idx := 0 to dbg.Columns.count - 1 do
-        dbg.Columns[idx].Width := dbg.Columns[idx].Width +
+      for idx:=0 to dbg.Columns.count - 1 do
+        dbg.Columns[idx].Width:=dbg.Columns[idx].Width +
           (Swidth * Asize[idx] div TSize);
   end;
 
@@ -510,31 +525,31 @@ var
 begin
   SetLength(AWidth, dbg.Columns.count);
   SetLength(Asize, dbg.Columns.count);
-  Twidth := 0;
-  TSize := 0;
-  for idx := 0 to dbg.Columns.count - 1 do
+  Twidth:=0;
+  TSize:=0;
+  for idx:=0 to dbg.Columns.count - 1 do
   begin
-    NomeColuna := dbg.Columns[idx].Title.Caption;
-    dbg.Columns[idx].Width := dbg.Canvas.TextWidth
+    NomeColuna:=dbg.Columns[idx].Title.Caption;
+    dbg.Columns[idx].Width:=dbg.Canvas.TextWidth
       (dbg.Columns[idx].Title.Caption + 'A');
-    AWidth[idx] := dbg.Columns[idx].Width;
-    Twidth := Twidth + AWidth[idx];
+    AWidth[idx]:=dbg.Columns[idx].Width;
+    Twidth:=Twidth + AWidth[idx];
 
     if Assigned(dbg.Columns[idx].Field) then
-      Asize[idx] := dbg.Columns[idx].Field.Size
+      Asize[idx]:=dbg.Columns[idx].Field.Size
     else
-      Asize[idx] := 1;
+      Asize[idx]:=1;
 
-    TSize := TSize + Asize[idx];
+    TSize:=TSize + Asize[idx];
   end;
   if TDBGridOption.dgColLines in dbg.Options then
-    Twidth := Twidth + dbg.Columns.count;
+    Twidth:=Twidth + dbg.Columns.count;
 
   // adiciona a largura da coluna indicada do cursor
   if TDBGridOption.dgIndicator in dbg.Options then
-    Twidth := Twidth + IndicatorWidth;
+    Twidth:=Twidth + IndicatorWidth;
 
-  Swidth := dbg.ClientWidth - Twidth;
+  Swidth:=dbg.ClientWidth - Twidth;
   AjustarColumns(Swidth, TSize, Asize);
 end;
 
@@ -549,15 +564,15 @@ procedure TformPrincipal.FormCreate(Sender: TObject);
 var
   arquivo : String;
 begin
-    BorderStyle := bsSingle;
-    BorderIcons := BorderIcons - [biMaximize];
-    WindowState := wsNormal;
-    Top := 0;
-    Left := 0;
-    Height := Screen.Height;
-    Width := Screen.Width;
-    dateTimePicker1.Date := now;
-    dateTimePicker2.Date := now;
+    BorderStyle             :=bsSingle;
+    BorderIcons             :=BorderIcons - [biMaximize];
+    WindowState             :=wsNormal;
+    Top                     :=0;
+    Left                    :=0;
+    Height                  :=Screen.Height;
+    Width                   :=Screen.Width;
+    dateTimePicker1.Date    :=now;
+    dateTimePicker2.Date    :=now;
     arquivo := 'C:\Sistema DiaERP_\DiaAplicativo\OrdemCorte.exe_old';
     DeleteFile(arquivo);
 end;
@@ -572,7 +587,7 @@ procedure TformPrincipal.FormShow(Sender: TObject);
 begin
     dmOrdemCorte.qyOrdemCorte.Active:=true;
     gridViewOrdemCorte;
-    footerPrincipal.Panels.Items[0].Text := 'VERSÃO: '+ versaoExe;
+    footerPrincipal.Panels.Items[0].Text :='VERSÃO: '+ versaoExe;
     boxColecao;
 end;
 
@@ -584,92 +599,108 @@ begin
         SQL.Clear;
         SQL.Add('SELECT * FROM ordem_corte_itens_real');
         SQL.Add('WHERE oci_idocorte = :ordem');
-        ParamByName('ordem').AsInteger := strtoint(gridOrdem.Fields[0].Value);
+        ParamByName('ordem').AsInteger :=strtoint(gridOrdem.Fields[0].Value);
         Open;
         if dmOrdemCorte.qyVerCorteReal.RecordCount > 0 then
-           butRealCortado.Enabled := true;
+           butRealCortado.Enabled :=true;
     end;
 
 end;
 
 procedure TformPrincipal.gridViewOrdemCorte;
 begin
-    gridOrdem.Columns[0].Title.Alignment:=taCenter;
-    gridOrdem.Columns[0].Title.Caption:='Nº Corte';
-    gridOrdem.Columns[1].Title.Alignment:=taCenter;
-    gridOrdem.Columns[1].Title.Caption:='Ordem';
-    gridOrdem.Columns[2].Title.Alignment:=taCenter;
-    gridOrdem.Columns[2].Title.Caption:='Coleção';
-    gridOrdem.Columns[3].Title.Alignment:=taCenter;
-    gridOrdem.Columns[3].Title.Caption:='Situação';
-    gridOrdem.Columns[4].Title.Alignment:=taCenter;
-    gridOrdem.Columns[4].Title.Caption:='Estilista';
-    gridOrdem.Columns[5].Title.Alignment:=taCenter;
-    gridOrdem.Columns[5].Title.Caption:='Ficha Técnica';
-    gridOrdem.Columns[6].Title.Alignment:=taCenter;
-    gridOrdem.Columns[6].Title.Caption:='Ordem de Produção';
-    gridOrdem.Columns[7].Title.Alignment:=taCenter;
-    gridOrdem.Columns[7].Title.Caption:='Dias em Processo';
-    gridOrdem.Columns[8].Title.Alignment:=taCenter;
-    gridOrdem.Columns[8].Title.Caption:='Tipo';
-    gridOrdem.Columns[9].Title.Alignment:=taCenter;
-    gridOrdem.Columns[9].Title.Caption:='Referência';
-    gridOrdem.Columns[10].Title.Alignment:=taCenter;
-    gridOrdem.Columns[10].Title.Caption:='Produto Acabado';
-    gridOrdem.Columns[11].Title.Alignment:=taCenter;
-    gridOrdem.Columns[11].Title.Caption:='Inicio Ordem de Corte';
-    gridOrdem.Columns[12].Title.Alignment:=taCenter;
-    gridOrdem.Columns[12].Title.Caption:='Corte Previsto';
-    gridOrdem.Columns[13].Title.Alignment:=taCenter;
-    gridOrdem.Columns[13].Title.Caption:='Real Cortado';
-    gridOrdem.Columns[14].Title.Alignment:=taCenter;
-    gridOrdem.Columns[14].Title.Caption:='Localização Empenho';
-    gridOrdem.Columns[15].Title.Alignment:=taCenter;
-    gridOrdem.Columns[15].Title.Caption:='Observação';
-    butVerCorte.Font.Color:=clMenuHighlight;
-    butVerCorte.Font.Style:=[fsBold];
-    butCortePrevisto.Font.Color:=clMenuHighlight;
-    butCortePrevisto.Font.Style:=[fsBold];
-    butHistoricOrdem.Font.Color:=clMenuHighlight;
-    butHistoricOrdem.Font.Style:=[fsBold];
-    butRealCortado.Font.Color:=clMenuhighlight;
-    butRealCortado.Font.Style:=[fsBold];
-    butRealCortado.Enabled := false;
-    comboTipo.Text:='';
+    gridOrdem.Columns[0].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[0].Title.Caption        :='Nº Corte';
+    gridOrdem.Columns[0].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[1].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[1].Title.Caption        :='Ordem';
+    gridOrdem.Columns[1].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[2].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[2].Title.Caption        :='Coleção';
+    gridOrdem.Columns[2].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[3].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[3].Title.Caption        :='Situação';
+    gridOrdem.Columns[3].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[4].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[4].Title.Caption        :='Estilista';
+    gridOrdem.Columns[4].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[5].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[5].Title.Caption        :='Ficha Técnica';
+    gridOrdem.Columns[5].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[6].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[6].Title.Caption        :='Ordem de Produção';
+    gridOrdem.Columns[6].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[7].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[7].Title.Caption        :='Dias em Processo';
+    gridOrdem.Columns[7].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[8].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[8].Title.Caption        :='Tipo';
+    gridOrdem.Columns[8].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[9].Title.Alignment      :=taCenter;
+    gridOrdem.Columns[9].Title.Caption        :='Referência';
+    gridOrdem.Columns[9].Title.Font.Style     :=[fsBold];
+    gridOrdem.Columns[10].Title.Alignment     :=taCenter;
+    gridOrdem.Columns[10].Title.Caption       :='Produto Acabado';
+    gridOrdem.Columns[10].Title.Font.Style    :=[fsBold];
+    gridOrdem.Columns[11].Title.Alignment     :=taCenter;
+    gridOrdem.Columns[11].Title.Caption       :='Inicio Ordem de Corte';
+    gridOrdem.Columns[11].Title.Font.Style    :=[fsBold];
+    gridOrdem.Columns[12].Title.Alignment     :=taCenter;
+    gridOrdem.Columns[12].Title.Caption       :='Corte Previsto';
+    gridOrdem.Columns[12].Title.Font.Style    :=[fsBold];
+    gridOrdem.Columns[13].Title.Alignment     :=taCenter;
+    gridOrdem.Columns[13].Title.Caption       :='Real Cortado';
+    gridOrdem.Columns[13].Title.Font.Style    :=[fsBold];
+    gridOrdem.Columns[14].Title.Alignment     :=taCenter;
+    gridOrdem.Columns[14].Title.Caption       :='Localização Empenho';
+    gridOrdem.Columns[14].Title.Font.Style    :=[fsBold];
+    gridOrdem.Columns[15].Title.Alignment     :=taCenter;
+    gridOrdem.Columns[15].Title.Caption       :='Observação';
+    gridOrdem.Columns[15].Title.Font.Style    :=[fsBold];
+    butVerCorte.Font.Color                    :=clMenuHighlight;
+    butVerCorte.Font.Style                    :=[fsBold];
+    butCortePrevisto.Font.Color               :=clMenuHighlight;
+    butCortePrevisto.Font.Style               :=[fsBold];
+    butHistoricOrdem.Font.Color               :=clMenuHighlight;
+    butHistoricOrdem.Font.Style               :=[fsBold];
+    butRealCortado.Font.Color                 :=clMenuhighlight;
+    butRealCortado.Font.Style                 :=[fsBold];
+    butRealCortado.Enabled                    :=false;
+    comboTipo.Text                            :='';
 end;
 
 procedure TformPrincipal.habComponentes;
 begin
-    butVerCorte.Enabled := true;
-    butCortePrevisto.Enabled := true;
-    butHistoricOrdem.Enabled := true;
-    comboFiltro.Enabled := true;
-    comboSituacao.Enabled := true;
-    editSearch.Enabled := true;
-    comboIniOrd.Enabled := true;
-    comboTipo.Enabled := true;
-    dbLkComboEstilo.Enabled := true;
-    comboFiltroData.Enabled := true;
-    comboSetor.Enabled := true;
-    dateTimePicker1.Enabled := true;
-    dateTimePicker2.Enabled := true;
-    butOrdemPesquisar.Enabled := true;
-    dbLColecao.Enabled := true;
-    butClearTipo.Enabled := true;
-    butClearEstilo.Enabled := true;
-    butClearSetor.Enabled := true;
-    butClearSituacao.Enabled := true;
-    butLimpaIniOrdem.Enabled := true;
-    butClearColecao.Enabled := true;
-    labMostrAnos.Enabled := true;
-    btnOrdemCorte.Enabled := true;
-    btnEmpAlmoxarifado.Enabled := true;
-    btnEmpFase.Enabled := true;
-    btnEstoqueFase.Enabled := true;
-    btnEstAproveitamento.Enabled := true;
-    btnEntregaPecas.Enabled := true;
-    btnObservacoes.Enabled := true;
-    btnProcRestrito.Enabled := true;
+    butVerCorte.Enabled           :=true;
+    butCortePrevisto.Enabled      :=true;
+    butHistoricOrdem.Enabled      :=true;
+    comboFiltro.Enabled           :=true;
+    comboSituacao.Enabled         :=true;
+    editSearch.Enabled            :=true;
+    comboIniOrd.Enabled           :=true;
+    comboTipo.Enabled             :=true;
+    dbLkComboEstilo.Enabled       :=true;
+    comboFiltroData.Enabled       :=true;
+    comboSetor.Enabled            :=true;
+    dateTimePicker1.Enabled       :=true;
+    dateTimePicker2.Enabled       :=true;
+    butOrdemPesquisar.Enabled     :=true;
+    dbLColecao.Enabled            :=true;
+    butClearTipo.Enabled          :=true;
+    butClearEstilo.Enabled        :=true;
+    butClearSetor.Enabled         :=true;
+    butClearSituacao.Enabled      :=true;
+    butLimpaIniOrdem.Enabled      :=true;
+    butClearColecao.Enabled       :=true;
+    labMostrAnos.Enabled          :=true;
+    btnOrdemCorte.Enabled         :=true;
+    btnEmpAlmoxarifado.Enabled    :=true;
+    btnEmpFase.Enabled            :=true;
+    btnEstoqueFase.Enabled        :=true;
+    btnEstAproveitamento.Enabled  :=true;
+    btnEntregaPecas.Enabled       :=true;
+    btnObservacoes.Enabled        :=true;
+    btnProcRestrito.Enabled       :=true;
 end;
 
 function TformPrincipal.versaoExe: string;
@@ -685,11 +716,11 @@ var
    Parquivo: Pchar;
    Arquivo : String;
 begin
-   Arquivo  := Application.ExeName;
-   Parquivo := StrAlloc(Length(Arquivo) + 1);
+   Arquivo  :=Application.ExeName;
+   Parquivo :=StrAlloc(Length(Arquivo) + 1);
    StrPcopy(Parquivo, Arquivo);
    Len := GetFileVersionInfoSize(Parquivo, Handle);
-   Result := '';
+   Result   :='';
    if Len > 0 then
    begin
       Data:=StrAlloc(Len+1);
@@ -710,13 +741,18 @@ begin
 end;
 procedure TformPrincipal.IniciarCorte1Click(Sender: TObject);
 begin
-    gridOrdem.Visible:=false;
-    formIniciarCorte:=TformIniciarCorte.Create(Self);
-    formIniciarCorte.Parent:=Panel1;
-    formIniciarCorte.Align:=alClient;
-    formIniciarCorte.BorderStyle:=bsNone;
+    gridOrdem.Visible             :=false;
+    formIniciarCorte              :=TformIniciarCorte.Create(Self);
+    formIniciarCorte.Parent       :=Panel1;
+    formIniciarCorte.Align        :=alClient;
+    formIniciarCorte.BorderStyle  :=bsNone;
     formIniciarCorte.Show;
     desabComponentes;
+end;
+
+procedure TformPrincipal.IniciaTransacao;
+begin
+     dmOrdemCorte.Conexao.StartTransaction;
 end;
 
 procedure TformPrincipal.labMostrAnosClick(Sender: TObject);

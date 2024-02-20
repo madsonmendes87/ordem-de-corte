@@ -5,7 +5,11 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.Math, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.Buttons;
+  Data.DB, Vcl.Grids, Vcl.DBGrids, Vcl.Buttons,
+  FireDAC.Stan.Def,FireDAC.Stan.Pool,FireDAC.Stan.Async,FireDAC.Phys,FireDAC.Phys.PG,
+  FireDAC.Phys.PGDef,FireDAC.VCLUI.Wait,FireDAC.Comp.UI,FireDAC.Comp.Client,
+  FireDAC.Phys.MSAcc,FireDAC.Phys.MSAccDef,FireDAC.Stan.Param,
+  FireDAC.DatS,FireDAC.DApt.Intf,FireDAC.DApt,FireDAC.Comp.DataSet;
 
 type
   TformOrdemCorteCores = class(TForm)
@@ -40,20 +44,28 @@ implementation
 {$R *.dfm}
 
 uses UnitIniciarCorte, UnitDatamodule, UnitDMHistoricOrdem,
-  UnitHistoricOrdem, UnitPrincipal, UnitProdutoAcabado;
+  UnitHistoricOrdem, UnitPrincipal, UnitProdutoAcabado, UnitPrevisto;
 
 procedure TformOrdemCorteCores.butAddClick(Sender: TObject);
 begin
+    with dmOrdemCorte.qyIdCorte do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT oc_id FROM ordem_corte ORDER BY oc_id DESC LIMIT 1');
+        Open;
+    end;
+
       if not dmOrdemCorte.qyCores.IsEmpty then
       begin
            dmOrdemCorte.tbCorteCores.Open();
            dmOrdemCorte.tbCorteCores.Append;
-           dmOrdemCorte.tbCorteCores.FieldByName('occ_idordemcorte').Value := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
-           dmOrdemCorte.tbCorteCores.FieldByName('occ_idcor').Value := strtoint(gridCoresReferencia.Fields[0].Value);
-           dmOrdemCorte.tbCorteCores.FieldByName('occ_data').Value := now;
-           dmOrdemCorte.tbCorteCores.FieldByName('occ_idusuario').Value := 16;
-           dmOrdemCorte.tbCorteCores.FieldByName('occ_status').Value := true;
-           dmOrdemCorte.tbCorteCores.FieldByName('occ_fezreserva').Value := true;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_idordemcorte').AsInteger := dmOrdemCorte.qyIdCorte.FieldByName('oc_id').AsInteger;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_idcor').AsInteger := strtoint(gridCoresReferencia.Fields[0].AsString);
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_data').AsDateTime := now;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_idusuario').AsInteger := strtoInt(formPrincipal.labCodUsuario.Caption);
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_status').AsBoolean := true;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_fezreserva').AsBoolean := false;
            dmOrdemCorte.tbCorteCores.Post;
            dmOrdemCorte.qyCores.Refresh;
            dmOrdemCorte.qyCoresNoCorte.Refresh;
@@ -72,21 +84,22 @@ begin
          exit;
       end
       else
-          while not dmOrdemCorte.qyCores.IsEmpty do
-          begin
-               dmOrdemCorte.tbCorteCores.Open();
-               dmOrdemCorte.tbCorteCores.Append;
-               dmOrdemCorte.tbCorteCores.FieldByName('occ_idordemcorte').Value := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
-               dmOrdemCorte.tbCorteCores.FieldByName('occ_idcor').Value := strtoint(gridCoresReferencia.Fields[0].Value);
-               dmOrdemCorte.tbCorteCores.FieldByName('occ_data').Value := now;
-               dmOrdemCorte.tbCorteCores.FieldByName('occ_idusuario').Value := 16;
-               dmOrdemCorte.tbCorteCores.FieldByName('occ_status').Value := true;
-               dmOrdemCorte.tbCorteCores.FieldByName('occ_fezreserva').Value := true;
-               dmOrdemCorte.tbCorteCores.Post;
-               dmOrdemCorte.qyCores.Refresh;
-               dmOrdemCorte.qyCoresNoCorte.Refresh;
-          end;
-          Application.MessageBox('Cores adicionadas com sucesso!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
+
+      while not dmOrdemCorte.qyCores.IsEmpty do
+      begin
+           dmOrdemCorte.tbCorteCores.Open();
+           dmOrdemCorte.tbCorteCores.Append;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_idordemcorte').AsInteger := dmOrdemCorte.qyIdCorte.FieldByName('oc_id').AsInteger;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_idcor').Value := strtoint(gridCoresReferencia.Fields[0].Value);
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_data').Value := now;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_idusuario').Value := 16;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_status').Value := true;
+           dmOrdemCorte.tbCorteCores.FieldByName('occ_fezreserva').Value := true;
+           dmOrdemCorte.tbCorteCores.Post;
+           dmOrdemCorte.qyCores.Refresh;
+           dmOrdemCorte.qyCoresNoCorte.Refresh;
+      end;
+      Application.MessageBox('Cores adicionadas com sucesso!', 'Cores no Corte', MB_OK + MB_ICONINFORMATION);
 end;
 
 procedure TformOrdemCorteCores.butFecharCoresClick(Sender: TObject);
@@ -150,10 +163,6 @@ end;
 
 procedure TformOrdemCorteCores.FormCreate(Sender: TObject);
 begin
-//    while not dmOrdemCorte.qyCoresNoCorte.IsEmpty do
-//        //EnableMenuItem(GetSystemMenu(handle, False), SC_CLOSE, MF_BYCOMMAND or MF_GRAYED)
-//    //else
-//        EnableMenuItem(GetSystemMenu(handle, False), SC_CLOSE, MF_BYCOMMAND or MF_GRAYED);
       SetWindowLong(formOrdemCorteCores.Handle, GWL_STYLE, GetWindowLong(Handle,GWL_STYLE) and not WS_CAPTION);
       Height := ClientHeight;
 end;

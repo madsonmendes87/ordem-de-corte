@@ -1,5 +1,5 @@
 object dmOrdemCorte: TdmOrdemCorte
-  Height = 577
+  Height = 656
   Width = 1271
   object Conexao: TFDConnection
     Params.Strings = (
@@ -10,23 +10,23 @@ object dmOrdemCorte: TdmOrdemCorte
       'DriverID=PG')
     Connected = True
     LoginPrompt = False
-    Left = 32
-    Top = 16
+    Left = 16
+    Top = 8
   end
   object FDTransaction1: TFDTransaction
     Connection = Conexao
-    Left = 96
-    Top = 16
+    Left = 104
+    Top = 8
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 280
-    Top = 16
+    Left = 336
+    Top = 8
   end
   object FDPhysPgDriverLink1: TFDPhysPgDriverLink
     VendorLib = 'C:\Program Files (x86)\PostgreSQL\psqlODBC\bin\libpq.dll'
-    Left = 176
-    Top = 16
+    Left = 216
+    Top = 8
   end
   object dsOrdemCorte: TDataSource
     DataSet = qyOrdemCorte
@@ -152,8 +152,8 @@ object dmOrdemCorte: TdmOrdemCorte
       '  WHERE op.op_idordemcorte=oc.oc_id and op.op_idstatus <> 4)'
       'ORDER BY oc.oc_id desc limit 23'
       '')
-    Left = 368
-    Top = 16
+    Left = 720
+    Top = 368
   end
   object tbEstilista: TFDTable
     IndexFieldNames = 'es_id'
@@ -533,15 +533,12 @@ object dmOrdemCorte: TdmOrdemCorte
   object tbCorteCores: TFDTable
     Active = True
     IndexFieldNames = 'occ_id'
-    MasterSource = dsCorteCores
     Connection = Conexao
+    Transaction = FDTransaction1
+    UpdateTransaction = FDTransaction1
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     TableName = 'ordem_corte_cores'
-    Left = 984
-    Top = 72
-  end
-  object dsCorteCores: TDataSource
-    Left = 1072
+    Left = 1000
     Top = 72
   end
   object dsProdutoAvancoProd: TDataSource
@@ -584,7 +581,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object dsAvancoProducaoItens: TDataSource
-    Left = 1184
+    Left = 1120
     Top = 64
   end
   object qyOldValue: TFDQuery
@@ -604,8 +601,8 @@ object dmOrdemCorte: TdmOrdemCorte
     Active = True
     Aggregates = <>
     Params = <>
-    Left = 1128
-    Top = 128
+    Left = 1144
+    Top = 120
     object cdsProdSemEstoqueidProduto: TIntegerField
       FieldName = 'idProduto'
     end
@@ -928,15 +925,12 @@ object dmOrdemCorte: TdmOrdemCorte
     Active = True
     IndexFieldNames = 'oci_id'
     Connection = Conexao
+    Transaction = FDTransaction1
+    UpdateTransaction = FDTransaction1
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     TableName = 'ordem_corte_itens_previsto'
-    Left = 64
-    Top = 304
-  end
-  object dsOrdemCorteItensPrevisto: TDataSource
-    DataSet = tbOrdemCorteItensPrevisto
-    Left = 232
-    Top = 304
+    Left = 80
+    Top = 296
   end
   object qyIdCorte: TFDQuery
     Connection = Conexao
@@ -947,14 +941,16 @@ object dmOrdemCorte: TdmOrdemCorte
     Active = True
     IndexFieldNames = 'ocpf_id'
     Connection = Conexao
+    Transaction = FDTransaction1
+    UpdateTransaction = FDTransaction1
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     TableName = 'ordem_corte_prototipo_fase'
-    Left = 384
+    Left = 320
     Top = 304
   end
   object dsOrdemCorteProtFase: TDataSource
     DataSet = tbOrdemCorteProtFase
-    Left = 536
+    Left = 520
     Top = 304
   end
   object qyOrdemCorteProtFase: TFDQuery
@@ -969,12 +965,22 @@ object dmOrdemCorte: TdmOrdemCorte
   end
   object qyTemOrdPrototipo: TFDQuery
     Connection = Conexao
-    Left = 928
+    Left = 912
     Top = 304
   end
   object qyChecaReserva: TFDQuery
     Connection = Conexao
-    Left = 1032
-    Top = 304
+    Left = 1080
+    Top = 312
+  end
+  object qyCorPrevisto: TFDQuery
+    Connection = Conexao
+    Left = 1192
+    Top = 320
+  end
+  object FDQuery1: TFDQuery
+    Connection = Conexao
+    Left = 976
+    Top = 376
   end
 end

@@ -48,5 +48,5 @@ begin
     end;
     ini.Free;
   end;
-  Application.Terminate;   //Lacuna coil
+  Application.Terminate;
 end.

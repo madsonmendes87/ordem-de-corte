@@ -54,7 +54,7 @@ begin
 end;
 
 {-----------FUNÇÃO PARA COPIA DE ARQUIVOS-----------}
-function CopyData(const fromDir, toDir: string): Boolean;{Função para copia de arquivos}
+function CopyData(const fromDir, toDir: string): Boolean;
 var
   fos: TSHFileOpStruct;
 begin

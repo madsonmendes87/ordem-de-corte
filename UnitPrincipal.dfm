@@ -48,15 +48,15 @@ object formPrincipal: TformPrincipal
       Caption = ':Usu'#225'rio'
       ExplicitHeight = 17
     end
-    object LbCodigoUsuario: TLabel
+    object labCodUsuario: TLabel
       AlignWithMargins = True
       Left = 61
       Top = 2
-      Width = 7
+      Width = 14
       Height = 19
       Margins.Top = 1
       Align = alLeft
-      Caption = '1'
+      Caption = '16'
       ExplicitHeight = 17
     end
     object LbSetor: TLabel
@@ -66,16 +66,16 @@ object formPrincipal: TformPrincipal
       Height = 17
       Caption = ':Setor'
     end
-    object LbDigitoSetor: TLabel
+    object labDigitoSetor: TLabel
       Left = 1201
-      Top = 2
+      Top = 4
       Width = 5
       Height = 17
       Caption = '-'
     end
-    object LbDigitoUsuario: TLabel
+    object labDigitoUsuario: TLabel
       AlignWithMargins = True
-      Left = 74
+      Left = 81
       Top = 2
       Width = 5
       Height = 19
@@ -86,7 +86,7 @@ object formPrincipal: TformPrincipal
     end
     object LbNomeUsuario: TLabel
       AlignWithMargins = True
-      Left = 85
+      Left = 92
       Top = 2
       Width = 4
       Height = 19
@@ -94,12 +94,26 @@ object formPrincipal: TformPrincipal
       Align = alLeft
       ExplicitHeight = 17
     end
-    object LbCodigoSetor: TLabel
+    object labCodSetor: TLabel
       Left = 1188
       Top = 4
       Width = 7
       Height = 17
       Caption = '1'
+    end
+    object labNomeUsuario: TLabel
+      Left = 92
+      Top = 2
+      Width = 84
+      Height = 17
+      Caption = 'NomeUsuario'
+    end
+    object labNomeSetor: TLabel
+      Left = 1212
+      Top = 4
+      Width = 79
+      Height = 17
+      Caption = 'SetorUsuario'
     end
   end
   object panelMenuEsquerdo: TPanel
@@ -1603,7 +1617,7 @@ object formPrincipal: TformPrincipal
       Color = clWhite
       DataSource = dmOrdemCorte.dsOrdemCorte
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clGray
+      Font.Color = clBlack
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []

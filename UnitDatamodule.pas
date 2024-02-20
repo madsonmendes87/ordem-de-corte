@@ -62,7 +62,6 @@ type
     qyCoresNoCorte: TFDQuery;
     dsCoresNoCorte: TDataSource;
     tbCorteCores: TFDTable;
-    dsCorteCores: TDataSource;
     dsProdutoAvancoProd: TDataSource;
     dsProdReposicao: TDataSource;
     qyUserOrdem2: TFDQuery;
@@ -126,7 +125,6 @@ type
     qyGerMediaPecas: TFDQuery;
     qyItensFichaPrevisto: TFDQuery;
     tbOrdemCorteItensPrevisto: TFDTable;
-    dsOrdemCorteItensPrevisto: TDataSource;
     qyIdCorte: TFDQuery;
     tbOrdemCorteProtFase: TFDTable;
     dsOrdemCorteProtFase: TDataSource;
@@ -134,6 +132,8 @@ type
     qyDefinirPrevistoGE: TFDQuery;
     qyTemOrdPrototipo: TFDQuery;
     qyChecaReserva: TFDQuery;
+    qyCorPrevisto: TFDQuery;
+    FDQuery1: TFDQuery;
   private
     { Private declarations }
   public

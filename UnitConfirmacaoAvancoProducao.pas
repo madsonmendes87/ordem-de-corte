@@ -23,6 +23,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure butUPClick(Sender: TObject);
     procedure butSalvarFinalPrevClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
   public
@@ -85,7 +86,7 @@ begin
       begin
           dmOrdemCorte.tbAvancoProducaoItens.Open();
           dmOrdemCorte.tbAvancoProducaoItens.Append;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').Value := dmOrdemCorte.qyOldValue.FieldByName('capri_idconfirmacaoavanco').OldValue +1;
+          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').Value:=dmOrdemCorte.qyOldValue.FieldByName('capri_idconfirmacaoavanco').OldValue +1;
           dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idproduto').Value := gridProdutoReposicao.Fields[0].Value;
           dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idgradecor').Value := gridProdutoReposicao.Fields[5].Value;
           dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idgradetamanho').Value := gridProdutoReposicao.Fields[6].Value;
@@ -121,6 +122,12 @@ begin
     dmOrdemCorte.cdsProdReposicao.EmptyDataSet;
 end;
 
+procedure TformConfirmacaoAvancoProducao.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+    CanClose:=false;
+end;
+
 procedure TformConfirmacaoAvancoProducao.FormCreate(Sender: TObject);
 begin
     dtReposicao.Date:=now;
@@ -154,5 +161,6 @@ begin
     if dmOrdemCorte.cdsProdReposicao.IsEmpty then
       butUP.Enabled := false;
 end;
+
 
 end.

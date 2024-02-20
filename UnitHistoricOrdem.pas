@@ -37,9 +37,9 @@ var
     treeHistoricOrdem: TTreeView;
     no, noPai, noPrev, noTroca, noEmpenho, noRealCortado: TTreeNode;
 begin
-    treeHistoricOrdem := TTreeView.Create(Self);
-    treeHistoricOrdem.Parent := formHistoricOrdem;
-    treeHistoricOrdem.Align := alClient;
+    treeHistoricOrdem         :=TTreeView.Create(Self);
+    treeHistoricOrdem.Parent  :=formHistoricOrdem;
+    treeHistoricOrdem.Align   :=alClient;
     with dmOrdemCorte.qyOrdemHistorico do
     begin
           Close;
@@ -59,9 +59,16 @@ begin
     with dmOrdemCorte.qyTroca do
     begin
           Close;
-          SQL.Text := 'SELECT pti_idusuariosolicitacao, pti_dtsolicitacao, pti_idusuarioconfirmacao, us_nome FROM producao_troca_item, usuario';
-          SQL.Add('WHERE pti_idusuariosolicitacao = us_id AND pti_idusuarioconfirmacao = us_id AND pti_idfichatecnica = :ficha');
-          ParamByName('ficha').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[5].Value);
+          SQL.Text := 'SELECT pti.*,  (ug.us_nome) AS ugnome, (uc.us_nome) AS ucnome FROM ordem_corte AS oc';
+          SQL.Add(' JOIN ordem_corte_itens_previsto AS oci ON oci.oci_idocorte = oc.oc_id');
+          SQL.Add(' JOIN producao_troca_item AS pti ON pti.pti_iditemcorteprevisto = oci.oci_id');
+          SQL.Add(' JOIN usuario AS ug ON ug.us_id = pti.pti_idusuariosolicitacao');
+          SQL.Add(' LEFT JOIN usuario AS uc ON uc.us_id = pti.pti_idusuarioconfirmacao');
+          SQL.Add(' WHERE oci.oci_idocorte=:corte AND pti.pti_status<>''R''');
+          SQL.Add(' ORDER BY pti.pti_dtsolicitacao ASC');
+          SQL.Add(' LIMIT 1');
+
+          ParamByName('corte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
     with dmOrdemCorte.qyEmpenho do
@@ -113,7 +120,7 @@ begin
     begin
         noPrev := treeHistoricOrdem.Items.AddChild(no, 'TROCA DE PRODUTO');
         noTroca := treeHistoricOrdem.Items.AddChildFirst(noPrev, 'DATA SOLICITAÇÃO: ' + DateTimeToStr(dmOrdemCorte.qyTroca.FieldByName('pti_dtsolicitacao').Value)
-        + '        USUÁRIO GEROU: ' + dmOrdemCorte.qyTroca.FieldByName('us_nome').Value + '        USUÁRIO CONFIRMOU: ' + dmOrdemCorte.qyTroca.FieldByName('us_nome').Value);
+        + '        USUÁRIO GEROU: ' + dmOrdemCorte.qyTroca.FieldByName('ugnome').Value + '        USUÁRIO CONFIRMOU: ' + dmOrdemCorte.qyTroca.FieldByName('ucnome').Value);
     end;
     if dmOrdemCorte.qyEmpenho.recordcount > 0 then
     begin

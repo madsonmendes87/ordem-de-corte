@@ -4,8 +4,8 @@ object formOrdemCorteCores: TformOrdemCorteCores
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'Ordem Corte Cores'
-  ClientHeight = 521
-  ClientWidth = 609
+  ClientHeight = 520
+  ClientWidth = 605
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
