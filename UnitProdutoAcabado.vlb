@@ -7,9 +7,6 @@ Coordinates=403,10,101,124
 [dmOrdemCorte.dsBoxColecao]
 Coordinates=345,463,189,36
 
-[butLimpaColecao]
-Coordinates=914,1354,115,58
-
 [butProdutoPesquisar]
 Coordinates=1495,1490,135,36
 
@@ -184,4 +181,7 @@ Coordinates=881,1167,202,36
 
 []
 Coordinates=881,1321,91,36
+
+[butLimpaTiProduto]
+Coordinates=914,1354,115,58
 

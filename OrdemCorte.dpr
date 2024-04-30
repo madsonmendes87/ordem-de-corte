@@ -12,7 +12,11 @@ uses
   UnitDMHistoricOrdem in 'UnitDMHistoricOrdem.pas' {dmHistoricOrdem: TDataModule},
   UnitOrdemCorteCores in 'UnitOrdemCorteCores.pas' {formOrdemCorteCores},
   UnitVerificaVersao in 'UnitVerificaVersao.pas',
-  UnitConfirmacaoAvancoProducao in 'UnitConfirmacaoAvancoProducao.pas' {formConfirmacaoAvancoProducao};
+  UnitConfirmacaoAvancoProducao in 'UnitConfirmacaoAvancoProducao.pas' {formConfirmacaoAvancoProducao},
+  unitArtCancelados in 'unitArtCancelados.pas' {formArtCancelados},
+  UnitLogin in 'UnitLogin.pas' {formLogin},
+  UnitMudancArtigo in 'UnitMudancArtigo.pas' {forMudancArtigo},
+  UnitSelecionArtigos in 'UnitSelecionArtigos.pas' {formSelecionArtigo};
 
 {$R *.res}
 
@@ -30,6 +34,10 @@ begin
   Application.CreateForm(TdmHistoricOrdem, dmHistoricOrdem);
   Application.CreateForm(TformOrdemCorteCores, formOrdemCorteCores);
   Application.CreateForm(TformConfirmacaoAvancoProducao, formConfirmacaoAvancoProducao);
+  Application.CreateForm(TformArtCancelados, formArtCancelados);
+  Application.CreateForm(TformLogin, formLogin);
+  Application.CreateForm(TforMudancArtigo, forMudancArtigo);
+  Application.CreateForm(TformSelecionArtigo, formSelecionArtigo);
   Application.Run;
   if EncontrouIni then
   begin

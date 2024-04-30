@@ -33,8 +33,6 @@ type
     popupArtigos: TPopupMenu;
     rocar1: TMenuItem;
     Liberar1: TMenuItem;
-    Retirar1: TMenuItem;
-    N1: TMenuItem;
     Verartigoscancelados1: TMenuItem;
     popupEmpenho: TPopupMenu;
     Empenhar1: TMenuItem;
@@ -162,12 +160,17 @@ type
       const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
+    procedure butEditGradeClick(Sender: TObject);
+    procedure Verartigoscancelados2Click(Sender: TObject);
+    procedure Verartigoscancelados1Click(Sender: TObject);
+    procedure rocar1Click(Sender: TObject);
 
   private
     { Private declarations }
     procedure gridPrevistoClick(Sender: TObject);
   public
     { Public declarations }
+    procedure retirArtigo;
   end;
 
 var
@@ -179,7 +182,7 @@ implementation
 
 uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
   UnitOrdemCorteCores, UnitConfirmacaoAvancoProducao, UnitVerificaVersao,
-  UnitDMHistoricOrdem;
+  UnitDMHistoricOrdem, unitArtCancelados, UnitLogin, UnitMudancArtigo;
 
 procedure TformPrevisto.butSairPrevistoClick(Sender: TObject);
 begin
@@ -208,7 +211,7 @@ end;
 
 procedure TformPrevisto.FormResize(Sender: TObject);
 begin
-    //formPrincipal.dimensionarGrid(gridPrevisto);
+//    formPrincipal.dimensionarGrid(gridPrevisto);
 end;
 
 procedure TformPrevisto.FormShow(Sender: TObject);
@@ -289,6 +292,30 @@ begin
             labStatuSituacao.Font.Color := clNavy;
         end;
     end;
+    if labStatuSituacao.Caption = 'NORMAL' then
+    begin
+        popupEmpenho.Items.Find('Retirar Empenho').Enabled:=false;
+        popupEmpenho.Items.Find('Informação').Enabled:=false;
+        popupAcao.Items.Find('Reabrir').Enabled:=false;
+    end;
+    if labStatuSituacao.Caption = 'SOB EMPENHO' then
+    begin
+        butEditGrade.Enabled:=false;
+        popupArtigos.Items.Find('Trocar(somente na ordem de corte)').Enabled:=false;
+        popupArtigos.Items.Find('Retirar').Enabled:=false;
+        popupEmpenho.Items.Find('Empenhar').Enabled:=false;
+        popupAcao.Items.Find('Reabrir').Enabled:=false;
+    end;
+    if labStatuSituacao.Caption = 'FINALIZADO' then
+    begin
+        butEditGrade.Enabled:=false;
+        popupArtigos.Items.Find('Trocar(somente na ordem de corte)').Enabled:=false;
+        popupArtigos.Items.Find('Retirar').Enabled:=false;
+        popupEmpenho.Items.Find('Empenhar').Enabled:=false;
+        popupEmpenho.Items.Find('Retirar Empenho').Enabled:=false;
+        popupAcao.Items.Find('Finalizar').Enabled:=false;
+    end;
+
     if formPrincipal.gridOrdem.Fields[8].Value = 'Prototipo' then
        panelCabecalho.Caption := 'Corte Previsto - Protótipo'
     else
@@ -478,9 +505,9 @@ begin
         SQL.Clear;
         SQL.Add('SELECT');
         SQL.Add('   oci.oci_id,');
-        SQL.Add('   ocis.descricao AS situacao,');
-        SQL.Add('   CAST(COALESCE(gc_pa.grc_codexterno, '' '') ||'' - '' || TRIM(gc_pa.grc_nome, '' '') ||'' - '' ||');
-        SQL.Add('   TRIM(CAST(CASE WHEN oci_tipo = ''P'' THEN ''PRINCIPAL'' ELSE ''SECUNDARIO'' END AS character varying(10))) AS character varying(45)) AS grc_nome_pa,');
+        SQL.Add('   CAST(COALESCE(ocis.descricao, '''') ||'' - ''||');
+        SQL.Add('   TRIM(CAST(CASE WHEN oci_tipo = ''P'' THEN ''PRINCIPAL'' ELSE ''SECUNDARIO'' END AS character varying(10))) AS character varying(45)) AS situacao,');
+        SQL.Add('   CAST(COALESCE(gc_pa.grc_codexterno, '''') ||'' - '' || TRIM(gc_pa.grc_nome, '' '') AS character varying(18)) AS grc_nome_pa,');
         SQL.Add('   cp.cp_id,');
         SQL.Add('   cp.cp_descricao,');
         SQL.Add('   CAST(COALESCE(gc.grc_codexterno, '' '') ||'' - '' || TRIM(gc.grc_nome)AS character varying(18)) AS grc_nome,');
@@ -497,6 +524,7 @@ begin
         SQL.Add('   JOIN ordem_corte_itens_situacao AS ocis ON ocis.id = oci.oci_situacao_id');
         SQL.Add('   WHERE oci.oci_idocorte = :ordemcorte AND oci.oci_situacao_id<>''2''');
         SQL.Add('   ORDER BY CASE WHEN oci_tecido = true THEN 0 ELSE 1  END, oci.oci_idcortecido, oci.oci_tipo ASC');
+
         ParamByName('ordemcorte').AsInteger:=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
         Open;
     end;
@@ -826,8 +854,10 @@ begin
         SQL.Add(' oci_qtdade7 + oci_qtdade8 + oci_qtdade9 + oci_qtdade10 + oci_qtdade11 + oci_qtdade12');
         SQL.Add(' + oci_qtdade13 + oci_qtdade14 + oci_qtdade15)');
         SQL.Add('  AS qtd_cortes FROM ordem_corte_itens_previsto WHERE oci_id = :idPrevisto');
+
         ParamByName('idPrevisto').AsInteger:=strtoint(gridPrevisto.Fields[0].Value);
         Open;
+
         labNumQtdCortes.Caption:=dmOrdemCorte.qyPrevistoQtdCortes.FieldByName('qtd_cortes').Value;
         valor:=strtofloat(labNumTotal.Caption)/strtofloat(dmOrdemCorte.qyPrevistoQtdCortes.FieldByName('qtd_cortes').Value);
         labNumMedia.Caption:=formatfloat('0.0000',valor);
@@ -843,7 +873,90 @@ begin
     else
       if dmOrdemCorte.qyGridPrevisto.FieldByName('oci_tecido').Value = true then
          gridPrevisto.Canvas.Font.Color := clGreen;
+
     gridPrevisto.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
+
+procedure TformPrevisto.retirArtigo;
+begin
+     if formPrincipal.gridOrdem.Fields[14].Value<>'NÃO EMPENHADO' then
+        begin
+            Application.MessageBox('Primeiramente retire o empenho!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+            exit;
+        end
+        else
+            with application do
+            begin
+                 if MessageBox('Deseja realmente retirar este artigo?', 'Ordem de Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDYES then
+                  begin
+                      Try
+
+                          formPrincipal.IniciaTransacao;
+
+                          with dmOrdemCorte.qyRetirArtigo do
+                          begin
+                              Close;
+                              SQL.Clear;
+                              SQL.Add('UPDATE ordem_corte_itens_previsto SET oci_dtcancelamento = :dtcancelamento, oci_situacao_id = ''2'', oci_idusuariocanc = :usuario');
+                              SQL.Add('   WHERE oci_id = :idPrevisto');
+
+                              ParamByName('idPrevisto').AsInteger         :=strtoint(gridPrevisto.Fields[0].Value);
+                              ParamByName('dtcancelamento').AsDateTime    :=now;
+                              ParamByName('usuario').AsInteger            :=strtoint(formPrincipal.labCodUsuario.Caption);
+                              ExecSQL;
+                          end;
+
+                          formPrincipal.ComitaTransacao;
+                          dmOrdemCorte.qyGridPrevisto.Refresh;
+                          Application.MessageBox('Item cancelado com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+
+                      except
+                                on E: exception do
+                                begin
+                                     formPrincipal.DesfazTransacao;
+                                     Application.MessageBox(pchar('Erro ao retirar artigo.'+E.Message),'Ordem de Corte', MB_ICONERROR);
+                                     exit;
+                                end;
+                      end;
+                  end
+                 else
+                      exit;
+            end;
+end;
+
+procedure TformPrevisto.rocar1Click(Sender: TObject);
+begin
+     application.CreateForm(TforMudancArtigo, forMudancArtigo);
+     forMudancArtigo.ShowModal;
+end;
+
+procedure TformPrevisto.Verartigoscancelados1Click(Sender: TObject);
+
+begin
+    with dmOrdemCorte.qyUsuario do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM usuario WHERE us_id = :id');
+        ParamByName('id').AsInteger :=strtoint(formPrincipal.labCodUsuario.Caption);
+        Open;
+
+        if dmOrdemCorte.qyUsuario.FieldByName('us_idsetor').Value = '1' then
+        begin
+            retirArtigo;
+        end
+        else
+        begin
+            application.CreateForm(TformLogin, formLogin);
+            formLogin.ShowModal;
+        end;
+    end;
+end;
+
+procedure TformPrevisto.Verartigoscancelados2Click(Sender: TObject);
+begin
+    application.CreateForm(TformArtCancelados, formArtCancelados);
+    formArtCancelados.ShowModal;
 end;
 
 procedure TformPrevisto.butAcaoClick(Sender: TObject);
@@ -866,6 +979,265 @@ procedure TformPrevisto.butArtigosMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
     butArtigos.Font.Color:=clRed;
+end;
+
+procedure TformPrevisto.butEditGradeClick(Sender: TObject);
+var
+  mensagem, tamanho : string;
+  qtdade1, qtdade2, qtdade3, qtdade4, qtdade5, qtdade6, qtdade7, qtdade8,
+  qtdade9, qtdade10, qtdade11, qtdade12, qtdade13, qtdade14, qtdade15: integer;
+begin
+    qtdade1:=spinTamanho1.Value;
+    qtdade2:=spinTamanho2.Value;
+    qtdade3:=spinTamanho3.Value;
+    qtdade4:=spinTamanho4.Value;
+    qtdade5:=spinTamanho5.Value;
+    qtdade6:=spinTamanho6.Value;
+    qtdade7:=spinTamanho7.Value;
+    qtdade8:=spinTamanho8.Value;
+    qtdade9:=spinTamanho9.Value;
+    qtdade10:=spinTamanho10.Value;
+    qtdade11:=spinTamanho11.Value;
+    qtdade12:=spinTamanho12.Value;
+    qtdade13:=spinTamanho13.Value;
+    qtdade14:=spinTamanho14.Value;
+    qtdade15:=spinTamanho15.Value;
+
+    Try
+
+        formPrincipal.IniciaTransacao;
+
+        with dmOrdemCorte.qyEditGradeCor do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('   oci.oci_id,');
+            SQL.Add('   oci.oci_idgradecorprodutoacabado');
+            SQL.Add('   FROM ordem_corte_itens_previsto AS oci');
+            SQL.Add('   WHERE oci.oci_id = :idprevisto AND oci.oci_situacao_id = ''1''');
+
+            ParamByName('idprevisto').AsInteger := strtoint(gridPrevisto.Fields[0].Value);
+            Open;
+        end;
+
+
+        with dmOrdemCorte.qyConsTamFicha do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT * FROM ordem_corte AS oc');
+            SQL.Add('   JOIN ficha_tecnica_itens AS fti ON fti.fti_idfichatec=oc.oc_idfichatecnica');
+            SQL.Add('   JOIN ordem_corte_itens_previsto AS oci ON oci.oci_idocorte = oc.oc_id');
+            SQL.Add('   WHERE');
+            SQL.Add('   fti.fti_idfichatec=:ficha AND fti.fti_status=''N'' AND oc.oc_id =:corte');
+            SQL.Add('   LIMIT 1');
+
+            ParamByName('ficha').AsInteger:=strtoint(formPrincipal.gridOrdem.Fields[5].Value);
+            ParamByName('corte').AsInteger:=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+            Open;
+        end;
+              {VERIFICA SE HA CONSUMO NOS TAMANHOS ADICIONADOS}
+              if qtdade1 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr1').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam1').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end
+
+              end;
+
+              if qtdade2 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr2').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam2').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade3 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr3').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam3').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade4 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr4').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam4').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade5 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr5').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam5').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit
+                  end;
+              end;
+
+              if qtdade6 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr6').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam6').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit
+                  end;
+              end;
+
+              if qtdade7 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr7').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam7').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade8 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr8').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam8').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade9 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr9').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam9').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade10 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr10').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam10').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade11 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr11').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam11').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade12 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr12').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam12').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade13 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr13').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam13').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade14 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr14').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam14').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+              if qtdade15 > 0 then
+              begin
+                  if dmOrdemCorte.qyConsTamFicha.FieldByName('fti_vlr15').Value = 0 then
+                  begin
+                       tamanho:=dmOrdemCorte.qyConsTamFicha.FieldByName('oci_tam15').Value;
+                       Application.Messagebox(PChar('Não existe consumo de tecido informado para o tamanho '+ tamanho +' na ficha tecnica'), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                       exit;
+                  end;
+              end;
+
+
+
+        with dmOrdemCorte.qyEditGradePrevisto do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('UPDATE ordem_corte_itens_previsto SET oci_qtdade1 =:qtdade1, oci_qtdade2 =:qtdade2, oci_qtdade3 =:qtdade3,');
+            SQL.Add(' oci_qtdade4 =:qtdade4, oci_qtdade5 =:qtdade5, oci_qtdade6 =:qtdade6, oci_qtdade7 =:qtdade7, oci_qtdade8 =:qtdade8,');
+            SQL.Add(' oci_qtdade9 =:qtdade9, oci_qtdade10 =:qtdade10, oci_qtdade11 =:qtdade11, oci_qtdade12 =:qtdade12, oci_qtdade13 =:qtdade13,');
+            SQL.Add(' oci_qtdade14 =:qtdade14, oci_qtdade15 =:qtdade15, oci_idusualterou =:usuario, oci_dtultalteracao =:dtalteracao');
+            SQL.Add('WHERE oci_idocorte = :corte AND oci_idgradecorprodutoacabado = :corprod');
+
+            ParamByName('corte').AsInteger                :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+            ParamByName('corprod').AsInteger              :=dmOrdemCorte.qyEditGradeCor.FieldByName('oci_idgradecorprodutoacabado').Value;
+            ParamByName('qtdade1').AsInteger              :=spinTamanho1.Value;
+            ParamByName('qtdade2').AsInteger              :=spinTamanho2.Value;
+            ParamByName('qtdade3').AsInteger              :=spinTamanho3.Value;
+            ParamByName('qtdade4').AsInteger              :=spinTamanho4.Value;
+            ParamByName('qtdade5').AsInteger              :=spinTamanho5.Value;
+            ParamByName('qtdade6').AsInteger              :=spinTamanho6.Value;
+            ParamByName('qtdade7').AsInteger              :=spinTamanho7.Value;
+            ParamByName('qtdade8').AsInteger              :=spinTamanho8.Value;
+            ParamByName('qtdade9').AsInteger              :=spinTamanho9.Value;
+            ParamByName('qtdade10').AsInteger             :=spinTamanho10.Value;
+            ParamByName('qtdade11').AsInteger             :=spinTamanho11.Value;
+            ParamByName('qtdade12').AsInteger             :=spinTamanho12.Value;
+            ParamByName('qtdade13').AsInteger             :=spinTamanho13.Value;
+            ParamByName('qtdade14').AsInteger             :=spinTamanho14.Value;
+            ParamByName('qtdade15').AsInteger             :=spinTamanho15.Value;
+            ParamByName('usuario').AsInteger              :=strtoint(formPrincipal.labCodUsuario.Caption);
+            ParamByName('dtalteracao').AsDateTime         :=now;
+            ExecSQL;
+
+        end;
+
+
+        formPrincipal.ComitaTransacao;
+        Application.MessageBox('Grade atualizada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+
+
+
+    except
+          on E: exception do
+          begin
+               formPrincipal.DesfazTransacao;
+               Application.MessageBox(pchar('Erro ao editar grade do previsto.'+E.Message),'Ordem de Corte', MB_ICONERROR);
+               Exit;
+          end;
+    end;
 end;
 
 procedure TformPrevisto.butEditGradeMouseMove(Sender: TObject;

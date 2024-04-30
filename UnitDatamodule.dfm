@@ -1,5 +1,5 @@
 object dmOrdemCorte: TdmOrdemCorte
-  Height = 656
+  Height = 999
   Width = 1271
   object Conexao: TFDConnection
     Params.Strings = (
@@ -194,7 +194,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object qyBoxColecao: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       'Select co_id, '
@@ -235,7 +234,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 72
   end
   object qyPrevisto: TFDQuery
-    Active = True
     Connection = Conexao
     SQL.Strings = (
       
@@ -323,7 +321,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object tbOrdemdeCorte: TFDTable
-    Active = True
     IndexFieldNames = 'oc_id'
     MasterSource = dsOrdemdeCorte
     Connection = Conexao
@@ -531,7 +528,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 16
   end
   object tbCorteCores: TFDTable
-    Active = True
     IndexFieldNames = 'occ_id'
     Connection = Conexao
     Transaction = FDTransaction1
@@ -557,7 +553,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 184
   end
   object tbConfAvancoProducao: TFDTable
-    Active = True
     IndexFieldNames = 'capr_id'
     MasterSource = dsConfAvancoProducao
     Connection = Conexao
@@ -571,7 +566,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 184
   end
   object tbAvancoProducaoItens: TFDTable
-    Active = True
     IndexFieldNames = 'capri_id'
     MasterSource = dsAvancoProducaoItens
     Connection = Conexao
@@ -601,7 +595,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Active = True
     Aggregates = <>
     Params = <>
-    Left = 1144
+    Left = 1128
     Top = 120
     object cdsProdSemEstoqueidProduto: TIntegerField
       FieldName = 'idProduto'
@@ -922,7 +916,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 240
   end
   object tbOrdemCorteItensPrevisto: TFDTable
-    Active = True
     IndexFieldNames = 'oci_id'
     Connection = Conexao
     Transaction = FDTransaction1
@@ -938,7 +931,6 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 240
   end
   object tbOrdemCorteProtFase: TFDTable
-    Active = True
     IndexFieldNames = 'ocpf_id'
     Connection = Conexao
     Transaction = FDTransaction1
@@ -978,9 +970,437 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 1192
     Top = 320
   end
-  object FDQuery1: TFDQuery
+  object qyConsTamFicha: TFDQuery
     Connection = Conexao
-    Left = 976
-    Top = 376
+    Left = 824
+    Top = 368
+  end
+  object qyEditGradePrevisto: TFDQuery
+    Connection = Conexao
+    Left = 992
+    Top = 368
+  end
+  object qyEditGradeCor: TFDQuery
+    Connection = Conexao
+    Left = 984
+    Top = 440
+  end
+  object qyArtCancelados: TFDQuery
+    Connection = Conexao
+    Left = 40
+    Top = 392
+  end
+  object dsArtCancelados: TDataSource
+    DataSet = qyArtCancelados
+    Left = 144
+    Top = 392
+  end
+  object qyUsuario: TFDQuery
+    Connection = Conexao
+    Left = 232
+    Top = 392
+  end
+  object qyRetirArtigo: TFDQuery
+    Connection = Conexao
+    Left = 1088
+    Top = 440
+  end
+  object qyUsuArtNProgramado: TFDQuery
+    Connection = Conexao
+    Left = 552
+    Top = 504
+  end
+  object qyMudancArtigo: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT'
+      #9'cp.cp_id,'
+      
+        #9'CAST(COALESCE(gc_pa.grc_codexterno, '#39#39') ||'#39' - '#39' || TRIM(gc_pa.g' +
+        'rc_nome, '#39' '#39') AS character varying(22)) AS grc_nome_pa,'
+      #9'oci_vlrtotal,'
+      #9'cp.cp_descricao,'
+      
+        #9'CAST(COALESCE(gc.grc_codexterno, '#39' '#39') ||'#39' - '#39' || TRIM(gc.grc_no' +
+        'me)AS character varying(22)) AS grc_nome,'
+      '        gt.grt_nome,'
+      
+        '        oci.oci_id, oci.oci_tecido, oci.oci_tipo, gc.grc_id, gt.' +
+        'grt_id'
+      #9'FROM ordem_corte_itens_previsto AS oci'
+      #9'JOIN grade_cor AS gc ON oci.oci_idgradecor = gc.grc_id'
+      
+        #9'JOIN grade_cor AS gc_pa ON oci.oci_idgradecorprodutoacabado = g' +
+        'c_pa.grc_id'
+      #9'JOIN grade_tamanho AS gt ON oci.oci_idgradetam = gt.grt_id'
+      #9'JOIN cadastro_produto AS cp ON cp.cp_id = oci.oci_idproduto'
+      
+        #9'JOIN ordem_corte_itens_situacao AS ocis ON ocis.id = oci.oci_si' +
+        'tuacao_id'
+      #9'WHERE oci.oci_idocorte = '#39'8563'#39' AND oci.oci_situacao_id<>'#39'2'#39
+      
+        #9'ORDER BY CASE WHEN oci_tecido = true THEN 0 ELSE 1  END, oci.oc' +
+        'i_idcortecido, oci.oci_tipo ASC')
+    Left = 696
+    Top = 504
+    object qyMudancArtigocp_id: TIntegerField
+      FieldName = 'cp_id'
+      Origin = 'cp_id'
+    end
+    object qyMudancArtigogrc_nome_pa: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'grc_nome_pa'
+      Origin = 'grc_nome_pa'
+      ReadOnly = True
+      Size = 18
+    end
+    object qyMudancArtigooci_vlrtotal: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'oci_vlrtotal'
+      Origin = 'oci_vlrtotal'
+      DisplayFormat = ',#0.0000'
+      Precision = 12
+    end
+    object qyMudancArtigocp_descricao: TWideStringField
+      FieldName = 'cp_descricao'
+      Origin = 'cp_descricao'
+      Size = 60
+    end
+    object qyMudancArtigogrc_nome: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'grc_nome'
+      Origin = 'grc_nome'
+      ReadOnly = True
+      Size = 18
+    end
+    object qyMudancArtigogrt_nome: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'grt_nome'
+      Origin = 'grt_nome'
+      ReadOnly = True
+      Size = 18
+    end
+    object qyMudancArtigooci_id: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'oci_id'
+      Origin = 'oci_id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object qyMudancArtigooci_tecido: TBooleanField
+      AutoGenerateValue = arDefault
+      FieldName = 'oci_tecido'
+      Origin = 'oci_tecido'
+    end
+    object qyMudancArtigooci_tipo: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'oci_tipo'
+      Origin = 'oci_tipo'
+      FixedChar = True
+      Size = 1
+    end
+    object qyMudancArtigogrc_id: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'grc_id'
+      Origin = 'grc_id'
+    end
+    object qyMudancArtigogrt_id: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'grt_id'
+      Origin = 'grt_id'
+    end
+  end
+  object dsMudancArtigo: TDataSource
+    DataSet = qyMudancArtigo
+    Left = 800
+    Top = 504
+  end
+  object qyTipoProduto: TFDQuery
+    Active = True
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT tp_id, tp_nome FROM tipo_produto ORDER BY tp_id')
+    Left = 256
+    Top = 512
+  end
+  object dsTipoProduto: TDataSource
+    DataSet = qyTipoProduto
+    Left = 360
+    Top = 512
+  end
+  object qyGrc: TFDQuery
+    Active = True
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT '
+      'grc_id,'
+      
+        'CAST(COALESCE(gc.grc_codexterno, '#39#39') ||'#39' - '#39' || TRIM(gc.grc_nome' +
+        ', '#39#39') AS character varying(18)) AS grc_nome_pa'
+      'FROM grade_cor AS gc')
+    Left = 896
+    Top = 504
+  end
+  object dsGrc: TDataSource
+    DataSet = qyGrc
+    Left = 968
+    Top = 504
+  end
+  object qyGradeTamanho: TFDQuery
+    Active = True
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT grt_id, grt_nome FROM grade_tamanho ORDER BY grt_id')
+    Left = 408
+    Top = 368
+  end
+  object dsGradeTamanho: TDataSource
+    DataSet = qyGradeTamanho
+    Left = 512
+    Top = 368
+  end
+  object qySelecArtigo: TFDQuery
+    Connection = Conexao
+    SQL.Strings = (
+      'SELECT'
+      #9'cc.comp_nome,'
+      #9'cp.cp_id,'
+      #9'cp.cp_descricao AS produto,'
+      
+        #9'CAST(COALESCE(gc.grc_codexterno, '#39#39') ||'#39' - '#39' || TRIM(gc.grc_nom' +
+        'e)AS character varying(22)) AS grc_nome,'
+      #9'gt.grt_nome,'
+      #9'(SUM('
+      #9#9#9'('
+      
+        #9#9#9#9'COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn' +
+        ', 0.000) +'
+      
+        #9#9#9#9'COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf,' +
+        ' 0.0000)'
+      #9#9#9') -'
+      #9#9#9'('
+      
+        #9#9#9#9'COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempen' +
+        'ho, 0.0000)'
+      #9#9#9')'
+      #9#9#9'- ('
+      
+        #9#9#9#9'COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalan' +
+        'co, 0.0000)'
+      #9#9#9')'
+      #9#9') '
+      #9')AS disponivel,'
+      #9' cp.cp_un,'
+      #9' cp.cp_nomefoto1,'
+      #9' cp.cp_nomefoto2,'
+      #9' cp.cp_nomefoto3,'
+      #9' pgc.pgc_nomefoto,'
+      #9' cp.cp_qtdadefracionada,'
+      #9' cp.cp_rolopeca,'
+      #9' cp.cp_idtipoproduto,'
+      #9' gc.grc_id,'
+      #9' gt.grt_id'
+      #9' FROM estoque AS e'
+      #9' JOIN cadastro_produto AS cp ON e.es_codproduto = cp.cp_id'
+      #9' JOIN grade_cor As gc on gc.grc_id = e.es_idgradecor'
+      #9' JOIN grade_tamanho As gt on gt.grt_id = e.es_idgradetam'
+      
+        #9' LEFT JOIN itens_grade_nfentrada AS igf ON igf.ig_codproduto=cp' +
+        '.cp_id'
+      #9' AND igf.ig_gradecor=gc.grc_id'
+      #9' AND igf.ig_gradetam=gt.grt_id'
+      #9' AND igf.ig_numrolo=e.es_numrolo'
+      #9' AND igf.ig_metragemrolo=e.es_metragemrolo'
+      
+        #9' LEFT JOIN cadastro_compradores AS cc ON cc.comp_id = igf.ig_id' +
+        'comprador'
+      
+        #9' LEFT JOIN produto_gradecor AS pgc ON pgc.pgc_idcodproduto = cp' +
+        '.cp_id  AND pgc.pgc_idgradecor = gc.grc_id'
+      #9' WHERE cp.cp_direto = TRUE'
+      #9' AND cp.cp_desativado = FALSE'
+      #9' GROUP BY'
+      #9#9'cp.cp_id,'
+      #9#9'gc.grc_id,'
+      #9#9'gt.grt_id,'
+      #9#9'cp.cp_descricao,'
+      #9#9'gc.grc_nome,'
+      #9#9'gc.grc_codexterno,'
+      #9#9'gc.grc_sigla,'
+      #9#9'gt.grt_nome,'
+      #9#9'gt.grt_sigla,'
+      #9#9'cp.cp_nomefoto1,'
+      #9#9'cp.cp_nomefoto2,'
+      #9#9'cp.cp_nomefoto3,'
+      #9#9'cp.cp_qtdadefracionada,'
+      #9#9'cc.comp_nome,'
+      #9#9'pgc.pgc_nomefoto'
+      
+        #9' ORDER BY cp.cp_descricao,gc.grc_nome, gt.grt_nome ASC  LIMIT 2' +
+        '0')
+    Left = 1040
+    Top = 504
+    object qySelecArtigocomp_nome: TWideStringField
+      FieldName = 'comp_nome'
+      Origin = 'comp_nome'
+    end
+    object qySelecArtigocp_id: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'cp_id'
+      Origin = 'cp_id'
+    end
+    object qySelecArtigoproduto: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'produto'
+      Origin = 'produto'
+      Size = 60
+    end
+    object qySelecArtigogrc_nome: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'grc_nome'
+      Origin = 'grc_nome'
+      ReadOnly = True
+      Size = 18
+    end
+    object qySelecArtigogrt_nome: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'grt_nome'
+      Origin = 'grt_nome'
+      Size = 30
+    end
+    object qySelecArtigodisponivel: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'disponivel'
+      Origin = 'disponivel'
+      ReadOnly = True
+      DisplayFormat = ',#0.0000'
+      Precision = 64
+      Size = 0
+    end
+    object qySelecArtigocp_un: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'cp_un'
+      Origin = 'cp_un'
+      FixedChar = True
+      Size = 6
+    end
+    object qySelecArtigocp_nomefoto1: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'cp_nomefoto1'
+      Origin = 'cp_nomefoto1'
+      Size = 80
+    end
+    object qySelecArtigocp_nomefoto2: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'cp_nomefoto2'
+      Origin = 'cp_nomefoto2'
+      Size = 80
+    end
+    object qySelecArtigocp_nomefoto3: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'cp_nomefoto3'
+      Origin = 'cp_nomefoto3'
+      Size = 80
+    end
+    object qySelecArtigopgc_nomefoto: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'pgc_nomefoto'
+      Origin = 'pgc_nomefoto'
+      Size = 80
+    end
+    object qySelecArtigocp_qtdadefracionada: TBooleanField
+      AutoGenerateValue = arDefault
+      FieldName = 'cp_qtdadefracionada'
+      Origin = 'cp_qtdadefracionada'
+    end
+    object qySelecArtigocp_rolopeca: TBooleanField
+      AutoGenerateValue = arDefault
+      FieldName = 'cp_rolopeca'
+      Origin = 'cp_rolopeca'
+    end
+    object qySelecArtigocp_idtipoproduto: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'cp_idtipoproduto'
+      Origin = 'cp_idtipoproduto'
+    end
+    object qySelecArtigogrc_id: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'grc_id'
+      Origin = 'grc_id'
+    end
+    object qySelecArtigogrt_id: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'grt_id'
+      Origin = 'grt_id'
+    end
+  end
+  object dsSelecArtigo: TDataSource
+    DataSet = qySelecArtigo
+    Left = 1136
+    Top = 504
+  end
+  object qyFotoProduto: TFDQuery
+    Connection = Conexao
+    Left = 512
+    Top = 576
+  end
+  object qyFotoProduto2: TFDQuery
+    Connection = Conexao
+    Left = 608
+    Top = 576
+  end
+  object qyEstilistaFicha: TFDQuery
+    Connection = Conexao
+    Left = 720
+    Top = 568
+  end
+  object qyTemSolicTroca: TFDQuery
+    Connection = Conexao
+    Left = 848
+    Top = 568
+  end
+  object qyEstoqueArtigo: TFDQuery
+    Connection = Conexao
+    Left = 960
+    Top = 568
+  end
+  object qyDeletArtigo: TFDQuery
+    Connection = Conexao
+    Left = 1064
+    Top = 568
+  end
+  object qySelecArtigoDel: TFDQuery
+    Connection = Conexao
+    Left = 1160
+    Top = 568
+  end
+  object qyDelItemReserva: TFDQuery
+    Connection = Conexao
+    Left = 1088
+    Top = 640
+  end
+  object tbTrocaItem: TFDTable
+    Connection = Conexao
+    Transaction = FDTransaction1
+    TableName = 'producao_troca_item'
+    Left = 520
+    Top = 640
+  end
+  object dsTrocaItem: TDataSource
+    DataSet = tbTrocaItem
+    Left = 608
+    Top = 640
+  end
+  object tbTrocaItemReserva: TFDTable
+    Connection = Conexao
+    Transaction = FDTransaction1
+    TableName = 'producao_troca_item_reserva'
+    Left = 704
+    Top = 640
+  end
+  object dsTrocaItemReserva: TDataSource
+    DataSet = tbTrocaItemReserva
+    Left = 824
+    Top = 640
   end
 end

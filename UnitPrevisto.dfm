@@ -4,8 +4,8 @@ object formPrevisto: TformPrevisto
   Anchors = []
   BorderIcons = [biSystemMenu]
   Caption = 'Corte Previsto'
-  ClientHeight = 505
-  ClientWidth = 1190
+  ClientHeight = 504
+  ClientWidth = 1186
   Color = clCream
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -169,6 +169,7 @@ object formPrevisto: TformPrevisto
     Top = 103
     Width = 186
     Height = 26
+    Cursor = crHandPoint
     Caption = 'Editar Grade do Tecido'
     Flat = True
     Font.Charset = ANSI_CHARSET
@@ -234,6 +235,7 @@ object formPrevisto: TformPrevisto
       FFFFFFFFFFFFFFFFFFFFDBECDF55A56A0A7D2874B685FDFEFDFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     ParentFont = False
+    OnClick = butEditGradeClick
     OnMouseMove = butEditGradeMouseMove
   end
   object butArtigos: TSpeedButton
@@ -241,6 +243,7 @@ object formPrevisto: TformPrevisto
     Top = 103
     Width = 97
     Height = 26
+    Cursor = crHandPoint
     Caption = 'Artigos'
     Flat = True
     Glyph.Data = {
@@ -312,6 +315,7 @@ object formPrevisto: TformPrevisto
     Top = 103
     Width = 121
     Height = 26
+    Cursor = crHandPoint
     Caption = 'Empenho'
     Flat = True
     Glyph.Data = {
@@ -380,6 +384,7 @@ object formPrevisto: TformPrevisto
     Top = 103
     Width = 98
     Height = 26
+    Cursor = crHandPoint
     Caption = 'A'#231#227'o'
     Flat = True
     Glyph.Data = {
@@ -1359,7 +1364,7 @@ object formPrevisto: TformPrevisto
   object panelCabecalho: TPanel
     Left = 0
     Top = 0
-    Width = 1190
+    Width = 1186
     Height = 25
     Align = alTop
     Font.Charset = DEFAULT_CHARSET
@@ -1369,7 +1374,7 @@ object formPrevisto: TformPrevisto
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 1186
+    ExplicitWidth = 1182
   end
   object radioCorte: TRadioGroup
     Left = 17
@@ -1814,30 +1819,176 @@ object formPrevisto: TformPrevisto
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
     OnDrawColumnCell = gridPrevistoDrawColumnCell
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'oci_id'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'situacao'
+        Width = 200
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'grc_nome_pa'
+        Width = 224
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'cp_id'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'cp_descricao'
+        Width = 250
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'grc_nome'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'grt_nome'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_vlrtotal'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade1'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade2'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade3'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade4'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade5'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade6'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade7'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade8'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade9'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade10'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade11'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade12'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade13'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade14'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_qtdade15'
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'cp_un'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_tipo'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'oci_tecido'
+        Visible = True
+      end>
   end
   object popupArtigos: TPopupMenu
     Left = 1000
     Top = 104
     object rocar1: TMenuItem
       Caption = 'Trocar(somente na ordem de corte)'
+      OnClick = rocar1Click
     end
     object Liberar1: TMenuItem
       Caption = '-'
     end
-    object Retirar1: TMenuItem
-      Caption = 'Liberar'
-    end
-    object N1: TMenuItem
-      Caption = '-'
-    end
     object Verartigoscancelados1: TMenuItem
       Caption = 'Retirar'
+      OnClick = Verartigoscancelados1Click
     end
     object N3: TMenuItem
       Caption = '-'
     end
     object Verartigoscancelados2: TMenuItem
       Caption = 'Ver artigos cancelados'
+      OnClick = Verartigoscancelados2Click
     end
   end
   object popupEmpenho: TPopupMenu

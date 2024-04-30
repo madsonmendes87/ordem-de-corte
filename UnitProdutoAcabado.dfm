@@ -4,20 +4,18 @@ object formProdutoAcabado: TformProdutoAcabado
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Produto Acabado'
-  ClientHeight = 417
-  ClientWidth = 706
+  ClientHeight = 416
+  ClientWidth = 702
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 13
   object labFiltrarPor: TLabel
     Left = 56
@@ -232,8 +230,8 @@ object formProdutoAcabado: TformProdutoAcabado
   object gridProdutoAcabado: TDBGrid
     AlignWithMargins = True
     Left = 3
-    Top = 136
-    Width = 700
+    Top = 135
+    Width = 696
     Height = 278
     Align = alBottom
     DataSource = dmOrdemCorte.dsProdutoAcabado
@@ -318,7 +316,7 @@ object formProdutoAcabado: TformProdutoAcabado
     ListSource = dmOrdemCorte.dsBoxColecao
     TabOrder = 4
   end
-  object butLimpaColecao: TButton
+  object butLimpaTiProduto: TButton
     Left = 632
     Top = 34
     Width = 16
@@ -331,6 +329,6 @@ object formProdutoAcabado: TformProdutoAcabado
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
-    OnClick = butLimpaColecaoClick
+    OnClick = butLimpaTiProdutoClick
   end
 end

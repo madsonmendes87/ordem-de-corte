@@ -28,7 +28,7 @@ uses UnitDatamodule, UnitIniciarCorte, UnitPrincipal, UnitProdutoAcabado;
 procedure TformHistoricOrdem.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-    Action := CaFree;
+    Action :=CaFree;
 end;
 
 procedure TformHistoricOrdem.FormShow(Sender: TObject);

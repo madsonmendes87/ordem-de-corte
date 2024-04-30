@@ -216,7 +216,7 @@ begin
         ParamByName('hrfimreal').AsTime := horaFinalRealCortado.Time;
         ParamByName('dtalterada').AsDate := now;
         ParamByName('hralterada').AsTime := now;
-        ParamByName('usuario').Value := 16;
+        ParamByName('usuario').AsInteger :=strtoint(formPrincipal.labCodUsuario.Caption);
         ExecSQL;
         tratarDataHora;
         Application.MessageBox('Ordem alterada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
@@ -329,7 +329,7 @@ begin
         SQL.Add('AND emp_tipo = ''E''');
         SQL.Add('AND emp_situacao = ''N''');
 
-        ParamByName('fichatec').AsInteger := strtoint(editFicha.Text);
+        ParamByName('fichatec').AsInteger :=strtoint(editFicha.Text);
         Open;
     end;
 
@@ -758,7 +758,7 @@ begin
                           aux:= 'PRODUTOS SEM ESTOQUE'+#13+#13+
                                 'Por este motivo(s) o corte não pode ser iniciado!'+#13+#13+
                                 'Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO'+#13;
-                          processo := false;
+                          processo :=false;
                           break;
                      end
                      else
@@ -844,7 +844,7 @@ begin
                 end;
         end
         else
-            dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := 1;
+            dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').AsInteger := 1;
     end;
 
     {-----------VERIFICA SE TEM DOIS PROTÓTIPOS-----------}
@@ -937,9 +937,11 @@ begin
               SQL.Add('   FROM ficha_tecnica_itensfase');
               SQL.Add('   WHERE ftf_idfaseproducao = :idFase');
               SQL.add('   AND ftf_idfichatecnica = :fichatecnica');
+
               ParamByName('idFase').AsInteger := dmOrdemCorte.qyConsumoFaseGE.FieldByName('cpi_idfase').Value;
               ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
               Open;
+
               msg:='SEM CONSUMO DE FASE LANÇADA!' +#13+#13+
                     'FASE: '+ dmOrdemCorte.qyConsumoFaseGE.FieldByName('fa_nome').Value;
               if labTipoCorte.Caption = 'Grande Escala' then
@@ -1048,7 +1050,7 @@ begin
                                SQL.Add('  oci_qtdade1, oci_qtdade2, oci_qtdade3, oci_qtdade4, oci_qtdade5, oci_qtdade6, oci_qtdade7, oci_qtdade8,');
                                SQL.Add('  oci_qtdade9, oci_qtdade10, oci_qtdade11, oci_qtdade12, oci_qtdade13, oci_qtdade14, oci_qtdade15,');
                                SQL.Add('  oci_vlrtotal, oci_vlrreserva, oci_vlrrestante)');
-                               SQl.Add('Values(');
+                               SQl.Add('VALUES(');
                                SQL.Add('  :idocorte, :idproduto, :idcortecido, :dtlanc, :hrlanc, :codusulanc, :idgradetam, :ociun, :iditemficha, :situacaoid,');
                                SQL.Add('  :ocitipo, :ocitecido, :idgradecor, :idgradecorprodutoacabado, :ocitam1, :ocitam2, :ocitam3, :ocitam4, :ocitam5,');
                                SQL.Add('  :ocitam6, :ocitam7, :ocitam8, :ocitam9, :ocitam10, :ocitam11, :ocitam12, :ocitam13, :ocitam14, :ocitam15,');

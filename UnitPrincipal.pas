@@ -127,6 +127,8 @@ type
     procedure IniciaTransacao;
     procedure ComitaTransacao;
     procedure DesfazTransacao;
+    procedure boxTipoProduto;
+    procedure boxGradeTamanho;
   end;
 
 var
@@ -232,6 +234,28 @@ begin
         Open;
     end;
 end;
+procedure TformPrincipal.boxGradeTamanho;
+begin
+    with dmOrdemCorte.qyGradeTamanho do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT grt_id, grt_nome FROM grade_tamanho ORDER BY grt_id');
+        Open;
+    end;
+end;
+
+procedure TformPrincipal.boxTipoProduto;
+begin
+    with dmOrdemCorte.qyTipoProduto do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT tp_id, tp_nome FROM tipo_produto ORDER BY tp_id');
+        Open;
+    end;
+end;
+
 procedure TformPrincipal.btnObservacoesClick(Sender: TObject);
 begin
     btnObservacoes.PopupMenu.Popup(Mouse.CursorPos.X,Mouse.CursorPos.Y);
@@ -419,8 +443,8 @@ begin
                     ParamByName('data2').AsDate := dateTimePicker2.Date;
               end;
            end;
-            SQL.Add('ORDER BY oc.oc_id DESC LIMIT 23');
-            Open;
+           SQL.Add('ORDER BY oc.oc_id DESC LIMIT 23');
+           Open;
       end;
       gridViewOrdemCorte;
     end;
@@ -542,6 +566,7 @@ begin
 
     TSize:=TSize + Asize[idx];
   end;
+
   if TDBGridOption.dgColLines in dbg.Options then
     Twidth:=Twidth + dbg.Columns.count;
 
@@ -551,6 +576,7 @@ begin
 
   Swidth:=dbg.ClientWidth - Twidth;
   AjustarColumns(Swidth, TSize, Asize);
+
 end;
 
 procedure TformPrincipal.editSearchKeyPress(Sender: TObject;

@@ -19,13 +19,13 @@ type
     dtCadastro: TDateTimePicker;
     Label1: TLabel;
     dbLCBoxColecao: TDBLookupComboBox;
-    butLimpaColecao: TButton;
+    butLimpaTiProduto: TButton;
     labMosColPacabado: TLabel;
     procedure butProdutoPesquisarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure gridProdutoAcabadoDblClick(Sender: TObject);
-    procedure butLimpaColecaoClick(Sender: TObject);
+    procedure butLimpaTiProdutoClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure labMosColPacabadoClick(Sender: TObject);
     procedure editSearchPAKeyPress(Sender: TObject; var Key: Char);
@@ -47,15 +47,15 @@ uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte, UnitDMHistoricOrdem,
   UnitHistoricOrdem, UnitOrdemCorteCores;
 
 
-procedure TformProdutoAcabado.butLimpaColecaoClick(Sender: TObject);
+procedure TformProdutoAcabado.butLimpaTiProdutoClick(Sender: TObject);
 begin
-     dbLCBoxColecao.KeyValue := Null;
+     dbLCBoxColecao.KeyValue :=Null;
 end;
 
 procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
 var key: Char;
 begin
-    begin
+      begin
         With dmOrdemCorte.qyProdutoAcabado do
         begin
             Close;
@@ -119,7 +119,7 @@ end;
 
 procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
-    dmOrdemCorte.qyProdutoAcabado.Active := false;
+    dmOrdemCorte.qyProdutoAcabado.Active :=false;
     formPrincipal.boxColecao;
 
 end;
