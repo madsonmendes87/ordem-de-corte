@@ -1,5 +1,5 @@
 object dmOrdemCorte: TdmOrdemCorte
-  Height = 999
+  Height = 1164
   Width = 1271
   object Conexao: TFDConnection
     Params.Strings = (
@@ -1011,6 +1011,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Top = 504
   end
   object qyMudancArtigo: TFDQuery
+    Active = True
     Connection = Conexao
     SQL.Strings = (
       'SELECT'
@@ -1374,7 +1375,7 @@ object dmOrdemCorte: TdmOrdemCorte
     Left = 1160
     Top = 568
   end
-  object qyDelItemReserva: TFDQuery
+  object qyInserirTrocaItem: TFDQuery
     Connection = Conexao
     Left = 1088
     Top = 640
@@ -1402,5 +1403,105 @@ object dmOrdemCorte: TdmOrdemCorte
     DataSet = tbTrocaItemReserva
     Left = 824
     Top = 640
+  end
+  object qyETecidoCorProd: TFDQuery
+    Connection = Conexao
+    Left = 968
+    Top = 640
+  end
+  object qyDelItemReserva: TFDQuery
+    Connection = Conexao
+    Left = 1192
+    Top = 640
+  end
+  object qyConsumoTroca: TFDQuery
+    Connection = Conexao
+    Left = 1184
+    Top = 704
+  end
+  object qyEstoqueSemReserProt: TFDQuery
+    Connection = Conexao
+    Left = 1032
+    Top = 720
+  end
+  object qyInserirTrocaItemReserva: TFDQuery
+    Connection = Conexao
+    Left = 864
+    Top = 712
+  end
+  object qyEstoqueSemReserProt2: TFDQuery
+    Connection = Conexao
+    Left = 896
+    Top = 792
+  end
+  object qyEstoqueComReserva: TFDQuery
+    Connection = Conexao
+    Left = 1152
+    Top = 792
+  end
+  object qyEstoqueComReserva2: TFDQuery
+    Connection = Conexao
+    Left = 960
+    Top = 856
+  end
+  object qyComparArtigo1: TFDQuery
+    Connection = Conexao
+    Left = 1104
+    Top = 864
+  end
+  object qyComparArtigo2: TFDQuery
+    Connection = Conexao
+    Left = 1200
+    Top = 888
+  end
+  object qyCorteOrdem: TFDQuery
+    Connection = Conexao
+    Left = 1016
+    Top = 936
+  end
+  object qyCorteItensPrev: TFDQuery
+    Connection = Conexao
+    Left = 1120
+    Top = 944
+  end
+  object qyTemEmpPrevisto: TFDQuery
+    Connection = Conexao
+    Left = 920
+    Top = 968
+  end
+  object qyQuantidadeCorte: TFDQuery
+    Connection = Conexao
+    Left = 792
+    Top = 904
+  end
+  object qyGradePecasCor: TFDQuery
+    Connection = Conexao
+    Left = 720
+    Top = 816
+  end
+  object qyItensAviamentoFicha: TFDQuery
+    Connection = Conexao
+    Left = 624
+    Top = 928
+  end
+  object qyFinalizaPrevisto: TFDQuery
+    Connection = Conexao
+    Left = 704
+    Top = 704
+  end
+  object qyIniciadoRealCortado: TFDQuery
+    Connection = Conexao
+    Left = 752
+    Top = 1008
+  end
+  object qyReabrirPrevisto: TFDQuery
+    Connection = Conexao
+    Left = 1032
+    Top = 1016
+  end
+  object qyLimpaCampos: TFDQuery
+    Connection = Conexao
+    Left = 903
+    Top = 1048
   end
 end

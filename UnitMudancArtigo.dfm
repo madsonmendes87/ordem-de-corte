@@ -4,8 +4,8 @@ object forMudancArtigo: TforMudancArtigo
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Mudan'#231'a de Artigo'
-  ClientHeight = 362
-  ClientWidth = 696
+  ClientHeight = 361
+  ClientWidth = 692
   Color = clWindow
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -198,10 +198,26 @@ object forMudancArtigo: TforMudancArtigo
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object labIdTam: TLabel
+    Left = 288
+    Top = 343
+    Width = 48
+    Height = 15
+    Caption = 'labIdTam'
+    Visible = False
+  end
+  object labIdCor: TLabel
+    Left = 224
+    Top = 343
+    Width = 45
+    Height = 15
+    Caption = 'labIdCor'
+    Visible = False
+  end
   object gridMudancArtigo: TDBGrid
     Left = 0
     Top = 0
-    Width = 696
+    Width = 692
     Height = 217
     Align = alTop
     DataSource = dmOrdemCorte.dsMudancArtigo

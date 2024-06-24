@@ -164,10 +164,13 @@ type
     procedure Verartigoscancelados2Click(Sender: TObject);
     procedure Verartigoscancelados1Click(Sender: TObject);
     procedure rocar1Click(Sender: TObject);
+    procedure Finalizar1Click(Sender: TObject);
+    procedure Reabrir1Click(Sender: TObject);
 
   private
     { Private declarations }
     procedure gridPrevistoClick(Sender: TObject);
+    procedure finalizaPrevisto;
   public
     { Public declarations }
     procedure retirArtigo;
@@ -189,6 +192,469 @@ begin
     formPrevisto.Close;
     formPrincipal.habComponentes;
     formPrincipal.gridOrdem.Visible := true;
+end;
+
+procedure TformPrevisto.finalizaPrevisto;
+begin
+
+    try
+
+        formPrincipal.IniciaTransacao;
+
+        with dmOrdemCorte.qyFinalizaPrevisto do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('UPDATE ordem_corte_itens_previsto SET oci_situacao_id = :situacao, oci_dtfinalizada = :dtfinalizada,');
+            SQL.Add('   oci_hrfinalizada = :hrfinalizada, oci_idusufinalizou = :usuario WHERE oci_idocorte = :ordemcorte');
+
+            ParamByName('ordemcorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+            ParamByName('situacao').AsInteger             :=4;
+            ParamByName('dtfinalizada').AsDateTime        :=now;
+            ParambyName('hrfinalizada').AsTime            :=now;
+            ParamByName('usuario').AsInteger              :=strtoint(formPrincipal.labCodUsuario.Caption);
+            ExecSQL;
+        end;
+
+        formPrincipal.ComitaTransacao;
+        Application.MessageBox('Previsto finalizado com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION)
+
+    except
+          on E: exception do
+          begin
+              formPrincipal.DesfazTransacao;
+              Application.MessageBox(pchar('Erro ao finalizar o previsto!'+E.Message),'Ordem de Corte', MB_ICONERROR);
+              exit;
+          end;
+    end;
+
+end;
+
+procedure TformPrevisto.Finalizar1Click(Sender: TObject);
+var
+    qtd1, qtd2, qtd3, qtd4, qtd5, qtd6, qtd7, qtd8,
+    qtd9, qtd10, qtd11, qtd12, qtd13, qtd14, qtd15 : integer;
+
+    disponivel, totalCons : real;
+    mensagem, msg, produto : string;
+    processo : boolean;
+begin
+    with dmOrdemCorte.qyCorteOrdem do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM ordem_corte WHERE oc_id = :corte');
+
+        ParamByName('corte').AsInteger := formPrincipal.gridOrdem.Fields[0].Value;
+        Open;
+    end;
+
+    if dmOrdemCorte.qyCorteOrdem.FieldByName('oc_corte_aproveitamento').Value = true then
+    begin
+        with dmOrdemCorte.qyCorteItensPrev do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('   oci.oci_id,');
+            SQL.Add('   cp.cp_id,');
+            SQL.Add('   cp.cp_descricao,');
+            SQL.Add('   (COALESCE(gc.grc_codexterno, '' '') ||'' - '' || TRIM(gc.grc_nome)) AS grc_nome,');
+            SQL.Add('   (COALESCE(gc_pa.grc_codexterno, '' '') ||'' - '' || TRIM(gc_pa.grc_nome)) AS grc_nome_pa,');
+            SQL.Add('   (TRIM(gt.grt_nome) || '' ('' || TRIM(gt.grt_sigla) || '')'') AS grt_nome,');
+            SQL.Add('   oci.*,');
+            SQL.Add('   cp.cp_un,');
+            SQL.Add('   ocis.descricao AS situacao,');
+            SQL.Add('   COALESCE(cm.cm_descricao, '' '') AS cm_descricao,');
+            SQL.Add('   gp.gr_nome,');
+            SQL.Add('   sgp.sgr_nome');
+            SQL.Add('   FROM ordem_corte_itens_previsto AS oci');
+            SQL.Add('   JOIN grade_cor AS gc ON oci.oci_idgradecor = gc.grc_id');
+            SQL.Add('   JOIN grade_cor AS gc_pa ON oci.oci_idgradecorprodutoacabado = gc_pa.grc_id');
+            SQL.Add('   JOIN grade_tamanho AS gt on oci.oci_idgradetam = gt.grt_id');
+            SQL.Add('   JOIN cadastro_produto AS cp ON cp.cp_id = oci.oci_idproduto');
+            SQL.Add('   JOIN grupo AS gp ON gp.gr_id = cp.cp_idgrupo');
+            SQL.Add('   JOIN subgrupo AS sgp ON sgp.sgr_id = cp.cp_idsubgrupo');
+            SQL.Add('   JOIN ordem_corte_itens_situacao AS ocis ON ocis.id = oci.oci_situacao_id');
+            SQL.Add('   LEFT JOIN composicao_material AS cm ON cm.cm_id = cp.cp_idcomposicao');
+            SQL.Add('   WHERE oci.oci_idocorte= :corte AND oci.oci_situacao_id <> ''2''');
+
+            ParamByName('corte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+            Open;
+        end;
+
+        dmOrdemCorte.qyCorteItensPrev.First;
+        while not dmOrdemCorte.qyCorteItensPrev.Eof do
+        begin
+            mensagem :='Produto(s) não usando estoque, utilize o estoque do corte!' +#13+#13+
+            'PRODUTO(S): '+ dmOrdemCorte.qyCorteItensPrev.FieldByName('cp_descricao').Value +#13;
+
+            if dmOrdemCorte.qyCorteItensPrev.FieldByName('oci_situacao_id').Value = '1' then
+            begin
+                Application.MessageBox(PChar(mensagem), 'Ordem de Corte',MB_OK + MB_ICONINFORMATION);
+                exit;
+            end;
+
+            dmOrdemCorte.qyCorteItensPrev.Next;
+        end;
+    end
+    else
+    begin
+        with dmOrdemCorte.qyTemEmpPrevisto do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('   ce.*,');
+            SQL.Add('   cp.cp_id,');
+            SQL.Add('   cp.cp_descricao,');
+            SQL.Add('   (''Cod Uso: '' || coalesce(gc.grc_codexterno, '' '') ||''    '' || TRIM(gc.grc_nome) || '' ('' || TRIM(gc.grc_sigla) || '')'') AS grc_nome,');
+            SQL.Add('   (TRIM(gt.grt_nome) || '' ('' || TRIM(gt.grt_sigla) || '')'') AS grt_nome');
+            SQL.Add('   FROM controle_empenho AS ce');
+            SQL.Add('   JOIN estoque AS e ON e.es_id = ce.emp_idestoque');
+            SQL.Add('   JOIN cadastro_produto AS cp ON cp.cp_id = e.es_codproduto');
+            SQL.Add('   JOIN grade_cor AS gc ON gc.grc_id = e.es_idgradecor');
+            SQL.Add('   JOIN grade_tamanho AS gt ON gt.grt_id = e.es_idgradetam');
+            SQL.Add('   WHERE ce.emp_codprocesso= :ficha');
+            SQL.Add('   AND ce.emp_situacao<>''C''');
+            SQL.Add('   AND ce.emp_idordemcorte= :corte');
+
+            ParamByName('ficha').AsInteger :=strtoint(formPrincipal.gridOrdem.Fields[5].Value);
+            ParamByName('corte').AsInteger :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+            Open;
+        end;
+
+        if dmOrdemCorte.qyTemEmpPrevisto.RecordCount = 0 then
+        begin
+            Application.MessageBox('Corte previsto não pode ser finalizado, pois não há pedido de empenho!', 'Sem Empenho', MB_OK + MB_ICONINFORMATION);
+            exit;
+        end;
+    end;
+
+    processo :=true;
+
+    if dmOrdemCorte.qyCorteOrdem.FieldByName('oc_prototipo').Value = false then
+    begin
+         disponivel     :=0;
+         totalCons      :=0;
+         qtd1           :=0;
+         qtd2           :=0;
+         qtd3           :=0;
+         qtd4           :=0;
+         qtd5           :=0;
+         qtd6           :=0;
+         qtd7           :=0;
+         qtd8           :=0;
+         qtd9           :=0;
+         qtd10          :=0;
+         qtd11          :=0;
+         qtd12          :=0;
+         qtd13          :=0;
+         qtd14          :=0;
+         qtd15          :=0;
+
+         with dmOrdemCorte.qyQuantidadeCorte do
+         begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('   oci.oci_qtdade1,');
+            SQL.Add('   oci.oci_qtdade2,');
+            SQL.Add('   oci.oci_qtdade3,');
+            SQL.Add('   oci.oci_qtdade4,');
+            SQL.Add('   oci.oci_qtdade5,');
+            SQL.Add('   oci.oci_qtdade6,');
+            SQL.Add('   oci.oci_qtdade7,');
+            SQL.Add('   oci.oci_qtdade8,');
+            SQL.Add('   oci.oci_qtdade9,');
+            SQL.Add('   oci.oci_qtdade10,');
+            SQL.Add('   oci.oci_qtdade11,');
+            SQL.Add('   oci.oci_qtdade12,');
+            SQL.Add('   oci.oci_qtdade13,');
+            SQL.Add('   oci.oci_qtdade14,');
+            SQL.Add('   oci.oci_qtdade15,');
+            SQL.Add('   oci.oci_idgradecorprodutoacabado');
+            SQL.Add('   FROM ordem_corte_itens_previsto AS oci');
+            SQL.Add('   JOIN grade_cor AS gc ON oci.oci_idgradecorprodutoacabado = gc.grc_id');
+            SQL.Add('   WHERE');
+            SQL.Add('   oci.oci_situacao_id<>''2''');
+            SQL.Add('   AND oci.oci_idocorte= :corte');
+            SQL.Add('   AND oci.oci_tipo=''P''');
+
+            ParamByName('corte').AsInteger :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+            Open;
+         end;
+
+
+         with dmOrdemCorte.qyGradePecasCor do
+         begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT * FROM ficha_tecnica_qtdtamanho');
+            SQL.Add('   WHERE');
+            SQL.Add('   fti_idfichatec= :ficha');
+            SQL.Add('   AND fti_cortecidoidgrade= :corProdAcabadoId');
+
+            ParamByName('ficha').AsInteger              :=strtoint(formPrincipal.gridOrdem.Fields[5].Value);
+            ParamByName('corProdAcabadoId').AsInteger   :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_idgradecorprodutoacabado').Value;
+            Open;
+         end;
+
+
+         with dmOrdemCorte.qyItensAviamentoFicha do
+         begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT');
+            SQL.Add('   cp.cp_id,');
+            SQL.Add('   gc.grc_id,');
+            SQL.Add('   gt.grt_id,');
+            SQL.Add('   cp.cp_descricao,');
+            SQL.Add('   (COALESCE(gc.grc_codexterno, '' '') ||'' - '' || TRIM(gc.grc_nome)) AS grc_nome,');
+            SQL.Add('   gt.grt_nome,');
+            SQL.Add('   fti.*');
+            SQL.Add('   FROM ficha_tecnica_itens AS fti');
+            SQL.Add('   JOIN cadastro_produto AS cp ON cp.cp_id = fti.fti_idproduto');
+            SQL.Add('   JOIN grade_cor AS gc on gc.grc_id = fti.fti_idgradecor');
+            SQL.Add('   JOIN grade_cor AS gc_pa on gc_pa.grc_id = fti.fti_cortecidoidgrade');
+            SQL.Add('   JOIN grade_tamanho AS gt on gt.grt_id = fti.fti_idgradetam');
+            SQL.Add('   WHERE');
+            SQL.Add('   fti.fti_idfichatec= :ficha');
+            SQL.Add('   AND fti.fti_status=''N''');
+            SQL.Add('   AND fti.fti_tecido=''N''');
+            SQL.Add('   AND fti.fti_cortecidoidgrade= :idCorProdAcabado');
+
+            ParamByName('ficha').AsInteger              :=strtoint(formPrincipal.gridOrdem.Fields[5].Value);
+            ParamByName('idCorProdAcabado').AsInteger   :=dmOrdemCorte.qyGradePecasCor.FieldByName('fti_cortecidoidgrade').Value;
+            Open;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade1').Value > 0  then
+         begin
+            qtd1 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade1').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr1').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade1').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade2').Value > 0  then
+         begin
+            qtd2 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade2').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr2').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade2').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade3').Value > 0  then
+         begin
+            qtd3 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade3').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr3').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade3').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade4').Value > 0  then
+         begin
+            qtd4 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade4').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr4').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade4').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade5').Value > 0  then
+         begin
+            qtd5 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade5').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr5').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade5').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade6').Value > 0  then
+         begin
+            qtd6 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade6').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr6').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade6').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade7').Value > 0  then
+         begin
+            qtd7 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade7').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr7').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade7').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade8').Value > 0  then
+         begin
+            qtd8 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade8').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr8').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade8').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade9').Value > 0  then
+         begin
+            qtd9 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade9').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr9').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade9').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade10').Value > 0  then
+         begin
+            qtd10 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade10').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr10').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade10').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade11').Value > 0  then
+         begin
+            qtd11 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade11').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr11').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade11').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade12').Value > 0  then
+         begin
+            qtd12 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade12').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr12').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade12').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade13').Value > 0  then
+         begin
+            qtd13 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade13').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr13').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade13').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade14').Value > 0  then
+         begin
+            qtd14 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade14').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr14').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade14').Value;
+         end;
+
+         if dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade15').Value > 0  then
+         begin
+            qtd15 :=dmOrdemCorte.qyQuantidadeCorte.FieldByName('oci_qtdade15').Value *
+            dmOrdemCorte.qyItensAviamentoFicha.FieldByName('fti_vlr15').Value /
+            dmOrdemCorte.qyGradePecasCor.FieldByName('fti_qtdade15').Value;
+         end;
+
+
+         totalCons :=qtd1 + qtd2 + qtd3 + qtd4 + qtd5 + qtd6 + qtd7 + qtd8 + qtd9 + qtd10 + qtd11 + qtd12 + qtd13 + qtd14 + qtd15;
+
+         with dmOrdemCorte.qyEstoqueSemReserProt do
+         begin
+              Close;
+              SQL.Clear;
+              SQL.Add('SELECT DISTINCT');
+              SQL.Add('     e.es_id,');
+              SQL.Add('     e.es_codloja,');
+              SQL.Add('     e.es_codproduto,');
+              SQL.Add('     e.es_idgradecor,');
+              SQL.Add('     e.es_idgradetam,');
+              SQL.Add('     cp.cp_descricao,');
+              SQL.Add('     gc.grc_nome,');
+              SQL.Add('     gt.grt_nome,');
+              SQL.Add('     e.es_metragemrolo,');
+              SQL.Add('     COALESCE(e.es_custoatual, 0) AS es_custoatual,');
+              SQL.Add('     e.es_numrolo,');
+              SQL.Add('             (');
+              SQL.Add('                   (');
+              SQL.Add('                         COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+              SQL.Add('                         COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+              SQL.Add('                   ) -');
+              SQL.Add('                   (');
+              SQL.Add('                         COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
+              SQL.Add('                   ) -');
+              SQL.Add('                   (');
+              SQL.Add('                         COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
+              SQL.Add('                   )');
+              SQL.Add('             )AS disponivel');
+              SQL.Add('    FROM estoque AS e');
+              SQL.Add('    JOIN cadastro_produto As cp On e.es_codproduto = cp.cp_id');
+              SQL.Add('    JOIN grade_cor As gc On gc.grc_id = e.es_idgradecor');
+              SQL.Add('    JOIN grade_tamanho As gt On gt.grt_id = e.es_idgradetam');
+              SQL.Add('    WHERE gc.grc_id= :idCor');
+              SQL.Add('    AND gt.grt_id= :idTamanho');
+              SQL.Add('    AND cp.cp_id= :idProduto');
+              SQL.Add('    AND');
+              SQL.Add('           (');
+              SQL.Add('                 (');
+              SQL.Add('                         COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+              SQL.Add('                         COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+              SQL.Add('                 ) -');
+              SQL.Add('                 (');
+              SQL.Add('                         COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
+              SQL.Add('                 )');
+              SQL.Add('           ) > 0');
+              SQL.Add('   ORDER BY disponivel ASC');
+
+              ParamByName('idCor').AsInteger      :=dmOrdemCorte.qyItensAviamentoFicha.FieldByName('grc_id').Value;
+              ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qyItensAviamentoFicha.FieldByName('grc_id').Value;
+              ParamByName('idProduto').AsInteger  :=dmOrdemCorte.qyItensAviamentoFicha.FieldByName('cp_id').Value;
+              Open;
+         end;
+
+         if dmOrdemCorte.qyEstoqueSemReserProt.RecordCount = 0 then
+         begin
+             produto := 'PRODUTO VIRTUAL';
+             msg     := produto +#13+#13+
+                        'PRODUTO: '+dmOrdemCorte.qyItensAviamentoFicha.FieldByName('cp_descricao').Value +#13+
+                        'COR: '+dmOrdemCorte.qyItensAviamentoFicha.FieldByName('grc_nome').Value +#13+
+                        'TAMANHO: '+dmOrdemCorte.qyItensAviamentoFicha.FieldByName('grt_nome').Value;
+
+             Application.MessageBox(PChar(msg), 'Ordem de Corte',MB_OK + MB_ICONINFORMATION);
+             processo :=false;
+         end
+         else
+         begin
+            dmOrdemCorte.qyItensAviamentoFicha.First;
+            while not dmOrdemCorte.qyAviamentosPorFicha.Eof do
+            begin
+                disponivel := disponivel + dmOrdemCorte.qyAviamentosPorFicha.FieldByName('disponivel').Value;
+                dmOrdemCorte.qyItensAviamentoFicha.Next;
+            end;
+
+            if totalCons > disponivel then
+            begin
+                 produto := 'PRODUTO SEM ESTOQUE';
+                 msg     := produto +#13+#13+
+                          'PRODUTO: '+dmOrdemCorte.qyItensAviamentoFicha.FieldByName('cp_descricao').Value +#13+
+                          'COR: '+dmOrdemCorte.qyItensAviamentoFicha.FieldByName('grc_nome').Value +#13+
+                          'TAMANHO: '+dmOrdemCorte.qyItensAviamentoFicha.FieldByName('grt_nome').Value;
+
+                 Application.MessageBox(PChar(msg), 'Ordem de Corte',MB_OK + MB_ICONINFORMATION);
+                 processo :=false;
+
+            end;
+
+         end;
+
+         if processo = false then
+         begin
+            with dmOrdemCorte.qyUsuario do
+            begin
+                Close;
+                SQL.Clear;
+                SQL.Add('SELECT us_permiteavanco_ref_semestoque FROM usuario');
+                SQL.Add('   WHERE us_id = :idUser');
+
+                ParamByName('idUser').AsInteger :=strtoint(formPrincipal.labCodUsuario.Caption);
+                Open;
+            end;
+
+            if dmOrdemCorte.qyUsuario.FieldByName('us_permiteavanco_ref_semestoque').Value = true then
+            begin
+                with application do
+                begin
+                    if MessageBox('Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO', 'Opcao', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDYES then
+                    finalizaPrevisto;
+                    exit;
+                end;
+            end
+            else
+            begin
+              Application.MessageBox('Por este motivo(s) o corte previsto não pode ser finalizado!', 'Previsto', MB_OK + MB_ICONINFORMATION);
+              exit;
+             end;
+         end;
+    end;
+    finalizaPrevisto;
 end;
 
 procedure TformPrevisto.FormCreate(Sender: TObject);
@@ -877,6 +1343,79 @@ begin
     gridPrevisto.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
+procedure TformPrevisto.Reabrir1Click(Sender: TObject);
+begin
+    with dmOrdemCorte.qyUsuario do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT us_reabre_corte_previsto FROM usuario');
+        SQL.Add('   WHERE us_id = :idUser');
+
+        ParamByName('idUser').AsInteger :=strtoint(formPrincipal.labCodUsuario.Caption);
+        Open;
+    end;
+
+    if dmOrdemCorte.qyUsuario.FieldByName('us_reabre_corte_previsto').Value = true then
+    begin
+        with dmOrdemCorte.qyIniciadoRealCortado do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT * FROM ordem_corte_itens_real AS oci');
+            SQL.Add('   WHERE oci.oci_idocorte= :corte');
+
+            ParamByName('corte').AsInteger  :=formPrincipal.gridOrdem.Fields[0].Value;
+            Open;
+        end;
+
+        if dmOrdemCorte.qyIniciadoRealCortado.RecordCount > 0 then
+        begin
+            Application.MessageBox('Corte Previsto não pode ser re-aberto, pois há um real cortado iniciado!', 'Reabrir Previsto', MB_OK + MB_ICONINFORMATION);
+            exit;
+        end
+        else
+        begin
+
+            try
+
+                formPrincipal.IniciaTransacao;
+
+                with dmOrdemCorte.qyReabrirPrevisto do
+                begin
+                    Close;
+                    SQL.Clear;
+                    SQL.Add('UPDATE ordem_corte_itens_previsto SET oci_situacao_id = :situacao, oci_dtfinalizada = :dtfinalizada,');
+                    SQL.Add('   oci_hrfinalizada = null, oci_idusufinalizou = null WHERE oci_idocorte = :ordemcorte');
+
+                    ParamByName('ordemcorte').AsInteger         :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+                    ParamByName('situacao').AsInteger           :=3;
+                    ParamByName('dtfinalizada').DataType           :=ftDate;
+                    ExecSQL;
+                end;
+
+
+                formPrincipal.ComitaTransacao;
+                Application.MessageBox('Corte previsto re-aberto com sucesso!', 'Reabrir Previsto', MB_OK + MB_ICONINFORMATION)
+
+            except
+                  on E: exception do
+                  begin
+                      formPrincipal.DesfazTransacao;
+                      Application.MessageBox(pchar('Erro ao reabrir o previsto! '+E.Message),'Reabrir Previsto', MB_ICONERROR);
+                      exit;
+                  end;
+            end;
+        end;
+    end
+    else
+    begin
+        Application.MessageBox('Você não tem permissão de re-abrir Corte Previsto!','Reabrir Previsto', MB_OK + MB_ICONINFORMATION);
+        exit;
+    end;
+
+end;
+
 procedure TformPrevisto.retirArtigo;
 begin
      if formPrincipal.gridOrdem.Fields[14].Value<>'NÃO EMPENHADO' then
@@ -933,23 +1472,40 @@ end;
 procedure TformPrevisto.Verartigoscancelados1Click(Sender: TObject);
 
 begin
-    with dmOrdemCorte.qyUsuario do
-    begin
-        Close;
-        SQL.Clear;
-        SQL.Add('SELECT * FROM usuario WHERE us_id = :id');
-        ParamByName('id').AsInteger :=strtoint(formPrincipal.labCodUsuario.Caption);
-        Open;
+    Try
 
-        if dmOrdemCorte.qyUsuario.FieldByName('us_idsetor').Value = '1' then
+        formPrincipal.IniciaTransacao;
+
+
+        with dmOrdemCorte.qyUsuario do
         begin
-            retirArtigo;
-        end
-        else
-        begin
-            application.CreateForm(TformLogin, formLogin);
-            formLogin.ShowModal;
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT * FROM usuario WHERE us_id = :id');
+            ParamByName('id').AsInteger :=strtoint(formPrincipal.labCodUsuario.Caption);
+            Open;
+
+            if dmOrdemCorte.qyUsuario.FieldByName('us_idsetor').Value = '1' then
+            begin
+                retirArtigo;
+            end
+            else
+            begin
+                application.CreateForm(TformLogin, formLogin);
+                formLogin.ShowModal;
+            end;
         end;
+
+        formPrincipal.ComitaTransacao;
+        Application.MessageBox('Corte previsto finalizado com sucesso!', 'Corte Previsto', MB_OK + MB_ICONINFORMATION);
+
+    except
+          on E: exception do
+          begin
+               formPrincipal.DesfazTransacao;
+               Application.MessageBox(pchar('Erro ao finalizar corte previsto.'+E.Message),'Erro', MB_ICONERROR);
+               Exit;
+          end;
     end;
 end;
 

@@ -23,7 +23,10 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDatamodule, UnitIniciarCorte, UnitPrincipal, UnitProdutoAcabado;
+uses UnitDatamodule, UnitIniciarCorte, UnitPrincipal, UnitProdutoAcabado,
+  UnitDMHistoricOrdem, unitArtCancelados, UnitConfirmacaoAvancoProducao,
+  UnitLogin, UnitMudancArtigo, UnitOrdemCorteCores, UnitPrevisto,
+  UnitSelecionArtigos, UnitVerificaVersao;
 
 procedure TformHistoricOrdem.FormClose(Sender: TObject;
   var Action: TCloseAction);
@@ -40,11 +43,13 @@ begin
     treeHistoricOrdem         :=TTreeView.Create(Self);
     treeHistoricOrdem.Parent  :=formHistoricOrdem;
     treeHistoricOrdem.Align   :=alClient;
-    with dmOrdemCorte.qyOrdemHistorico do
+    with dmHistoricOrdem.qyOrdemHistorico do
     begin
           Close;
-          SQL.Text := 'SELECT oc_dtgerada, oc_hrgerada, us_nome FROM ordem_corte, usuario';
-          SQL.Add('WHERE oc_usugerou = us_id and oc_id = :ordemcorte');
+          SQL.Clear;
+          SQL.Add('SELECT oc_dtgerada, oc_hrgerada, us_nome FROM ordem_corte, usuario');
+          SQL.Add('   WHERE oc_usugerou = us_id and oc_id = :ordemcorte');
+
           ParamByName('ordemcorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
           Open;
     end;
@@ -109,9 +114,9 @@ begin
     end;
     no := treeHistoricOrdem.Items.AddChildFirst(noPai, 'ESTILISTA: ' + formPrincipal.gridOrdem.Fields[4].Value + '        REFERÊNCIA: '
     + formPrincipal.gridOrdem.Fields[9].Value);
-    no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_dtgerada').Value)
-    + '  ' + timetostr(dmOrdemCorte.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUÁRIO INICIOU: ' +
-    dmOrdemCorte.qyOrdemHistorico.FieldByName('us_nome').Value);
+    no := treeHistoricOrdem.Items.AddChild(noPai, 'DATA INICIO: ' + datetostr(dmHistoricOrdem.qyOrdemHistorico.FieldByName('oc_dtgerada').Value)
+    + '  ' + timetostr(dmHistoricOrdem.qyOrdemHistorico.FieldByName('oc_hrgerada').Value) + '        USUÁRIO INICIOU: ' +
+    dmHistoricOrdem.qyOrdemHistorico.FieldByName('us_nome').Value);
     no := treeHistoricOrdem.Items.AddChild(noPai, 'CORTE PREVISTO');
     noPrev := treeHistoricOrdem.Items.AddChildFirst(no, 'DATA INICIO: ' + datetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_dtlanc').Value)
     + '  ' + timetostr(dmOrdemCorte.qyPrevisto.FieldByName('oci_hrlanc').Value) + '        USUÁRIO INICIOU: ' +

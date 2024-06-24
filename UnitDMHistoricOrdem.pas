@@ -10,6 +10,7 @@ uses
 
 type
   TdmHistoricOrdem = class(TDataModule)
+    qyOrdemHistorico: TFDQuery;
   private
     { Private declarations }
   public
@@ -22,6 +23,8 @@ var
 implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses UnitDatamodule, UnitPrincipal;
 
 {$R *.dfm}
 

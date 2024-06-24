@@ -1507,7 +1507,7 @@ begin
                                   ParamByName('idfaseprod').AsInteger                   :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_idfaseproducao').AsInteger;
                                   ParamByName('vlr1').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr1').AsFloat;
                                   ParamByName('vlr2').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr2').AsFloat;
-                                  ParamByName('vlr3').AsFloat                            :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr3').AsFloat;
+                                  ParamByName('vlr3').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr3').AsFloat;
                                   ParamByName('vlr4').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr4').AsFloat;
                                   ParamByName('vlr5').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr5').AsFloat;
                                   ParamByName('vlr6').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr6').AsFloat;

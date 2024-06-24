@@ -1597,8 +1597,6 @@ object formPrincipal: TformPrincipal
       item
         Width = 50
       end>
-    ExplicitTop = 697
-    ExplicitWidth = 1375
   end
   object Panel1: TPanel
     Left = 196

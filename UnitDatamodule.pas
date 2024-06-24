@@ -185,11 +185,32 @@ type
     qySelecArtigogrt_id: TIntegerField;
     qyDeletArtigo: TFDQuery;
     qySelecArtigoDel: TFDQuery;
-    qyDelItemReserva: TFDQuery;
+    qyInserirTrocaItem: TFDQuery;
     tbTrocaItem: TFDTable;
     dsTrocaItem: TDataSource;
     tbTrocaItemReserva: TFDTable;
     dsTrocaItemReserva: TDataSource;
+    qyETecidoCorProd: TFDQuery;
+    qyDelItemReserva: TFDQuery;
+    qyConsumoTroca: TFDQuery;
+    qyEstoqueSemReserProt: TFDQuery;
+    qyInserirTrocaItemReserva: TFDQuery;
+    qyEstoqueSemReserProt2: TFDQuery;
+    qyEstoqueComReserva: TFDQuery;
+    qyEstoqueComReserva2: TFDQuery;
+    qyComparArtigo1: TFDQuery;
+    qyComparArtigo2: TFDQuery;
+    qyCorteOrdem: TFDQuery;
+    qyCorteItensPrev: TFDQuery;
+    qyTemEmpPrevisto: TFDQuery;
+    qyQuantidadeCorte: TFDQuery;
+    qyGradePecasCor: TFDQuery;
+    qyItensAviamentoFicha: TFDQuery;
+    qyFinalizaPrevisto: TFDQuery;
+    qyIniciadoRealCortado: TFDQuery;
+    qyReabrirPrevisto: TFDQuery;
+    qyLimpaCampos: TFDQuery;
+
   private
     { Private declarations }
   public
@@ -207,6 +228,8 @@ uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
   UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado, UnitPrevisto;
 
 {$R *.dfm}
+
+
 
 
 

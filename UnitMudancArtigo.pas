@@ -19,6 +19,8 @@ type
     editProduto: TEdit;
     editCor: TEdit;
     ediTamanho: TEdit;
+    labIdTam: TLabel;
+    labIdCor: TLabel;
     procedure butSalvarMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X,
@@ -129,6 +131,7 @@ begin
                  if MessageBox(PCHar(solicitacao), 'Atenção', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDYES then
                  begin
                     delRegistro;
+                    salvaRegistro;
                  end;
             end;
         end;
@@ -140,6 +143,7 @@ begin
                  if MessageBox(PCHar(trocAprovada), 'Atenção', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDYES then
                  begin
                     delRegistro;
+                    salvaRegistro;
                  end;
             end;
         end;
@@ -151,14 +155,13 @@ begin
                  if MessageBox(PCHar(trocaReprovada), 'Atenção', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDYES then
                  begin
                     delRegistro;
+                    salvaRegistro;
                  end;
             end;
         end;
     end
     else
-        ShowMessage('Passou das verificações');
-
-
+       salvaRegistro;
 end;
 
 procedure TforMudancArtigo.butSalvarMouseMove(Sender: TObject;
@@ -217,7 +220,7 @@ begin
         end;
 
         formPrincipal.ComitaTransacao;
-        Application.MessageBox('Registro realizado com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+        //Application.MessageBox('Registro realizado com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
 
     except
           on E: exception do
@@ -312,45 +315,62 @@ end;
 
 procedure TforMudancArtigo.salvaRegistro;
 begin
+    with dmOrdemCorte.qyETecidoCorProd do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('   oci.oci_id, oci.oci_tecido, gc_pa.grc_id');
+        SQL.Add('   FROM ordem_corte_itens_previsto AS oci');
+        SQL.Add('   JOIN grade_cor AS gc_pa ON oci.oci_idgradecorprodutoacabado = gc_pa.grc_id');
+        SQL.Add('   JOIN cadastro_produto AS cp ON cp.cp_id = oci.oci_idproduto');
+        SQL.Add('   JOIN ordem_corte_itens_situacao AS ocis ON ocis.id = oci.oci_situacao_id');
+        SQL.Add('WHERE oci.oci_id = :idPrevisto AND oci.oci_situacao_id<>''2''');
+
+        ParamByName('idPrevisto').AsInteger :=strtoint(gridMudancArtigo.Fields[6].Value);
+        Open;
+    end;
+
     //Insere na tabela producao_troca_item
+
     Try
 
         formPrincipal.IniciaTransacao;
 
-        with dmOrdemCorte.qyDelItemReserva do
+        with dmOrdemCorte.qyInserirTrocaItem do
         begin
              Close;
              SQL.Clear;
              SQL.Add('INSERT INTO producao_troca_item (');
-             SQL.Add('    pti_idfichatecnica, pti_idprodutoretirar, pti_idgradecor_retirar, pti_idgradetam_retirar, pti_idproduto_adicionar');
-             SQL.Add('    pti_idgradecor_adiciomar, pti_idgradetam_adicionar, pti_idusuariosolicitacao, pti_motivosolicitacao, pti_dtsolicitacao');
-             ParamByName('idItemTroca').AsInteger :=dmOrdemCorte.qySelecArtigoDel.FieldByName('pti_id').Value;
-             ExecSQL;
-        end;
+             SQL.Add('    pti_idfichatecnica, pti_idproduto_retirar, pti_idgradecor_retirar, pti_idgradetam_retirar, pti_idproduto_adicionar,');
+             SQL.Add('    pti_idgradecor_adicionar, pti_idgradetam_adicionar, pti_idusuariosolicitacao, pti_motivosolicitacao, pti_dtsolicitacao,');
+             SQL.Add('    pti_idusuarioconfirmacao, pti_status, pti_prototipo, pti_consumototal, pti_tecido, pti_idgradecorprodutoacabado,');
+             SQL.Add('    pti_iditemcorteprevisto, pti_marcacao)');
+             SQL.Add('VALUES(');
+             SQL.Add('    :fichaTecnica, :idProdutoRetirar, :idCoRetirar, :idTamRetirar, :idProdutoAdd, :idCorAdd, :idTamAdd, :idUsuarioSol, :motivoSol,');
+             SQL.Add('    :dataSol, :idUsuarioConf, :status, :eprototipo, :consumoTotal, :etecido, :idCorProdAcabado, :itemCortePrevisto, :marcacao)');
 
-        formPrincipal.ComitaTransacao;
-
-    except
-          on E: exception do
-          begin
-               formPrincipal.DesfazTransacao;
-               Application.MessageBox(pchar('Erro ao executar procedimento.'+E.Message),'Erro', MB_ICONERROR);
-               Exit;
-          end;
-    end;
-
-    //Insere na tabela producao_troca_item_reserva
-     Try
-
-        formPrincipal.IniciaTransacao;
-
-
-        with dmOrdemCorte.qyDeletArtigo do
-        begin
-             Close;
-             SQL.Clear;
-             SQL.Add('DELETE FROM producao_troca_item WHERE pti_iditemcorteprevisto = :idPrevisto');
-             ParamByName('idPrevisto').AsInteger :=gridMudancArtigo.Fields[6].Value;
+             ParamByName('fichaTecnica').AsInteger            :=strtoint(formPrincipal.gridOrdem.Fields[5].Value);
+             ParamByName('idProdutoRetirar').AsInteger        :=strtoint(gridMudancArtigo.Fields[0].Value);
+             ParamByName('idCoRetirar').AsInteger             :=dmOrdemCorte.qyMudancArtigo.FieldByName('grc_id').Value;
+             ParamByName('idTamRetirar').AsInteger            :=dmOrdemCorte.qyMudancArtigo.FieldByName('grt_id').Value;
+             ParamByName('idProdutoAdd').AsInteger            :=strtoint(editCodigo.Text);
+             ParamByName('idCorAdd').AsInteger                :=strtoint(labIdCor.Caption);
+             ParamByName('idTamAdd').AsInteger                :=strtoint(labIdTam.Caption);
+             ParamByName('idUsuarioSol').AsInteger            :=strtoint(formPrincipal.labCodUsuario.Caption);
+             ParamByName('motivoSol').AsString                :=editMotivo.Text;
+             ParamByName('dataSol').AsDateTime                :=now;
+             ParamByName('idUsuarioConf').AsInteger           :=dmOrdemCorte.qyEstilistaFicha.FieldByName('us_id').Value;
+             ParamByName('status').AsString                   :='E';    //Inicia com status: EM ESPERA
+             if formPrincipal.gridOrdem.Fields[8].Value = 'Prototipo' then
+                ParamByName('eprototipo').AsBoolean           :=true
+             else
+                ParamByName('eprototipo').AsBoolean           :=false;
+             ParamByName('consumoTotal').AsFloat              :=strtofloat(gridMudancArtigo.Fields[2].Value);
+             ParamByName('etecido').AsBoolean                 :=dmOrdemCorte.qyETecidoCorProd.FieldByName('oci_tecido').Value;
+             ParamByName('idCorProdAcabado').AsInteger        :=dmOrdemCorte.qyETecidoCorProd.FieldByName('grc_id').Value;
+             ParamByName('itemCortePrevisto').AsInteger       :=strtoint(gridMudancArtigo.Fields[6].Value);
+             ParamByName('marcacao').AsString                 :='N';
              ExecSQL;
         end;
 
@@ -364,6 +384,347 @@ begin
                Application.MessageBox(pchar('Erro ao executar procedimento.'+E.Message),'Erro', MB_ICONERROR);
                Exit;
           end;
+    end;
+
+
+    // Insere na tabela producao_troca_item_reserva
+
+    with dmOrdemCorte.qyConsumoTroca do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT pti_id, pti_consumototal, pti_prototipo, pti_idgradecor_retirar, pti_idgradetam_retirar,');
+        SQL.Add('   pti_idgradecor_adicionar, pti_idgradetam_adicionar');
+        SQL.Add('   FROM producao_troca_item ORDER BY pti_id DESC LIMIT 1');
+        Open;
+    end;
+
+    if dmOrdemCorte.qyConsumoTroca.FieldByName('pti_prototipo').Value = true then
+    begin
+         with dmOrdemCorte.qyEstoqueSemReserProt do
+         begin
+              Close;
+              SQL.Clear;
+              SQL.Add('SELECT DISTINCT');
+              SQL.Add('     e.es_id,');
+              SQL.Add('     e.es_codloja,');
+              SQL.Add('     e.es_codproduto,');
+              SQL.Add('     e.es_idgradecor,');
+              SQL.Add('     e.es_idgradetam,');
+              SQL.Add('     cp.cp_descricao,');
+              SQL.Add('     gc.grc_nome,');
+              SQL.Add('     gt.grt_nome,');
+              SQL.Add('     e.es_metragemrolo,');
+              SQL.Add('     COALESCE(e.es_custoatual, 0) AS es_custoatual,');
+              SQL.Add('     e.es_numrolo,');
+              SQL.Add('             (');
+              SQL.Add('                   (');
+              SQL.Add('                         COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+              SQL.Add('                         COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+              SQL.Add('                   ) -');
+              SQL.Add('                   (');
+              SQL.Add('                         COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
+              SQL.Add('                   ) -');
+              SQL.Add('                   (');
+              SQL.Add('                         COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
+              SQL.Add('                   )');
+              SQL.Add('             )AS disponivel');
+              SQL.Add('    FROM estoque AS e');
+              SQL.Add('    JOIN cadastro_produto As cp On e.es_codproduto = cp.cp_id');
+              SQL.Add('    JOIN grade_cor As gc On gc.grc_id = e.es_idgradecor');
+              SQL.Add('    JOIN grade_tamanho As gt On gt.grt_id = e.es_idgradetam');
+              SQL.Add('    WHERE gc.grc_id= :idCor');
+              SQL.Add('    AND gt.grt_id= :idTamanho');
+              SQL.Add('    AND cp.cp_id= :idProduto');
+              SQL.Add('    AND');
+              SQL.Add('           (');
+              SQL.Add('                 (');
+              SQL.Add('                         COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+              SQL.Add('                         COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+              SQL.Add('                 ) -');
+              SQL.Add('                 (');
+              SQL.Add('                         COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
+              SQL.Add('                 )');
+              SQL.Add('           ) > 0');
+              SQL.Add('   ORDER BY disponivel ASC');
+
+              ParamByName('idCor').AsInteger      :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradecor_adicionar').Value;
+              ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradetam_adicionar').Value;;
+              ParamByName('idProduto').AsInteger  :=strtoint(editCodigo.Text);
+              Open;
+         end;
+
+        // Insere linha do artigo adicional
+        Try
+
+            formPrincipal.IniciaTransacao;
+
+
+            with dmOrdemCorte.qyInserirTrocaItemReserva do
+            begin
+                 Close;
+                 SQL.Clear;
+                 SQL.Add('INSERT INTO producao_troca_item_reserva (');
+                 SQL.Add('      ptir_iditemtroca, ptir_idestoque, ptir_consumo, ptir_tipo)');
+                 SQL.Add('VALUES (');
+                 SQL.Add('      :itemTroca, :idEstoque, :consumo, :tipo)');
+
+                 ParamByName('itemTroca').AsInteger     :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_id').Value;
+                 ParamByName('idEstoque').AsInteger     :=dmOrdemCorte.qyEstoqueSemReserProt.FieldByName('es_id').Value;
+                 ParamByName('consumo').AsFloat         :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_consumototal').Value;
+                 ParamByName('tipo').AsString           :='A'; //Adicional
+                 ExecSQL;
+            end;
+
+            formPrincipal.ComitaTransacao;
+
+        except
+              on E: exception do
+              begin
+                   formPrincipal.DesfazTransacao;
+                   Application.MessageBox(pchar('Erro ao executar procedimento.'+E.Message),'Erro', MB_ICONERROR);
+                   Exit;
+              end;
+        end;
+
+        with dmOrdemCorte.qyEstoqueSemReserProt2 do
+        begin
+              Close;
+              SQL.Clear;
+              SQL.Add('SELECT DISTINCT');
+              SQL.Add('     e.es_id,');
+              SQL.Add('     e.es_codloja,');
+              SQL.Add('     e.es_codproduto,');
+              SQL.Add('     e.es_idgradecor,');
+              SQL.Add('     e.es_idgradetam,');
+              SQL.Add('     cp.cp_descricao,');
+              SQL.Add('     gc.grc_nome,');
+              SQL.Add('     gt.grt_nome,');
+              SQL.Add('     e.es_metragemrolo,');
+              SQL.Add('     COALESCE(e.es_custoatual, 0) AS es_custoatual,');
+              SQL.Add('     e.es_numrolo,');
+              SQL.Add('             (');
+              SQL.Add('                   (');
+              SQL.Add('                         COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+              SQL.Add('                         COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+              SQL.Add('                   ) -');
+              SQL.Add('                   (');
+              SQL.Add('                         COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
+              SQL.Add('                   ) -');
+              SQL.Add('                   (');
+              SQL.Add('                         COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
+              SQL.Add('                   )');
+              SQL.Add('             )AS disponivel');
+              SQL.Add('    FROM estoque AS e');
+              SQL.Add('    JOIN cadastro_produto As cp On e.es_codproduto = cp.cp_id');
+              SQL.Add('    JOIN grade_cor As gc On gc.grc_id = e.es_idgradecor');
+              SQL.Add('    JOIN grade_tamanho As gt On gt.grt_id = e.es_idgradetam');
+              SQL.Add('    WHERE gc.grc_id= :idCor');
+              SQL.Add('    AND gt.grt_id= :idTamanho');
+              SQL.Add('    AND cp.cp_id= :idProduto');
+              SQL.Add('    AND');
+              SQL.Add('           (');
+              SQL.Add('                 (');
+              SQL.Add('                         COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+              SQL.Add('                         COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+              SQL.Add('                 ) -');
+              SQL.Add('                 (');
+              SQL.Add('                         COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
+              SQL.Add('                 )');
+              SQL.Add('           ) > 0');
+              SQL.Add('   ORDER BY disponivel ASC');
+
+              ParamByName('idCor').AsInteger      :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradecor_retirar').Value;
+              ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradetam_retirar').Value;
+              ParamByName('idProduto').AsInteger  :=strtoint(gridMudancArtigo.Fields[0].Value);
+              Open;
+        end;
+
+        // Insere linha do artigo retirada
+        Try
+
+            formPrincipal.IniciaTransacao;
+
+
+            with dmOrdemCorte.qyInserirTrocaItemReserva do
+            begin
+                 Close;
+                 SQL.Clear;
+                 SQL.Add('INSERT INTO producao_troca_item_reserva (');
+                 SQL.Add('      ptir_iditemtroca, ptir_idestoque, ptir_consumo, ptir_tipo)');
+                 SQL.Add('VALUES (');
+                 SQL.Add('      :itemTroca, :idEstoque, :consumo, :tipo)');
+
+                 ParamByName('itemTroca').AsInteger     :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_id').Value;
+                 ParamByName('idEstoque').AsInteger     :=dmOrdemCorte.qyEstoqueSemReserProt2.FieldByName('es_id').Value;
+                 ParamByName('consumo').AsFloat         :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_consumototal').Value;
+                 ParamByName('tipo').AsString           :='R'; //Retirada
+                 ExecSQL;
+            end;
+
+            formPrincipal.ComitaTransacao;
+
+        except
+              on E: exception do
+              begin
+                   formPrincipal.DesfazTransacao;
+                   Application.MessageBox(pchar('Erro ao executar procedimento#.'+E.Message),'Erro', MB_ICONERROR);
+                   Exit;
+              end;
+        end;
+    end
+    else
+    begin
+        with dmOrdemCorte.qyEstoqueComReserva do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT DISTINCT');
+            SQL.Add('   e.es_id,');
+            SQL.Add('   e.es_codloja,');
+            SQL.Add('   e.es_codproduto,');
+            SQL.Add('   e.es_idgradecor,');
+            SQL.Add('   e.es_idgradetam,');
+            SQL.Add('   e.es_metragemrolo,');
+            SQL.Add('   COALESCE(e.es_custoatual, 0) AS es_custoatual,');
+            SQL.Add('   e.es_numrolo,');
+            SQL.Add('   cp.cp_descricao,');
+            SQL.Add('   gc.grc_nome,');
+            SQL.Add('   gt.grt_nome,');
+            SQL.Add('   cp.cp_rolopeca,');
+            SQL.Add('   (');
+            SQL.Add('       (');
+            SQL.Add('             COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.0000) +');
+            SQL.Add('             COALESCE(e.es_enttransf, 0.0000) - COALESCE(e.es_saidatransf, 0.0000)');
+            SQL.Add('       ) -');
+            SQL.Add('       (');
+            SQL.Add('             COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
+            SQL.Add('       ) -');
+            SQL.Add('       (');
+            SQL.Add('             COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
+            SQL.Add('       ) -');
+            SQL.Add('       (');
+            SQL.Add('             COALESCE(e.es_saidareserva, 0.0000) - COALESCE(e.es_entreserva, 0.0000)');
+            SQL.Add('       )');
+            SQL.Add('   )AS disponivel');
+            SQL.Add('   FROM estoque AS e');
+            SQL.Add('   JOIN cadastro_produto AS cp ON e.es_codproduto = cp.cp_id');
+            SQL.Add('   JOIN grade_cor AS gc ON gc.grc_id = e.es_idgradecor');
+            SQL.Add('   JOIN grade_tamanho AS gt ON gt.grt_id = e.es_idgradetam');
+            SQL.Add('   WHERE');
+            SQL.Add('   gc.grc_id= :idCor');
+            SQL.Add('   AND gt.grt_id= :idTamanho');
+            SQL.Add('   AND cp.cp_id= :idProduto');
+            SQL.Add('   AND');
+            SQL.Add('   (');
+            SQL.Add('       (');
+            SQL.Add('            COALESCE(e.es_entradaforn, 0.0000) - COALESCE(e.es_saidaforn, 0.000) +');
+            SQL.Add('            COALESCE(e.es_enttransf, 0.000) - COALESCE(e.es_saidatransf, 0.0000)');
+            SQL.Add('       ) -');
+            SQL.Add('       (');
+            SQL.Add('            COALESCE(e.es_saidaempenho, 0.0000) - COALESCE(e.es_entempenho, 0.0000)');
+            SQL.Add('       ) -');
+            SQL.Add('       (');
+            SQL.Add('            COALESCE(e.es_saidabalanco, 0.0000) - COALESCE(e.es_entbalanco, 0.0000)');
+            SQL.Add('       ) -');
+            SQL.Add('       (');
+            SQL.Add('            COALESCE(e.es_saidareserva, 0.0000) - COALESCE(e.es_entreserva, 0.0000)');
+            SQL.Add('       )');
+            SQL.Add('   ) > 0');
+
+            ParamByName('idCor').AsInteger      :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradecor_adicionar').Value;
+            ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradetam_adicionar').Value;;
+            ParamByName('idProduto').AsInteger  :=strtoint(editCodigo.Text);
+            Open;
+        end;
+
+        // Insere linha do artigo adicional
+        Try
+
+            formPrincipal.IniciaTransacao;
+
+
+            with dmOrdemCorte.qyInserirTrocaItemReserva do
+            begin
+                 Close;
+                 SQL.Clear;
+                 SQL.Add('INSERT INTO producao_troca_item_reserva (');
+                 SQL.Add('      ptir_iditemtroca, ptir_idestoque, ptir_consumo, ptir_tipo)');
+                 SQL.Add('VALUES (');
+                 SQL.Add('      :itemTroca, :idEstoque, :consumo, :tipo)');
+
+                 ParamByName('itemTroca').AsInteger     :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_id').Value;
+                 ParamByName('idEstoque').AsInteger     :=dmOrdemCorte.qyEstoqueComReserva.FieldByName('es_id').Value;
+                 ParamByName('consumo').AsFloat         :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_consumototal').Value;
+                 ParamByName('tipo').AsString           :='A'; //Adicional
+                 ExecSQL;
+            end;
+
+            formPrincipal.ComitaTransacao;
+
+        except
+              on E: exception do
+              begin
+                   formPrincipal.DesfazTransacao;
+                   Application.MessageBox(pchar('Erro ao executar procedimento1.'+E.Message),'Erro', MB_ICONERROR);
+                   Exit;
+              end;
+        end;
+
+
+        with dmOrdemCorte.qyEstoqueComReserva2 do
+        begin
+            Close;
+            SQL.Clear;
+            SQL.Add('SELECT e.es_id FROM estoque AS e');
+            SQL.Add('   JOIN cadastro_produto AS cp ON e.es_codproduto = cp.cp_id');
+            SQL.Add('   JOIN grade_cor AS gc ON gc.grc_id = e.es_idgradecor');
+            SQL.Add('   JOIN grade_tamanho AS gt ON gt.grt_id = e.es_idgradetam');
+            SQL.Add('   WHERE');
+            SQL.Add('   gc.grc_id= :idCor');
+            SQL.Add('   AND gt.grt_id= :idTamanho');
+            SQL.Add('   AND cp.cp_id= :idProduto');
+
+            ParamByName('idCor').AsInteger      :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradecor_retirar').Value;
+            ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradetam_retirar').Value;
+            ParamByName('idProduto').AsInteger  :=strtoint(gridMudancArtigo.Fields[0].Value);
+            Open;
+        end;
+
+
+        // Insere linha do artigo retirada
+        Try
+
+            formPrincipal.IniciaTransacao;
+
+
+            with dmOrdemCorte.qyInserirTrocaItemReserva do
+            begin
+                 Close;
+                 SQL.Clear;
+                 SQL.Add('INSERT INTO producao_troca_item_reserva (');
+                 SQL.Add('      ptir_iditemtroca, ptir_idestoque, ptir_consumo, ptir_tipo)');
+                 SQL.Add('VALUES (');
+                 SQL.Add('      :itemTroca, :idEstoque, :consumo, :tipo)');
+
+                 ParamByName('itemTroca').AsInteger     :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_id').Value;
+                 ParamByName('idEstoque').AsInteger     :=dmOrdemCorte.qyEstoqueComReserva2.FieldByName('es_id').Value;
+                 ParamByName('consumo').AsFloat         :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_consumototal').Value;
+                 ParamByName('tipo').AsString           :='R'; //Retirada
+                 ExecSQL;
+            end;
+
+            formPrincipal.ComitaTransacao;
+
+        except
+              on E: exception do
+              begin
+                   formPrincipal.DesfazTransacao;
+                   Application.MessageBox(pchar('Erro ao executar procedimento.'+E.Message),'Erro', MB_ICONERROR);
+                   Exit;
+              end;
+        end;
+
     end;
 end;
 

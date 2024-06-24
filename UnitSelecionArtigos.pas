@@ -81,7 +81,7 @@ implementation
 
 {$R *.dfm}
 
-uses UnitMudancArtigo, UnitDatamodule;
+uses UnitMudancArtigo, UnitDatamodule, UnitPrincipal;
 
 procedure TformSelecionArtigo.butLimpaGraTamClick(Sender: TObject);
 begin
@@ -209,17 +209,57 @@ begin
         exit;
     end;
 
-    if forMudancArtigo.gridMudancArtigo.Fields[0].Text = gridSelecArtigo.Fields[1].Text then
+    with dmOrdemCorte.qyComparArtigo1 do
     begin
-       if forMudancArtigo.gridMudancArtigo.Fields[4].Text = gridSelecArtigo.Fields[3].Text then
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('   cp.cp_id, gc.grc_id, gt.grt_id');
+        SQL.Add('   FROM ordem_corte_itens_previsto AS oci');
+        SQL.Add('   JOIN grade_cor AS gc ON oci.oci_idgradecor = gc.grc_id');
+        SQL.Add('   JOIN grade_cor AS gc_pa ON oci.oci_idgradecorprodutoacabado = gc_pa.grc_id');
+        SQL.Add('   JOIN grade_tamanho AS gt ON oci.oci_idgradetam = gt.grt_id');
+        SQL.Add('   JOIN cadastro_produto AS cp ON cp.cp_id = oci.oci_idproduto');
+        SQL.Add('   JOIN ordem_corte_itens_situacao AS ocis ON ocis.id = oci.oci_situacao_id');
+        SQL.Add('   WHERE oci.oci_idocorte = :corte AND oci.oci_situacao_id<>''2''');
+        SQL.Add('   AND cp.cp_id = :idProduto AND oci_id = :idPrevisto');
+
+        ParamByName('corte').AsInteger      :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+        ParamByName('idProduto').AsInteger  :=strtoint(forMudancArtigo.gridMudancArtigo.Fields[0].Value);
+        ParamByName('idPrevisto').AsInteger  :=strtoint(forMudancArtigo.gridMudancArtigo.Fields[6].Value);
+        Open;
+    end;
+
+    with dmOrdemCorte.qyComparArtigo2 do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT');
+        SQL.Add('   cp.cp_id, gc.grc_id, gt.grt_id');
+        SQL.Add('   FROM estoque AS e');
+        SQL.Add('   JOIN cadastro_produto AS cp ON e.es_codproduto = cp.cp_id');
+        SQL.Add('   JOIN grade_cor As gc on gc.grc_id = e.es_idgradecor');
+        SQL.Add('   JOIN grade_tamanho As gt on gt.grt_id = e.es_idgradetam');
+        SQL.Add('   WHERE cp.cp_id = :idProduto AND grc_id = :idCor AND grt_id = :idTamanho');
+
+        ParamByName('idProduto').AsInteger      :=strtoint(gridSelecArtigo.Fields[1].Value);
+        ParamByName('idCor').AsInteger          :=dmOrdemCorte.qySelecArtigo.FieldByName('grc_id').Value;
+        ParamByName('idTamanho').AsInteger      :=dmOrdemCorte.qySelecArtigo.FieldByName('grt_id').Value;
+        Open;
+    end;
+
+
+if dmOrdemCorte.qyComparArtigo1.FieldByName('cp_id').Value = dmOrdemCorte.qyComparArtigo2.FieldByName('cp_id').Value then
+begin
+       if dmOrdemCorte.qyComparArtigo1.FieldByName('grc_id').Value = dmOrdemCorte.qyComparArtigo2.FieldByName('grc_id').Value then
        begin
-            if forMudancArtigo.gridMudancArtigo.Fields[5].Text = gridSelecArtigo.Fields[4].Text then
+            if dmOrdemCorte.qyComparArtigo1.FieldByName('grt_id').Value = dmOrdemCorte.qyComparArtigo2.FieldByName('grt_id').Value then
             begin
                 Application.MessageBox('Você está tentando substituir o item por ele mesmo!', 'Aviso', MB_OK + MB_ICONINFORMATION);
                 exit;
             end;
        end;
-    end;
+end;
 
     with dmOrdemCorte.qyEstoqueArtigo do
     begin
@@ -292,10 +332,12 @@ begin
     begin
         if MessageBox(PChar(msg), 'Ordem Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDYES then
         begin
-            forMudancArtigo.editCodigo.Text :=gridSelecArtigo.Fields[1].Value;
-            forMudancArtigo.editProduto.Text  :=gridSelecArtigo.Fields[2].Value;
-            forMudancArtigo.editCor.Text  :=gridSelecArtigo.Fields[3].Value;
-            forMudancArtigo.ediTamanho.Text  :=gridSelecArtigo.Fields[4].Value;
+            forMudancArtigo.editCodigo.Text     :=gridSelecArtigo.Fields[1].Value;
+            forMudancArtigo.editProduto.Text    :=gridSelecArtigo.Fields[2].Value;
+            forMudancArtigo.editCor.Text        :=gridSelecArtigo.Fields[3].Value;
+            forMudancArtigo.ediTamanho.Text     :=gridSelecArtigo.Fields[4].Value;
+            forMudancArtigo.labIdCor.Caption    :=dmOrdemCorte.qySelecArtigo.FieldByName('grc_id').Value;
+            forMudancArtigo.labIdTam.Caption    :=dmOrdemCorte.qySelecArtigo.FieldByName('grt_id').Value;
             Close;
         end;
     end;
