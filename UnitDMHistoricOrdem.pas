@@ -11,6 +11,12 @@ uses
 type
   TdmHistoricOrdem = class(TDataModule)
     qyOrdemHistorico: TFDQuery;
+    qyPrevisto: TFDQuery;
+    qyTroca: TFDQuery;
+    qyEmpenho: TFDQuery;
+    qyRealCortado: TFDQuery;
+    qyEmpenhoReal: TFDQuery;
+    qyRealFinal: TFDQuery;
   private
     { Private declarations }
   public

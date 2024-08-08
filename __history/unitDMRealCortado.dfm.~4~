@@ -1,0 +1,19 @@
+object dmRealCortado: TdmRealCortado
+  Height = 480
+  Width = 640
+  object qyOrdemPrototipo: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 48
+    Top = 8
+  end
+  object qyCodProdAcabadoFicha: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 176
+    Top = 8
+  end
+  object qyStatusRealCortado: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 312
+    Top = 16
+  end
+end

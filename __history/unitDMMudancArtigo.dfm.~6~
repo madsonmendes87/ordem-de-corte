@@ -1,0 +1,29 @@
+object dmMudancArtigo_: TdmMudancArtigo_
+  Height = 480
+  Width = 640
+  object qyEstilistaFicha: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 32
+    Top = 24
+  end
+  object qyTemSolicTroca: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 144
+    Top = 24
+  end
+  object qySelecArtigoDel: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 256
+    Top = 24
+  end
+  object qyDelItemReserva: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 368
+    Top = 24
+  end
+  object qyDeletArtigo: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 480
+    Top = 24
+  end
+end

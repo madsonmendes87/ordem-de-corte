@@ -5,7 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, Vcl.Buttons;
+  Vcl.Imaging.pngimage, Vcl.Buttons, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
+  FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
 
 type
   TformLogin = class(TForm)
@@ -22,6 +25,8 @@ type
     butLoginLiberar: TSpeedButton;
     panelFechar: TPanel;
     butLoginFechar: TSpeedButton;
+    qyUsuario: TFDQuery;
+    qyUsuArtNProgramado: TFDQuery;
     procedure editLoginUsuarioKeyPress(Sender: TObject; var Key: Char);
     procedure butLoginLiberarClick(Sender: TObject);
     procedure butLoginFecharClick(Sender: TObject);
@@ -77,7 +82,7 @@ begin
         abort;
     end;
 
-    with dmOrdemCorte.qyUsuario do
+    with qyUsuario do
     begin
         Close;
         SQL.Clear;
@@ -87,13 +92,13 @@ begin
         Open;
     end;
 
-    if dmOrdemCorte.qyUsuario.IsEmpty then
+    if qyUsuario.IsEmpty then
     begin
         Application.MessageBox('Usuário ou senha inválida','Atenção', MB_OK + MB_ICONINFORMATION);
         abort;
     end;
 
-    if dmOrdemCorte.qyUsuario.FieldByName('us_idsetor').Value<>'1' then
+    if qyUsuario.FieldByName('us_idsetor').Value<>'1' then
     begin
         Application.MessageBox('Você não tem permissão para liberar!', 'Atenção', MB_OK + MB_ICONINFORMATION);
         abort
@@ -103,7 +108,7 @@ begin
 
         formPrincipal.IniciaTransacao;
 
-        with dmOrdemCorte.qyUsuArtNProgramado do
+        with qyUsuArtNProgramado do
         begin
             Close;
             SQL.Clear;
@@ -111,7 +116,7 @@ begin
             SQL.Add('   WHERE oc_id = :corte');
 
             ParamByName('corte').AsInteger              :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
-            ParamByName('idusuautorizou').AsInteger     :=dmOrdemCorte.qyUsuario.FieldByName('us_id').Value;
+            ParamByName('idusuautorizou').AsInteger     :=qyUsuario.FieldByName('us_id').Value;
             ParamByName('idusulogado').AsInteger        :=strtoint(formPrincipal.labCodUsuario.Caption);
             ExecSQL;
         end;

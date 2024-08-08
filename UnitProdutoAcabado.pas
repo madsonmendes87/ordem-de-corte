@@ -44,7 +44,8 @@ implementation
 {$R *.dfm}
 
 uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte, UnitDMHistoricOrdem,
-  UnitHistoricOrdem, UnitOrdemCorteCores;
+  UnitHistoricOrdem, UnitOrdemCorteCores, unitDMPrincipal,
+  unitDMProdAcabado;
 
 
 procedure TformProdutoAcabado.butLimpaTiProdutoClick(Sender: TObject);
@@ -56,7 +57,7 @@ procedure TformProdutoAcabado.butProdutoPesquisarClick(Sender: TObject);
 var key: Char;
 begin
       begin
-        With dmOrdemCorte.qyProdutoAcabado do
+        With dmProdAcabado.qyProdutoAcabado do
         begin
             Close;
             SQL.Clear;
@@ -108,7 +109,7 @@ end;
 procedure TformProdutoAcabado.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
-     dmOrdemCorte.tbProdutoAcabado.Active := false;
+     dmProdAcabado.tbProdutoAcabado.Active := false;
 end;
 
 procedure TformProdutoAcabado.FormCreate(Sender: TObject);
@@ -119,7 +120,7 @@ end;
 
 procedure TformProdutoAcabado.FormShow(Sender: TObject);
 begin
-    dmOrdemCorte.qyProdutoAcabado.Active :=false;
+    dmProdAcabado.qyProdutoAcabado.Active :=false;
     formPrincipal.boxColecao;
 
 end;
@@ -133,7 +134,7 @@ begin
     formIniciarCorte.labNaoComp.Caption := gridProdutoAcabado.Fields[4].Value;
     formIniciarCorte.labNaoAprov.Caption := gridProdutoAcabado.Fields[5].Value;
     formIniciarCorte.labNormal.Caption := 'NORMAL';
-    With dmOrdemCorte.qyFichaTecnica do
+    With dmProdAcabado.qyFichaTecnica do
     begin
         Close;
         SQL.Clear;
@@ -142,7 +143,7 @@ begin
         ParamByName('prodAcabado').AsInteger := strtoint(gridProdutoAcabado.Fields[0].Value);
         Open;
     end;
-    if dmOrdemCorte.qyFichaTecnica.FieldByName('fi_situacao').Value = 'F' then
+    if dmProdAcabado.qyFichaTecnica.FieldByName('fi_situacao').Value = 'F' then
         formIniciarCorte.labTipoCorte.Caption := 'Prototipo'
     else
         formIniciarCorte.labTipoCorte.Caption := 'Grande Escala';
@@ -152,7 +153,7 @@ end;
 
 procedure TformProdutoAcabado.labMosColPacabadoClick(Sender: TObject);
 begin
-    With dmOrdemCorte.qyBoxColecao do
+    With dmPrincipal.qyBoxColecao do
     begin
         Close;
         SQl.Clear;

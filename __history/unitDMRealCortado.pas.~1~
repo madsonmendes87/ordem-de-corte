@@ -1,0 +1,25 @@
+unit unitDMRealCortado;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TdmRealCortado = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmRealCortado: TdmRealCortado;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,35 @@
+object dmPrincipal: TdmPrincipal
+  Height = 480
+  Width = 640
+  object qyDadosCorteById: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 57
+    Top = 16
+  end
+  object dsBoxEstilista: TDataSource
+    DataSet = qyBoxEstilista
+    Left = 256
+    Top = 16
+  end
+  object qyBoxEstilista: TFDQuery
+    Active = True
+    Connection = dmOrdemCorte.Conexao
+    SQL.Strings = (
+      'select es_id, es_nome from cadastro_estilista order by es_nome;')
+    Left = 168
+    Top = 16
+  end
+  object qyGradeTamanho: TFDQuery
+    Active = True
+    Connection = dmOrdemCorte.Conexao
+    SQL.Strings = (
+      'SELECT grt_id, grt_nome FROM grade_tamanho ORDER BY grt_id')
+    Left = 352
+    Top = 16
+  end
+  object dsGradeTamanho: TDataSource
+    DataSet = qyGradeTamanho
+    Left = 456
+    Top = 16
+  end
+end

@@ -81,7 +81,8 @@ implementation
 
 {$R *.dfm}
 
-uses UnitMudancArtigo, UnitDatamodule, UnitPrincipal;
+uses UnitMudancArtigo, UnitDatamodule, UnitPrincipal, unitDMPrincipal,
+  unitDMSelecionArtigo;
 
 procedure TformSelecionArtigo.butLimpaGraTamClick(Sender: TObject);
 begin
@@ -100,7 +101,7 @@ end;
 
 procedure TformSelecionArtigo.butPesquisarClick(Sender: TObject);
 begin
-      with dmOrdemCorte.qySelecArtigo do
+      with dmSelecionArtigo.qySelecArtigo do
       begin
           Close;
           SQL.Clear;
@@ -191,10 +192,10 @@ begin
           Open;
       end;
 
-      if dmOrdemCorte.qySelecArtigo.RecordCount >0 then
+      if dmSelecionArtigo.qySelecArtigo.RecordCount >0 then
       begin
           fotoSubstituir;
-          arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmOrdemCorte.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
+          arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmSelecionArtigo.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
           carregarImagemSubstituir;
       end;
 end;
@@ -203,13 +204,13 @@ procedure TformSelecionArtigo.butSelecionarClick(Sender: TObject);
 var
     msg:string;
 begin
-    if dmOrdemCorte.qySelecArtigo.RecordCount = 0 then
+    if dmSelecionArtigo.qySelecArtigo.RecordCount = 0 then
     begin
         Application.MessageBox('Selecione o artigo para realizar troca!','Atenção', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
 
-    with dmOrdemCorte.qyComparArtigo1 do
+    with dmSelecionArtigo.qyComparArtigo1 do
     begin
         Close;
         SQL.Clear;
@@ -230,7 +231,7 @@ begin
         Open;
     end;
 
-    with dmOrdemCorte.qyComparArtigo2 do
+    with dmSelecionArtigo.qyComparArtigo2 do
     begin
         Close;
         SQL.Clear;
@@ -243,17 +244,17 @@ begin
         SQL.Add('   WHERE cp.cp_id = :idProduto AND grc_id = :idCor AND grt_id = :idTamanho');
 
         ParamByName('idProduto').AsInteger      :=strtoint(gridSelecArtigo.Fields[1].Value);
-        ParamByName('idCor').AsInteger          :=dmOrdemCorte.qySelecArtigo.FieldByName('grc_id').Value;
-        ParamByName('idTamanho').AsInteger      :=dmOrdemCorte.qySelecArtigo.FieldByName('grt_id').Value;
+        ParamByName('idCor').AsInteger          :=dmSelecionArtigo.qySelecArtigo.FieldByName('grc_id').Value;
+        ParamByName('idTamanho').AsInteger      :=dmSelecionArtigo.qySelecArtigo.FieldByName('grt_id').Value;
         Open;
     end;
 
 
-if dmOrdemCorte.qyComparArtigo1.FieldByName('cp_id').Value = dmOrdemCorte.qyComparArtigo2.FieldByName('cp_id').Value then
+if dmSelecionArtigo.qyComparArtigo1.FieldByName('cp_id').Value = dmSelecionArtigo.qyComparArtigo2.FieldByName('cp_id').Value then
 begin
-       if dmOrdemCorte.qyComparArtigo1.FieldByName('grc_id').Value = dmOrdemCorte.qyComparArtigo2.FieldByName('grc_id').Value then
+       if dmSelecionArtigo.qyComparArtigo1.FieldByName('grc_id').Value = dmSelecionArtigo.qyComparArtigo2.FieldByName('grc_id').Value then
        begin
-            if dmOrdemCorte.qyComparArtigo1.FieldByName('grt_id').Value = dmOrdemCorte.qyComparArtigo2.FieldByName('grt_id').Value then
+            if dmSelecionArtigo.qyComparArtigo1.FieldByName('grt_id').Value = dmSelecionArtigo.qyComparArtigo2.FieldByName('grt_id').Value then
             begin
                 Application.MessageBox('Você está tentando substituir o item por ele mesmo!', 'Aviso', MB_OK + MB_ICONINFORMATION);
                 exit;
@@ -261,7 +262,7 @@ begin
        end;
 end;
 
-    with dmOrdemCorte.qyEstoqueArtigo do
+    with dmSelecionArtigo.qyEstoqueArtigo do
     begin
         Close;
         SQL.Clear;
@@ -311,13 +312,13 @@ end;
         SQL.Add('          ) > 0');
         SQL.Add('   ORDER BY disponivel ASC       ');
 
-        ParamByName('idCor').AsInteger      :=dmOrdemCorte.qySelecArtigo.FieldByName('grc_id').Value;
-        ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qySelecArtigo.FieldByName('grt_id').Value;
-        ParamByName('idProduto').AsInteger  :=dmOrdemCorte.qySelecArtigo.FieldByName('cp_id').Value;
+        ParamByName('idCor').AsInteger      :=dmSelecionArtigo.qySelecArtigo.FieldByName('grc_id').Value;
+        ParamByName('idTamanho').AsInteger  :=dmSelecionArtigo.qySelecArtigo.FieldByName('grt_id').Value;
+        ParamByName('idProduto').AsInteger  :=dmSelecionArtigo.qySelecArtigo.FieldByName('cp_id').Value;
         Open;
     end;
 
-    if dmOrdemCorte.qyEstoqueArtigo.RecordCount = 0 then
+    if dmSelecionArtigo.qyEstoqueArtigo.RecordCount = 0 then
     begin
        Application.MessageBox('Estoque indisponivel para troca, verifique o saldo disponivel!','Atenção',MB_OK + MB_ICONINFORMATION);
        exit;
@@ -336,8 +337,8 @@ end;
             forMudancArtigo.editProduto.Text    :=gridSelecArtigo.Fields[2].Value;
             forMudancArtigo.editCor.Text        :=gridSelecArtigo.Fields[3].Value;
             forMudancArtigo.ediTamanho.Text     :=gridSelecArtigo.Fields[4].Value;
-            forMudancArtigo.labIdCor.Caption    :=dmOrdemCorte.qySelecArtigo.FieldByName('grc_id').Value;
-            forMudancArtigo.labIdTam.Caption    :=dmOrdemCorte.qySelecArtigo.FieldByName('grt_id').Value;
+            forMudancArtigo.labIdCor.Caption    :=dmSelecionArtigo.qySelecArtigo.FieldByName('grc_id').Value;
+            forMudancArtigo.labIdTam.Caption    :=dmSelecionArtigo.qySelecArtigo.FieldByName('grt_id').Value;
             Close;
         end;
     end;
@@ -403,11 +404,11 @@ end;
 
 procedure TformSelecionArtigo.FormShow(Sender: TObject);
 begin
-    labCodigo.Caption                   :=forMudancArtigo.gridMudancArtigo.Fields[0].Value;
-    labProduto.Caption                  :=forMudancArtigo.gridMudancArtigo.Fields[3].Value;
-    labCor.Caption                      :=forMudancArtigo.gridMudancArtigo.Fields[4].Value;
-    labTamanho.Caption                  :=forMudancArtigo.gridMudancArtigo.Fields[5].Value;
-    dmOrdemCorte.qySelecArtigo.Active   :=false;
+    labCodigo.Caption                               :=forMudancArtigo.gridMudancArtigo.Fields[0].Value;
+    labProduto.Caption                              :=forMudancArtigo.gridMudancArtigo.Fields[3].Value;
+    labCor.Caption                                  :=forMudancArtigo.gridMudancArtigo.Fields[4].Value;
+    labTamanho.Caption                              :=forMudancArtigo.gridMudancArtigo.Fields[5].Value;
+    dmSelecionArtigo.qySelecArtigo.Active           :=false;
 
     gridSelecArtigo.Columns[0].Title.Alignment      :=taCenter;
     gridSelecArtigo.Columns[0].Title.Caption        :='Comprador';
@@ -432,13 +433,13 @@ begin
     gridSelecArtigo.Columns[6].Title.Font.Style     :=[fsBold];
 
     fotoRetirar;
-    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmOrdemCorte.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
+    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmSelecionArtigo.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
     carregarImagemRetirar;
 end;
 
 procedure TformSelecionArtigo.fotoRetirar;
 begin
-    with dmOrdemCorte.qyFotoProduto do
+    with dmSelecionArtigo.qyFotoProduto do
     begin
         Close;
         SQL.Clear;
@@ -451,7 +452,7 @@ end;
 
 procedure TformSelecionArtigo.fotoSubstituir;
 begin
-    with dmOrdemCorte.qyFotoProduto do
+    with dmSelecionArtigo.qyFotoProduto do
     begin
         Close;
         SQL.Clear;
@@ -465,49 +466,49 @@ end;
 procedure TformSelecionArtigo.gridSelecArtigoClick(Sender: TObject);
 begin
     fotoSubstituir;
-    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmOrdemCorte.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
+    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmSelecionArtigo.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
     carregarImagemSubstituir;
 end;
 
 procedure TformSelecionArtigo.labFotoSubstituir1Click(Sender: TObject);
 begin
     fotoSubstituir;
-    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmOrdemCorte.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
+    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmSelecionArtigo.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
     carregarImagemSubstituir;
 end;
 
 procedure TformSelecionArtigo.labFotoSubstituir2Click(Sender: TObject);
 begin
     fotoSubstituir;
-    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmOrdemCorte.qyFotoProduto.FieldByName('cp_nomefoto2').Value;
+    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmSelecionArtigo.qyFotoProduto.FieldByName('cp_nomefoto2').Value;
     carregarImagemSubstituir;
 end;
 
 procedure TformSelecionArtigo.labFotoSubstituir3Click(Sender: TObject);
 begin
     fotoSubstituir;
-    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmOrdemCorte.qyFotoProduto.FieldByName('cp_nomefoto3').Value;
+    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmSelecionArtigo.qyFotoProduto.FieldByName('cp_nomefoto3').Value;
     carregarImagemSubstituir;
 end;
 
 procedure TformSelecionArtigo.labFotoRetirar1Click(Sender: TObject);
 begin
     fotoRetirar;
-    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmOrdemCorte.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
+    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmSelecionArtigo.qyFotoProduto.FieldByName('cp_nomefoto1').Value;
     carregarImagemRetirar;
 end;
 
 procedure TformSelecionArtigo.labFotoRetirar2Click(Sender: TObject);
 begin
     fotoRetirar;
-    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmOrdemCorte.qyFotoProduto.FieldByName('cp_nomefoto2').Value;
+    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmSelecionArtigo.qyFotoProduto.FieldByName('cp_nomefoto2').Value;
     carregarImagemRetirar;
 end;
 
 procedure TformSelecionArtigo.labFotoRetirar3Click(Sender: TObject);
 begin
     fotoRetirar;
-    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmOrdemCorte.qyFotoProduto.FieldByName('cp_nomefoto3').Value;
+    arquivoPath := '\\10.0.0.222\diaerpfotos\'+dmSelecionArtigo.qyFotoProduto.FieldByName('cp_nomefoto3').Value;
     carregarImagemRetirar;
 end;
 

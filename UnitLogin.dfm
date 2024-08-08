@@ -467,4 +467,14 @@ object formLogin: TformLogin
       ExplicitHeight = 22
     end
   end
+  object qyUsuario: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 312
+    Top = 120
+  end
+  object qyUsuArtNProgramado: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 296
+    Top = 184
+  end
 end

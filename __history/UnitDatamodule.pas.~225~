@@ -1,0 +1,89 @@
+unit UnitDatamodule;
+
+interface
+
+uses
+  System.SysUtils,System.Classes,FireDAC.Stan.Intf,FireDAC.Stan.Option,FireDAC.Stan.Error,FireDAC.UI.Intf,FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,FireDAC.Stan.Pool,FireDAC.Stan.Async,FireDAC.Phys,FireDAC.Phys.PG,FireDAC.Phys.PGDef,FireDAC.VCLUI.Wait,FireDAC.Comp.UI,FireDAC.Comp.Client,
+  Data.DB,FireDAC.Phys.MSAcc,FireDAC.Phys.MSAccDef,FireDAC.Stan.Param,FireDAC.DatS,FireDAC.DApt.Intf,FireDAC.DApt,FireDAC.Comp.DataSet,
+  Datasnap.Provider, Datasnap.DBClient;
+
+type
+  TdmOrdemCorte = class(TDataModule)
+    Conexao: TFDConnection;
+    FDTransaction1: TFDTransaction;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    FDPhysPgDriverLink1: TFDPhysPgDriverLink;
+    dsOrdemCorteCores: TDataSource;
+    tbOrdemCorteTrocaItem: TFDTable;
+    dsOrdemCorteTrocaItem: TDataSource;
+    tbEstilista: TFDTable;
+    dsEstilista: TDataSource;
+    qyCores: TFDQuery;
+    qyCoresNoCorte: TFDQuery;
+    dsCoresNoCorte: TDataSource;
+    tbCorteCores: TFDTable;
+    dsProdutoAvancoProd: TDataSource;
+    dsProdReposicao: TDataSource;
+    dsConfAvancoProducao: TDataSource;
+    qyIdCorte: TFDQuery;
+    dsOrdemCorteProtFase: TDataSource;
+    qyCorPrevisto: TFDQuery;
+    qyGrc: TFDQuery;
+    dsGrc: TDataSource;
+    qySelecArtigo: TFDQuery;
+    dsSelecArtigo: TDataSource;
+    qySelecArtigocomp_nome: TWideStringField;
+    qySelecArtigocp_id: TIntegerField;
+    qySelecArtigoproduto: TWideStringField;
+    qySelecArtigogrc_nome: TWideStringField;
+    qySelecArtigogrt_nome: TWideStringField;
+    qySelecArtigodisponivel: TFMTBCDField;
+    qySelecArtigocp_un: TWideStringField;
+    qyFotoProduto: TFDQuery;
+    qyFotoProduto2: TFDQuery;
+    qyEstoqueArtigo: TFDQuery;
+    qySelecArtigocp_nomefoto1: TWideStringField;
+    qySelecArtigocp_nomefoto2: TWideStringField;
+    qySelecArtigocp_nomefoto3: TWideStringField;
+    qySelecArtigopgc_nomefoto: TWideStringField;
+    qySelecArtigocp_qtdadefracionada: TBooleanField;
+    qySelecArtigocp_rolopeca: TBooleanField;
+    qySelecArtigocp_idtipoproduto: TIntegerField;
+    qySelecArtigogrc_id: TIntegerField;
+    qySelecArtigogrt_id: TIntegerField;
+    tbTrocaItem: TFDTable;
+    dsTrocaItem: TDataSource;
+    tbTrocaItemReserva: TFDTable;
+    dsTrocaItemReserva: TDataSource;
+    qyEstoqueSemReserProt2: TFDQuery;
+    qyEstoqueComReserva: TFDQuery;
+    qyEstoqueComReserva2: TFDQuery;
+    qyComparArtigo1: TFDQuery;
+    qyComparArtigo2: TFDQuery;
+    qyLimpaCampos: TFDQuery;
+    qyUsuario: TFDQuery;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmOrdemCorte: TdmOrdemCorte;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses UnitDMHistoricOrdem, UnitHistoricOrdem, UnitIniciarCorte,
+  UnitOrdemCorteCores, UnitPrincipal, UnitProdutoAcabado, UnitPrevisto;
+
+{$R *.dfm}
+
+
+
+
+
+end.

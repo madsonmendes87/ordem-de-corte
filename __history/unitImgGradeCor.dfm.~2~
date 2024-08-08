@@ -1,0 +1,23 @@
+object formImgGradeCor: TformImgGradeCor
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = 'Imagem Grade Cor'
+  ClientHeight = 349
+  ClientWidth = 504
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  OnClose = FormClose
+  TextHeight = 15
+  object imageGradeCor: TImage
+    Left = 0
+    Top = 0
+    Width = 503
+    Height = 329
+  end
+end

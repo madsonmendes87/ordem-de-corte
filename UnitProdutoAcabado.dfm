@@ -58,7 +58,7 @@ object formProdutoAcabado: TformProdutoAcabado
   end
   object butProdutoPesquisar: TSpeedButton
     Left = 200
-    Top = 80
+    Top = 84
     Width = 97
     Height = 33
     Caption = 'Consultar'
@@ -234,7 +234,7 @@ object formProdutoAcabado: TformProdutoAcabado
     Width = 696
     Height = 278
     Align = alBottom
-    DataSource = dmOrdemCorte.dsProdutoAcabado
+    DataSource = dmProdAcabado.dsProdutoAcabado
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 3
     TitleFont.Charset = DEFAULT_CHARSET
@@ -313,7 +313,7 @@ object formProdutoAcabado: TformProdutoAcabado
     Height = 21
     KeyField = 'co_id'
     ListField = 'nome'
-    ListSource = dmOrdemCorte.dsBoxColecao
+    ListSource = dmPrincipal.dsBoxColecao
     TabOrder = 4
   end
   object butLimpaTiProduto: TButton

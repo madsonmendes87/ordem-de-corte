@@ -1,0 +1,9 @@
+object dmPrincipal: TdmPrincipal
+  Height = 480
+  Width = 640
+  object qyDadosCorteById: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 57
+    Top = 16
+  end
+end

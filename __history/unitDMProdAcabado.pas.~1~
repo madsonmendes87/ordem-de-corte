@@ -1,0 +1,25 @@
+unit unitDMProdAcabado;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TdmProdAcabado = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmProdAcabado: TdmProdAcabado;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

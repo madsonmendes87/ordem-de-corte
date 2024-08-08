@@ -1,7 +1,7 @@
 object formConfirmacaoAvancoProducao: TformConfirmacaoAvancoProducao
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu]
+  BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'Confirma'#231#227'o de Avan'#231'o da Produ'#231#227'o'
   ClientHeight = 442
@@ -47,7 +47,7 @@ object formConfirmacaoAvancoProducao: TformConfirmacaoAvancoProducao
     Width = 866
     Height = 142
     Color = clCream
-    DataSource = dmOrdemCorte.dsProdutoAvancoProd
+    DataSource = dmConfirmacaoAvancoProducao.dsProdutoAvancoProd
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGray
     Font.Height = -11
@@ -67,7 +67,7 @@ object formConfirmacaoAvancoProducao: TformConfirmacaoAvancoProducao
     Top = 245
     Width = 866
     Height = 142
-    DataSource = dmOrdemCorte.dsProdReposicao
+    DataSource = dmConfirmacaoAvancoProducao.dsProdReposicao
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGray
     Font.Height = -11

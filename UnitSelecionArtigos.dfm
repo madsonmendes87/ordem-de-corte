@@ -431,7 +431,7 @@ object formSelecionArtigo: TformSelecionArtigo
     Height = 23
     KeyField = 'grt_id'
     ListField = 'grt_nome'
-    ListSource = dmOrdemCorte.dsGradeTamanho
+    ListSource = dmPrincipal.dsGradeTamanho
     TabOrder = 7
   end
   object butLimpaGraTam: TButton
@@ -482,7 +482,7 @@ object formSelecionArtigo: TformSelecionArtigo
     Top = 112
     Width = 873
     Height = 410
-    DataSource = dmOrdemCorte.dsSelecArtigo
+    DataSource = dmSelecionArtigo.dsSelecArtigo
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 10
     TitleFont.Charset = DEFAULT_CHARSET
@@ -537,7 +537,7 @@ object formSelecionArtigo: TformSelecionArtigo
     Height = 23
     KeyField = 'tp_id'
     ListField = 'tp_nome'
-    ListSource = dmOrdemCorte.dsTipoProduto
+    ListSource = dmPrincipal.dsTipoProduto
     TabOrder = 11
   end
   object panelFoto1: TPanel

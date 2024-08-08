@@ -127,7 +127,8 @@ implementation
 {$R *.dfm}
 
 uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
-  UnitOrdemCorteCores, UnitConfirmacaoAvancoProducao, UnitVerificaVersao;
+  UnitOrdemCorteCores, UnitConfirmacaoAvancoProducao, UnitVerificaVersao,
+  unitDMPrincipal, unitDMIniciarCorte, unitDMConfAvancoProducao;
 
 
 {ESCOLHER CORES SERA RETIRADO DO PROJETO}
@@ -140,7 +141,7 @@ end;
 procedure TformIniciarCorte.acaoCoresExecute(Sender: TObject);
 
 begin
-    With dmOrdemCorte.qyOrdemIniciarCorte do
+    With dmIniciarCorte.qyOrdemIniciarCorte do
     begin
          Close;
          SQL.Clear;
@@ -160,12 +161,12 @@ begin
         'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
-    if dmOrdemCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
+    if dmIniciarCorte.qyOrdemIniciarCorte.FieldByName('oc_situacao').Value = 3 then
     begin
         Application.MessageBox('Ordem de corte finalizada, por esse motivo é vedado qualquer modificação na ordem de corte', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
-    With dmOrdemCorte.qyPrevisto do
+    With dmIniciarCorte.qyPrevisto do
     begin
         Close;
         SQL.Clear;
@@ -174,16 +175,16 @@ begin
         ParamByName('numerocorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
         Open;
     end;
-    dmOrdemCorte.qyPrevisto.First;
-    while not dmOrdemCorte.qyPrevisto.Eof do
+    dmIniciarCorte.qyPrevisto.First;
+    while not dmIniciarCorte.qyPrevisto.Eof do
     begin
-        if dmOrdemCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
+        if dmIniciarCorte.qyPrevisto.FieldByName('oci_situacao_id').Value = 3 then
         begin
             Application.MessageBox('Corte sob empenho, por este motivo não é possivel mudar cores. Para fazer um nova cor inicie um outra ordem de corte para esta referencia',
             'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             exit;
         end;
-        dmOrdemCorte.qyPrevisto.Next;
+        dmIniciarCorte.qyPrevisto.Next;
     end;
         abrirCores;
 end;
@@ -191,42 +192,61 @@ end;
 {-----------ALTERAÇÃO DO CORTE-----------}
 procedure TformIniciarCorte.butAlterarClick(Sender: TObject);
 begin
-    with dmOrdemCorte.qyDadosCorteById do
-    begin
-        Close;
-        SQL.Clear;
-        SQL.Add('UPDATE ordem_corte SET oc_dtprevisaofinalizacao = :dtfinalizacaocorte, oc_hrprevisaofinalizacao = :hrfinalizacaocorte,');
-        SQL.Add('   oc_idcodprodutoacabado = :prodAcabado, oc_observacao = :observacao, oc_datapreviniciocorteprevisto = :dtinicioprevisto,');
-        SQL.Add('   oc_horapreviniciocorteprevisto = :hrinicioprevisto, oc_dataprevfimcorteprevisto = :dtfimprevisto, oc_horaprevfimcorteprevisto = :hrfimprevisto,');
-        SQL.Add('   oc_datapreviniciorealcortado = :dtinicioreal, oc_horapreviniciorealcortado = :hrinicioreal, oc_dataprevfimrealcortado = :dtfimreal,');
-        SQL.Add('   oc_horaprevfimrealcortado = :hrfimreal, oc_dtalterada = :dtalterada, oc_hralterada = :hralterada, oc_idusualterou = :usuario WHERE oc_id = :ordemcorte');
 
-        ParamByName('ordemcorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
-        ParamByname('dtfinalizacaocorte').AsDate := dataOrdemFinalizacao.Date;
-        ParamByName('hrfinalizacaocorte').AsTime := horaOrdemFinalizacao.Time;
-        ParamByName('prodAcabado').Value := strtoint(editCodigo.Text);
-        ParamByName('observacao').Value := editObservacao.Text;
-        ParamByName('dtinicioprevisto').AsDate := dataCortePrevisto.Date;
-        ParamByName('hrinicioprevisto').AsTime := horaCortePrevisto.Time;
-        ParamByName('dtfimprevisto').AsDate := dataFinalCortePrevisto.Date;
-        ParamByName('hrfimprevisto').AsTime := horaFinalCortePrevisto.Time;
-        ParamByName('dtinicioreal').AsDate := dataRealCortado.Date;
-        ParamByName('hrinicioreal').AsTime := horaRealCortado.Time;
-        ParamByName('dtfimreal').AsDate := dataFinalRealCortado.Date;
-        ParamByName('hrfimreal').AsTime := horaFinalRealCortado.Time;
-        ParamByName('dtalterada').AsDate := now;
-        ParamByName('hralterada').AsTime := now;
-        ParamByName('usuario').AsInteger :=strtoint(formPrincipal.labCodUsuario.Caption);
-        ExecSQL;
-        tratarDataHora;
-        Application.MessageBox('Ordem alterada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
-        butSairInicioCorteClick(Sender);
+    try
+
+        formPrincipal.IniciaTransacao;
+
+
+        with dmIniciarCorte.qyDadosCorteById do
+        begin
+              Close;
+              SQL.Clear;
+              SQL.Add('UPDATE ordem_corte SET oc_dtprevisaofinalizacao = :dtfinalizacaocorte, oc_hrprevisaofinalizacao = :hrfinalizacaocorte,');
+              SQL.Add('   oc_idcodprodutoacabado = :prodAcabado, oc_observacao = :observacao, oc_datapreviniciocorteprevisto = :dtinicioprevisto,');
+              SQL.Add('   oc_horapreviniciocorteprevisto = :hrinicioprevisto, oc_dataprevfimcorteprevisto = :dtfimprevisto, oc_horaprevfimcorteprevisto = :hrfimprevisto,');
+              SQL.Add('   oc_datapreviniciorealcortado = :dtinicioreal, oc_horapreviniciorealcortado = :hrinicioreal, oc_dataprevfimrealcortado = :dtfimreal,');
+              SQL.Add('   oc_horaprevfimrealcortado = :hrfimreal, oc_dtalterada = :dtalterada, oc_hralterada = :hralterada, oc_idusualterou = :usuario WHERE oc_id = :ordemcorte');
+
+              ParamByName('ordemcorte').AsInteger             :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+              ParamByname('dtfinalizacaocorte').AsDate        :=dataOrdemFinalizacao.Date;
+              ParamByName('hrfinalizacaocorte').AsTime        :=horaOrdemFinalizacao.Time;
+              ParamByName('prodAcabado').Value                :=strtoint(editCodigo.Text);
+              ParamByName('observacao').Value                 :=editObservacao.Text;
+              ParamByName('dtinicioprevisto').AsDate          :=dataCortePrevisto.Date;
+              ParamByName('hrinicioprevisto').AsTime          :=horaCortePrevisto.Time;
+              ParamByName('dtfimprevisto').AsDate             :=dataFinalCortePrevisto.Date;
+              ParamByName('hrfimprevisto').AsTime             :=horaFinalCortePrevisto.Time;
+              ParamByName('dtinicioreal').AsDate              :=dataRealCortado.Date;
+              ParamByName('hrinicioreal').AsTime              :=horaRealCortado.Time;
+              ParamByName('dtfimreal').AsDate                 :=dataFinalRealCortado.Date;
+              ParamByName('hrfimreal').AsTime                 :=horaFinalRealCortado.Time;
+              ParamByName('dtalterada').AsDate                :=now;
+              ParamByName('hralterada').AsTime                :=now;
+              ParamByName('usuario').AsInteger                :=strtoint(formPrincipal.labCodUsuario.Caption);
+              ExecSQL;
+              tratarDataHora;
+              Application.MessageBox('Ordem alterada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+              butSairInicioCorteClick(Sender);
+        end;
+
+
+        formPrincipal.ComitaTransacao;
+
+    except
+          on E: exception do
+              begin
+                   formPrincipal.DesfazTransacao;
+                   Application.MessageBox(pchar('Erro ao alterar o corte! '+E.Message),'Erro', MB_ICONERROR);
+                   Exit;
+              end;
     end;
+
 end;
 
 procedure TformIniciarCorte.butDesistirClick(Sender: TObject);
 begin
-    dmOrdemCorte.tbOrdemdeCorte.Cancel;
+    dmIniciarCorte.tbOrdemdeCorte.Cancel;
     butDesistir.Enabled        :=false;
     butSalvar.Enabled          :=false;
     butCancelarOrdem.Enabled   :=false;
@@ -242,15 +262,15 @@ begin
         exit;
     end
     else
-        dmOrdemCorte.tbOrdemdeCorte.Edit;
+        dmIniciarCorte.tbOrdemdeCorte.Edit;
         editCodigo.SetFocus;
-        butNovo.Enabled           :=false;
-        butDesistir.Enabled       :=true;
-        butSalvar.Enabled         :=false;
-        butAlterar.Visible        :=true;
-        butCancelarOrdem.Enabled  :=true;
-        butEditar.Enabled         :=false;
-        butEscolherCores.Enabled  :=true;
+        butNovo.Enabled             :=false;
+        butDesistir.Enabled         :=true;
+        butSalvar.Enabled           :=false;
+        butAlterar.Visible          :=true;
+        butCancelarOrdem.Enabled    :=true;
+        butEditar.Enabled           :=false;
+        butEscolherCores.Enabled    :=false;
 end;
 
 procedure TformIniciarCorte.butEscolherCoresClick(Sender: TObject);
@@ -260,25 +280,25 @@ end;
 
 procedure TformIniciarCorte.butNovoClick(Sender: TObject);
 begin
-    dmOrdemCorte.tbOrdemdeCorte.Open();
-    dmOrdemCorte.tbOrdemdeCorte.Append;
+    dmIniciarCorte.tbOrdemdeCorte.Open();
+    dmIniciarCorte.tbOrdemdeCorte.Append;
     editCodigo.SetFocus;
-    dataSolicitacao.Date          :=now;
-    horaSolicitacao.Time          :=now;
-    dataOrdemFinalizacao.Date     :=now;
-    horaOrdemFinalizacao.Time     :=now;
-    dataCortePrevisto.Date        :=now;
-    horaCortePrevisto.Time        :=now;
-    dataFinalCortePrevisto.Date   :=now;
-    horaFinalCortePrevisto.Time   :=now;
-    dataRealCortado.Date          :=now;
-    horaRealCortado.Time          :=now;
-    dataFinalRealCortado.Date     :=now;
-    horaFinalRealCortado.Time     :=now;
-    butNovo.Enabled               :=false;
-    butSalvar.Enabled             :=true;
-    butDesistir.Enabled           :=true;
-    butAlterar.Visible            :=false;
+    dataSolicitacao.Date            :=now;
+    horaSolicitacao.Time            :=now;
+    dataOrdemFinalizacao.Date       :=now;
+    horaOrdemFinalizacao.Time       :=now;
+    dataCortePrevisto.Date          :=now;
+    horaCortePrevisto.Time          :=now;
+    dataFinalCortePrevisto.Date     :=now;
+    horaFinalCortePrevisto.Time     :=now;
+    dataRealCortado.Date            :=now;
+    horaRealCortado.Time            :=now;
+    dataFinalRealCortado.Date       :=now;
+    horaFinalRealCortado.Time       :=now;
+    butNovo.Enabled                 :=false;
+    butSalvar.Enabled               :=true;
+    butDesistir.Enabled             :=true;
+    butAlterar.Visible              :=false;
 end;
 
 {-----------CANCELAR O CORTE-----------}
@@ -287,21 +307,42 @@ begin
     with application do
     begin
         if MessageBox('Deseja cancelar esta ordem de corte?', 'Ordem Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDYES then
-            with dmOrdemCorte.qyDadosCorteById do
+        begin
+            try
+
+
+            formPrincipal.IniciaTransacao;
+
+
+            with dmIniciarCorte.qyDadosCorteById do
             begin
                 Close;
                 SQL.Clear;
-                SQL.Add('UPDATE ordem_corte SET oc_situacao = 2, oc_dtcancelada = :datacancel, oc_hrcancelada = :horacancel, oc_usuidcancelada = 16');
+                SQL.Add('UPDATE ordem_corte SET oc_situacao = 2, oc_dtcancelada = :datacancel, oc_hrcancelada = :horacancel, oc_usuidcancelada = :usuario');
                 SQL.Add('WHERE oc_id = :ordemcorte');
 
                 ParamByName('ordemcorte').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[0].Value);
                 ParamByName('datacancel').Value := now;
                 ParamByName('horacancel').Value := now;
+                ParamByName('usuario').AsInteger :=strtoint(formPrincipal.labCodUsuario.Caption);
                 ExecSQL;
                 Application.MessageBox('Ordem cancelada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
                 butSairInicioCorteClick(Sender);
-                dmOrdemCorte.qyOrdemCorte.Refresh;
+                dmPrincipal.qyOrdemCorte.Refresh;
             end;
+
+
+            formPrincipal.ComitaTransacao;
+
+            except
+                 on E: exception do
+                 begin
+                   formPrincipal.DesfazTransacao;
+                   Application.MessageBox(pchar('Erro ao cancelar o corte! '+E.Message),'Erro', MB_ICONERROR);
+                   Exit;
+                 end;
+            end;
+        end;
     end;
 end;
 
@@ -320,7 +361,7 @@ var
 
 begin
     {-----------VERIFICA SE HOUVE CANCELAMENTO PRA REFERENCIA ANTERIOR SEM EMPENHO DEVOLVIDO-----------}
-    with dmOrdemCorte.qyOrdemDeCorte do
+    with dmIniciarCorte.qyOrdemDeCorte do
     begin
         Close;
         SQL.Text := 'SELECT * FROM controle_empenho';
@@ -333,7 +374,7 @@ begin
         Open;
     end;
 
-    if dmOrdemCorte.qyOrdemDeCorte.RecordCount > 0 then
+    if dmIniciarCorte.qyOrdemDeCorte.RecordCount > 0 then
     begin
         Application.MessageBox('Houve um cancelamento de ordem de corte anterior para essa referência com empenhos devolvidos para almoxarifado!',
         'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
@@ -342,7 +383,7 @@ begin
     end;
 
     {-----------VERIFICA SE A GRADE ESTÁ INCORRETA-----------}
-    with dmOrdemCorte.qyGradeModificada do
+    with dmIniciarCorte.qyGradeModificada do
     begin
         Close;
         SQL.Clear;
@@ -363,9 +404,9 @@ begin
         Open;
     end;
 
-    if dmOrdemCorte.qyGradeModificada.FieldByName('oftr_id').Value > 0 then
+    if dmIniciarCorte.qyGradeModificada.FieldByName('oftr_id').Value > 0 then
     begin
-        with dmOrdemCorte.qyGradeFicha do
+        with dmIniciarCorte.qyGradeFicha do
         begin
             Close;
             SQL.Clear;
@@ -398,7 +439,7 @@ begin
     end
     else
     begin
-        with dmOrdemCorte.qyGradeFicha do
+        with dmIniciarCorte.qyGradeFicha do
         begin
             Close;
             SQL.Clear;
@@ -427,7 +468,7 @@ begin
         end;
     end;
 
-    with dmOrdemCorte.qyFichaId do
+    with dmIniciarCorte.qyFichaId do
     begin
         Close;
         SQL.Clear;
@@ -440,14 +481,14 @@ begin
         Open;
     end;
 
-    if dmOrdemCorte.qyGradeFicha.RecordCount > 1 then
+    if dmIniciarCorte.qyGradeFicha.RecordCount > 1 then
     begin
-        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: '+ intTostr(dmOrdemCorte.qyFichaId.FieldByName('fi_id').Value)), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+        Application.MessageBox(PChar('Grade incorreta na Ficha Tecnica: '+ intTostr(dmIniciarCorte.qyFichaId.FieldByName('fi_id').Value)), 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
 
     {-----------VERIFICA SE FICHA TECNICA ESTA SEM GRADE-----------}
-    with dmOrdemCorte.qyFichaSemGrade do
+    with dmIniciarCorte.qyFichaSemGrade do
     begin
         Close;
         SQL.Clear;
@@ -466,14 +507,14 @@ begin
         Open;
     end;
 
-    if dmOrdemCorte.qyFichaSemGrade.FieldByName('gradeId').Value = null then
+    if dmIniciarCorte.qyFichaSemGrade.FieldByName('gradeId').Value = null then
     begin
         Application.MessageBox('Ficha tecnica sem grade informada!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
         exit;
     end;
 
     {-----------VERIFICA SE A LINHA 120 ESTÁ INFORMA EM REFERENCIA DE SARJA OU JEANS (NÃO PODE LINHA 120 NESSA SITUAÇÃO)-----------}
-    with dmOrdemCorte.qyLinha120 do
+    with dmIniciarCorte.qyLinha120 do
     begin
         Close;
         SQL.Clear;
@@ -497,7 +538,7 @@ begin
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         Open;
 
-        if dmOrdemCorte.qyLinha120.FieldByName('existe').Value = true then
+        if dmIniciarCorte.qyLinha120.FieldByName('existe').Value = true then
         begin
             Application.MessageBox('Ordem de corte não pode ser criada porque existe linha 120 lançada na costura!','Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             Application.MessageBox('Linha Título 120 não é comum ser usado na fase de costura quando o segmento do tecido for JEANS ou SARJA.','Ordem de Corte', MB_OK + MB_ICONINFORMATION);
@@ -510,7 +551,7 @@ begin
     end;
 
     {-----------VERIFICA SE EXISTE ARTIGO DA REFERENCIA SEM FASE INFORMADA NA FICHA TECNICA-----------}
-    with dmOrdemCorte.qyFaseInformada do
+    with dmIniciarCorte.qyFaseInformada do
     begin
         Close;
         SQL.Clear;
@@ -522,7 +563,7 @@ begin
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         Open;
 
-        if dmOrdemCorte.qyFaseInformada.RecordCount > 0 then
+        if dmIniciarCorte.qyFaseInformada.RecordCount > 0 then
         begin
             Application.MessageBox('Existe artigo na ficha tecnica sem fase informada!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             exit;
@@ -530,7 +571,7 @@ begin
     end;
 
     {-----------VERIFICA SE O TAMANHO E COR DO PROTOTIPO CONDIZ COM A GRADE E COR DA REFERENCIA-----------}
-    with dmOrdemCorte.qyFichaPrototipo do
+    with dmIniciarCorte.qyFichaPrototipo do
     begin
         Close;
         SQL.Clear;
@@ -542,7 +583,7 @@ begin
 
         if labTipoCorte.Caption = 'Prototipo' then
         begin
-            if dmOrdemCorte.qyFichaPrototipo.RecordCount = 0 then
+            if dmIniciarCorte.qyFichaPrototipo.RecordCount = 0 then
             begin
                 Application.MessageBox('O protótipo não foi informado na ficha tecnica, por favor re-abra a ficha tecnica e informe o tamanho e cor do protótipo',
                 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
@@ -551,7 +592,7 @@ begin
         end;
     end;
 
-    with dmOrdemCorte.qyCorGradeProt do
+    with dmIniciarCorte.qyCorGradeProt do
     begin
         Close;
         SQL.Clear;
@@ -575,7 +616,7 @@ begin
 
         if labTipoCorte.Caption = 'Prototipo' then
         begin
-            if dmOrdemCorte.qyCorGradeProt.RecordCount = 0 then
+            if dmIniciarCorte.qyCorGradeProt.RecordCount = 0 then
             begin
                 Application.MessageBox('O tamanho do prototipo está fora da grade e/ou a cor diferente da programada, por favor ajuste a informação do prototipo na ficha tecnica',
                 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
@@ -585,7 +626,7 @@ begin
     end;
 
     {-----------VERIFICA SE EXISTE MAIS DE UMA TECIDO PRINCIPAL PARA MESMA COR INSERIDO NA FICHA TECNICA-----------}
-    with dmOrdemCorte.qyTecidoPrincipal do
+    with dmIniciarCorte.qyTecidoPrincipal do
     begin
         Close;
         SQL.Clear;
@@ -598,7 +639,7 @@ begin
         ParamByName('fichatecnica').AsInteger :=strtoint(editFicha.Text);
         Open;
 
-        if dmOrdemCorte.qyTecidoPrincipal.FieldByName('qtdPrincipal').Value > 1 then
+        if dmIniciarCorte.qyTecidoPrincipal.FieldByName('qtdPrincipal').Value > 1 then
         begin
             Application.MessageBox('Há mais de um tecido principal na ficha tecnica, por favor realize o ajuste!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             exit;
@@ -606,7 +647,7 @@ begin
     end;
 
     {-----------VERIFICA SE A COR DE REFERENCIA ESTÁ DIFERENTE DA COR DO ARTIGO-----------}
-    with dmOrdemCorte.qyRefArtigoCor do
+    with dmIniciarCorte.qyRefArtigoCor do
     begin
         Close;
         SQL.Clear;
@@ -622,7 +663,7 @@ begin
         ParamByName('fichatecnica').AsInteger :=strtoint(editFicha.Text);
         Open;
 
-        if dmOrdemCorte.qyRefArtigoCor.RecordCount = 0 then
+        if dmIniciarCorte.qyRefArtigoCor.RecordCount = 0 then
         begin
             Application.MessageBox('Cor de referência diferente da cor do tecido principal!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
             exit;
@@ -631,7 +672,7 @@ begin
 
      {-----------VERIFICA SE EXISTE ALGUM ITEM COM ESTOQUE INFERIOR (PRODUÇÃO)-----------}
      if labTipoCorte.Caption = 'Grande Escala' then
-         with dmOrdemCorte.qyAviamentosPorFicha do
+         with dmIniciarCorte.qyAviamentosPorFicha do
          begin
             Close;
             SQL.Clear;
@@ -656,10 +697,10 @@ begin
             ParamByName('fichatecnica').AsInteger :=strtoint(editFicha.Text);
             Open;
 
-            dmOrdemCorte.qyAviamentosPorFicha.First;
-            while not dmOrdemCorte.qyAviamentosPorFicha.Eof do
+            dmIniciarCorte.qyAviamentosPorFicha.First;
+            while not dmIniciarCorte.qyAviamentosPorFicha.Eof do
             begin
-                with dmOrdemCorte.qyEstoqueSemReservaProt do
+                with dmIniciarCorte.qyEstoqueSemReservaProt do
                 begin
                      Close;
                      SQL.Clear;
@@ -715,46 +756,46 @@ begin
                      SQL.Add('            ) > 0');
                      SQL.Add('      ORDER BY disponivel ASC');
 
-                     ParamByName('gradecor').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_id').Value;
-                     ParamByName('gradetamanho').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_id').Value;
-                     ParamByName('cadastroproduto').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_id').Value;
+                     ParamByName('gradecor').AsInteger := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grc_id').Value;
+                     ParamByName('gradetamanho').AsInteger := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grt_id').Value;
+                     ParamByName('cadastroproduto').AsInteger := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('cp_id').Value;
                      Open;
 
                      totalConsumo :=0;
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr2').Value));
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr3').Value));
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr4').Value));
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr5').Value));
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr6').Value));
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr7').Value));
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr8').Value));
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr9').Value));
-                     if dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value > 0 then
-                          totalConsumo := totalConsumo + ((dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value) * (dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlr10').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade1').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr1').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade2').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr2').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade3').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr3').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade4').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr4').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade5').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr5').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade6').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr6').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade7').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr7').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade8').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr8').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade9').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr9').Value));
+                     if dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value > 0 then
+                          totalConsumo := totalConsumo + ((dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_qtdade10').Value) * (dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlr10').Value));
 
-                     if dmOrdemCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
+                     if dmIniciarCorte.qyEstoqueSemReservaProt.RecordCount = 0 then
                      begin
-                          dmOrdemCorte.cdsProdSemEstoque.Append;
-                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('idProduto').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_id').AsInteger;
-                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Produto').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').AsString;
-                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Cor').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').AsString;
-                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Tamanho').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').AsString;
-                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Tipo').AsString := 'PRODUTO VIRTUAL';
-                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Consumo').AsFloat := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlrtotalsemprototipo').Value;
-                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('Disponivel').AsFloat := 0;
-                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('codCor').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_id').AsInteger;
-                          dmOrdemCorte.cdsProdSemEstoque.FieldByName('codTamanho').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_id').AsInteger;
-                          dmOrdemCorte.cdsProdSemEstoque.Post;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.Append;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('idProduto').AsInteger := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('cp_id').AsInteger;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Produto').AsString := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').AsString;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Cor').AsString := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grc_nome').AsString;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Tamanho').AsString := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grt_nome').AsString;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Tipo').AsString := 'PRODUTO VIRTUAL';
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Consumo').AsFloat := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlrtotalsemprototipo').Value;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Disponivel').AsFloat := 0;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('codCor').AsInteger := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grc_id').AsInteger;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('codTamanho').AsInteger := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grt_id').AsInteger;
+                          dmConfirmacaoAvancoProducao.cdsProdSemEstoque.Post;
                           aux:= 'PRODUTOS SEM ESTOQUE'+#13+#13+
                                 'Por este motivo(s) o corte não pode ser iniciado!'+#13+#13+
                                 'Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO'+#13;
@@ -763,29 +804,29 @@ begin
                      end
                      else
                      begin
-                        if totalConsumo > dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
+                        if totalConsumo > dmIniciarCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
                         begin
-                            dmOrdemCorte.cdsProdSemEstoque.Append;
-                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('idProduto').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_id').AsInteger;
-                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Produto').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').AsString;
-                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Cor').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_nome').AsString;
-                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Tamanho').AsString := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_nome').AsString;
-                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Tipo').AsString := 'SEM ESTOQUE';
-                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Consumo').AsFloat := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('fti_vlrtotalsemprototipo').Value;
-                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('Disponivel').AsFloat := dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value;
-                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('codCor').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grc_id').AsInteger;
-                            dmOrdemCorte.cdsProdSemEstoque.FieldByName('codTamanho').AsInteger := dmOrdemCorte.qyAviamentosPorFicha.FieldByName('grt_id').AsInteger;
-                            dmOrdemCorte.cdsProdSemEstoque.Post;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.Append;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('idProduto').AsInteger := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('cp_id').AsInteger;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Produto').AsString := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('cp_descricao').AsString;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Cor').AsString := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grc_nome').AsString;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Tamanho').AsString := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grt_nome').AsString;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Tipo').AsString := 'SEM ESTOQUE';
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Consumo').AsFloat := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('fti_vlrtotalsemprototipo').Value;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Disponivel').AsFloat := dmIniciarCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('codCor').AsInteger := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grc_id').AsInteger;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('codTamanho').AsInteger := dmIniciarCorte.qyAviamentosPorFicha.FieldByName('grt_id').AsInteger;
+                            dmConfirmacaoAvancoProducao.cdsProdSemEstoque.Post;
                             aux:= 'PRODUTOS SEM ESTOQUE'+#13+#13+
                                   'Por este motivo(s) o corte não pode ser iniciado!'+#13+#13+
                                   'Clique em SIM se deseja permitir o avanço da produção sem material, caso contrário clique em NÃO'+#13;
                             processo :=false;
                         end;
                      end;
-                     if totalConsumo < dmOrdemCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
+                     if totalConsumo < dmIniciarCorte.qyEstoqueSemReservaProt.FieldByName('disponivel').Value then
                        processo :=true;
                 end;
-            dmOrdemCorte.qyAviamentosPorFicha.Next;
+            dmIniciarCorte.qyAviamentosPorFicha.Next;
             end;
             if processo = false then
             begin
@@ -804,7 +845,7 @@ begin
       tratarDataHora;
 
     {-----------VERIFICA SE EXISTE ORDEM JA ABERTA PARA REFERENCIA-----------}
-    with dmOrdemCorte.qyCortePorTipoFichaId do
+    with dmIniciarCorte.qyCortePorTipoFichaId do
     begin
         Close;
         SQL.Clear;
@@ -823,32 +864,57 @@ begin
         else
             ParamByName('eprototipo').AsBoolean := false;
         Open;
-
-        if dmOrdemCorte.qyCortePorTipoFichaId.RecordCount > 0 then
-        begin
-            if dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
-            begin
-                Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
-                exit;
-            end
-            else
-                with application do
-                begin
-                     if MessageBox('Já existe uma ordem de corte grande escala para essa referencia'+#13+
-                                    'Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDYES then
-                      begin
-                          usuarioOutraOrdem;
-                      end
-                     else
-                          exit;
-                end;
-        end
-        else
-            dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').AsInteger := 1;
     end;
 
+    if dmIniciarCorte.qyCortePorTipoFichaId.RecordCount > 0 then
+    begin
+        if dmIniciarCorte.qyCortePorTipoFichaId.FieldByName('oc_prototipo').Value = true then
+        begin
+            Application.MessageBox('Já existe uma ordem de corte protótipo para essa referencia!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+            exit;
+        end
+        else
+        begin
+            with application do
+            begin
+                 if MessageBox('Já existe uma ordem de corte grande escala para essa referencia'+#13+
+                                'Deseja mesmo assim continuar o procedimento?', 'Ordem Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDYES then
+                 begin
+                      usuarioOutraOrdem;
+                 end
+                 else
+                      exit;
+            end;
+        end;
+    end
+    else
+    begin
+
+        try
+
+
+            formPrincipal.IniciaTransacao;
+
+
+            dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_ordem').AsInteger := 1;
+
+
+            formPrincipal.ComitaTransacao;
+
+        except
+              on E: exception do
+              begin
+                   formPrincipal.DesfazTransacao;
+                   Application.MessageBox(pchar('Erro ao inserir o nºordem! '+E.Message),'Erro', MB_ICONERROR);
+                   Exit;
+              end;
+        end;
+
+        end;
+//        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_ordem').AsInteger := 1;
+
     {-----------VERIFICA SE TEM DOIS PROTÓTIPOS-----------}
-    with dmOrdemCorte.qyFichaPrototipo do
+    with dmIniciarCorte.qyFichaPrototipo do
     begin
         Close;
         SQL.Clear;
@@ -857,20 +923,22 @@ begin
 
         ParamByName('fichatecnica').AsInteger :=strtoint(editFicha.Text);
         Open;
-        if dmOrdemCorte.qyFichaPrototipo.RecordCount > 1 then
+    end;
+
+    if dminiciarCorte.qyFichaPrototipo.RecordCount > 1 then
+    begin
+        with application do
         begin
-            with application do
-            begin
-                  if MessageBox('Foi programado dois prototipos para esta referencia.'+#13+
-                                'Se a escolha de realizar dois prototipo estiver ERRADA,'+#13+
-                                'ajuste na ficha tecnica, caso esteja CERTO clique em SIM', 'Ordem Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDNO then
-                     exit;
-            end;
+              if MessageBox('Foi programado dois prototipos para esta referencia.'+#13+
+                            'Se a escolha de realizar dois prototipo estiver ERRADA,'+#13+
+                            'ajuste na ficha tecnica, caso esteja CERTO clique em SIM', 'Ordem Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDNO then
+
+                    exit;
         end;
     end;
 
     {-----------VERIFICA SE PODE ABRIR ORDEM GRANDE ESCALA-----------}
-    with dmOrdemCorte.qyGEComOuSemProt do
+    with dmIniciarCorte.qyGEComOuSemProt do
     begin
         Close;
         SQL.Clear;
@@ -879,37 +947,40 @@ begin
         SQL.Add('         SELECT * FROM ordem_corte');
         SQL.Add('         WHERE oc_idfichatecnica=fp_idfichatec AND oc_prototipo = true');
         SQL.Add('      )');
+
         ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
         Open;
-        if labTipoCorte.Caption = 'Grande Escala' then
+    end;
+
+    if labTipoCorte.Caption = 'Grande Escala' then
+    begin
+        if dmIniciarCorte.qyGEComOuSemProt.RecordCount > 0 then
         begin
-            if dmOrdemCorte.qyGEComOuSemProt.RecordCount > 0 then
+            if dmIniciarCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'N' then
             begin
-                if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'N' then
-                begin
-                    Application.MessageBox('Prototipo em espera por aprovação!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
-                    exit;
-                end;
-                if dmOrdemCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'R' then
-                begin
-                    Application.MessageBox('Protótipo reprovado, por esse motivo produção não pode ser realizada', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
-                    exit;
-                end;
-            end
-            else
+                Application.MessageBox('Prototipo em espera por aprovação!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                exit;
+            end;
+            if dmIniciarCorte.qyGEComOuSemProt.FieldByName('fp_situacao').Value = 'R' then
             begin
-                with application do
-                begin
-                    if MessageBox('Referência sem protótipo!'+#13+
-                    'Deseja mesmo assim abrir ordem de corte?', 'Ordem de Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDNO then
-                    exit;
-                end;
+                Application.MessageBox('Protótipo reprovado, por esse motivo produção não pode ser realizada', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
+                exit;
+            end;
+        end
+        else
+        begin
+            with application do
+            begin
+                if MessageBox('Referência sem protótipo!'+#13+
+                'Deseja mesmo assim abrir ordem de corte?', 'Ordem de Corte', MB_ICONQUESTION + MB_YESNO + MB_APPLMODAL) = IDNO then
+                exit;
             end;
         end;
     end;
 
+
     {-----------VERIFICA SE HÁ INFORMAÇÕES DE CONSUMO DE FASE LANÇADA GE-----------}
-     with dmOrdemCorte.qyConsumoFaseGE do
+     with dmIniciarCorte.qyConsumoFaseGE do
      begin
         Close;
         SQL.Clear;
@@ -922,14 +993,15 @@ begin
         SQL.Add('     AND cpi.cpi_idfase <> ''9''');
         SQL.Add('     AND cpi.cpi_idfase <> ''16''');
         SQL.Add('     ORDER BY cpi.cpi_nosequencial ASC');
+
         ParamByName('produtoacabado').AsInteger := strtoint(editCodigo.Text);
         Open;
      end;
 
-    dmOrdemCorte.qyConsumoFaseGE.First;
-    while not dmOrdemCorte.qyConsumoFaseGE.Eof do
+    dminiciarCorte.qyConsumoFaseGE.First;
+    while not dmIniciarCorte.qyConsumoFaseGE.Eof do
     begin
-         with dmOrdemCorte.qyFichaFaseGE do
+         with dmIniciarCorte.qyFichaFaseGE do
          begin
               Close;
               SQL.Clear;
@@ -938,27 +1010,27 @@ begin
               SQL.Add('   WHERE ftf_idfaseproducao = :idFase');
               SQL.add('   AND ftf_idfichatecnica = :fichatecnica');
 
-              ParamByName('idFase').AsInteger := dmOrdemCorte.qyConsumoFaseGE.FieldByName('cpi_idfase').Value;
+              ParamByName('idFase').AsInteger := dmIniciarCorte.qyConsumoFaseGE.FieldByName('cpi_idfase').Value;
               ParamByName('fichatecnica').AsInteger := strtoint(editFicha.Text);
               Open;
 
               msg:='SEM CONSUMO DE FASE LANÇADA!' +#13+#13+
-                    'FASE: '+ dmOrdemCorte.qyConsumoFaseGE.FieldByName('fa_nome').Value;
+                    'FASE: '+ dmIniciarCorte.qyConsumoFaseGE.FieldByName('fa_nome').Value;
               if labTipoCorte.Caption = 'Grande Escala' then
               begin
-                  if dmOrdemCorte.qyFichaFaseGE.RecordCount = 0 then
+                  if dmIniciarCorte.qyFichaFaseGE.RecordCount = 0 then
                   begin
                       Application.MessageBox(PChar(msg), 'Ordem de Corte',MB_OK + MB_ICONINFORMATION);
                       exit;
                   end;
               end;
-              dmOrdemCorte.qyConsumoFaseGE.Next;
+              dmIniciarCorte.qyConsumoFaseGE.Next;
          end;
     end;
     salvarCorte;
     iniciarPrevisto;
     Application.MessageBox('Operação realizada com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
-    dmOrdemCorte.qyOrdemCorte.Refresh;
+    dmPrincipal.qyOrdemCorte.Refresh;
 end;
 
 procedure TformIniciarCorte.FormClose(Sender: TObject;
@@ -969,12 +1041,12 @@ end;
 
 procedure TformIniciarCorte.FormCreate(Sender: TObject);
 begin
-    butSalvar.Enabled := false;
-    butCancelarOrdem.Enabled := false;
-    butEditar.Enabled := false;
-    butDesistir.Enabled := false;
-    butAlterar.Visible := false;
-    butEscolherCores.Enabled := false;
+    butSalvar.Enabled           :=false;
+    butCancelarOrdem.Enabled    :=false;
+    butEditar.Enabled           :=false;
+    butDesistir.Enabled         :=false;
+    butAlterar.Visible          :=false;
+    butEscolherCores.Enabled    :=false;
 end;
 
 procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;
@@ -1002,7 +1074,7 @@ begin
 
      Try
 
-              with dmOrdemCorte.qyItensFichaPrevisto do
+              with dmIniciarCorte.qyItensFichaPrevisto do
               begin
                   Close;
                   SQL.Clear;
@@ -1021,7 +1093,7 @@ begin
               if labTipoCorte.Caption = 'Prototipo' then
               begin
 
-                   dmOrdemCorte.qyItensFichaPrevisto.First;
+                   dmIniciarCorte.qyItensFichaPrevisto.First;
 
                    cQyConsIDCorte := TFDQuery.Create(nil);
                    cQyConsIDCorte.Connection := dmOrdemCorte.Conexao;
@@ -1033,10 +1105,10 @@ begin
 
                      formPrincipal.IniciaTransacao;
 
-                      while not dmOrdemCorte.qyItensFichaPrevisto.Eof do
+                      while not dmIniciarCorte.qyItensFichaPrevisto.Eof do
                       begin
 
-                          with dmOrdemCorte.tbOrdemCorteItensPrevisto do
+                          with dmIniciarCorte.tbOrdemCorteItensPrevisto do
                           begin
 
                                Close;
@@ -1060,22 +1132,22 @@ begin
                                SQL.Add('  :ocivlrtotal, :ocivlrreserva, :ocivlrrestante)');
 
                                ParamByName('idocorte').AsInteger                       :=cQyConsIDCorte.FieldByName('oc_id').AsInteger;
-                               ParamByName('idproduto').AsInteger                      :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_idproduto').AsInteger;
-                               ParamByName('idcortecido').AsInteger                    :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_cortecido').AsInteger;
+                               ParamByName('idproduto').AsInteger                      :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_idproduto').AsInteger;
+                               ParamByName('idcortecido').AsInteger                    :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_cortecido').AsInteger;
                                ParamByName('dtlanc').AsDateTime                        :=now;
                                ParamByName('hrlanc').AsTime                            :=now;
                                ParamByName('codusulanc').AsInteger                     :=strtoInt(formPrincipal.labCodUsuario.Caption);
-                               ParamByName('idgradetam').AsInteger                     :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_idgradetam').AsInteger;
-                               ParamByName('ociun').AsString                           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('cp_un').AsString;
-                               ParamByName('iditemficha').AsInteger                    :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_id').AsInteger;
+                               ParamByName('idgradetam').AsInteger                     :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_idgradetam').AsInteger;
+                               ParamByName('ociun').AsString                           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('cp_un').AsString;
+                               ParamByName('iditemficha').AsInteger                    :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_id').AsInteger;
                                ParamByName('situacaoid').AsInteger                     := 1;  //Situação do corte previsto inicia-se como NORMAL
-                               ParamByName('ocitipo').AsString                         :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tipo').AsString;
-                               if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tecido').AsString = 'A' then
+                               ParamByName('ocitipo').AsString                         :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tipo').AsString;
+                               if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tecido').AsString = 'A' then
                                   ParamByName('ocitecido').AsBoolean                   :=true
                                else
                                   ParamByName('ocitecido').AsBoolean                   :=false;
-                               ParamByName('idgradecor').AsInteger                     :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_idgradecor').AsInteger;
-                               ParamByName('idgradecorprodutoacabado').AsInteger       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_cortecidoidgrade').AsInteger;
+                               ParamByName('idgradecor').AsInteger                     :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_idgradecor').AsInteger;
+                               ParamByName('idgradecorprodutoacabado').AsInteger       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_cortecidoidgrade').AsInteger;
                                ParamByName('ocitam1').AsString                         :='';
                                ParamByName('ocitam2').AsString                         :='';
                                ParamByName('ocitam3').AsString                         :='';
@@ -1128,175 +1200,175 @@ begin
                               if ParamByName('ocitecido').AsBoolean = true then
                               begin
                                   qtd:=0;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').AsFloat > 0 then
                                       qtd:=qtd+1;
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').AsFloat > 0 then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').AsFloat > 0 then
                                       qtd:=qtd+1;
 
-                                  media:=(dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').AsFloat+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').AsFloat+
-                                        dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').AsFloat+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').AsFloat+
-                                        dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').AsFloat+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').AsFloat+
-                                        dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').AsFloat+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').AsFloat+
-                                        dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').AsFloat+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').AsFloat+
-                                        dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').AsFloat+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').AsFloat+
-                                        dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').AsFloat+dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').AsFloat+
-                                        dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').AsFloat)/qtd;
+                                  media:=(dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').AsFloat+dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').AsFloat+
+                                        dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').AsFloat+dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').AsFloat+
+                                        dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').AsFloat+dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').AsFloat+
+                                        dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').AsFloat+dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').AsFloat+
+                                        dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').AsFloat+dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').AsFloat+
+                                        dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').AsFloat+dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').AsFloat+
+                                        dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').AsFloat+dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').AsFloat+
+                                        dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').AsFloat)/qtd;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam1').AsString           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').AsString;
+                                      ParamByName('ocitam1').AsString           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').AsString;
                                       ParamByName('ocivlr1').AsFloat            :=media;
                                       ParamByName('ociqtdade1').AsFloat         :=1;
                                   end
                                   else
                                       ParamByName('ocitam1').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam2').AsString           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').AsString;
+                                      ParamByName('ocitam2').AsString           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').AsString;
                                       ParamByName('ocivlr2').AsFloat            :=media;
                                       ParamByName('ociqtdade2').AsFloat         :=1;
                                   end
                                   else
                                       ParamByName('ocitam2').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam3').AsString           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').AsString;
+                                      ParamByName('ocitam3').AsString           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').AsString;
                                       ParamByName('ocivlr3').AsFloat            :=media;
                                       ParamByName('ociqtdade3').AsFloat         :=1;
                                   end
                                   else
                                       ParamByName('ocitam3').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam4').AsString           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').AsString;
+                                      ParamByName('ocitam4').AsString           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').AsString;
                                       ParamByName('ocivlr4').AsFloat            :=media;
                                       ParamByName('ociqtdade4').AsFloat         :=1;
                                   end
                                   else
                                       ParamByName('ocitam4').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam5').AsString           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').AsString;
+                                      ParamByName('ocitam5').AsString           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').AsString;
                                       ParamByName('ocivlr5').AsFloat            :=media;
                                       ParamByName('ociqtdade5').AsFloat         :=1;
                                   end
                                   else
                                       ParamByName('ocitam5').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam6').AsString           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').AsString;
+                                      ParamByName('ocitam6').AsString           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').AsString;
                                       ParamByName('ocivlr6').AsFloat            :=media;
                                       ParamByName('ociqtdade6').AsFloat         :=1;
                                   end
                                   else
                                       ParamByName('ocitam6').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam7').AsString           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').AsString;
+                                      ParamByName('ocitam7').AsString           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').AsString;
                                       ParamByName('ocivlr7').AsFloat            :=media;
                                       ParamByName('ociqtdade7').AsFloat         :=1;
                                   end
                                   else
                                       ParamByName('ocitam7').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam8').AsString           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').AsString;
+                                      ParamByName('ocitam8').AsString           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').AsString;
                                       ParamByName('ocivlr8').AsFloat            :=media;
                                       ParamByName('ociqtdade8').AsFloat         :=1;
                                   end
                                   else
                                       ParamByName('ocitam8').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam9').AsString           :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').AsString;
+                                      ParamByName('ocitam9').AsString           :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').AsString;
                                       ParamByName('ocivlr9').AsFloat            :=media;
                                       ParamByName('ociqtdade9').AsFloat         :=1;
                                   end
                                   else
                                       ParamByName('ocitam9').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam10').AsString          :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').AsString;
+                                      ParamByName('ocitam10').AsString          :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').AsString;
                                       ParamByName('ocivlr10').AsFloat           :=media;
                                       ParamByName('ociqtdade10').AsFloat        :=1;
                                   end
                                   else
                                       ParamByName('ocitam10').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam11').AsString          :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').AsString;
+                                      ParamByName('ocitam11').AsString          :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').AsString;
                                       ParamByName('ocivlr11').AsFloat           :=media;
                                       ParamByName('ociqtdade11').AsFloat        :=1;
                                   end
                                   else
                                       ParamByName('ocitam11').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam12').AsString          :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').AsString;
+                                      ParamByName('ocitam12').AsString          :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').AsString;
                                       ParamByName('ocivlr12').AsFloat           :=media;
                                       ParamByName('ociqtdade12').AsFloat        :=1;
                                   end
                                   else
                                       ParamByName('ocitam12').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam13').AsString          :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').AsString;
+                                      ParamByName('ocitam13').AsString          :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').AsString;
                                       ParamByName('ocivlr13').AsFloat           :=media;
                                       ParamByName('ociqtdade13').AsFloat        :=1;
                                   end
                                   else
                                       ParamByName('ocitam13').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam14').AsString          :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').AsString;
+                                      ParamByName('ocitam14').AsString          :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').AsString;
                                       ParamByName('ocivlr14').AsFloat           :=media;
                                       ParamByName('ociqtdade14').AsFloat        :=1;
                                   end
                                   else
                                       ParamByName('ocitam14').Clear;
 
-                                  if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                  if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                   begin
-                                      ParamByName('ocitam15').AsString          :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').AsString;
+                                      ParamByName('ocitam15').AsString          :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').AsString;
                                       ParamByName('ocivlr15').AsFloat           :=media;
                                       ParamByName('ociqtdade15').AsFloat        :=1;
                                   end
@@ -1305,136 +1377,136 @@ begin
                               end;
                               if ParamByName('ocitecido').AsBoolean = false then
                               begin
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam1').AsString       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').AsString;
-                                          ParamByName('ocivlr1').AsFloat        :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').AsFloat;
+                                          ParamByName('ocitam1').AsString       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam1').AsString;
+                                          ParamByName('ocivlr1').AsFloat        :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr1').AsFloat;
                                           ParamByName('ociqtdade1').AsFloat     :=1;
                                       end
                                       else
                                           ParamByName('ocitam1').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam2').AsString       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').AsString;
-                                          ParamByName('ocivlr2').AsFloat        :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').AsFloat;
+                                          ParamByName('ocitam2').AsString       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam2').AsString;
+                                          ParamByName('ocivlr2').AsFloat        :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr2').AsFloat;
                                           ParamByName('ociqtdade2').AsFloat     :=1;
                                       end
                                       else
                                           ParamByName('ocitam2').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam3').AsString       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').AsString;
-                                          ParamByName('ocivlr3').AsFloat        :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').AsFloat;
+                                          ParamByName('ocitam3').AsString       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam3').AsString;
+                                          ParamByName('ocivlr3').AsFloat        :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr3').AsFloat;
                                           ParamByName('ociqtdade3').AsFloat     :=1;
                                       end
                                       else
                                           ParamByName('ocitam3').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam4').AsString       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').AsString;
-                                          ParamByName('ocivlr4').AsFloat        :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').AsFloat;
+                                          ParamByName('ocitam4').AsString       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam4').AsString;
+                                          ParamByName('ocivlr4').AsFloat        :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr4').AsFloat;
                                           ParamByName('ociqtdade4').AsFloat     :=1;
                                       end
                                       else
                                           ParamByName('ocitam4').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam5').AsString       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').AsString;
-                                          ParamByName('ocivlr5').AsFloat        :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').AsFloat;
+                                          ParamByName('ocitam5').AsString       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam5').AsString;
+                                          ParamByName('ocivlr5').AsFloat        :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr5').AsFloat;
                                           ParamByName('ociqtdade5').AsFloat     :=1;
                                       end
                                       else
                                           ParamByName('ocitam5').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam6').AsString       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').AsString;
-                                          ParamByName('ocivlr6').AsFloat        :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').AsFloat;
+                                          ParamByName('ocitam6').AsString       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam6').AsString;
+                                          ParamByName('ocivlr6').AsFloat        :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr6').AsFloat;
                                           ParamByName('ociqtdade6').AsFloat     :=1;
                                       end
                                       else
                                           ParamByName('ocitam6').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam7').AsString       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').AsString;
-                                          ParamByName('ocivlr7').AsFloat        :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').AsFloat;
+                                          ParamByName('ocitam7').AsString       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam7').AsString;
+                                          ParamByName('ocivlr7').AsFloat        :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr7').AsFloat;
                                           ParamByName('ociqtdade7').AsFloat     :=1;
                                       end
                                       else
                                           ParamByName('ocitam7').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam8').AsString       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').AsString;
-                                          ParamByName('ocivlr8').AsFloat        :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').AsFloat;
+                                          ParamByName('ocitam8').AsString       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam8').AsString;
+                                          ParamByName('ocivlr8').AsFloat        :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr8').AsFloat;
                                           ParamByName('ociqtdade8').AsFloat     :=1;
                                       end
                                       else
                                           ParamByName('ocitam8').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam9').AsString       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').AsString;
-                                          ParamByName('ocivlr9').AsFloat        :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').AsFloat;
+                                          ParamByName('ocitam9').AsString       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam9').AsString;
+                                          ParamByName('ocivlr9').AsFloat        :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr9').AsFloat;
                                           ParamByName('ociqtdade9').AsFloat     :=1;
                                       end
                                       else
                                           ParamByName('ocitam9').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam10').AsString      :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').AsString;
-                                          ParamByName('ocivlr10').AsFloat       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').AsFloat;
+                                          ParamByName('ocitam10').AsString      :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam10').AsString;
+                                          ParamByName('ocivlr10').AsFloat       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr10').AsFloat;
                                           ParamByName('ociqtdade10').AsFloat    :=1;
                                       end
                                       else
                                           ParamByName('ocitam10').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam11').AsString      :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').AsString;
-                                          ParamByName('ocivlr11').AsFloat       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').AsFloat;
+                                          ParamByName('ocitam11').AsString      :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam11').AsString;
+                                          ParamByName('ocivlr11').AsFloat       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr11').AsFloat;
                                           ParamByName('ociqtdade11').AsFloat    :=1;
                                       end
                                       else
                                           ParamByName('ocitam11').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam12').AsString      :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').AsString;
-                                          ParamByName('ocivlr12').AsFloat       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').AsFloat;
+                                          ParamByName('ocitam12').AsString      :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam12').AsString;
+                                          ParamByName('ocivlr12').AsFloat       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr12').AsFloat;
                                           ParamByName('ociqtdade12').AsFloat    :=1;
                                       end
                                       else
                                           ParamByName('ocitam12').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam13').AsString      :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').AsString;
-                                          ParamByName('ocivlr13').AsFloat       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').AsFloat;
+                                          ParamByName('ocitam13').AsString      :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam13').AsString;
+                                          ParamByName('ocivlr13').AsFloat       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr13').AsFloat;
                                           ParamByName('ociqtdade13').AsFloat    :=1;
                                       end
                                       else
                                           ParamByName('ocitam13').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam14').AsString      :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').AsString;
-                                          ParamByName('ocivlr14').AsFloat       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').AsFloat;
+                                          ParamByName('ocitam14').AsString      :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam14').AsString;
+                                          ParamByName('ocivlr14').AsFloat       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr14').AsFloat;
                                           ParamByName('ociqtdade14').AsFloat    :=1;
                                       end
                                       else
                                           ParamByName('ocitam14').Clear;
 
-                                      if dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').AsString=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
+                                      if dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').AsString=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fp_tamanho').AsString then
                                       begin
-                                          ParamByName('ocitam15').AsString      :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').AsString;
-                                          ParamByName('ocivlr15').AsFloat       :=dmOrdemCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').AsFloat;
+                                          ParamByName('ocitam15').AsString      :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_tam15').AsString;
+                                          ParamByName('ocivlr15').AsFloat       :=dmIniciarCorte.qyItensFichaPrevisto.FieldByName('fti_vlr15').AsFloat;
                                           ParamByName('ociqtdade15').AsFloat    :=1;
                                       end
                                       else
@@ -1463,12 +1535,12 @@ begin
                               ParamByName('ocivlrreserva').AsFloat   :=ParamByName('ocivlrtotal').AsFloat;
                               ParamByName('ocivlrrestante').AsFloat  :=0;
                               ExecSQL;
-                              dmOrdemCorte.qyItensFichaPrevisto.Next;
+                              dmIniciarCorte.qyItensFichaPrevisto.Next;
                           end;
                       end;
 
 
-                          with dmOrdemCorte.qyOrdemCorteProtFase do
+                          with dmIniciarCorte.qyOrdemCorteProtFase do
                           begin
                               Close;
                               SQL.Clear;
@@ -1483,13 +1555,13 @@ begin
                           end;
 
 
-                          dmOrdemCorte.qyOrdemCorteProtFase.First;
+                          dmIniciarCorte.qyOrdemCorteProtFase.First;
 
 
-                          while not dmOrdemCorte.qyOrdemCorteProtFase.Eof do
+                          while not dmIniciarCorte.qyOrdemCorteProtFase.Eof do
                           begin
 
-                              with dmOrdemCorte.tbOrdemCorteProtFase do
+                              with dmIniciarCorte.tbOrdemCorteProtFase do
                               begin
                                   Close;
                                   SQL.Clear;
@@ -1502,34 +1574,33 @@ begin
                                   SQL.Add('   :idficha, :idcorte, :idfaseprod, :vlr1, :vlr2, :vlr3, :vlr4, :vlr5, :vlr6, :vlr7, :vlr8, :vlr9,');
                                   SQL.Add('   :vlr10, :vlr11, :vlr12, :vlr13, :vlr14, :vlr15, :total, :idusulanc, :idsituacao, :iditemfichatec, :atividade)');
 
-                                  ParamByName('idficha').AsInteger                      :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_idfichatecnica').AsInteger;
-                                  ParamByName('idcorte').AsInteger                      :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_idocorte').AsInteger;
-                                  ParamByName('idfaseprod').AsInteger                   :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_idfaseproducao').AsInteger;
-                                  ParamByName('vlr1').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr1').AsFloat;
-                                  ParamByName('vlr2').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr2').AsFloat;
-                                  ParamByName('vlr3').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr3').AsFloat;
-                                  ParamByName('vlr4').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr4').AsFloat;
-                                  ParamByName('vlr5').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr5').AsFloat;
-                                  ParamByName('vlr6').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr6').AsFloat;
-                                  ParamByName('vlr7').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr7').AsFloat;
-                                  ParamByName('vlr8').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr8').AsFloat;
-                                  ParamByName('vlr9').AsFloat                           :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr9').AsFloat;
-                                  ParamByName('vlr10').AsFloat                          :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr10').AsFloat;
-                                  ParamByName('vlr11').AsFloat                          :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr11').AsFloat;
-                                  ParamByName('vlr12').AsFloat                          :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr12').AsFloat;
-                                  ParamByName('vlr13').AsFloat                          :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr13').AsFloat;
-                                  ParamByName('vlr14').AsFloat                          :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr14').AsFloat;
-                                  ParamByName('vlr15').AsFloat                          :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr15').AsFloat;
-                                  ParamByName('total').AsFloat                          :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('oci_vlrtotal').AsFloat;
+                                  ParamByName('idficha').AsInteger                      :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('ftf_idfichatecnica').AsInteger;
+                                  ParamByName('idcorte').AsInteger                      :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_idocorte').AsInteger;
+                                  ParamByName('idfaseprod').AsInteger                   :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('ftf_idfaseproducao').AsInteger;
+                                  ParamByName('vlr1').AsFloat                           :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr1').AsFloat;
+                                  ParamByName('vlr2').AsFloat                           :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr2').AsFloat;
+                                  ParamByName('vlr3').AsFloat                           :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr3').AsFloat;
+                                  ParamByName('vlr4').AsFloat                           :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr4').AsFloat;
+                                  ParamByName('vlr5').AsFloat                           :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr5').AsFloat;
+                                  ParamByName('vlr6').AsFloat                           :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr6').AsFloat;
+                                  ParamByName('vlr7').AsFloat                           :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr7').AsFloat;
+                                  ParamByName('vlr8').AsFloat                           :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr8').AsFloat;
+                                  ParamByName('vlr9').AsFloat                           :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr9').AsFloat;
+                                  ParamByName('vlr10').AsFloat                          :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr10').AsFloat;
+                                  ParamByName('vlr11').AsFloat                          :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr11').AsFloat;
+                                  ParamByName('vlr12').AsFloat                          :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr12').AsFloat;
+                                  ParamByName('vlr13').AsFloat                          :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr13').AsFloat;
+                                  ParamByName('vlr14').AsFloat                          :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr14').AsFloat;
+                                  ParamByName('vlr15').AsFloat                          :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlr15').AsFloat;
+                                  ParamByName('total').AsFloat                          :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('oci_vlrtotal').AsFloat;
                                   ParamByName('idusulanc').AsInteger                    :=strtoInt(formPrincipal.labCodUsuario.Caption);
                                   ParamByName('idsituacao').AsInteger                   :=3;
-                                  ParamByName('iditemfichatec').AsInteger               :=dmOrdemCorte.qyOrdemCorteProtFase.FieldByName('ftf_iditemfichatecnica').AsInteger;
+                                  ParamByName('iditemfichatec').AsInteger               :=dmIniciarCorte.qyOrdemCorteProtFase.FieldByName('ftf_iditemfichatecnica').AsInteger;
                                   ParamByName('atividade').AsString                     :='P';
                                   ExecSQL;
-                                  dmOrdemCorte.qyOrdemCorteProtFase.Next;
+                                  dmIniciarCorte.qyOrdemCorteProtFase.Next;
                               end;
                           end;
-
 
 
                       formPrincipal.ComitaTransacao;
@@ -1549,7 +1620,7 @@ begin
               else
               begin  //###### PROCESSO EM GRANDE ESCALA  ###########
 
-                  with dmOrdemCorte.qyDefinirPrevistoGE do
+                  with dmIniciarCorte.qyDefinirPrevistoGE do
                   begin
                       Close;
                       SQL.Clear;
@@ -1567,7 +1638,7 @@ begin
                       Open;
                   end;
 
-                  with dmOrdemCorte.qyTemOrdPrototipo do
+                  with dmIniciarCorte.qyTemOrdPrototipo do
                   begin
                       Close;
                           SQL.Clear;
@@ -1582,7 +1653,7 @@ begin
                           Open;
                   end;
 
-                  with dmOrdemCorte.qyChecaReserva do
+                  with dmIniciarCorte.qyChecaReserva do
                   begin
                       Close;
                       SQL.Clear;
@@ -1597,12 +1668,12 @@ begin
 
                       ParamByName('ficha').AsInteger:=strtoint(editFicha.Text);
                       ParamByName('corte').AsInteger:=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
-                      ParamByName('corprodutoacabado').AsInteger:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger;
+                      ParamByName('corprodutoacabado').AsInteger:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger;
                       Open;
                   end;
 
 
-                      dmOrdemCorte.qyDefinirPrevistoGE.First;
+                      dmIniciarCorte.qyDefinirPrevistoGE.First;
 
                       cQyConsIDCorte := TFDQuery.Create(nil);
                       cQyConsIDCorte.Connection := dmOrdemCorte.Conexao;
@@ -1614,9 +1685,9 @@ begin
 
                      formPrincipal.IniciaTransacao;
 
-                     while not dmOrdemCorte.qyDefinirPrevistoGE.Eof do
+                     while not dmIniciarCorte.qyDefinirPrevistoGE.Eof do
                      begin
-                          with dmOrdemCorte.tbOrdemCorteItensPrevisto do
+                          with dmIniciarCorte.tbOrdemCorteItensPrevisto do
                           begin
                               Close;
                               SQL.Clear;
@@ -1639,19 +1710,19 @@ begin
                               SQL.Add('  :ocivlrtotal, :ocivlrreserva, :ocivlrrestante)');
 
                               ParamByName('idocorte').AsInteger                       :=cQyConsIDCorte.FieldByName('oc_id').AsInteger;
-                              ParamByName('idproduto').AsInteger                      :=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_idproduto').AsInteger;
-                              ParamByName('idcortecido').AsInteger                    :=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecido').AsInteger;
+                              ParamByName('idproduto').AsInteger                      :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_idproduto').AsInteger;
+                              ParamByName('idcortecido').AsInteger                    :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecido').AsInteger;
                               ParamByName('dtlanc').AsDateTime                        :=now;
                               ParamByName('hrlanc').AsTime                            :=now;
                               ParamByName('codusulanc').AsInteger                     :=strtoInt(formPrincipal.labCodUsuario.Caption);
-                              ParamByName('idgradetam').AsInteger                     :=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_idgradetam').AsInteger;
-                              ParamByName('ociun').AsString                           :=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('cp_un').AsString;
-                              ParamByName('iditemficha').AsInteger                    :=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_id').AsInteger;
+                              ParamByName('idgradetam').AsInteger                     :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_idgradetam').AsInteger;
+                              ParamByName('ociun').AsString                           :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('cp_un').AsString;
+                              ParamByName('iditemficha').AsInteger                    :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_id').AsInteger;
                               ParamByName('situacaoid').AsInteger                     := 1;  //Situação do corte previsto inicia-se como NORMAL
-                              ParamByName('ocitipo').AsString                         :=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tipo').AsString;
+                              ParamByName('ocitipo').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tipo').AsString;
                               ParamByName('ocitecido').AsBoolean                      :=true;
-                              ParamByName('idgradecor').AsInteger                     :=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_idgradecor').AsInteger;
-                              ParamByName('idgradecorprodutoacabado').AsInteger       :=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger;
+                              ParamByName('idgradecor').AsInteger                     :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_idgradecor').AsInteger;
+                              ParamByName('idgradecorprodutoacabado').AsInteger       :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger;
                               ParamByName('ociqtdade1').AsFloat                       :=0;
                               ParamByName('ociqtdade2').AsFloat                       :=0;
                               ParamByName('ociqtdade3').AsFloat                       :=0;
@@ -1667,284 +1738,284 @@ begin
                               ParamByName('ociqtdade13').AsFloat                      :=0;
                               ParamByName('ociqtdade14').AsFloat                      :=0;
                               ParamByName('ociqtdade15').AsFloat                      :=0;
-                              ParamByName('ocitam1').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam1').AsString;
-                              ParamByName('ocitam2').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam2').AsString;
-                              ParamByName('ocitam3').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam3').AsString;
-                              ParamByName('ocitam4').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam4').AsString;
-                              ParamByName('ocitam5').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam5').AsString;
-                              ParamByName('ocitam6').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam6').AsString;
-                              ParamByName('ocitam7').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam7').AsString;
-                              ParamByName('ocitam8').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam8').AsString;
-                              ParamByName('ocitam9').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam9').AsString;
-                              ParamByName('ocitam10').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam10').AsString;
-                              ParamByName('ocitam11').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam11').AsString;
-                              ParamByName('ocitam12').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam12').AsString;
-                              ParamByName('ocitam13').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam13').AsString;
-                              ParamByName('ocitam14').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam14').AsString;
-                              ParamByName('ocitam15').AsString:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam15').AsString;
+                              ParamByName('ocitam1').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam1').AsString;
+                              ParamByName('ocitam2').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam2').AsString;
+                              ParamByName('ocitam3').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam3').AsString;
+                              ParamByName('ocitam4').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam4').AsString;
+                              ParamByName('ocitam5').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam5').AsString;
+                              ParamByName('ocitam6').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam6').AsString;
+                              ParamByName('ocitam7').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam7').AsString;
+                              ParamByName('ocitam8').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam8').AsString;
+                              ParamByName('ocitam9').AsString                         :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam9').AsString;
+                              ParamByName('ocitam10').AsString                        :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam10').AsString;
+                              ParamByName('ocitam11').AsString                        :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam11').AsString;
+                              ParamByName('ocitam12').AsString                        :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam12').AsString;
+                              ParamByName('ocitam13').AsString                        :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam13').AsString;
+                              ParamByName('ocitam14').AsString                        :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam14').AsString;
+                              ParamByName('ocitam15').AsString                        :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam15').AsString;
 
                               { VERIFICA SE GE TEM PROTÓTIPO E SUBTRAI O MESMO DA GRADE }
-                              if dmOrdemCorte.qyTemOrdPrototipo.RecordCount > 0 then
+                              if dmIniciarCorte.qyTemOrdPrototipo.RecordCount > 0 then
                               begin
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam1').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam1').AsString<>'' then
                                   begin
-                                        if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                        dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                        if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                        dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                         begin
-                                            ParamByName('ociqtdade1').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade1').AsFloat-
-                                            dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade1').AsFloat;
+                                            ParamByName('ociqtdade1').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade1').AsFloat-
+                                            dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade1').AsFloat;
                                         end
                                         else
-                                            ParamByName('ociqtdade1').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade1').AsFloat;
+                                            ParamByName('ociqtdade1').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade1').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam2').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam2').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade2').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade2').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade2').AsFloat;
+                                          ParamByName('ociqtdade2').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade2').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade2').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade2').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade2').AsFloat;
+                                          ParamByName('ociqtdade2').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade2').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam3').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam3').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade3').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade3').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade3').AsFloat;
+                                          ParamByName('ociqtdade3').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade3').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade3').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade3').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade3').AsFloat;
+                                          ParamByName('ociqtdade3').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade3').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam4').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam4').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade4').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade4').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade4').AsFloat;
+                                          ParamByName('ociqtdade4').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade4').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade4').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade4').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade4').AsFloat;
+                                          ParamByName('ociqtdade4').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade4').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam5').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam5').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade5').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade5').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade5').AsFloat;
+                                          ParamByName('ociqtdade5').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade5').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade5').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade5').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade5').AsFloat;
+                                          ParamByName('ociqtdade5').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade5').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam6').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam6').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade6').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade6').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade6').AsFloat;
+                                          ParamByName('ociqtdade6').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade6').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade6').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade6').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade6').AsFloat;
+                                          ParamByName('ociqtdade6').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade6').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam7').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam7').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade7').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade7').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade7').AsFloat;
+                                          ParamByName('ociqtdade7').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade7').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade7').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade7').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade7').AsFloat;
+                                          ParamByName('ociqtdade7').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade7').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam8').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam8').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade8').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade8').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade8').AsFloat;
+                                          ParamByName('ociqtdade8').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade8').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade8').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade8').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade8').AsFloat;
+                                          ParamByName('ociqtdade8').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade8').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam9').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam9').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade9').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade9').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade9').AsFloat;
+                                          ParamByName('ociqtdade9').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade9').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade9').AsFloat;
                                       end
                                       else
-                                            ParamByName('ociqtdade9').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade9').AsFloat;
+                                            ParamByName('ociqtdade9').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade9').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam10').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam10').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade10').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade10').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade10').AsFloat;
+                                          ParamByName('ociqtdade10').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade10').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade10').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade10').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade10').AsFloat;
+                                          ParamByName('ociqtdade10').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade10').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam11').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam11').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade11').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade11').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade11').AsFloat;
+                                          ParamByName('ociqtdade11').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade11').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade11').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade11').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade11').AsFloat;
+                                          ParamByName('ociqtdade11').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade11').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam12').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam12').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade12').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade12').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade12').AsFloat;
+                                          ParamByName('ociqtdade12').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade12').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade12').AsFloat;
                                       end
                                       else
-                                            ParamByName('ociqtdade12').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade12').AsFloat;
+                                            ParamByName('ociqtdade12').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade12').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam13').AsString<>'' then
+                                  if dminiciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam13').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade13').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade13').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade13').AsFloat;
+                                          ParamByName('ociqtdade13').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade13').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade13').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade13').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade13').AsFloat;
+                                          ParamByName('ociqtdade13').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade13').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam14').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam14').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade14').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade14').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade14').AsFloat;
+                                          ParamByName('ociqtdade14').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade14').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade14').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade14').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade14').AsFloat;
+                                          ParamByName('ociqtdade14').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade14').AsFloat;
                                   end;
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam15').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam15').AsString<>'' then
                                   begin
-                                      if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
-                                      dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
+                                      if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_cortecidoidgrade').AsInteger =
+                                      dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_idgradecorprodutoacabado').AsInteger then
                                       begin
-                                          ParamByName('ociqtdade15').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade15').AsFloat-
-                                          dmOrdemCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade15').AsFloat;
+                                          ParamByName('ociqtdade15').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade15').AsFloat-
+                                          dmIniciarCorte.qyTemOrdPrototipo.FieldByName('oci_qtdade15').AsFloat;
                                       end
                                       else
-                                          ParamByName('ociqtdade15').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade15').AsFloat;
+                                          ParamByName('ociqtdade15').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade15').AsFloat;
                                   end;
                               end
                               else
                               //if dmOrdemCorte.qyTemOrdPrototipo.RecordCount = 0 then
                               begin
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam1').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam1').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade1').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade1').AsFloat;
+                                      ParamByName('ociqtdade1').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade1').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam2').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam2').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade2').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade2').AsFloat;
+                                      ParamByName('ociqtdade2').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade2').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam3').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam3').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade3').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade3').AsFloat;
+                                      ParamByName('ociqtdade3').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade3').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam4').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam4').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade4').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade4').AsFloat;
+                                      ParamByName('ociqtdade4').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade4').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam5').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam5').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade5').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade5').AsFloat;
+                                      ParamByName('ociqtdade5').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade5').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam6').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam6').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade6').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade6').AsFloat;
+                                      ParamByName('ociqtdade6').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade6').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam7').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam7').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade7').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade7').AsFloat;
+                                      ParamByName('ociqtdade7').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade7').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam8').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam8').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade8').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade8').AsFloat;
+                                      ParamByName('ociqtdade8').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade8').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam9').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam9').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade9').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade9').AsFloat;
+                                      ParamByName('ociqtdade9').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade9').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam10').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam10').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade10').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade10').AsFloat;
+                                      ParamByName('ociqtdade10').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade10').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam11').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam11').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade11').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade11').AsFloat;
+                                      ParamByName('ociqtdade11').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade11').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam12').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam12').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade12').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade12').AsFloat;
+                                      ParamByName('ociqtdade12').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade12').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam13').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam13').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade13').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade13').AsFloat;
+                                      ParamByName('ociqtdade13').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade13').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam14').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam14').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade14').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade14').AsFloat;
+                                      ParamByName('ociqtdade14').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade14').AsFloat;
                                   end;
 
-                                  if dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_tam15').AsString<>'' then
+                                  if dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_tam15').AsString<>'' then
                                   begin
-                                      ParamByName('ociqtdade15').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade15').AsFloat;
+                                      ParamByName('ociqtdade15').AsFloat:=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_qtdade15').AsFloat;
                                   end;
                               end;
-                              ParamByName('ocivlr1').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr1').AsFloat;
-                              ParamByName('ocivlr2').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr2').AsFloat;
-                              ParamByName('ocivlr3').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr3').AsFloat;
-                              ParamByName('ocivlr4').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr4').AsFloat;
-                              ParamByName('ocivlr5').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr5').AsFloat;
-                              ParamByName('ocivlr6').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr6').AsFloat;
-                              ParamByName('ocivlr7').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr7').AsFloat;
-                              ParamByName('ocivlr8').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr8').AsFloat;
-                              ParamByName('ocivlr9').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr9').AsFloat;
-                              ParamByName('ocivlr10').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr10').AsFloat;
-                              ParamByName('ocivlr11').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr11').AsFloat;
-                              ParamByName('ocivlr12').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr12').AsFloat;
-                              ParamByName('ocivlr13').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr13').AsFloat;
-                              ParamByName('ocivlr14').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr14').AsFloat;
-                              ParamByName('ocivlr15').AsFloat:=dmOrdemCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr15').AsFloat;
+                              ParamByName('ocivlr1').AsFloat                :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr1').AsFloat;
+                              ParamByName('ocivlr2').AsFloat                :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr2').AsFloat;
+                              ParamByName('ocivlr3').AsFloat                :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr3').AsFloat;
+                              ParamByName('ocivlr4').AsFloat                :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr4').AsFloat;
+                              ParamByName('ocivlr5').AsFloat                :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr5').AsFloat;
+                              ParamByName('ocivlr6').AsFloat                :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr6').AsFloat;
+                              ParamByName('ocivlr7').AsFloat                :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr7').AsFloat;
+                              ParamByName('ocivlr8').AsFloat                :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr8').AsFloat;
+                              ParamByName('ocivlr9').AsFloat                :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr9').AsFloat;
+                              ParamByName('ocivlr10').AsFloat               :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr10').AsFloat;
+                              ParamByName('ocivlr11').AsFloat               :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr11').AsFloat;
+                              ParamByName('ocivlr12').AsFloat               :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr12').AsFloat;
+                              ParamByName('ocivlr13').AsFloat               :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr13').AsFloat;
+                              ParamByName('ocivlr14').AsFloat               :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr14').AsFloat;
+                              ParamByName('ocivlr15').AsFloat               :=dmIniciarCorte.qyDefinirPrevistoGE.FieldByName('fti_vlr15').AsFloat;
 
 
                               //  CALCULO DO VALOR TOTAL
@@ -1969,12 +2040,12 @@ begin
 
 
                               //VERFIFICA SE FEZ RESERVA
-                              if dmOrdemCorte.qyChecaReserva.RecordCount=0 then
+                              if dmIniciarCorte.qyChecaReserva.RecordCount=0 then
                                   ParamByName('ocivlrreserva').AsFloat:=ParamByName('ocivlrtotal').AsFloat
                               else
                                   ParamByName('ocivlrreserva').AsFloat:=0;
                               ExecSQL;
-                              dmOrdemCorte.qyDefinirPrevistoGE.Next;
+                              dmIniciarCorte.qyDefinirPrevistoGE.Next;
                           end;
                      end;
 
@@ -1990,8 +2061,6 @@ begin
                   End;
 
               end;
-
-
 
      Except
            on E: exception do
@@ -2017,36 +2086,54 @@ end;
 
 procedure TformIniciarCorte.salvarCorte;
 begin
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value := now;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value := now;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value := 16;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtsolicitacao').Value := dataSolicitacao.Date;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horasolicitacao').Value := horaSolicitacao.Time;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dtprevisaofinalizacao').Value := dataOrdemFinalizacao.Date;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_hrprevisaofinalizacao').Value := horaOrdemFinalizacao.Time;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_situacao').Value := 1;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idcodprodutoacabado').Value := strtoint(editCodigo.Text);
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_observacao').Value := editObservacao.Text;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idfichatecnica').Value := strtoint(editFicha.Text);
-    if labTipoCorte.Caption = 'Prototipo' then
-        dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := true
-    else
-        dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value := false;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idsetor').Value := 7;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_idsetorresponsavel').Value := 1;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciocorteprevisto').Value := dataCortePrevisto.Date;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciocorteprevisto').Value := horaCortePrevisto.Time;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimcorteprevisto').Value := dataFinalCortePrevisto.Date;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horaprevfimcorteprevisto').Value := horaFinalCortePrevisto.Time;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciorealcortado').Value := dataRealCortado.Date;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciorealcortado').Value := horaRealCortado.Time;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimrealcortado').Value := dataFinalRealCortado.Date;
-    dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_horaprevfimrealcortado').Value := horaFinalRealCortado.Time;
-    dmOrdemCorte.tbOrdemdeCorte.Post;
-    butDesistir.Enabled := false;
-    butSalvar.Enabled := false;
-    butNovo.Enabled := true;
-    butEscolherCores.Enabled := true;
+    try
+
+
+        formPrincipal.IniciaTransacao;
+
+
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_dtgerada').Value                                  :=now;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_hrgerada').Value                                  :=now;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_usugerou').Value                                  :=strtoint(formPrincipal.labCodUsuario.Caption);
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_dtsolicitacao').Value                             :=dataSolicitacao.Date;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_horasolicitacao').Value                           :=horaSolicitacao.Time;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_dtprevisaofinalizacao').Value                     :=dataOrdemFinalizacao.Date;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_hrprevisaofinalizacao').Value                     :=horaOrdemFinalizacao.Time;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_situacao').Value                                  :=1;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_idcodprodutoacabado').Value                       :=strtoint(editCodigo.Text);
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_observacao').Value                                :=editObservacao.Text;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_idfichatecnica').Value                            :=strtoint(editFicha.Text);
+        if labTipoCorte.Caption = 'Prototipo' then
+            dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value                             :=true
+        else
+            dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_prototipo').Value                             :=false;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_idsetor').Value                                   :=7;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_idsetorresponsavel').Value                        :=1;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciocorteprevisto').Value               :=dataCortePrevisto.Date;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciocorteprevisto').Value               :=horaCortePrevisto.Time;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimcorteprevisto').Value                  :=dataFinalCortePrevisto.Date;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_horaprevfimcorteprevisto').Value                  :=horaFinalCortePrevisto.Time;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_datapreviniciorealcortado').Value                 :=dataRealCortado.Date;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_horapreviniciorealcortado').Value                 :=horaRealCortado.Time;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_dataprevfimrealcortado').Value                    :=dataFinalRealCortado.Date;
+        dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_horaprevfimrealcortado').Value                    :=horaFinalRealCortado.Time;
+        dmIniciarCorte.tbOrdemdeCorte.Post;
+        butDesistir.Enabled                                                                             :=false;
+        butSalvar.Enabled                                                                               :=false;
+        butNovo.Enabled                                                                                 :=true;
+        butEscolherCores.Enabled                                                                        :=false;
+
+
+        formPrincipal.ComitaTransacao;
+
+    except
+          on E: exception do
+          begin
+             formPrincipal.DesfazTransacao;
+             Application.MessageBox(pchar('Erro ao salvar o corte! '+E.Message),'Erro', MB_ICONERROR);
+             Exit;
+          end;
+    end;
 end;
 
 procedure TformIniciarCorte.tratarDataHora;
@@ -2118,7 +2205,7 @@ var
 
 begin
     parametro := 18;
-    with dmOrdemCorte.qyUserOrdem2 do
+    with dmIniciarCorte.qyUserOrdem2 do
     begin
         Close;
         SQL.Clear;
@@ -2126,14 +2213,32 @@ begin
         SQL.Add('  WHERE us_id = :codigo');
         ParamByName('codigo').AsInteger := parametro;
         Open;
-        if dmOrdemCorte.qyUserOrdem2.FieldByName('us_libera_outra_ordemcorte').Value = false then
+        if dmIniciarCorte.qyUserOrdem2.FieldByName('us_libera_outra_ordemcorte').Value = false then
         begin
             Application.MessageBox('Você não tem permissão para executar este procedimento','Atenção',MB_OK + MB_ICONINFORMATION);
             abort;
         end
         else
-            if dmOrdemCorte.qyCortePorTipoFichaId.RecordCount > 0 then
-                dmOrdemCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := dmOrdemCorte.qyCortePorTipoFichaId.FieldByName('oc_ordem').OldValue + 1;
+        begin
+            if dmIniciarCorte.qyCortePorTipoFichaId.RecordCount > 0 then
+            begin
+                try
+
+                    formPrincipal.IniciaTransacao;
+
+                    dmIniciarCorte.tbOrdemdeCorte.FieldByName('oc_ordem').Value := dmIniciarCorte.qyCortePorTipoFichaId.FieldByName('oc_ordem').OldValue + 1;
+
+                    formPrincipal.ComitaTransacao;
+                except
+                      on E: exception do
+                      begin
+                           formPrincipal.DesfazTransacao;
+                           Application.MessageBox(pchar('Erro ao inserir o nºordem! '+E.Message),'Erro', MB_ICONERROR);
+                           Exit;
+                      end;
+                end;
+            end;
+        end;
     end;
 end;
 

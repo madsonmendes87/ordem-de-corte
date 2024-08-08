@@ -1,0 +1,20 @@
+object dmMudancArtigo_: TdmMudancArtigo_
+  Height = 480
+  Width = 640
+  object qyEstilistaFicha: TFDQuery
+    Left = 32
+    Top = 24
+  end
+  object qyTemSolicTroca: TFDQuery
+    Left = 144
+    Top = 24
+  end
+  object qySelecArtigoDel: TFDQuery
+    Left = 256
+    Top = 24
+  end
+  object qyDelItemReserva: TFDQuery
+    Left = 368
+    Top = 24
+  end
+end

@@ -49,7 +49,8 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDatamodule, UnitPrincipal, UnitSelecionArtigos, UnitPrevisto;
+uses UnitDatamodule, UnitPrincipal, UnitSelecionArtigos, UnitPrevisto,
+unitDMMudancArtigo;
 
 procedure TforMudancArtigo.butEscolherClick(Sender: TObject);
 begin
@@ -98,7 +99,7 @@ begin
         exit;
     end;
 
-    with dmOrdemCorte.qyEstilistaFicha do
+    with dmMudancArtigo.qyEstilistaFicha do
     begin
         Close;
         SQL.Clear;
@@ -110,7 +111,7 @@ begin
         Open;
     end;
 
-    with dmOrdemCorte.qyTemSolicTroca do
+    with dmMudancArtigo.qyTemSolicTroca do
     begin
         Close;
         SQL.Clear;
@@ -122,9 +123,9 @@ begin
         Open;
     end;
 
-    if dmOrdemCorte.qyTemSolicTroca.RecordCount > 0 then
+    if dmMudancArtigo.qyTemSolicTroca.RecordCount > 0 then
     begin
-        if dmOrdemCorte.qyTemSolicTroca.FieldByName('pti_status').Value = 'E' then
+        if dmMudancArtigo.qyTemSolicTroca.FieldByName('pti_status').Value = 'E' then
         begin
             with application do
             begin
@@ -136,7 +137,7 @@ begin
             end;
         end;
 
-        if dmOrdemCorte.qyTemSolicTroca.FieldByName('pti_status').Value = 'A' then
+        if dmMudancArtigo.qyTemSolicTroca.FieldByName('pti_status').Value = 'A' then
         begin
             with application do
             begin
@@ -148,7 +149,7 @@ begin
             end;
         end;
 
-        if dmOrdemCorte.qyTemSolicTroca.FieldByName('pti_status').Value = 'R' then
+        if dmMudancArtigo.qyTemSolicTroca.FieldByName('pti_status').Value = 'R' then
         begin
             with application do
             begin
@@ -172,7 +173,7 @@ end;
 
 procedure TforMudancArtigo.delRegistro;
 begin
-    with dmOrdemCorte.qySelecArtigoDel do
+    with dmMudancArtigo.qySelecArtigoDel do
     begin
         Close;
         SQL.Clear;
@@ -185,12 +186,12 @@ begin
 
         formPrincipal.IniciaTransacao;
 
-        with dmOrdemCorte.qyDelItemReserva do
+        with dmMudancArtigo.qyDelItemReserva do
         begin
              Close;
              SQL.Clear;
              SQL.Add('DELETE FROM producao_troca_item_reserva WHERE ptir_iditemtroca = :idItemTroca');
-             ParamByName('idItemTroca').AsInteger :=dmOrdemCorte.qySelecArtigoDel.FieldByName('pti_id').Value;
+             ParamByName('idItemTroca').AsInteger :=dmMudancArtigo.qySelecArtigoDel.FieldByName('pti_id').Value;
              ExecSQL;
         end;
 
@@ -210,7 +211,7 @@ begin
         formPrincipal.IniciaTransacao;
 
 
-        with dmOrdemCorte.qyDeletArtigo do
+        with dmMudancArtigo.qyDeletArtigo do
         begin
              Close;
              SQL.Clear;
@@ -248,7 +249,7 @@ end;
 
 procedure TforMudancArtigo.FormShow(Sender: TObject);
 begin
-    with dmOrdemCorte.qyMudancArtigo do
+    with dmMudancArtigo.qyMudancArtigo do
     begin
         Close;
         SQL.Clear;
@@ -304,10 +305,10 @@ procedure TforMudancArtigo.gridMudancArtigoDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn;
   State: TGridDrawState);
 begin
-    if dmOrdemCorte.qyMudancArtigo.FieldByName('oci_tipo').Value = 'P' then
+    if dmMudancArtigo.qyMudancArtigo.FieldByName('oci_tipo').Value = 'P' then
       gridMudancArtigo.Canvas.Font.Color := clBlue
     else
-      if dmOrdemCorte.qyMudancArtigo.FieldByName('oci_tecido').Value = true then
+      if dmMudancArtigo.qyMudancArtigo.FieldByName('oci_tecido').Value = true then
          gridMudancArtigo.Canvas.Font.Color := clGreen;
 
     gridMudancArtigo.DefaultDrawColumnCell(Rect, DataCol, Column, State);
@@ -315,7 +316,7 @@ end;
 
 procedure TforMudancArtigo.salvaRegistro;
 begin
-    with dmOrdemCorte.qyETecidoCorProd do
+    with dmMudancArtigo.qyETecidoCorProd do
     begin
         Close;
         SQL.Clear;
@@ -337,7 +338,7 @@ begin
 
         formPrincipal.IniciaTransacao;
 
-        with dmOrdemCorte.qyInserirTrocaItem do
+        with dmMudancArtigo.qyInserirTrocaItem do
         begin
              Close;
              SQL.Clear;
@@ -352,23 +353,23 @@ begin
 
              ParamByName('fichaTecnica').AsInteger            :=strtoint(formPrincipal.gridOrdem.Fields[5].Value);
              ParamByName('idProdutoRetirar').AsInteger        :=strtoint(gridMudancArtigo.Fields[0].Value);
-             ParamByName('idCoRetirar').AsInteger             :=dmOrdemCorte.qyMudancArtigo.FieldByName('grc_id').Value;
-             ParamByName('idTamRetirar').AsInteger            :=dmOrdemCorte.qyMudancArtigo.FieldByName('grt_id').Value;
+             ParamByName('idCoRetirar').AsInteger             :=dmMudancArtigo.qyMudancArtigo.FieldByName('grc_id').Value;
+             ParamByName('idTamRetirar').AsInteger            :=dmMudancArtigo.qyMudancArtigo.FieldByName('grt_id').Value;
              ParamByName('idProdutoAdd').AsInteger            :=strtoint(editCodigo.Text);
              ParamByName('idCorAdd').AsInteger                :=strtoint(labIdCor.Caption);
              ParamByName('idTamAdd').AsInteger                :=strtoint(labIdTam.Caption);
              ParamByName('idUsuarioSol').AsInteger            :=strtoint(formPrincipal.labCodUsuario.Caption);
              ParamByName('motivoSol').AsString                :=editMotivo.Text;
              ParamByName('dataSol').AsDateTime                :=now;
-             ParamByName('idUsuarioConf').AsInteger           :=dmOrdemCorte.qyEstilistaFicha.FieldByName('us_id').Value;
+             ParamByName('idUsuarioConf').AsInteger           :=dmMudancArtigo.qyEstilistaFicha.FieldByName('us_id').Value;
              ParamByName('status').AsString                   :='E';    //Inicia com status: EM ESPERA
              if formPrincipal.gridOrdem.Fields[8].Value = 'Prototipo' then
                 ParamByName('eprototipo').AsBoolean           :=true
              else
                 ParamByName('eprototipo').AsBoolean           :=false;
              ParamByName('consumoTotal').AsFloat              :=strtofloat(gridMudancArtigo.Fields[2].Value);
-             ParamByName('etecido').AsBoolean                 :=dmOrdemCorte.qyETecidoCorProd.FieldByName('oci_tecido').Value;
-             ParamByName('idCorProdAcabado').AsInteger        :=dmOrdemCorte.qyETecidoCorProd.FieldByName('grc_id').Value;
+             ParamByName('etecido').AsBoolean                 :=dmMudancArtigo.qyETecidoCorProd.FieldByName('oci_tecido').Value;
+             ParamByName('idCorProdAcabado').AsInteger        :=dmMudancArtigo.qyETecidoCorProd.FieldByName('grc_id').Value;
              ParamByName('itemCortePrevisto').AsInteger       :=strtoint(gridMudancArtigo.Fields[6].Value);
              ParamByName('marcacao').AsString                 :='N';
              ExecSQL;
@@ -389,7 +390,7 @@ begin
 
     // Insere na tabela producao_troca_item_reserva
 
-    with dmOrdemCorte.qyConsumoTroca do
+    with dmMudancArtigo.qyConsumoTroca do
     begin
         Close;
         SQL.Clear;
@@ -399,9 +400,9 @@ begin
         Open;
     end;
 
-    if dmOrdemCorte.qyConsumoTroca.FieldByName('pti_prototipo').Value = true then
+    if dmMudancArtigo.qyConsumoTroca.FieldByName('pti_prototipo').Value = true then
     begin
-         with dmOrdemCorte.qyEstoqueSemReserProt do
+         with dmMudancArtigo.qyEstoqueSemReserProt do
          begin
               Close;
               SQL.Clear;
@@ -448,8 +449,8 @@ begin
               SQL.Add('           ) > 0');
               SQL.Add('   ORDER BY disponivel ASC');
 
-              ParamByName('idCor').AsInteger      :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradecor_adicionar').Value;
-              ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradetam_adicionar').Value;;
+              ParamByName('idCor').AsInteger      :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_idgradecor_adicionar').Value;
+              ParamByName('idTamanho').AsInteger  :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_idgradetam_adicionar').Value;;
               ParamByName('idProduto').AsInteger  :=strtoint(editCodigo.Text);
               Open;
          end;
@@ -460,7 +461,7 @@ begin
             formPrincipal.IniciaTransacao;
 
 
-            with dmOrdemCorte.qyInserirTrocaItemReserva do
+            with dmMudancArtigo.qyInserirTrocaItemReserva do
             begin
                  Close;
                  SQL.Clear;
@@ -469,9 +470,9 @@ begin
                  SQL.Add('VALUES (');
                  SQL.Add('      :itemTroca, :idEstoque, :consumo, :tipo)');
 
-                 ParamByName('itemTroca').AsInteger     :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_id').Value;
-                 ParamByName('idEstoque').AsInteger     :=dmOrdemCorte.qyEstoqueSemReserProt.FieldByName('es_id').Value;
-                 ParamByName('consumo').AsFloat         :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_consumototal').Value;
+                 ParamByName('itemTroca').AsInteger     :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_id').Value;
+                 ParamByName('idEstoque').AsInteger     :=dmMudancArtigo.qyEstoqueSemReserProt.FieldByName('es_id').Value;
+                 ParamByName('consumo').AsFloat         :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_consumototal').Value;
                  ParamByName('tipo').AsString           :='A'; //Adicional
                  ExecSQL;
             end;
@@ -487,7 +488,7 @@ begin
               end;
         end;
 
-        with dmOrdemCorte.qyEstoqueSemReserProt2 do
+        with dmMudancArtigo.qyEstoqueSemReserProt2 do
         begin
               Close;
               SQL.Clear;
@@ -534,8 +535,8 @@ begin
               SQL.Add('           ) > 0');
               SQL.Add('   ORDER BY disponivel ASC');
 
-              ParamByName('idCor').AsInteger      :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradecor_retirar').Value;
-              ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradetam_retirar').Value;
+              ParamByName('idCor').AsInteger      :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_idgradecor_retirar').Value;
+              ParamByName('idTamanho').AsInteger  :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_idgradetam_retirar').Value;
               ParamByName('idProduto').AsInteger  :=strtoint(gridMudancArtigo.Fields[0].Value);
               Open;
         end;
@@ -546,7 +547,7 @@ begin
             formPrincipal.IniciaTransacao;
 
 
-            with dmOrdemCorte.qyInserirTrocaItemReserva do
+            with dmMudancArtigo.qyInserirTrocaItemReserva do
             begin
                  Close;
                  SQL.Clear;
@@ -555,9 +556,9 @@ begin
                  SQL.Add('VALUES (');
                  SQL.Add('      :itemTroca, :idEstoque, :consumo, :tipo)');
 
-                 ParamByName('itemTroca').AsInteger     :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_id').Value;
-                 ParamByName('idEstoque').AsInteger     :=dmOrdemCorte.qyEstoqueSemReserProt2.FieldByName('es_id').Value;
-                 ParamByName('consumo').AsFloat         :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_consumototal').Value;
+                 ParamByName('itemTroca').AsInteger     :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_id').Value;
+                 ParamByName('idEstoque').AsInteger     :=dmMudancArtigo.qyEstoqueSemReserProt2.FieldByName('es_id').Value;
+                 ParamByName('consumo').AsFloat         :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_consumototal').Value;
                  ParamByName('tipo').AsString           :='R'; //Retirada
                  ExecSQL;
             end;
@@ -575,7 +576,7 @@ begin
     end
     else
     begin
-        with dmOrdemCorte.qyEstoqueComReserva do
+        with dmMudancArtigo.qyEstoqueComReserva do
         begin
             Close;
             SQL.Clear;
@@ -632,8 +633,8 @@ begin
             SQL.Add('       )');
             SQL.Add('   ) > 0');
 
-            ParamByName('idCor').AsInteger      :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradecor_adicionar').Value;
-            ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradetam_adicionar').Value;;
+            ParamByName('idCor').AsInteger      :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_idgradecor_adicionar').Value;
+            ParamByName('idTamanho').AsInteger  :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_idgradetam_adicionar').Value;;
             ParamByName('idProduto').AsInteger  :=strtoint(editCodigo.Text);
             Open;
         end;
@@ -644,7 +645,7 @@ begin
             formPrincipal.IniciaTransacao;
 
 
-            with dmOrdemCorte.qyInserirTrocaItemReserva do
+            with dmMudancArtigo.qyInserirTrocaItemReserva do
             begin
                  Close;
                  SQL.Clear;
@@ -653,9 +654,9 @@ begin
                  SQL.Add('VALUES (');
                  SQL.Add('      :itemTroca, :idEstoque, :consumo, :tipo)');
 
-                 ParamByName('itemTroca').AsInteger     :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_id').Value;
-                 ParamByName('idEstoque').AsInteger     :=dmOrdemCorte.qyEstoqueComReserva.FieldByName('es_id').Value;
-                 ParamByName('consumo').AsFloat         :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_consumototal').Value;
+                 ParamByName('itemTroca').AsInteger     :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_id').Value;
+                 ParamByName('idEstoque').AsInteger     :=dmMudancArtigo.qyEstoqueComReserva.FieldByName('es_id').Value;
+                 ParamByName('consumo').AsFloat         :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_consumototal').Value;
                  ParamByName('tipo').AsString           :='A'; //Adicional
                  ExecSQL;
             end;
@@ -672,7 +673,7 @@ begin
         end;
 
 
-        with dmOrdemCorte.qyEstoqueComReserva2 do
+        with dmMudancArtigo.qyEstoqueComReserva2 do
         begin
             Close;
             SQL.Clear;
@@ -685,8 +686,8 @@ begin
             SQL.Add('   AND gt.grt_id= :idTamanho');
             SQL.Add('   AND cp.cp_id= :idProduto');
 
-            ParamByName('idCor').AsInteger      :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradecor_retirar').Value;
-            ParamByName('idTamanho').AsInteger  :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_idgradetam_retirar').Value;
+            ParamByName('idCor').AsInteger      :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_idgradecor_retirar').Value;
+            ParamByName('idTamanho').AsInteger  :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_idgradetam_retirar').Value;
             ParamByName('idProduto').AsInteger  :=strtoint(gridMudancArtigo.Fields[0].Value);
             Open;
         end;
@@ -698,7 +699,7 @@ begin
             formPrincipal.IniciaTransacao;
 
 
-            with dmOrdemCorte.qyInserirTrocaItemReserva do
+            with dmMudancArtigo.qyInserirTrocaItemReserva do
             begin
                  Close;
                  SQL.Clear;
@@ -707,9 +708,9 @@ begin
                  SQL.Add('VALUES (');
                  SQL.Add('      :itemTroca, :idEstoque, :consumo, :tipo)');
 
-                 ParamByName('itemTroca').AsInteger     :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_id').Value;
-                 ParamByName('idEstoque').AsInteger     :=dmOrdemCorte.qyEstoqueComReserva2.FieldByName('es_id').Value;
-                 ParamByName('consumo').AsFloat         :=dmOrdemCorte.qyConsumoTroca.FieldByName('pti_consumototal').Value;
+                 ParamByName('itemTroca').AsInteger     :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_id').Value;
+                 ParamByName('idEstoque').AsInteger     :=dmMudancArtigo.qyEstoqueComReserva2.FieldByName('es_id').Value;
+                 ParamByName('consumo').AsFloat         :=dmMudancArtigo.qyConsumoTroca.FieldByName('pti_consumototal').Value;
                  ParamByName('tipo').AsString           :='R'; //Retirada
                  ExecSQL;
             end;

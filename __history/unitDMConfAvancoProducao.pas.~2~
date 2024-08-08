@@ -1,0 +1,33 @@
+unit unitDMConfAvancoProducao;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, Datasnap.DBClient;
+
+type
+  TdmConfirmacaoAvancoProducao = class(TDataModule)
+    cdsProdReposicao: TClientDataSet;
+    cdsProdReposicaoidProduto: TIntegerField;
+    cdsProdReposicaoProduto: TStringField;
+    cdsProdReposicaoCor: TStringField;
+    cdsProdReposicaoTamanho: TStringField;
+    cdsProdReposicaoDataReposicao: TDateField;
+    cdsProdReposicaocodCor: TIntegerField;
+    cdsProdReposicaocodTamanho: TIntegerField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmConfirmacaoAvancoProducao: TdmConfirmacaoAvancoProducao;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

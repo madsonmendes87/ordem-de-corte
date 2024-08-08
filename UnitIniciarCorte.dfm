@@ -613,7 +613,7 @@ object formIniciarCorte: TformIniciarCorte
   end
   object butNovo: TBitBtn
     Left = 29
-    Top = 356
+    Top = 354
     Width = 105
     Height = 41
     Caption = '&Nova'
@@ -1101,7 +1101,7 @@ object formIniciarCorte: TformIniciarCorte
   end
   object butAlterar: TBitBtn
     Left = 140
-    Top = 354
+    Top = 356
     Width = 105
     Height = 41
     Caption = '&Alterar'

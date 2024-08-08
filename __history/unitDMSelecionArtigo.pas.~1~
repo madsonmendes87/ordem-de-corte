@@ -1,0 +1,25 @@
+unit unitDMSelecionArtigo;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TdmSelecionArtigo = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmSelecionArtigo: TdmSelecionArtigo;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

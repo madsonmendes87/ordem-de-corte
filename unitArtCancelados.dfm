@@ -20,7 +20,7 @@ object formArtCancelados: TformArtCancelados
     Top = 0
     Width = 809
     Height = 441
-    DataSource = dmOrdemCorte.dsArtCancelados
+    DataSource = dsArtCancelados
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
@@ -28,5 +28,15 @@ object formArtCancelados: TformArtCancelados
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+  end
+  object qyArtCancelados: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 592
+    Top = 48
+  end
+  object dsArtCancelados: TDataSource
+    DataSet = qyArtCancelados
+    Left = 704
+    Top = 40
   end
 end

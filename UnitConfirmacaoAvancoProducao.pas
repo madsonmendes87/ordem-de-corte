@@ -37,22 +37,23 @@ implementation
 
 {$R *.dfm}
 
-uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte;
+uses UnitDatamodule, UnitPrincipal, UnitIniciarCorte,
+  unitDMConfAvancoProducao;
 
 
 procedure TformConfirmacaoAvancoProducao.butDownClick(Sender: TObject);
 begin
-    dmOrdemCorte.cdsProdReposicao.Append;
-    dmOrdemCorte.cdsProdReposicao.FieldByName('idProduto').AsInteger := gridProduto.Fields[0].Value;
-    dmOrdemCorte.cdsProdReposicao.FieldByName('Produto').AsString := gridProduto.Fields[1].Value;
-    dmOrdemCorte.cdsProdReposicao.FieldByName('Cor').AsString := gridProduto.Fields[2].Value;
-    dmOrdemCorte.cdsProdReposicao.FieldByName('Tamanho').AsString := gridProduto.Fields[3].Value;
-    dmOrdemCorte.cdsProdReposicao.FieldByName('Data Reposicao').AsDateTime := dtReposicao.Date;
-    dmOrdemCorte.cdsProdReposicao.FieldByName('codCor').AsInteger := gridProduto.Fields[7].Value;
-    dmOrdemCorte.cdsProdReposicao.FieldByName('codTamanho').AsInteger := gridProduto.Fields[8].Value;
-    dmOrdemCorte.cdsProdReposicao.Post;
-    dmOrdemCorte.cdsProdSemEstoque.Delete;
-    if dmOrdemCorte.cdsProdSemEstoque.IsEmpty then
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.Append;
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.FieldByName('idProduto').AsInteger := gridProduto.Fields[0].Value;
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.FieldByName('Produto').AsString := gridProduto.Fields[1].Value;
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.FieldByName('Cor').AsString := gridProduto.Fields[2].Value;
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.FieldByName('Tamanho').AsString := gridProduto.Fields[3].Value;
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.FieldByName('Data Reposicao').AsDateTime := dtReposicao.Date;
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.FieldByName('codCor').AsInteger := gridProduto.Fields[7].Value;
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.FieldByName('codTamanho').AsInteger := gridProduto.Fields[8].Value;
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.Post;
+    dmConfirmacaoAvancoProducao.cdsProdSemEstoque.Delete;
+    if dmConfirmacaoAvancoProducao.cdsProdSemEstoque.IsEmpty then
       butDown.Enabled := false;
       butUP.Enabled := true;
 end;
@@ -60,57 +61,72 @@ end;
 procedure TformConfirmacaoAvancoProducao.butSalvarFinalPrevClick(
   Sender: TObject);
 begin
-    if not dmOrdemCorte.cdsProdSemEstoque.IsEmpty then
+    if not dmConfirmacaoAvancoProducao.cdsProdSemEstoque.IsEmpty then
     begin
        Application.MessageBox('Complete o processo de informação da reposição do estoque!','Atenção',MB_OK + MB_ICONINFORMATION);
        exit;
     end
     else
-      dmOrdemCorte.tbConfAvancoProducao.Open();
-      dmOrdemCorte.tbConfAvancoProducao.Append;
-      dmOrdemCorte.tbConfAvancoProducao.FieldByName('capr_idusuario').Value := 16;
-      dmOrdemCorte.tbConfAvancoProducao.FieldByName('capr_idfichatecnica').Value := formIniciarCorte.editFicha.Text;
-      dmOrdemCorte.tbConfAvancoProducao.FieldByName('capr_idfaseconfirmacao').Value := 1;
-      dmOrdemCorte.tbConfAvancoProducao.FieldByName('capr_dthrcadastro').Value := now;
-      dmOrdemCorte.tbConfAvancoProducao.Post;
-      with dmOrdemCorte.qyOldValue do
-      begin
-          Close;
-          SQL.Clear;
-          SQL.Add('SELECT * FROM confimacao_avanco_producao_referencia_itens');
-          SQL.Add('ORDER BY capri_id DESC');
-          Open;
-      end;
-      dmOrdemCorte.cdsProdReposicao.First;
-      while not dmOrdemCorte.cdsProdReposicao.eof do
-      begin
-          dmOrdemCorte.tbAvancoProducaoItens.Open();
-          dmOrdemCorte.tbAvancoProducaoItens.Append;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').Value:=dmOrdemCorte.qyOldValue.FieldByName('capri_idconfirmacaoavanco').OldValue +1;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idproduto').Value := gridProdutoReposicao.Fields[0].Value;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idgradecor').Value := gridProdutoReposicao.Fields[5].Value;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_idgradetamanho').Value := gridProdutoReposicao.Fields[6].Value;
-          dmOrdemCorte.tbAvancoProducaoItens.FieldByName('capri_datareposicao').Value := now;
-          dmOrdemCorte.tbAvancoProducaoItens.Post;
-          dmOrdemCorte.cdsProdReposicao.Next;
-      end;
-      Application.Messagebox('Salvo com sucesso','Ordem de Corte',MB_OK + MB_ICONINFORMATION);
-      Close;
-      exit;
+        try
+
+            formPrincipal.IniciaTransacao;
+
+            dmConfirmacaoAvancoProducao.tbConfAvancoProducao.Open();
+            dmConfirmacaoAvancoProducao.tbConfAvancoProducao.Append;
+            dmConfirmacaoAvancoProducao.tbConfAvancoProducao.FieldByName('capr_idusuario').Value := 16;
+            dmConfirmacaoAvancoProducao.tbConfAvancoProducao.FieldByName('capr_idfichatecnica').Value := formIniciarCorte.editFicha.Text;
+            dmConfirmacaoAvancoProducao.tbConfAvancoProducao.FieldByName('capr_idfaseconfirmacao').Value := 1;
+            dmConfirmacaoAvancoProducao.tbConfAvancoProducao.FieldByName('capr_dthrcadastro').Value := now;
+            dmConfirmacaoAvancoProducao.tbConfAvancoProducao.Post;
+            with dmConfirmacaoAvancoProducao.qyOldValue do
+            begin
+                Close;
+                SQL.Clear;
+                SQL.Add('SELECT * FROM confimacao_avanco_producao_referencia_itens');
+                SQL.Add('ORDER BY capri_id DESC');
+                Open;
+            end;
+            dmOrdemCorte.cdsProdReposicao.First;
+            while not dmOrdemCorte.cdsProdReposicao.eof do
+            begin
+                dmConfirmacaoAvancoProducao.tbAvancoProducaoItens.Open();
+                dmConfirmacaoAvancoProducao.tbAvancoProducaoItens.Append;
+                dmConfirmacaoAvancoProducao.tbAvancoProducaoItens.FieldByName('capri_idconfirmacaoavanco').Value:=dmConfirmacaoAvancoProducao.qyOldValue.FieldByName('capri_idconfirmacaoavanco').OldValue +1;
+                dmConfirmacaoAvancoProducao.tbAvancoProducaoItens.FieldByName('capri_idproduto').Value := gridProdutoReposicao.Fields[0].Value;
+                dmConfirmacaoAvancoProducao.tbAvancoProducaoItens.FieldByName('capri_idgradecor').Value := gridProdutoReposicao.Fields[5].Value;
+                dmConfirmacaoAvancoProducao.tbAvancoProducaoItens.FieldByName('capri_idgradetamanho').Value := gridProdutoReposicao.Fields[6].Value;
+                dmConfirmacaoAvancoProducao.tbAvancoProducaoItens.FieldByName('capri_datareposicao').Value := now;
+                dmConfirmacaoAvancoProducao.tbAvancoProducaoItens.Post;
+                dmOrdemCorte.cdsProdReposicao.Next;
+            end;
+            Application.Messagebox('Salvo com sucesso!','Ordem de Corte',MB_OK + MB_ICONINFORMATION);
+            Close;
+            exit;
+
+            formPrincipal.ComitaTransacao;
+//
+        except
+              on E: exception do
+              begin
+                 formPrincipal.DesfazTransacao;
+                 Application.MessageBox(pchar('Erro ao salvar itens para avanço produção! '+E.Message),'Erro', MB_ICONERROR);
+                 Exit;
+              end;
+        end;
 end;
 
 procedure TformConfirmacaoAvancoProducao.butUPClick(Sender: TObject);
 begin
-    dmOrdemCorte.cdsProdSemEstoque.Append;
-    dmOrdemCorte.cdsProdSemEstoque.FieldByName('idProduto').AsInteger := gridProdutoReposicao.Fields[0].Value;
-    dmOrdemCorte.cdsProdSemEstoque.FieldByName('Produto').AsString := gridProdutoReposicao.Fields[1].Value;
-    dmOrdemCorte.cdsProdSemEstoque.FieldByName('Cor').AsString := gridProdutoReposicao.Fields[2].Value;
-    dmOrdemCorte.cdsProdSemEstoque.FieldByName('Tamanho').AsString := gridProdutoReposicao.Fields[3].Value;
-    dmOrdemCorte.cdsProdSemEstoque.FieldByName('codCor').AsInteger := gridProdutoReposicao.Fields[5].Value;
-    dmOrdemCorte.cdsProdSemEstoque.FieldByName('codTamanho').AsString := gridProdutoReposicao.Fields[6].Value;
-    dmOrdemCorte.cdsProdSemEstoque.Post;
-    dmOrdemCorte.cdsProdReposicao.Delete;
-    if dmOrdemCorte.cdsProdReposicao.IsEmpty then
+    dmConfirmacaoAvancoProducao.cdsProdSemEstoque.Append;
+    dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('idProduto').AsInteger := gridProdutoReposicao.Fields[0].Value;
+    dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Produto').AsString := gridProdutoReposicao.Fields[1].Value;
+    dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Cor').AsString := gridProdutoReposicao.Fields[2].Value;
+    dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('Tamanho').AsString := gridProdutoReposicao.Fields[3].Value;
+    dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('codCor').AsInteger := gridProdutoReposicao.Fields[5].Value;
+    dmConfirmacaoAvancoProducao.cdsProdSemEstoque.FieldByName('codTamanho').AsString := gridProdutoReposicao.Fields[6].Value;
+    dmConfirmacaoAvancoProducao.cdsProdSemEstoque.Post;
+    dmConfirmacaoAvancoProducao.cdsProdReposicao.Delete;
+    if dmConfirmacaoAvancoProducao.cdsProdReposicao.IsEmpty then
       butUP.Enabled := false;
       butDown.Enabled := true;
 end;
@@ -125,7 +141,7 @@ end;
 procedure TformConfirmacaoAvancoProducao.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
-    CanClose:=false;
+    //CanClose:=false;
 end;
 
 procedure TformConfirmacaoAvancoProducao.FormCreate(Sender: TObject);
@@ -158,7 +174,7 @@ begin
     gridProdutoReposicao.Columns[4].Title.Alignment:=taCenter;
     gridProdutoReposicao.Columns[5].Title.Alignment:=taCenter;
     gridProdutoReposicao.Columns[6].Title.Alignment:=taCenter;
-    if dmOrdemCorte.cdsProdReposicao.IsEmpty then
+    if dmConfirmacaoAvancoProducao.cdsProdReposicao.IsEmpty then
       butUP.Enabled := false;
 end;
 

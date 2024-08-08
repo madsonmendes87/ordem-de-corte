@@ -1613,7 +1613,7 @@ object formPrincipal: TformPrincipal
       Height = 457
       Align = alTop
       Color = clWhite
-      DataSource = dmOrdemCorte.dsOrdemCorte
+      DataSource = dmPrincipal.dsOrdemCorte
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -2201,7 +2201,7 @@ object formPrincipal: TformPrincipal
       Height = 21
       KeyField = 'es_id'
       ListField = 'es_nome'
-      ListSource = dmOrdemCorte.dsBoxEstilista
+      ListSource = dmPrincipal.dsBoxEstilista
       TabOrder = 14
     end
     object dbLColecao: TDBLookupComboBox
@@ -2211,7 +2211,7 @@ object formPrincipal: TformPrincipal
       Height = 21
       KeyField = 'co_id'
       ListField = 'nome'
-      ListSource = dmOrdemCorte.dsBoxColecao
+      ListSource = dmPrincipal.dsBoxColecao
       TabOrder = 15
     end
     object butClearEstilo: TButton
@@ -2251,6 +2251,7 @@ object formPrincipal: TformPrincipal
     end
     object RealCortado1: TMenuItem
       Caption = 'Real Cortado'
+      OnClick = RealCortado1Click
     end
   end
   object popupMenuObs: TPopupMenu

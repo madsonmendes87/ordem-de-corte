@@ -91,8 +91,8 @@
         <DCC_ExeOutput>C:\Sistema DiaERP\DiaAplicativo</DCC_ExeOutput>
         <VerInfo_Debug>true</VerInfo_Debug>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Build>9</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.9;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Build>11</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.11;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -153,6 +153,61 @@
         </DCCReference>
         <DCCReference Include="UnitSelecionArtigos.pas">
             <Form>formSelecionArtigo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="unitDMPrincipal.pas">
+            <Form>dmPrincipal</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="unitDMIniciarCorte.pas">
+            <Form>dmIniciarCorte</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="unitDMConfAvancoProducao.pas">
+            <Form>dmConfirmacaoAvancoProducao</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="unitDMProdAcabado.pas">
+            <Form>dmProdAcabado</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="unitDMPrevisto.pas">
+            <Form>dmPrevisto</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="unitDMMudancArtigo.pas">
+            <Form>dmMudancArtigo</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="unitDMSelecionArtigo.pas">
+            <Form>dmSelecionArtigo</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="unitInfoReferencias.pas">
+            <Form>formInfoReferencia</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="unitImgGradeCor.pas">
+            <Form>formImgGradeCor</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="unitDMRealCortado.pas">
+            <Form>dmRealCortado</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="unitRealCortado.pas">
+            <Form>formRealCortado</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="unitRefRealCortado.pas">
+            <Form>formRefRealCortado</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Base">

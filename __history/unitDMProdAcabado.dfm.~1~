@@ -1,0 +1,4 @@
+object dmProdAcabado: TdmProdAcabado
+  Height = 480
+  Width = 640
+end

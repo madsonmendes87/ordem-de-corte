@@ -1,0 +1,4 @@
+object dmRealCortado: TdmRealCortado
+  Height = 480
+  Width = 640
+end

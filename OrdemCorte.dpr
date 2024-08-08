@@ -16,7 +16,19 @@ uses
   unitArtCancelados in 'unitArtCancelados.pas' {formArtCancelados},
   UnitLogin in 'UnitLogin.pas' {formLogin},
   UnitMudancArtigo in 'UnitMudancArtigo.pas' {forMudancArtigo},
-  UnitSelecionArtigos in 'UnitSelecionArtigos.pas' {formSelecionArtigo};
+  UnitSelecionArtigos in 'UnitSelecionArtigos.pas' {formSelecionArtigo},
+  unitDMPrincipal in 'unitDMPrincipal.pas' {dmPrincipal: TDataModule},
+  unitDMIniciarCorte in 'unitDMIniciarCorte.pas' {dmIniciarCorte: TDataModule},
+  unitDMConfAvancoProducao in 'unitDMConfAvancoProducao.pas' {dmConfirmacaoAvancoProducao: TDataModule},
+  unitDMProdAcabado in 'unitDMProdAcabado.pas' {dmProdAcabado: TDataModule},
+  unitDMPrevisto in 'unitDMPrevisto.pas' {dmPrevisto: TDataModule},
+  unitDMMudancArtigo in 'unitDMMudancArtigo.pas' {dmMudancArtigo: TDataModule},
+  unitDMSelecionArtigo in 'unitDMSelecionArtigo.pas' {dmSelecionArtigo: TDataModule},
+  unitInfoReferencias in 'unitInfoReferencias.pas' {formInfoReferencia},
+  unitImgGradeCor in 'unitImgGradeCor.pas' {formImgGradeCor},
+  unitDMRealCortado in 'unitDMRealCortado.pas' {dmRealCortado: TDataModule},
+  unitRealCortado in 'unitRealCortado.pas' {formRealCortado},
+  unitRefRealCortado in 'unitRefRealCortado.pas' {formRefRealCortado};
 
 {$R *.res}
 
@@ -26,6 +38,7 @@ var
     exeRemoto : String;
 
 begin
+  ReportMemoryLeaksOnShutdown   :=true;
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TdmOrdemCorte, dmOrdemCorte);
@@ -38,6 +51,18 @@ begin
   Application.CreateForm(TformLogin, formLogin);
   Application.CreateForm(TforMudancArtigo, forMudancArtigo);
   Application.CreateForm(TformSelecionArtigo, formSelecionArtigo);
+  Application.CreateForm(TdmPrincipal, dmPrincipal);
+  Application.CreateForm(TdmIniciarCorte, dmIniciarCorte);
+  Application.CreateForm(TdmConfirmacaoAvancoProducao, dmConfirmacaoAvancoProducao);
+  Application.CreateForm(TdmProdAcabado, dmProdAcabado);
+  Application.CreateForm(TdmPrevisto, dmPrevisto);
+  Application.CreateForm(TdmMudancArtigo, dmMudancArtigo);
+  Application.CreateForm(TdmSelecionArtigo, dmSelecionArtigo);
+  Application.CreateForm(TformInfoReferencia, formInfoReferencia);
+  Application.CreateForm(TformImgGradeCor, formImgGradeCor);
+  Application.CreateForm(TdmRealCortado, dmRealCortado);
+  Application.CreateForm(TformRealCortado, formRealCortado);
+  Application.CreateForm(TformRefRealCortado, formRefRealCortado);
   Application.Run;
   if EncontrouIni then
   begin
