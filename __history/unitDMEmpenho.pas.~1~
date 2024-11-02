@@ -1,0 +1,25 @@
+unit unitDMEmpenho;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TdmEmpenho = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmEmpenho: TdmEmpenho;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

@@ -22,6 +22,10 @@ type
     dsOrdemCorte: TDataSource;
     qyOrdemCorte: TFDQuery;
     qyVerCorteReal: TFDQuery;
+    qyBoxComprador: TFDQuery;
+    dsBoxComprador: TDataSource;
+    qyBoxFornecedor: TFDQuery;
+    dsBoxFornecedor: TDataSource;
   private
     { Private declarations }
   public

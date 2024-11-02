@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Menus, Vcl.Grids,
-  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Samples.Spin, Vcl.ExtCtrls, Vcl.Buttons;
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Samples.Spin, Vcl.ExtCtrls, Vcl.Buttons,
+  System.Actions, Vcl.ActnList;
 
 type
   TformRealCortado = class(TForm)
@@ -181,6 +182,15 @@ type
     finalizar: TMenuItem;
     N8: TMenuItem;
     reabrirGuia: TMenuItem;
+    actionReal: TActionList;
+    acaoNovoRealCortado: TAction;
+    acaoOrdemCorte: TAction;
+    acaoSalvarRealCortado: TAction;
+    acaoReceberTecido: TAction;
+    acaoFinalizarRealCortado: TAction;
+    acaoReabriRealCortado: TAction;
+    acaoRetirarCortado: TAction;
+    acaoConsumoCortado: TAction;
     procedure FormShow(Sender: TObject);
     procedure butSairRealCortadoClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -193,6 +203,20 @@ type
     procedure butAcaoClick(Sender: TObject);
     procedure butNovoClick(Sender: TObject);
     procedure butOrdemCorteClick(Sender: TObject);
+    procedure acaoNovoRealCortadoExecute(Sender: TObject);
+    procedure acaoOrdemCorteExecute(Sender: TObject);
+    procedure acaoSalvarRealCortadoExecute(Sender: TObject);
+    procedure butSalvarClick(Sender: TObject);
+    procedure acaoReceberTecidoExecute(Sender: TObject);
+    procedure butReceberTecidoClick(Sender: TObject);
+    procedure consumoCortadoClick(Sender: TObject);
+    procedure retirarCortadoClick(Sender: TObject);
+    procedure finalizarClick(Sender: TObject);
+    procedure reabrirGuiaClick(Sender: TObject);
+    procedure acaoFinalizarRealCortadoExecute(Sender: TObject);
+    procedure acaoReabriRealCortadoExecute(Sender: TObject);
+    procedure acaoConsumoCortadoExecute(Sender: TObject);
+    procedure acaoRetirarCortadoExecute(Sender: TObject);
   private
     { Private declarations }
     procedure gridRealCortadoClick(Sender: TObject);
@@ -209,6 +233,75 @@ implementation
 
 uses unitDMPrincipal, UnitPrincipal, unitDMRealCortado, unitDMPrevisto,
   unitRefRealCortado;
+
+procedure TformRealCortado.acaoConsumoCortadoExecute(Sender: TObject);
+begin
+    if popupCortado.Items.Find('Consumo Cortado').Enabled = true then
+    begin
+        ShowMessage('Cliquei no consumo cortado!');
+    end;
+end;
+
+procedure TformRealCortado.acaoFinalizarRealCortadoExecute(
+  Sender: TObject);
+begin
+    if popupAcao.Items.Find('Finalizar').Enabled = true then
+    begin
+        ShowMessage('Cliquei no FINALIZAR');
+    end;
+end;
+
+procedure TformRealCortado.acaoNovoRealCortadoExecute(Sender: TObject);
+begin
+    if butNovo.Enabled = true then
+    begin
+        butNovo.Enabled           :=false;
+        butOrdemCorte.Enabled     :=true;
+        butReceberTecido.Enabled  :=true;
+        butSalvar.Enabled         :=true;
+    end;
+end;
+
+procedure TformRealCortado.acaoOrdemCorteExecute(Sender: TObject);
+begin
+    if butOrdemCorte.Enabled = true then
+    begin
+        application.CreateForm(TformRefRealCortado, formRefRealCortado);
+        formRefRealCortado.ShowModal;
+    end;
+end;
+
+procedure TformRealCortado.acaoReabriRealCortadoExecute(Sender: TObject);
+begin
+    if popupAcao.Items.Find('Reabrir').Enabled = true then
+    begin
+        ShowMessage('Cliquei no REABRIR');
+    end;
+end;
+
+procedure TformRealCortado.acaoReceberTecidoExecute(Sender: TObject);
+begin
+    if butReceberTecido.Enabled = true then
+    begin
+        ShowMessage('Estou recebendo o tecido!');
+    end;
+end;
+
+procedure TformRealCortado.acaoRetirarCortadoExecute(Sender: TObject);
+begin
+    if popupCortado.Items.Find('Retirar Cortado').Enabled = true then
+    begin
+        ShowMessage('Cliquei no retirar cortado!');
+    end;
+end;
+
+procedure TformRealCortado.acaoSalvarRealCortadoExecute(Sender: TObject);
+begin
+    if butSalvar.Enabled = true then
+    begin
+        ShowMessage('Cliquei no botao salvar');
+    end;
+end;
 
 procedure TformRealCortado.butAcaoClick(Sender: TObject);
 begin
@@ -227,16 +320,17 @@ end;
 
 procedure TformRealCortado.butNovoClick(Sender: TObject);
 begin
-    butNovo.Enabled           :=false;
-    butOrdemCorte.Enabled     :=true;
-    butReceberTecido.Enabled  :=true;
-    butSalvar.Enabled         :=true;
+    acaoNovoRealCortadoExecute(Sender);
 end;
 
 procedure TformRealCortado.butOrdemCorteClick(Sender: TObject);
 begin
-    application.CreateForm(TformRefRealCortado, formRefRealCortado);
-    formRefRealCortado.ShowModal;
+    acaoOrdemCorteExecute(Sender);
+end;
+
+procedure TformRealCortado.butReceberTecidoClick(Sender: TObject);
+begin
+    acaoReceberTecidoExecute(Sender);
 end;
 
 procedure TformRealCortado.butSairRealCortadoClick(Sender: TObject);
@@ -244,6 +338,23 @@ begin
     formRealCortado.Close;
     formPrincipal.habComponentes;
     formPrincipal.gridOrdem.Visible :=true;
+end;
+
+procedure TformRealCortado.butSalvarClick(Sender: TObject);
+begin
+    acaoSalvarRealCortadoExecute(Sender);
+end;
+
+procedure TformRealCortado.consumoCortadoClick(Sender: TObject);
+begin
+//    ShowMessage('Cliquei no consumo cortado!');
+    acaoConsumoCortadoExecute(Sender);
+end;
+
+procedure TformRealCortado.finalizarClick(Sender: TObject);
+begin
+//    ShowMessage('Cliquei no FINALIZAR');
+    acaoFinalizarRealCortadoExecute(Sender);
 end;
 
 procedure TformRealCortado.FormClose(Sender: TObject;
@@ -461,5 +572,17 @@ begin
     gridRealCortado.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
+
+procedure TformRealCortado.reabrirGuiaClick(Sender: TObject);
+begin
+//      ShowMessage('Cliquei no REABRIR');
+    acaoReabriRealCortadoExecute(Sender);
+end;
+
+procedure TformRealCortado.retirarCortadoClick(Sender: TObject);
+begin
+//    ShowMessage('Cliquei no retirar cortado!');
+    acaoRetirarCortadoExecute(Sender);
+end;
 
 end.

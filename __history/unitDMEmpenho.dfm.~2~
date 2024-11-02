@@ -1,0 +1,14 @@
+object dmEmpenho: TdmEmpenho
+  Height = 480
+  Width = 640
+  object qyArtigoEmpenho: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 64
+    Top = 32
+  end
+  object dsArtigoEmpenho: TDataSource
+    DataSet = qyArtigoEmpenho
+    Left = 160
+    Top = 32
+  end
+end

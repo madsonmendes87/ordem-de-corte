@@ -87,6 +87,7 @@ begin
         Close;
         SQL.Clear;
         SQL.Add('SELECT * FROM usuario WHERE us_login = :login AND us_senha = :senha');
+
         ParamByName('login').AsString :=editLoginUsuario.Text;
         ParamByName('senha').AsString :=THashMD5.GetHashString(editLoginSenha.Text);
         Open;
@@ -115,9 +116,9 @@ begin
             SQL.Add('UPDATE ordem_corte SET oc_usupermiteartigonaoprogramado = :idusuautorizou, oc_usuaddartigo_naoprogramado = :idusulogado');
             SQL.Add('   WHERE oc_id = :corte');
 
-            ParamByName('corte').AsInteger              :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
-            ParamByName('idusuautorizou').AsInteger     :=qyUsuario.FieldByName('us_id').Value;
-            ParamByName('idusulogado').AsInteger        :=strtoint(formPrincipal.labCodUsuario.Caption);
+            ParamByName('corte').AsInteger                :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+            ParamByName('idusuautorizou').AsInteger       :=qyUsuario.FieldByName('us_id').Value;
+            ParamByName('idusulogado').AsInteger          :=strtoint(formPrincipal.labCodUsuario.Caption);
             ExecSQL;
         end;
 

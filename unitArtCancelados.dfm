@@ -3,7 +3,7 @@ object formArtCancelados: TformArtCancelados
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'CANCELADOS'
+  Caption = 'ARTIGOS CANCELADOS'
   ClientHeight = 440
   ClientWidth = 807
   Color = clSkyBlue

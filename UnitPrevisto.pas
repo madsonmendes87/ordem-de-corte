@@ -31,16 +31,16 @@ type
     butEmpenho: TSpeedButton;
     butAcao: TSpeedButton;
     popupArtigos: TPopupMenu;
-    rocar1: TMenuItem;
+    Trocar: TMenuItem;
     Liberar1: TMenuItem;
-    Verartigoscancelados1: TMenuItem;
+    Retirar: TMenuItem;
     popupEmpenho: TPopupMenu;
     Empenhar1: TMenuItem;
     Informao1: TMenuItem;
-    N2: TMenuItem;
+    Informacao: TMenuItem;
     RetirarEmpenho1: TMenuItem;
     N3: TMenuItem;
-    Verartigoscancelados2: TMenuItem;
+    Verartigoscancelados: TMenuItem;
     RetirarEmpenho2: TMenuItem;
     popupAcao: TPopupMenu;
     Finalizar1: TMenuItem;
@@ -161,14 +161,15 @@ type
       State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
     procedure butEditGradeClick(Sender: TObject);
-    procedure Verartigoscancelados2Click(Sender: TObject);
-    procedure Verartigoscancelados1Click(Sender: TObject);
-    procedure rocar1Click(Sender: TObject);
+    procedure VerartigoscanceladosClick(Sender: TObject);
+    procedure RetirarClick(Sender: TObject);
+    procedure TrocarClick(Sender: TObject);
     procedure Finalizar1Click(Sender: TObject);
     procedure Reabrir1Click(Sender: TObject);
     procedure butInfoReferenciaClick(Sender: TObject);
     procedure butImGradeCorClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Empenhar1Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -189,13 +190,20 @@ implementation
 uses UnitProdutoAcabado, UnitPrincipal, UnitDatamodule, UnitHistoricOrdem,
   UnitOrdemCorteCores, UnitConfirmacaoAvancoProducao, UnitVerificaVersao,
   UnitDMHistoricOrdem, unitArtCancelados, UnitLogin, UnitMudancArtigo,
-  unitDMIniciarCorte, unitDMPrevisto, unitInfoReferencias, unitImgGradeCor;
+  unitDMIniciarCorte, unitDMPrevisto, unitInfoReferencias, unitImgGradeCor,
+  unitEmpenho;
 
 procedure TformPrevisto.butSairPrevistoClick(Sender: TObject);
 begin
     formPrevisto.Close;
     formPrincipal.habComponentes;
     formPrincipal.gridOrdem.Visible :=true;
+end;
+
+procedure TformPrevisto.Empenhar1Click(Sender: TObject);
+begin
+     application.CreateForm(TformEmpenho, formEmpenho);
+     formEmpenho.ShowModal;
 end;
 
 procedure TformPrevisto.finalizaPrevisto;
@@ -677,12 +685,12 @@ end;
 procedure TformPrevisto.FormMouseMove(Sender: TObject; Shift: TShiftState;
   X, Y: Integer);
 begin
-    butEditGrade.Font.Color:=clWindowText;
-    butArtigos.Font.Color:=clWindowText;
-    butEmpenho.Font.Color:=clWindowText;
-    butAcao.Font.Color:=clWindowText;
-    butInfoReferencia.Font.Color:=clNavy;
-    butImGradeCor.Font.Color:=clWindowText;
+    butEditGrade.Font.Color         :=clWindowText;
+    butArtigos.Font.Color           :=clWindowText;
+    butEmpenho.Font.Color           :=clWindowText;
+    butAcao.Font.Color              :=clWindowText;
+    butInfoReferencia.Font.Color    :=clNavy;
+    butImGradeCor.Font.Color        :=clWindowText;
 end;
 
 procedure TformPrevisto.FormResize(Sender: TObject);
@@ -803,9 +811,9 @@ begin
     end;
 
     if formPrincipal.gridOrdem.Fields[8].Value = 'Prototipo' then
-       panelCabecalho.Caption := 'Corte Previsto - Protótipo'
+        panelCabecalho.Caption :='Corte Previsto - Protótipo'
     else
-        panelCabecalho.Caption := 'Corte Previsto - Grande Escala';
+        panelCabecalho.Caption :='Corte Previsto - Grande Escala';
 
     with dmPrevisto.qyFichaIdCorte do
     begin
@@ -1491,12 +1499,12 @@ begin
                       Application.MessageBox('Item cancelado com sucesso!', 'Ordem de Corte', MB_OK + MB_ICONINFORMATION);
 
                   except
-                            on E: exception do
-                            begin
-                                 formPrincipal.DesfazTransacao;
-                                 Application.MessageBox(pchar('Erro ao retirar artigo.'+E.Message),'Ordem de Corte', MB_ICONERROR);
-                                 exit;
-                            end;
+                      on E: exception do
+                      begin
+                           formPrincipal.DesfazTransacao;
+                           Application.MessageBox(pchar('Erro ao retirar artigo.'+E.Message),'Ordem de Corte', MB_ICONERROR);
+                           exit;
+                      end;
                   end;
               end
              else
@@ -1504,13 +1512,13 @@ begin
         end;
 end;
 
-procedure TformPrevisto.rocar1Click(Sender: TObject);
+procedure TformPrevisto.TrocarClick(Sender: TObject);
 begin
      application.CreateForm(TforMudancArtigo, forMudancArtigo);
      forMudancArtigo.ShowModal;
 end;
 
-procedure TformPrevisto.Verartigoscancelados1Click(Sender: TObject);
+procedure TformPrevisto.RetirarClick(Sender: TObject);
 
 begin
     with dmPrevisto.qyUsuario do
@@ -1534,7 +1542,7 @@ begin
     end;
 end;
 
-procedure TformPrevisto.Verartigoscancelados2Click(Sender: TObject);
+procedure TformPrevisto.VerartigoscanceladosClick(Sender: TObject);
 begin
     application.CreateForm(TformArtCancelados, formArtCancelados);
     formArtCancelados.ShowModal;
@@ -1568,21 +1576,21 @@ var
   qtdade1, qtdade2, qtdade3, qtdade4, qtdade5, qtdade6, qtdade7, qtdade8,
   qtdade9, qtdade10, qtdade11, qtdade12, qtdade13, qtdade14, qtdade15: integer;
 begin
-    qtdade1:=spinTamanho1.Value;
-    qtdade2:=spinTamanho2.Value;
-    qtdade3:=spinTamanho3.Value;
-    qtdade4:=spinTamanho4.Value;
-    qtdade5:=spinTamanho5.Value;
-    qtdade6:=spinTamanho6.Value;
-    qtdade7:=spinTamanho7.Value;
-    qtdade8:=spinTamanho8.Value;
-    qtdade9:=spinTamanho9.Value;
-    qtdade10:=spinTamanho10.Value;
-    qtdade11:=spinTamanho11.Value;
-    qtdade12:=spinTamanho12.Value;
-    qtdade13:=spinTamanho13.Value;
-    qtdade14:=spinTamanho14.Value;
-    qtdade15:=spinTamanho15.Value;
+    qtdade1       :=spinTamanho1.Value;
+    qtdade2       :=spinTamanho2.Value;
+    qtdade3       :=spinTamanho3.Value;
+    qtdade4       :=spinTamanho4.Value;
+    qtdade5       :=spinTamanho5.Value;
+    qtdade6       :=spinTamanho6.Value;
+    qtdade7       :=spinTamanho7.Value;
+    qtdade8       :=spinTamanho8.Value;
+    qtdade9       :=spinTamanho9.Value;
+    qtdade10      :=spinTamanho10.Value;
+    qtdade11      :=spinTamanho11.Value;
+    qtdade12      :=spinTamanho12.Value;
+    qtdade13      :=spinTamanho13.Value;
+    qtdade14      :=spinTamanho14.Value;
+    qtdade15      :=spinTamanho15.Value;
 
     Try
 

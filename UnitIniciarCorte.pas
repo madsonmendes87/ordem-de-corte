@@ -247,11 +247,11 @@ end;
 procedure TformIniciarCorte.butDesistirClick(Sender: TObject);
 begin
     dmIniciarCorte.tbOrdemdeCorte.Cancel;
-    butDesistir.Enabled        :=false;
-    butSalvar.Enabled          :=false;
-    butCancelarOrdem.Enabled   :=false;
-    butNovo.Enabled            :=true;
-    butAlterar.Enabled         :=false;
+    butDesistir.Enabled          :=false;
+    butSalvar.Enabled            :=false;
+    butCancelarOrdem.Enabled     :=false;
+    butNovo.Enabled              :=true;
+    butAlterar.Enabled           :=false;
 end;
 
 procedure TformIniciarCorte.butEditarClick(Sender: TObject);
@@ -1016,6 +1016,7 @@ begin
 
               msg:='SEM CONSUMO DE FASE LANÇADA!' +#13+#13+
                     'FASE: '+ dmIniciarCorte.qyConsumoFaseGE.FieldByName('fa_nome').Value;
+
               if labTipoCorte.Caption = 'Grande Escala' then
               begin
                   if dmIniciarCorte.qyFichaFaseGE.RecordCount = 0 then
@@ -1024,6 +1025,7 @@ begin
                       exit;
                   end;
               end;
+
               dmIniciarCorte.qyConsumoFaseGE.Next;
          end;
     end;
@@ -1041,12 +1043,12 @@ end;
 
 procedure TformIniciarCorte.FormCreate(Sender: TObject);
 begin
-    butSalvar.Enabled           :=false;
-    butCancelarOrdem.Enabled    :=false;
-    butEditar.Enabled           :=false;
-    butDesistir.Enabled         :=false;
-    butAlterar.Visible          :=false;
-    butEscolherCores.Enabled    :=false;
+    butSalvar.Enabled             :=false;
+    butCancelarOrdem.Enabled      :=false;
+    butEditar.Enabled             :=false;
+    butDesistir.Enabled           :=false;
+    butAlterar.Visible            :=false;
+    butEscolherCores.Enabled      :=false;
 end;
 
 procedure TformIniciarCorte.FormKeyDown(Sender: TObject; var Key: Word;

@@ -554,10 +554,7 @@ object formSelecionArtigo: TformSelecionArtigo
       Height = 231
       Align = alClient
       Stretch = True
-      ExplicitLeft = 96
-      ExplicitTop = 67
-      ExplicitWidth = 105
-      ExplicitHeight = 105
+      ExplicitTop = 0
     end
   end
   object panelFoto2: TPanel

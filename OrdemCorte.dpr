@@ -28,7 +28,12 @@ uses
   unitImgGradeCor in 'unitImgGradeCor.pas' {formImgGradeCor},
   unitDMRealCortado in 'unitDMRealCortado.pas' {dmRealCortado: TDataModule},
   unitRealCortado in 'unitRealCortado.pas' {formRealCortado},
-  unitRefRealCortado in 'unitRefRealCortado.pas' {formRefRealCortado};
+  unitRefRealCortado in 'unitRefRealCortado.pas' {formRefRealCortado},
+  unitEmpenho in 'unitEmpenho.pas' {formEmpenho},
+  unitDMEmpenho in 'unitDMEmpenho.pas' {dmEmpenho: TDataModule},
+  unitSelecEmpenho in 'unitSelecEmpenho.pas' {formSelecEmpenho},
+  unitDMSelecEmpenho in 'unitDMSelecEmpenho.pas' {dmSelecEmpenho: TDataModule},
+  unitRecEmpenho in 'unitRecEmpenho.pas' {formRecEmpenho};
 
 {$R *.res}
 
@@ -63,6 +68,11 @@ begin
   Application.CreateForm(TdmRealCortado, dmRealCortado);
   Application.CreateForm(TformRealCortado, formRealCortado);
   Application.CreateForm(TformRefRealCortado, formRefRealCortado);
+  Application.CreateForm(TformEmpenho, formEmpenho);
+  Application.CreateForm(TdmEmpenho, dmEmpenho);
+  Application.CreateForm(TformSelecEmpenho, formSelecEmpenho);
+  Application.CreateForm(TdmSelecEmpenho, dmSelecEmpenho);
+  Application.CreateForm(TformRecEmpenho, formRecEmpenho);
   Application.Run;
   if EncontrouIni then
   begin

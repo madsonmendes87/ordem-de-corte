@@ -373,7 +373,6 @@ object formIniciarCorte: TformIniciarCorte
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 1186
     object Label2: TLabel
       Left = 280
       Top = 64

@@ -10,6 +10,7 @@ object formRealCortado: TformRealCortado
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  KeyPreview = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
@@ -231,6 +232,7 @@ object formRealCortado: TformRealCortado
       FFFFFFFFFFFFFFFFFFFFDBECDF55A56A0A7D2874B685FDFEFDFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     ParentFont = False
+    OnClick = butSalvarClick
   end
   object butArtigos: TSpeedButton
     Left = 484
@@ -695,417 +697,417 @@ object formRealCortado: TformRealCortado
   object labIndividual: TLabel
     Left = 25
     Top = 203
-    Width = 53
-    Height = 13
+    Width = 45
+    Height = 14
     Caption = 'Individual'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal: TLabel
     Left = 24
     Top = 230
     Width = 25
-    Height = 13
+    Height = 14
     Caption = 'Total'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual1: TLabel
     Left = 106
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual2: TLabel
     Left = 149
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual3: TLabel
     Left = 200
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual4: TLabel
     Left = 247
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual5: TLabel
     Left = 297
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual6: TLabel
     Left = 343
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual7: TLabel
     Left = 390
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual8: TLabel
     Left = 440
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual9: TLabel
     Left = 488
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labindividual10: TLabel
     Left = 540
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual11: TLabel
     Left = 595
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual12: TLabel
     Left = 643
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual13: TLabel
     Left = 693
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual14: TLabel
     Left = 742
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labIndividual15: TLabel
     Left = 795
     Top = 203
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clGray
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal1: TLabel
     Left = 106
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal2: TLabel
     Left = 149
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal3: TLabel
     Left = 200
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal4: TLabel
     Left = 247
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal5: TLabel
     Left = 297
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal6: TLabel
     Left = 343
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal7: TLabel
     Left = 390
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal8: TLabel
     Left = 440
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal9: TLabel
     Left = 488
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal10: TLabel
     Left = 540
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal11: TLabel
     Left = 595
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal12: TLabel
     Left = 643
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal13: TLabel
     Left = 693
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal14: TLabel
     Left = 742
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object labTotal15: TLabel
     Left = 795
     Top = 230
     Width = 4
-    Height = 13
+    Height = 14
     Caption = '-'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Times New Roman'
-    Font.Style = [fsBold]
+    Font.Style = []
     ParentFont = False
   end
   object butInfoReferencia: TSpeedButton
@@ -1795,7 +1797,7 @@ object formRealCortado: TformRealCortado
     OnClick = butOrdemCorteClick
   end
   object butReceberTecido: TSpeedButton
-    Left = 245
+    Left = 246
     Top = 94
     Width = 124
     Height = 26
@@ -1884,6 +1886,7 @@ object formRealCortado: TformRealCortado
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000}
     ParentFont = False
+    OnClick = butReceberTecidoClick
   end
   object panelCabecalho: TPanel
     Left = 0
@@ -2512,21 +2515,25 @@ object formRealCortado: TformRealCortado
       item
         Expanded = False
         FieldName = 'grc_nome'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'grt_nome'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'oci_vlrtotal'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'oci_vlr_sobra'
+        Width = 64
         Visible = True
       end
       item
@@ -2622,16 +2629,19 @@ object formRealCortado: TformRealCortado
       item
         Expanded = False
         FieldName = 'cp_un'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'oci_tipo'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'oci_tecido'
+        Width = 64
         Visible = True
       end>
   end
@@ -2665,12 +2675,16 @@ object formRealCortado: TformRealCortado
     Top = 104
     object consumoCortado: TMenuItem
       Caption = 'Consumo Cortado'
+      ShortCut = 118
+      OnClick = consumoCortadoClick
     end
     object Informao1: TMenuItem
       Caption = '-'
     end
     object retirarCortado: TMenuItem
       Caption = 'Retirar Cortado'
+      ShortCut = 119
+      OnClick = retirarCortadoClick
     end
   end
   object popupAcao: TPopupMenu
@@ -2711,12 +2725,68 @@ object formRealCortado: TformRealCortado
     end
     object finalizar: TMenuItem
       Caption = 'Finalizar'
+      ShortCut = 121
+      OnClick = finalizarClick
     end
     object N8: TMenuItem
       Caption = '-'
     end
     object reabrirGuia: TMenuItem
       Caption = 'Reabrir'
+      ShortCut = 122
+      OnClick = reabrirGuiaClick
+    end
+  end
+  object actionReal: TActionList
+    Left = 872
+    Top = 40
+    object acaoNovoRealCortado: TAction
+      Category = 'real cortado'
+      Caption = 'acaoNovoRealCortado'
+      ShortCut = 112
+      OnExecute = acaoNovoRealCortadoExecute
+    end
+    object acaoOrdemCorte: TAction
+      Category = 'real cortado'
+      Caption = 'acaoOrdemCorte'
+      ShortCut = 113
+      OnExecute = acaoOrdemCorteExecute
+    end
+    object acaoSalvarRealCortado: TAction
+      Category = 'real cortado'
+      Caption = 'acaoSalvarRealCortado'
+      ShortCut = 114
+      OnExecute = acaoSalvarRealCortadoExecute
+    end
+    object acaoReceberTecido: TAction
+      Category = 'real cortado'
+      Caption = 'acaoReceberTecido'
+      ShortCut = 115
+      OnExecute = acaoReceberTecidoExecute
+    end
+    object acaoFinalizarRealCortado: TAction
+      Category = 'real cortado'
+      Caption = 'acaoFinalizarRealCortado'
+      ShortCut = 121
+      OnExecute = acaoFinalizarRealCortadoExecute
+    end
+    object acaoReabriRealCortado: TAction
+      Category = 'real cortado'
+      Caption = 'acaoReabriRealCortado'
+      ShortCut = 122
+      OnExecute = acaoReabriRealCortadoExecute
+    end
+    object acaoRetirarCortado: TAction
+      Category = 'real cortado'
+      Caption = 'acaoRetirarCortado'
+      ShortCut = 119
+      OnExecute = acaoRetirarCortadoExecute
+    end
+    object acaoConsumoCortado: TAction
+      Category = 'real cortado'
+      Caption = 'acaoConsumoCortado'
+      ShortCut = 118
+      OnExecute = acaoConsumoCortadoExecute
     end
   end
 end

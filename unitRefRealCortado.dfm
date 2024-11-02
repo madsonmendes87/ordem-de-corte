@@ -13,6 +13,7 @@ object formRefRealCortado: TformRefRealCortado
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
+  OnClose = FormClose
   OnShow = FormShow
   TextHeight = 15
   object labTipoCorte: TLabel
@@ -93,6 +94,7 @@ object formRefRealCortado: TformRefRealCortado
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnDblClick = gridRefRealCortadoDblClick
   end
   object qyRefRealCortado: TFDQuery
     Active = True
@@ -127,6 +129,21 @@ object formRefRealCortado: TformRefRealCortado
   object dsRefRealCortado: TDataSource
     DataSet = qyRefRealCortado
     Left = 712
+    Top = 16
+  end
+  object qyCodProdAcabado: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 520
+    Top = 16
+  end
+  object qyObservacoes: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 408
+    Top = 16
+  end
+  object qyIdFicha: TFDQuery
+    Connection = dmOrdemCorte.Conexao
+    Left = 272
     Top = 16
   end
 end

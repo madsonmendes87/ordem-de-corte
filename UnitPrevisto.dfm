@@ -1377,7 +1377,6 @@ object formPrevisto: TformPrevisto
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 1178
   end
   object radioCorte: TRadioGroup
     Left = 17
@@ -1859,11 +1858,13 @@ object formPrevisto: TformPrevisto
       item
         Expanded = False
         FieldName = 'grt_nome'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'oci_vlrtotal'
+        Width = 64
         Visible = True
       end
       item
@@ -1959,39 +1960,42 @@ object formPrevisto: TformPrevisto
       item
         Expanded = False
         FieldName = 'cp_un'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'oci_tipo'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'oci_tecido'
+        Width = 64
         Visible = True
       end>
   end
   object popupArtigos: TPopupMenu
     Left = 1000
     Top = 104
-    object rocar1: TMenuItem
+    object Trocar: TMenuItem
       Caption = 'Trocar(somente na ordem de corte)'
-      OnClick = rocar1Click
+      OnClick = TrocarClick
     end
     object Liberar1: TMenuItem
       Caption = '-'
     end
-    object Verartigoscancelados1: TMenuItem
+    object Retirar: TMenuItem
       Caption = 'Retirar'
-      OnClick = Verartigoscancelados1Click
+      OnClick = RetirarClick
     end
     object N3: TMenuItem
       Caption = '-'
     end
-    object Verartigoscancelados2: TMenuItem
+    object Verartigoscancelados: TMenuItem
       Caption = 'Ver artigos cancelados'
-      OnClick = Verartigoscancelados2Click
+      OnClick = VerartigoscanceladosClick
     end
   end
   object popupEmpenho: TPopupMenu
@@ -1999,11 +2003,12 @@ object formPrevisto: TformPrevisto
     Top = 104
     object Empenhar1: TMenuItem
       Caption = 'Empenhar'
+      OnClick = Empenhar1Click
     end
     object Informao1: TMenuItem
       Caption = '-'
     end
-    object N2: TMenuItem
+    object Informacao: TMenuItem
       Caption = 'Informa'#231#227'o'
     end
     object RetirarEmpenho1: TMenuItem

@@ -114,6 +114,7 @@ type
     procedure btnObservacoesClick(Sender: TObject);
     procedure btnProcRestritoClick(Sender: TObject);
     procedure RealCortado1Click(Sender: TObject);
+    procedure btnEmpAlmoxarifadoClick(Sender: TObject);
   private
     { Private declarations }
     procedure gridViewOrdemCorte;
@@ -130,6 +131,8 @@ type
     procedure DesfazTransacao;
     procedure boxTipoProduto;
     procedure boxGradeTamanho;
+    procedure boxComprador;
+    procedure boxFornecedor;
   end;
 
 var
@@ -141,7 +144,7 @@ implementation
 
 uses UnitDatamodule, UnitIniciarCorte, UnitHistoricOrdem,
   UnitProdutoAcabado, UnitPrevisto, unitDMPrincipal, unitDMRealCortado,
-  unitRealCortado, unitDMPrevisto;
+  unitRealCortado, unitDMPrevisto, unitRecEmpenho;
 
 procedure TformPrincipal.acaoBotaoCortePrevistoExecute(Sender: TObject);
 begin
@@ -158,15 +161,15 @@ end;
 procedure TformPrincipal.acaoBotaoVerCorteExecute(Sender: TObject);
 begin
       if butVerCorte.Enabled = true then
-          gridOrdem.Visible                     :=false;
-          formIniciarCorte                      :=TformIniciarCorte.Create(Self);
-          formIniciarCorte.Parent               :=Panel1;
-          formIniciarCorte.Align                :=alClient;
-          formIniciarCorte.BorderStyle          :=bsNone;
+          gridOrdem.Visible                       :=false;
+          formIniciarCorte                        :=TformIniciarCorte.Create(Self);
+          formIniciarCorte.Parent                 :=Panel1;
+          formIniciarCorte.Align                  :=alClient;
+          formIniciarCorte.BorderStyle            :=bsNone;
           formIniciarCorte.Show;
-          formIniciarCorte.butNovo.Enabled      :=false;
-          formIniciarCorte.butEditar.Enabled    :=true;
-          formIniciarCorte.labNumeroOrd.Caption :=intToStr(gridOrdem.Fields[0].Value) +'-00'+ intToStr(gridOrdem.Fields[1].Value);
+          formIniciarCorte.butNovo.Enabled        :=false;
+          formIniciarCorte.butEditar.Enabled      :=true;
+          formIniciarCorte.labNumeroOrd.Caption   :=intToStr(gridOrdem.Fields[0].Value) +'-00'+ intToStr(gridOrdem.Fields[1].Value);
           with dmPrincipal.qyDadosCorteById do
           begin
               Close;
@@ -209,6 +212,7 @@ begin
           desabComponentes;
 end;
 
+
 procedure TformPrincipal.acaoBotaoHistoricoExecute(Sender: TObject);
 begin
       if butHistoricOrdem.Enabled = true then
@@ -225,18 +229,15 @@ var
 begin
       if butRealCortado.Enabled = true then
       begin
-//            ShowMessage('Mensagem de teste: Ver Real Cortado');
-          gridOrdem.Visible                     :=false;
-          formRealCortado                       :=TformRealCortado.Create(Self);
-          formRealCortado.Parent                :=Panel1;
-          formRealCortado.Align                 :=alClient;
-          formRealCortado.BorderStyle           :=bsNone;
+          gridOrdem.Visible                           :=false;
+          formRealCortado                             :=TformRealCortado.Create(Self);
+          formRealCortado.Parent                      :=Panel1;
+          formRealCortado.Align                       :=alClient;
+          formRealCortado.BorderStyle                 :=bsNone;
           formRealCortado.Show;
-          //formRealCortado.butNovo.Enabled       :=false;
-          //formRealCortado.butEditar.Enabled     :=true;
-          formRealCortado.labNumCorte.Caption := intToStr(formPrincipal.gridOrdem.Fields[0].Value) +'-00'+ intToStr(formPrincipal.gridOrdem.Fields[1].Value);
-          formRealCortado.labNumReferencia.Caption := formPrincipal.gridOrdem.Fields[9].Value;
-          formRealCortado.labNomeDescricao.Caption := formPrincipal.gridOrdem.Fields[10].Value;
+          formRealCortado.labNumCorte.Caption         :=intToStr(formPrincipal.gridOrdem.Fields[0].Value) +'-00'+ intToStr(formPrincipal.gridOrdem.Fields[1].Value);
+          formRealCortado.labNumReferencia.Caption    :=formPrincipal.gridOrdem.Fields[9].Value;
+          formRealCortado.labNomeDescricao.Caption    :=formPrincipal.gridOrdem.Fields[10].Value;
 
           with dmRealCortado.qyOrdemPrototipo do
           begin
@@ -257,21 +258,21 @@ begin
           begin
               if dmRealCortado.qyOrdemPrototipo.RecordCount > 0 then
               begin
-                  formRealCortado.butPrototipo.Visible := true;
-                  formRealCortado.labPrototipo.Visible := true;
-                  formRealCortado.labPrototipo.Caption := 'Protótipo: '+intToStr(dmRealCortado.qyOrdemPrototipo.FieldByName('oc_id').Value)+'-00'+
+                  formRealCortado.butPrototipo.Visible :=true;
+                  formRealCortado.labPrototipo.Visible :=true;
+                  formRealCortado.labPrototipo.Caption :='Protótipo: '+intToStr(dmRealCortado.qyOrdemPrototipo.FieldByName('oc_id').Value)+'-00'+
                   intToStr(dmRealCortado.qyOrdemPrototipo.FieldByName('oc_ordem').Value);
               end;
               if dmRealCortado.qyOrdemPrototipo.RecordCount = 0 then
               begin
-                  formRealCortado.butPrototipo.Visible := false;
-                  formRealCortado.labPrototipo.Visible := false;
+                  formRealCortado.butPrototipo.Visible :=false;
+                  formRealCortado.labPrototipo.Visible :=false;
               end;
           end;
           if formPrincipal.gridOrdem.Fields[8].Value = 'Prototipo' then
           begin
-              formRealCortado.butPrototipo.Visible := false;
-              formRealCortado.labPrototipo.Visible := false;
+              formRealCortado.butPrototipo.Visible :=false;
+              formRealCortado.labPrototipo.Visible :=false;
           end;
 
           with dmRealCortado.qyCodProdAcabadoFicha do
@@ -281,11 +282,11 @@ begin
               SQL.Add('SELECT pa.cad_id FROM produto_acabado AS pa JOIN ficha_tecnica AS ft');
               SQL.Add(' ON ft.fi_idprodutoacabado = pa.cad_id WHERE ft.fi_id = :fichatecnica');
 
-              ParamByName('fichatecnica').AsInteger := strtoint(formPrincipal.gridOrdem.Fields[5].Value);
+              ParamByName('fichatecnica').AsInteger :=strtoint(formPrincipal.gridOrdem.Fields[5].Value);
               Open;
           end;
 
-          formRealCortado.labCodProdAcabado.Caption := intToStr(dmRealCortado.qyCodProdAcabadoFicha.FieldByName('cad_id').Value);
+          formRealCortado.labCodProdAcabado.Caption :=intToStr(dmRealCortado.qyCodProdAcabadoFicha.FieldByName('cad_id').Value);
 
           with dmRealCortado.qyStatusRealCortado do
           begin
@@ -294,26 +295,26 @@ begin
               SQL.Add('SELECT oci_situacao_id, descricao FROM ordem_corte_itens_real, ordem_corte_itens_situacao');
               SQL.Add('   WHERE oci_idocorte = :idcorte AND oci_situacao_id = id;');
 
-              ParamByName('idcorte').AsInteger:=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
+              ParamByName('idcorte').AsInteger :=strtoint(formPrincipal.gridOrdem.Fields[0].Value);
               Open;
           end;
 
           if dmRealCortado.qyStatusRealCortado.FieldByName('oci_situacao_id').Value = 1 then
           begin
-              formRealCortado.labStatuSituacao.Caption := dmRealCortado.qyStatusRealCortado.FieldByName('descricao').Value;
-              formRealCortado.labStatuSituacao.Font.Color := clRed;
+              formRealCortado.labStatuSituacao.Caption    :=dmRealCortado.qyStatusRealCortado.FieldByName('descricao').Value;
+              formRealCortado.labStatuSituacao.Font.Color :=clRed;
           end;
 
           if dmRealCortado.qyStatusRealCortado.FieldByName('oci_situacao_id').Value = 3 then
           begin
-              formRealCortado.labStatuSituacao.Caption := 'CORTADO';
-              formRealCortado.labStatuSituacao.Font.Color := clOlive;
+              formRealCortado.labStatuSituacao.Caption    :='CORTADO';
+              formRealCortado.labStatuSituacao.Font.Color :=clOlive;
           end;
 
           if dmRealCortado.qyStatusRealCortado.FieldByName('oci_situacao_id').Value = 4 then
           begin
-              formRealCortado.labStatuSituacao.Caption := dmRealCortado.qyStatusRealCortado.FieldByName('descricao').Value;
-              formRealCortado.labStatuSituacao.Font.Color := clNavy;
+              formRealCortado.labStatuSituacao.Caption    :=dmRealCortado.qyStatusRealCortado.FieldByName('descricao').Value;
+              formRealCortado.labStatuSituacao.Font.Color :=clNavy;
           end;
 
 
@@ -321,8 +322,6 @@ begin
           begin
               formRealCortado.butNovo.Enabled                                                   :=false;
               formRealCortado.butOrdemCorte.Enabled                                             :=false;
-//              popupEmpenho.Items.Find('Retirar Empenho').Enabled      :=false;
-//              popupEmpenho.Items.Find('Informação').Enabled           :=false;
               formRealCortado.popupCortado.Items.Find('Retirar Cortado').Enabled                :=false;
               formRealCortado.popupAcao.Items.Find('Reabrir').Enabled                           :=false;
           end;
@@ -334,10 +333,6 @@ begin
               formRealCortado.butSalvar.Enabled                                                 :=false;
               formRealCortado.popupCortado.Items.Find('Consumo Cortado').Enabled                :=false;
               formRealCortado.popupAcao.Items.Find('Reabrir').Enabled                           :=false;
-//              popupArtigos.Items.Find('Trocar(somente na ordem de corte)').Enabled:=false;
-//              popupArtigos.Items.Find('Retirar').Enabled:=false;
-//              popupEmpenho.Items.Find('Empenhar').Enabled:=false;
-//              popupAcao.Items.Find('Reabrir').Enabled:=false;
           end;
 
           if formRealCortado.labStatuSituacao.Caption = 'FINALIZADO' then
@@ -353,16 +348,13 @@ begin
               formRealCortado.popupAcao.Items.Find('Sobras').Enabled                            :=false;
               formRealCortado.popupAcao.Items.Find('Empenho').Enabled                           :=false;
               formRealCortado.popupAcao.Items.Find('Finalizar').Enabled                         :=false;
-//              popupEmpenho.Items.Find('Empenhar').Enabled:=false;
-//              popupEmpenho.Items.Find('Retirar Empenho').Enabled:=false;
-//              popupAcao.Items.Find('Finalizar').Enabled:=false;
           end;
 
 
           if formPrincipal.gridOrdem.Fields[8].Value = 'Prototipo' then
-             formRealCortado.panelCabecalho.Caption := 'Real Cortado - Protótipo'
+             formRealCortado.panelCabecalho.Caption   :='Real Cortado - Protótipo'
           else
-              formRealCortado.panelCabecalho.Caption := 'Real Cortado - Grande Escala';
+              formRealCortado.panelCabecalho.Caption  :='Real Cortado - Grande Escala';
 
           with dmRealCortado.qyFichaIdCorte do
           begin
@@ -862,6 +854,17 @@ begin
         Open;
     end;
 end;
+procedure TformPrincipal.boxFornecedor;
+begin
+    with dmPrincipal.qyBoxFornecedor do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT * FROM fornecedor ORDER BY for_apelido');
+        Open;
+    end;
+end;
+
 procedure TformPrincipal.boxGradeTamanho;
 begin
     with dmPrincipal.qyGradeTamanho do
@@ -882,6 +885,17 @@ begin
         SQL.Add('SELECT tp_id, tp_nome FROM tipo_produto ORDER BY tp_id');
         Open;
     end;
+end;
+
+procedure TformPrincipal.btnEmpAlmoxarifadoClick(Sender: TObject);
+begin
+    gridOrdem.Visible             :=false;
+    formRecEmpenho                :=TformRecEmpenho.Create(Self);
+    formRecEmpenho.Parent         :=Panel1;
+    formRecEmpenho.Align          :=alClient;
+    formRecEmpenho.BorderStyle    :=bsNone;
+    formRecEmpenho.Show;
+    desabComponentes;
 end;
 
 procedure TformPrincipal.btnObservacoesClick(Sender: TObject);
@@ -905,10 +919,22 @@ begin
     begin
         Close;
         SQl.Clear;
-        SQl.add('SELECT co_id,');
-        SQl.add('CAST(CONCAT(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))AS nome');
-        SQl.add('FROM colecao');
-        SQl.add('ORDER BY co_anocolecao DESC LIMIT 7');
+        SQl.Add('SELECT co_id,');
+        SQl.Add('CAST(CONCAT(co_descricao,'' de '', to_char(co_anocolecao, ''YYYY''))as character varying(25))AS nome');
+        SQl.Add('FROM colecao');
+        SQl.Add('ORDER BY co_anocolecao DESC LIMIT 7');
+        Open;
+    end;
+end;
+
+procedure TformPrincipal.boxComprador;
+begin
+    with dmPrincipal.qyBoxComprador do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT comp_id, comp_nome FROM cadastro_compradores');
+        SQL.Add('   ORDER BY comp_nome');
         Open;
     end;
 end;
@@ -1156,17 +1182,17 @@ procedure TformPrincipal.dimensionarGrid(dbg: TDBGrid);
   var
     idx: Integer;
   begin
-    if TSize = 0 then
-    begin
-      TSize := dbg.Columns.count;
-      for idx := 0 to dbg.Columns.count - 1 do
-        dbg.Columns[idx].Width:=(dbg.Width - dbg.Canvas.TextWidth('AAAAAA')
-          ) div TSize
-    end
-    else
-      for idx:=0 to dbg.Columns.count - 1 do
-        dbg.Columns[idx].Width:=dbg.Columns[idx].Width +
-          (Swidth * Asize[idx] div TSize);
+      if TSize = 0 then
+      begin
+        TSize := dbg.Columns.count;
+        for idx := 0 to dbg.Columns.count - 1 do
+          dbg.Columns[idx].Width:=(dbg.Width - dbg.Canvas.TextWidth('AAAAAA')
+            ) div TSize
+      end
+      else
+        for idx:=0 to dbg.Columns.count - 1 do
+          dbg.Columns[idx].Width:=dbg.Columns[idx].Width +
+            (Swidth * Asize[idx] div TSize);
   end;
 
 var
@@ -1175,35 +1201,35 @@ var
   Asize: TArray;
   NomeColuna: String;
 begin
-  SetLength(AWidth, dbg.Columns.count);
-  SetLength(Asize, dbg.Columns.count);
-  Twidth:=0;
-  TSize:=0;
-  for idx:=0 to dbg.Columns.count - 1 do
-  begin
-    NomeColuna:=dbg.Columns[idx].Title.Caption;
-    dbg.Columns[idx].Width:=dbg.Canvas.TextWidth
-      (dbg.Columns[idx].Title.Caption + 'A');
-    AWidth[idx]:=dbg.Columns[idx].Width;
-    Twidth:=Twidth + AWidth[idx];
+    SetLength(AWidth, dbg.Columns.count);
+    SetLength(Asize, dbg.Columns.count);
+    Twidth:=0;
+    TSize:=0;
+    for idx:=0 to dbg.Columns.count - 1 do
+    begin
+        NomeColuna:=dbg.Columns[idx].Title.Caption;
+        dbg.Columns[idx].Width:=dbg.Canvas.TextWidth
+          (dbg.Columns[idx].Title.Caption + 'A');
+        AWidth[idx]:=dbg.Columns[idx].Width;
+        Twidth:=Twidth + AWidth[idx];
 
-    if Assigned(dbg.Columns[idx].Field) then
-      Asize[idx]:=dbg.Columns[idx].Field.Size
-    else
-      Asize[idx]:=1;
+        if Assigned(dbg.Columns[idx].Field) then
+          Asize[idx]:=dbg.Columns[idx].Field.Size
+        else
+          Asize[idx]:=1;
 
-    TSize:=TSize + Asize[idx];
-  end;
+        TSize:=TSize + Asize[idx];
+    end;
 
-  if TDBGridOption.dgColLines in dbg.Options then
-    Twidth:=Twidth + dbg.Columns.count;
+    if TDBGridOption.dgColLines in dbg.Options then
+      Twidth:=Twidth + dbg.Columns.count;
 
-  // adiciona a largura da coluna indicada do cursor
-  if TDBGridOption.dgIndicator in dbg.Options then
-    Twidth:=Twidth + IndicatorWidth;
+    // adiciona a largura da coluna indicada do cursor
+    if TDBGridOption.dgIndicator in dbg.Options then
+      Twidth:=Twidth + IndicatorWidth;
 
-  Swidth:=dbg.ClientWidth - Twidth;
-  AjustarColumns(Swidth, TSize, Asize);
+    Swidth:=dbg.ClientWidth - Twidth;
+    AjustarColumns(Swidth, TSize, Asize);
 
 end;
 
